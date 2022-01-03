@@ -18,6 +18,11 @@ function clickButton() {
         .onclick = () => alert("You clicked on the notification!");
 }
 
+import {playTrack} from "../backend/music";
+function playMusic() {
+    playTrack("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
+}
+
 class App extends React.Component<IProps, IState> {
     render() {
         return (
@@ -30,6 +35,12 @@ class App extends React.Component<IProps, IState> {
 
                 <Button variant="primary" onClick={clickButton}>
                     Really Cool Button!
+                </Button>
+
+                <br />
+
+                <Button variant="primary" onClick={playMusic}>
+                    Play Music
                 </Button>
             </div>
         );

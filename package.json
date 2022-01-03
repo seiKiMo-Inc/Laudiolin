@@ -15,7 +15,7 @@
   },
 
   "dependencies": {
-
+    "howler": "^2.2.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.19",
@@ -29,6 +29,7 @@
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
+    "@types/howler": "^2.2.7",
 
     "webpack": "^5.74.0",
     "ts-loader": "^9.3.1",
