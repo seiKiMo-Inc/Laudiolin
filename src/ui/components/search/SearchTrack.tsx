@@ -3,7 +3,7 @@ import { Figure } from "react-bootstrap";
 import Button from "@components/Button";
 
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
-import { playFromResult, togglePlayback } from "@backend/audio";
+import { player, playFromResult } from "@backend/audio";
 
 import type { SearchResult } from "@backend/types";
 
@@ -33,7 +33,7 @@ class SearchTrack extends React.Component<IProps, IState> {
         const isPlaying = this.state.playing;
 
         if(hasPlayed) {
-            togglePlayback(); // Pause/resume the player.
+            player.togglePlayback(); // Pause/resume the player.
             this.setState({ playing: !isPlaying });
         } else {
             this.setState({ hasPlayed: true })

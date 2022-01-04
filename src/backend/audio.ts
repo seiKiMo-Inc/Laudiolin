@@ -6,7 +6,7 @@ import { EventEmitter } from "events";
 import { file } from "@backend/fs";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type { FilePayload, SearchResult, VolumePayload } from "@backend/types";
+import type { SearchResult, TrackData, FilePayload, VolumePayload } from "@backend/types";
 
 /**
  * Events:
@@ -82,7 +82,7 @@ export class MusicPlayer extends EventEmitter {
     /**
      * Returns the currently playing track.
      */
-    getCurrentTrack(): Track {
+    getCurrentTrack(): Track|null {
         return this.currentTrack;
     }
 
@@ -133,23 +133,30 @@ export class MusicPlayer extends EventEmitter {
      * @param track The track to play.
      * @param stopCurrent Whether to stop the current track.
      */
-    playTrack(track: Track, stopCurrent = false) {
+    playTrack(track: Track, stopCurrent = true) {
+        // Check if the track should be added to the queue.
+        if(!stopCurrent && this.currentTrack.isPlaying()) {
+            // Add track to the queue.
+            this.trackQueue.push(track);
+            // Emit queued event.
+            this.emit("queued", track); return;
+        }
+
+        // Stop the current track.
+        if(stopCurrent && this.isPlaying())
+            this.stopTrack();
+
+        // Apply event listeners.
+        this.setupTrackListeners(track);
         // Set the current track.
         this.currentTrack = track;
 
-        // Stop the current track if there is one.
-        if(stopCurrent && this.currentTrack.isPlaying()) {
-            this.currentTrack.stop();
-            // Emit queued event.
-            this.emit("queued", track);
-        } else {
-            // Play the track.
-            this.currentTrack.play();
-            // Set the player as unpaused.
-            this.isPaused = false;
-            // Emit start event.
-            this.emit("start", track);
-        }
+        // Play the track.
+        this.currentTrack.play();
+        // Set the player as unpaused.
+        this.isPaused = false;
+        // Emit start event.
+        this.emit("start", track);
     }
 
     /**
@@ -182,6 +189,16 @@ export class MusicPlayer extends EventEmitter {
      */
     isPlaying(): boolean {
         return !this.isPaused;
+    }
+
+    /**
+     * Toggles the player's mute state.
+     */
+    togglePlayback() {
+        if(!this.currentTrack) return;
+
+        if(this.isPlaying()) this.pause();
+        else this.resume();
     }
 
     /**
@@ -263,6 +280,7 @@ export class MusicPlayer extends EventEmitter {
  */
 export class Track {
     private readonly howl: Howl;
+    private readonly data: TrackData;
     private id: number = 0;
 
     constructor(payload: PlayAudioPayload) {
@@ -270,6 +288,8 @@ export class Track {
             src: [file(payload)],
             volume: payload.volume
         });
+
+        this.data = payload.track_data;
     }
 
     /**
@@ -365,7 +385,9 @@ export class Track {
 let currentTrack: Track|null = null;
 export const player: MusicPlayer = new MusicPlayer();
 
-type PlayAudioPayload = FilePayload & VolumePayload;
+type PlayAudioPayload = FilePayload & VolumePayload & {
+    track_data: TrackData;
+};
 
 /**
  * Sets up event listeners.

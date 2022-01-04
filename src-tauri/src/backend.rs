@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use std::io::Write;
 
 use reqwest::get;
+use crate::wrapper;
 
 #[derive(Debug)]
 pub struct Client {
@@ -41,7 +42,7 @@ pub struct DownloadOptions {
     pub file_path: String
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct SearchResult {
     pub title: String,
     pub artist: String,
@@ -60,7 +61,8 @@ pub struct SearchResults {
 pub struct GatewayMessage {
     #[serde(rename = "type")]
     pub _type: String,
-    pub timestamp: u64
+    pub timestamp: u64,
+    pub message: String
 }
 
 // Backend Rust bindings for the Laudiolin gateway. \\
@@ -76,7 +78,10 @@ pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'stati
     match parsed_data._type.as_str() {
         "volume" => Ok(client.volume(parse_volume(data))),
 
-        _ => Err("Unknown message type.")
+        _ => {
+            println!("{}", parsed_data.message);
+            Err("Invalid message type")
+        }
     }
 }
 
@@ -117,9 +122,14 @@ fn parse_volume(data: &str) -> u8 {
 /// query: The query to search for.
 /// options: The options to use for the search.
 pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults, &'static str> {
+    // Get the user settings.
+    let gateway = wrapper::gateway();
+
     // Perform the request.
-    let response = get(format!("https://app.magix.lol/search/{}?query={}",
-                               query, options.engine)).await.expect("Failed to perform search request");
+    let response = get(format!("{}://{}:{}/search/{}?query={}",
+                               wrapper::protocol(), gateway.address,
+                               gateway.port, query, options.engine))
+        .await.expect("Failed to perform search request");
 
     // Check the response code.
     if response.status() != 301 {
@@ -135,9 +145,14 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// options: The options to use for the download.
 pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'static str> {
+    // Get the user settings.
+    let gateway = wrapper::gateway();
+
     // Perform the request.
-    let response = get(format!("https://app.magix.lol/download?id={}&engine={}",
-                               id, options.engine)).await.expect("Failed to perform download request");
+    let response = get(format!("{}://{}:{}/download?id={}&engine={}",
+                               wrapper::protocol(), gateway.address,
+                               gateway.port, id, options.engine))
+        .await.expect("Failed to perform download request");
 
     // Check the status code.
     if response.status() != 301 {

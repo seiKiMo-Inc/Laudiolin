@@ -1,6 +1,6 @@
 import { emit, listen } from "@tauri-apps/api/event";
 
-import { player } from "@backend/audio";
+import { player, Track } from "@backend/audio";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
 
@@ -16,15 +16,27 @@ type BaseGatewayMessage = {
     type: string;
     timestamp: number;
 };
+
+// To server.
 type InitializeMessage = BaseGatewayMessage & {
     type: "initialize";
 };
+// To server.
 type LatencyMessage = BaseGatewayMessage & {
     type: "latency";
 };
+// To server.
+type NowPlayingMessage = BaseGatewayMessage & {
+    type: "playing";
+    track: Track|null;
+    seek: number;
+};
+
+// To & from server.
 type VolumeMessage = BaseGatewayMessage & {
     type: "volume";
     volume: number;
+    send_back: boolean;
 };
 
 type GatewayMessagePayload = {
@@ -38,11 +50,20 @@ export async function setupListeners() {
     console.log("Setting up gateway event listeners...");
     await listen("send_message", sendMessage);
 
-    // Setup audio listener for gateway.
+    // Setup audio listeners for gateway.
     player.on("volume", volume => {
         // Send the volume to the gateway.
-        sendGatewayMessage(JSON.stringify(<VolumeMessage> { volume }));
+        sendGatewayMessage(JSON.stringify(<VolumeMessage> {
+            type: "volume", volume, send_back: false
+        }));
     });
+
+    player.on("start", update);
+    player.on("stop", update);
+    // player.on("pause", update);
+    // player.on("resume", update);
+    player.on("end", update);
+    player.on("seek", update);
 }
 
 /**
@@ -71,6 +92,22 @@ export function sendGatewayMessage(message: string|object) {
 
     // Send the message to the gateway.
     gateway?.send(message);
+    console.log("Sent message to gateway:", message);
+}
+
+/**
+ * Updates the current track info.
+ * @param data The track data.
+ */
+function update(data: any) {
+    console.log("Sent player information to gateway.");
+
+    // Send player information to the gateway.
+    sendGatewayMessage(<NowPlayingMessage> {
+        type: "playing",
+        track: player.getCurrentTrack(),
+        seek: player.getProgress()
+    });
 }
 
 /**
@@ -102,10 +139,14 @@ async function onMessage(event: MessageEvent) {
     switch(message.type) {
         case "initialize":
             console.debug("Gateway handshake complete.");
-            gateway?.send(JSON.stringify(<InitializeMessage> {}));
+            gateway?.send(JSON.stringify(<InitializeMessage> {
+                type: "initialize"
+            }));
             return;
         case "latency":
-            gateway?.send(JSON.stringify(<LatencyMessage> {}));
+            gateway?.send(JSON.stringify(<LatencyMessage> {
+                type: "latency"
+            }));
             return;
     }
 
