@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import Button from "react-bootstrap/Button";
-import { Track } from "../../backend/music";
+import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
