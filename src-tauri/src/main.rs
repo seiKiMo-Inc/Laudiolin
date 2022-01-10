@@ -27,7 +27,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
 
-            wrapper::search, wrapper::download
+            wrapper::search, wrapper::download,
+            audio::play_from
         ])
         .setup(|app| {
             // Bind app to once_cell.

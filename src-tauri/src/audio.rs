@@ -3,12 +3,25 @@
 // This library is used to interact with the player.
 
 use serde::Serialize;
-use crate::wrapper::TauriApp;
+use crate::backend::SearchResult;
+use crate::wrapper::{TauriApp, download};
 
 #[derive(Clone, Serialize)]
 pub struct PlayAudioPayload {
     file_path: String,
     volume: f32
+}
+
+/// Play an audio track from a search result.
+/// track: The search result of the track to play.
+#[tauri::command]
+pub fn play_from(track: SearchResult) {
+    // TODO: Check frontend for TODOs.
+    
+    // Download the audio track.
+    let file_name = download(track.id.as_str(), "YouTube");
+    // Play audio from the downloaded track.
+    play_audio(file_name);
 }
 
 #[tauri::command]

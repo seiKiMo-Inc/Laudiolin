@@ -1,11 +1,12 @@
 import { emit, listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/tauri";
 import { Howl, Howler } from "howler";
 
 import { file } from "@backend/fs";
 import { sendGatewayMessage } from "@backend/gateway";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type { FilePayload, VolumePayload } from "@backend/types";
+import type { FilePayload, SearchResult, VolumePayload } from "@backend/types";
 
 let currentTrack: Track|null = null;
 
@@ -32,6 +33,29 @@ export function getCurrentTrack(notNull: boolean = false): Track|null {
     }
 
     return currentTrack;
+}
+
+/**
+ * Play an audio track from a search result.
+ * @param track The search result of the track to play.
+ */
+export async function playFromResult(track: SearchResult): Promise<void> {
+    // TODO: Check settings for if user wants to download or stream audio.
+
+    // Download the audio file.
+    // TODO: Check settings for the user's preferred search engine.
+    await invoke("play_from", { track });
+}
+
+/**
+ * Pauses/unpauses the current track.
+ */
+export function togglePlayback() {
+    if(!currentTrack) return;
+
+    if(currentTrack.isPlaying())
+        currentTrack.pause();
+    else currentTrack.resume();
 }
 
 /**
