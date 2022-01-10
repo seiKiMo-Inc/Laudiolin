@@ -1,15 +1,25 @@
 import React from "react";
 import "./App.css";
+
 import Container from 'react-bootstrap/Container';
-import Controls from "./components/controls";
-import Navigation from "./components/navbar";
 import Button from "react-bootstrap/Button";
-interface IProps {}
-interface IState {}
+
+import Navigation from "components/NavBar";
+import Controls from "components/Controls";
+
+interface IProps {
+
+}
+
+interface IState {
+
+}
+
 function clickButton() {
     new Notification("Button", { body: "You clicked on the button!" }).onclick = () =>
         alert("You clicked on the notification!");
 }
+
 class App extends React.Component<IProps, IState> {
     render() {
         return (

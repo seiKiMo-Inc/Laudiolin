@@ -1,4 +1,4 @@
-import { Howl, Howler } from 'howler'
+import { Howl } from 'howler'
 import { URL } from 'url'
 
 /**
@@ -7,10 +7,10 @@ import { URL } from 'url'
  */
 const isValidURL = (url: string) => {
     try {
-        new URL(url)
-        return true
+        new URL(url);
+        return true;
     } catch (e) {
-        return false
+        return false;
     }
 }
 
@@ -33,8 +33,8 @@ export class Track {
      * @param url The URL to the track.
      */
     constructor (url: string) {
-        this.url = url
-        if (isValidURL(url)) throw new Error('Invalid URL.')
-        this.sound = new Howl({ src: [url], html5: true })
+        this.url = url;
+        if (isValidURL(url)) throw new Error('Invalid URL.');
+        this.sound = new Howl({ src: [url], html5: true });
     }
 }
