@@ -10,7 +10,7 @@ export type SearchResult = {
     artist: string;
     icon: string;
     url: string;
-    id?: string;
+    id: string;
     duration: number;
 }
 export type SearchResults = {
