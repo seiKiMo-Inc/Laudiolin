@@ -25,11 +25,23 @@ module.exports = {
                 use: [{loader: "ts-loader"}]
             },
             {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: [
                     "style-loader",
-                    "css-loader"
+                    "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require('tailwindcss'),
+                                    require('autoprefixer')
+                                ],
+                            },
+                        }
+                    }
                 ],
+                exclude: /\.module\.s?([ca])ss$/,
             }
         ]
     },

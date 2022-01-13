@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from "electron";
+import electronIsDev from "electron-is-dev";
 
 const createWindow = () => {
     const window = new BrowserWindow({
@@ -12,7 +13,7 @@ const createWindow = () => {
         }
     });
 
-    window.loadURL(process.env["NODE_ENV"] == "development" ?
+    window.loadURL(electronIsDev ?
         "http://localhost:9000" :
         `file://${__dirname}/index.html`);
 };
