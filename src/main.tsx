@@ -7,6 +7,8 @@ import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
 
+import { invoke } from "@tauri-apps/api/tauri"
+
 (async () => {
     // Initialize the file system.
     await fs.initialize();
@@ -16,6 +18,13 @@ import * as settings from "@backend/settings";
     // Setup listeners.
     await audio.setupListeners();
     await gateway.setupListeners();
+    await settings.setupListeners();
+
+    await invoke("update_presence", {
+        presence: {
+            details: "cool tauri things",
+        }
+    });
 
     // Run gateway setup after.
     setTimeout(() => {

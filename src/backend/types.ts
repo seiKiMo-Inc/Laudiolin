@@ -9,6 +9,23 @@ export type TrackPayload = {
     progress?: number;
 };
 
+export type RichPresence = {
+    details?: string;
+    state?: string;
+    startTimestamp?: number;
+    endTimestamp?: number;
+    largeImageKey?: string;
+    largeImageText?: string;
+    smallImageKey?: string;
+    smallImageText?: string;
+    partyId?: string;
+    partySize?: number;
+    partyMax?: number;
+    matchSecret?: string;
+    joinSecret?: string;
+    spectateSecret?: string;
+}
+
 export type SearchEngine = "YouTube" | "Spotify" | "all";
 export type SearchResult = {
     title: string;

@@ -8,9 +8,10 @@
 use tauri::{Manager, App, Wry};
 use window_shadows::set_shadow;
 
+mod audio;
 mod backend;
 mod wrapper;
-mod audio;
+mod discord;
 mod settings;
 
 fn main() {
@@ -18,7 +19,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             wrapper::search, wrapper::download,
             audio::make_track, audio::play_from, audio::play_playlist,
-            settings::read_from_file, settings::get_settings, settings::save_settings
+            settings::read_from_file, settings::get_settings, settings::save_settings,
+            discord::update_presence
         ])
         .setup(|app| {
             // Bind app to once_cell.
@@ -28,10 +30,13 @@ fn main() {
             wrapper::initialize();
             // Create app data directory.
             create_data_dir(app);
+            // Initialize Discord integration.
+            discord::initialize();
 
             // Set the window shadow.
-            let window = app.get_window("main").unwrap();
-            set_shadow(&window, true).expect("Unsupported platform!");
+            // TODO: Update.
+            // let window = app.get_window("main").unwrap();
+            // set_shadow(&window, true).expect("Unsupported platform!");
 
             Ok(())
         })
@@ -46,4 +51,10 @@ fn create_data_dir(app: &mut App<Wry>) {
     if !data_dir.exists() {
         std::fs::create_dir(data_dir).unwrap();
     }
+}
+
+/// Checks if a file exists.
+/// path: The path to the file.
+fn file_exists(path: String) -> bool {
+    std::path::Path::new(path.as_str()).exists()
 }
