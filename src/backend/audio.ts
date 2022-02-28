@@ -43,8 +43,6 @@ export class MusicPlayer extends EventEmitter {
         this.updateTask = setInterval(() => {
             // Emit update event.
             this.emitUpdate();
-            // Check for track end.
-            this.currentTrack?.checkEnd();
         }, 100);
     }
 
@@ -424,16 +422,6 @@ export class Track {
      */
     public clone(): Track {
         return new Track(this.payload);
-    }
-
-    /**
-     * Checks if the track has ended.
-     * Tracks can stop very close to the end of the duration.
-     */
-    public checkEnd(): void {
-        if (this.howl.duration() - this.howl.seek() < 1.4) {
-            this.stop();
-        }
     }
 
     /**
