@@ -5,7 +5,7 @@
 
 #![feature(once_cell)]
 
-use tauri::{Manager, App, Wry};
+use tauri::{Manager, SystemTray, SystemTrayMenu, CustomMenuItem, App, Wry, SystemTrayEvent, AppHandle, WindowEvent, GlobalWindowEvent};
 use window_shadows::set_shadow;
 
 mod audio;
@@ -41,8 +41,53 @@ fn main() {
 
             Ok(())
         })
+        .system_tray(configure_system_tray())
+        .on_window_event(window_handler)
+        .on_system_tray_event(tray_handler)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+/// Configures the system tray to be used.
+fn configure_system_tray() -> SystemTray {
+    // Configure items.
+    let quit = CustomMenuItem::new("quit".to_string(), "Exit Laudiolin");
+    // Configure menu.
+    let menu = SystemTrayMenu::new()
+        .add_item(quit);
+
+    return SystemTray::new().with_menu(menu);
+}
+
+/// Event listener for when the system tray is clicked.
+fn tray_handler(app: &AppHandle<Wry>, event: SystemTrayEvent) {
+    match event {
+        SystemTrayEvent::MenuItemClick { id, .. } => { menu_item_handler(id) }
+        SystemTrayEvent::DoubleClick { .. } => {
+            app.get_window("main").unwrap().show()
+                .expect("Unable to show main window.");
+        }
+        _ => {}
+    }
+}
+
+/// Event listener for when a menu item in the tray is clicked.
+fn menu_item_handler(id: String) {
+    match id.as_str() {
+        "quit" => { std::process::exit(0) }
+        _ => {}
+    }
+}
+
+/// Event listener for when the window is interacted with.
+fn window_handler(event: GlobalWindowEvent<Wry>) {
+    match event.event() {
+        WindowEvent::CloseRequested { api, .. } => {
+            api.prevent_close();
+            event.window().hide().expect("Unable to hide window.");
+        }
+        _ => {}
+    }
 }
 
 /// Creates the app data directory.
