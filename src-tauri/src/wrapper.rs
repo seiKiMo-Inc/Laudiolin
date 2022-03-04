@@ -133,6 +133,17 @@ pub fn search(query: &str, engine: &str) -> SearchResults {
     results.unwrap()
 }
 
+/// Fetches track data from a song URL.
+/// url: The URL to fetch data from.
+#[tauri::command]
+pub fn url_search(url: &str) -> SearchResult {
+    let result = tauri::async_runtime::block_on(async {
+        crate::backend::url_search(url).await
+    });
+
+    result.unwrap()
+}
+
 /// Downloads the song using the given ID.
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// engine: The engine to use for the download.

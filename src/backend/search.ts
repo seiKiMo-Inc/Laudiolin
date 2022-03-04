@@ -1,4 +1,4 @@
-import type { SearchOptions, SearchResults } from "@backend/types";
+import type { SearchOptions, SearchResults, TrackData } from "@backend/types";
 
 import { invoke } from "@tauri-apps/api";
 
@@ -33,6 +33,10 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
     return await invoke("search", { query, engine: options.engine });
 }
 
-export function fetchTrackByUrl(url: string): Promise<SearchResults> {
-    return
+/**
+ * Fetches track data from a song URL.
+ * @param url The URL of the song.
+ */
+export async function fetchTrackByUrl(url: string): Promise<TrackData> {
+    return await invoke("url_search", { url });
 }

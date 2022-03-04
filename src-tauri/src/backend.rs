@@ -188,6 +188,28 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
     Ok(serde_json::from_str(&*json).expect("Unable to parse response body"))
 }
 
+/// Fetches track data from a URL.
+/// url: The URL to fetch track data from.
+pub async fn url_search(url: &str) -> Result<SearchResult, &'static str> {
+    // Get the user settings.
+    let gateway = wrapper::gateway();
+
+    // Perform the request.
+    let response = get(format!("{}://{}:{}/fetch/{}",
+                               wrapper::protocol(), gateway.address,
+                               gateway.port, url))
+        .await.expect("Failed to perform search request");
+
+    // Check the response code.
+    if response.status() != 301 {
+        return Err("Request failed.");
+    }
+
+    // Parse the response.
+    let json = response.text().await.expect("Unable to get response body");
+    Ok(serde_json::from_str(&*json).expect("Unable to parse response body"))
+}
+
 /// Downloads the song using the given ID.
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// options: The options to use for the download.
