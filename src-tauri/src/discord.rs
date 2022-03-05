@@ -34,7 +34,7 @@ pub struct Presence {
 /// The client ID is fetched from the settings file.
 pub fn initialize() {
     // Create an instance of the Discord IPC client.
-    let mut client = DiscordIpcClient::new("1027411328119345152").unwrap();
+    let mut client = DiscordIpcClient::new("1020193478556266536").unwrap();
     // Connect to the Discord client.
     client.connect().expect("Unable to connect to Discord client");
 
