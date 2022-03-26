@@ -18,13 +18,18 @@ class SearchResultsList extends React.Component<IProps, never> {
     render() {
         const results = this.props.results.results;
 
+        // Remove duplicate values.
+        const uniqueResults = results.filter((result, index, self) => {
+            return self.findIndex(r => r.id === result.id) === index;
+        });
+
         return (
             <Container style={{ marginTop: "20px" }}>
                 <div className="list-group">
                     {results.length == 0 ? (
                         <SearchResultsLoading />
                     ) : (
-                        results.map((result) => {
+                        uniqueResults.map((result) => {
                             return <SearchTrack key={result.id} result={result} />;
                         })
                     )}
