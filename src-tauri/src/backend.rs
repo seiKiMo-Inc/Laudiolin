@@ -184,6 +184,7 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
     }
 
     // Parse the response.
+    // TODO: Catch errors from parsing.
     let json = response.text().await.expect("Unable to get response body");
     Ok(serde_json::from_str(&*json).expect("Unable to parse response body"))
 }

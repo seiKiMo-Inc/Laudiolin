@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import * as fs from "@backend/fs";
 import * as user from "@backend/user";
 import * as audio from "@backend/audio";
+import * as discord from "@backend/discord";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
 
@@ -31,8 +32,10 @@ import * as settings from "@backend/settings";
 
     // Load user data if the user is logged in.
     user.loadRoute(); // Load the gateway route.
-    if (localStorage.getItem("isAuthenticated") == "true")
-        await user.login();
+    if (localStorage.getItem("isAuthenticated") == "true") {
+        await user.login(); // Login the user.
+        discord.setupListeners(); // Set up Discord listeners.
+    }
 
     // Continue setup.
     continueSetup();
