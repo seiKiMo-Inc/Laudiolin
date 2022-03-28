@@ -25,10 +25,11 @@ pub struct PlayPlaylistPayload {
 /// Downloads the specified track and returns a play payload.
 /// track: The track to download.
 #[tauri::command]
-pub fn make_track(track: SearchResult) -> PlayAudioPayload {
+pub async fn make_track(track: SearchResult) -> PlayAudioPayload {
     // Download the track.
     let file_path = wrapper::download(track.id.as_str(),
-                             get_settings().search.engine.as_str());
+                             get_settings().search.engine.as_str())
+        .await.unwrap();
 
     PlayAudioPayload {
         file_path,

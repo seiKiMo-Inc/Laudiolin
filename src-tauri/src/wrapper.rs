@@ -7,6 +7,7 @@ use tauri::{Manager, Wry, AppHandle};
 use serde::Serialize;
 
 use crate::settings::{GatewaySettings, get_settings};
+use crate::backend;
 
 static APP_INSTANCE: OnceCell<AppHandle<Wry>> = OnceCell::new();
 pub struct TauriApp {
@@ -121,46 +122,34 @@ pub fn initialize() {
 /// query: The query to search for.
 /// engine: The engine to use for the search.
 #[tauri::command]
-pub fn search(query: &str, engine: &str) -> SearchResults {
+pub async fn search(query: &str, engine: &str) -> Result<SearchResults, ()> {
     let options = SearchOptions {
         engine: engine.to_string()
     };
 
-    let results = tauri::async_runtime::block_on(async {
-        crate::backend::search(query, options).await
-    });
-
-    results.unwrap()
+    Ok(backend::search(query, options).await.unwrap())
 }
 
 /// Fetches track data from a song URL.
 /// url: The URL to fetch data from.
 #[tauri::command]
-pub fn url_search(url: &str, engine: &str) -> SearchResult {
+pub async fn url_search(url: &str, engine: &str) -> Result<SearchResult, ()> {
     let options = SearchOptions {
         engine: engine.to_string()
     };
 
-    let result = tauri::async_runtime::block_on(async {
-        crate::backend::url_search(url, options).await
-    });
-
-    result.unwrap()
+    Ok(backend::url_search(url, options).await.unwrap())
 }
 
 /// Downloads the song using the given ID.
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// engine: The engine to use for the download.
 #[tauri::command]
-pub fn download(id: &str, engine: &str) -> String {
+pub async fn download(id: &str, engine: &str) -> Result<String, ()> {
     let options = DownloadOptions {
         engine: engine.to_string(),
         file_path: TauriApp::file(format!("downloads/{}.mp3", id))
     };
 
-    let file_name = tauri::async_runtime::block_on(async {
-        crate::backend::download(id, options).await
-    });
-
-    file_name.unwrap()
+    Ok(backend::download(id, options).await.unwrap())
 }
