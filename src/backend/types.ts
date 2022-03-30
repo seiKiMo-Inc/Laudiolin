@@ -8,6 +8,10 @@ export type TrackPayload = {
     track: TrackData;
     progress?: number;
 };
+export type RustErrorPayload = {
+    error: string;
+    code: string;
+};
 
 export type RichPresence = {
     details?: string;
