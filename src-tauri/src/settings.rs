@@ -6,6 +6,7 @@ use std::path::Path;
 use std::fs::File;
 use std::io::{Read, Write};
 use crate::wrapper::TauriApp;
+use crate::wrap;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct UserSettings {
@@ -51,9 +52,9 @@ pub fn read_from_file(file_path: &str) {
     // Check if file exists.
     if !Path::new(file_path).exists() {
         // Create the file.
-        let mut file = File::create(file_path).expect("Unable to create file");
-        // Write the default settings to the file.
-        file.write_all(to_string(&UserSettings {
+        let mut file = wrap(File::create(file_path), "settingscreate");
+        // Serialize the default settings.
+        let serialized = wrap(to_string(&UserSettings {
             search: SearchSettings {
                 accuracy: false,
                 engine: "YouTube".to_string()
@@ -72,19 +73,21 @@ pub fn read_from_file(file_path: &str) {
                 background_url: "".to_string()
             },
             token: String::from("")
-        }).expect("Unable to serialize default settings").as_bytes())
-            .expect("Unable to save default settings");
+        }), "serialize");
+
+        // Write the default settings to the file.
+        wrap(file.write_all(serialized.as_bytes()), "settingssave");
     }
 
     // Read the file.
-    let file = File::open(file_path).expect("Unable to open file");
+    let file = wrap(File::open(file_path), "settingsopen");
     let file_content = String::from_utf8(file.bytes()
-        .map(|b| b.expect("Unable to read file"))
-        .collect()).expect("Unable to read file");
+        .map(|b| wrap(b, "settingsread"))
+        .collect());
 
     // Deserialize the settings file.
-    let settings = from_str(&file_content)
-        .expect("Unable to parse settings file.");
+    let settings = wrap(from_str(
+        &wrap(file_content, "deserialize")), "settingsparse");
     // Set the settings.
     unsafe { SETTINGS = Some(settings); }
 }
@@ -102,10 +105,9 @@ pub fn save_settings(settings: UserSettings) {
     // Write the settings to variable.
     unsafe { SETTINGS = Some(settings.clone()); }
     // Serialize the settings.
-    let serialized = to_string(&settings).expect("Unable to serialize settings");
+    let serialized = wrap(to_string(&settings), "settingsserialize");
     // Write the settings to file.
     let file_path = TauriApp::file("settings.json".to_string());
-    let mut file = File::create(file_path).expect("Unable to create file");
-    file.write_all(serialized.as_bytes())
-        .expect("Unable to save settings");
+    let mut file = wrap(File::create(file_path), "settingscreate");
+    wrap(file.write_all(serialized.as_bytes()), "settingssave");
 }
