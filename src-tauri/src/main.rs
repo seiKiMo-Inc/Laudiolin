@@ -23,11 +23,12 @@ mod settings;
 pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
     match obj {
         Ok(output) => output,
-        Err(error) => {
+        Err(_) => {
             TauriApp::emit("rusterr", RustErrorPayload {
-                error: error.to_string(),
                 code: code.to_string()
-            })
+            });
+
+            panic!("An error occurred in the backend.");
         }
     }
 }

@@ -53,7 +53,6 @@ struct HandoffCodePayload {
 }
 #[derive(Clone, Serialize)]
 pub struct RustErrorPayload {
-    pub error: String,
     pub code: String
 }
 
