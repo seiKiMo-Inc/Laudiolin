@@ -1,6 +1,6 @@
 import {app, BrowserWindow} from "electron";
 
-function createWindow() {
+const createWindow = () => {
     const window = new BrowserWindow({
         width: 800,
         height: 600,
@@ -9,7 +9,9 @@ function createWindow() {
         }
     });
 
-    window.loadFile("index.html");
-}
+    window.loadURL(process.env["NODE_ENV"] == "development" ?
+        "http://localhost:9000" :
+        `file://${__dirname}/index.html`);
+};
 
 app.on("ready", createWindow);

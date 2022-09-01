@@ -1,0 +1,6 @@
+{
+  "ignore": ["node_modules"],
+  "watch": ["src"],
+  "exec": "webpack --config webpack/electron.config.js && electron dist/electron.js",
+  "ext": "ts"
+}
