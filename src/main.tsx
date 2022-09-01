@@ -3,9 +3,11 @@ import ReactDOM from "react-dom/client";
 
 // Setup event listeners.
 import { setupListeners } from "@backend/audio";
-await setupListeners();
+setupListeners().then(continueSetup);
 
 import App from "./ui/App";
 
-const root = document.getElementById("root");
-ReactDOM.createRoot(root!).render(<App />);
+function continueSetup() {
+    const root = document.getElementById("root");
+    ReactDOM.createRoot(root!).render(<App />);
+}
