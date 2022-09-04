@@ -9,10 +9,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri",
+    "tauri": "npx tauri",
     "lint": "eslint --ignore-path .gitignore .",
 
-    "start:dev": "tauri dev"
+    "start:dev": "npx tauri dev"
   },
 
   "dependencies": {
