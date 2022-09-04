@@ -1,0 +1,10 @@
+# Node Modules.
+node_modules/
+
+# Build artifacts.
+build/
+js/
+
+# Development files.
+.env
+files/
