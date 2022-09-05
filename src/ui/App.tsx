@@ -1,35 +1,19 @@
 import React from "react";
-
-// Import stylesheets.
 import "./App.css";
-
+import Controls from './components/controls'
 import Button from "react-bootstrap/Button";
-
-interface IProps {
-
-}
-
-interface IState {
-
-}
-
+interface IProps {}
+interface IState {}
 function clickButton() {
-    new Notification("Button", {body: "You clicked on the button!"})
-        .onclick = () => alert("You clicked on the notification!");
+    new Notification("Button", { body: "You clicked on the button!" }).onclick = () =>
+        alert("You clicked on the notification!");
 }
-
-import {playTrack} from "../backend/music";
-function playMusic() {
-    playTrack("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
-}
-
 class App extends React.Component<IProps, IState> {
+
     render() {
         return (
             <div>
-                <h1 className="text-3xl font-bold underline">
-                    Hello world!
-                </h1>
+                <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
                 <br />
 
@@ -38,10 +22,7 @@ class App extends React.Component<IProps, IState> {
                 </Button>
 
                 <br />
-
-                <Button variant="primary" onClick={playMusic}>
-                    Play Music
-                </Button>
+                <Controls></Controls>
             </div>
         );
     }

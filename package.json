@@ -2,7 +2,6 @@
   "name": "laudiolin-electron",
   "description": "A music player in Electron.",
   "version": "0.1.0",
-
   "main": "src/electron/main.ts",
   "scripts": {
     "build": "webpack",
@@ -13,45 +12,39 @@
     "start": "npm run build && npm run electron",
     "start:dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\""
   },
-
   "dependencies": {
-    "howler": "^2.2.3"
+    "howler": "^2.2.3",
+    "url": "^0.11.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19",
-    "concurrently": "^7.3.0",
-    "cross-env": "^7.0.3",
-
-    "electron": "^20.1.1",
-    "electron-is-dev": "^2.0.0",
-
-    "typescript": "^4.8.2",
+    "@types/howler": "^2.2.7",
     "@types/node": "^18.7.14",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
-    "@types/howler": "^2.2.7",
-
-    "webpack": "^5.74.0",
-    "ts-loader": "^9.3.1",
-    "css-loader": "^6.7.1",
-    "style-loader": "^3.3.1",
-    "postcss-loader": "^7.0.1",
-    "webpack-cli": "^4.10.0",
-    "webpack-merge": "^4.2.1",
-    "html-webpack-plugin": "^5.5.0",
-    "webpack-dev-server": "^4.10.1",
-
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-bootstrap": "^2.5.0",
-
-    "postcss": "^8.4.16",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
     "autoprefixer": "^10.4.8",
-    "tailwindcss": "^3.1.8",
-
+    "concurrently": "^7.3.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "electron": "^20.1.1",
+    "electron-is-dev": "^2.0.0",
     "eslint": "^8.23.0",
     "eslint-plugin-react": "^7.31.6",
-    "@typescript-eslint/parser": "^5.36.1",
-    "@typescript-eslint/eslint-plugin": "^5.36.1"
+    "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.19",
+    "postcss": "^8.4.16",
+    "postcss-loader": "^7.0.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "^18.2.0",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.1.8",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.1",
+    "webpack-merge": "^4.2.1"
   }
 }

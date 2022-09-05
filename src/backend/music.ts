@@ -1,20 +1,40 @@
-import {Howl, Howler} from "howler";
+import { Howl, Howler } from 'howler'
+import { URL } from 'url'
 
 /**
- * Plays an audio track.
- * @param track The URL to the track.
+ * Checks if a string is a valid URL.
+ * @param url The URL to check.
  */
-export function playTrack(track: string) {
-    const sound = new Howl({
-        src: [track],
-        html5: true,
-        onplay: () => {
-            console.log("Playing track.");
-        },
-        onend: () => {
-            console.log("Track ended.");
-        }
-    });
+const isValidURL = (url: string) => {
+    try {
+        new URL(url)
+        return true
+    } catch (e) {
+        return false
+    }
+}
 
-    sound.play(); Howler.volume(0.4);
+/**
+ * A track.
+ */
+export class Track {
+    /**
+     * The URL to the track.
+     */
+    url: string
+
+    /**
+     * The Howl instance.
+     */
+    sound: Howl
+
+    /**
+     * Creates a new track.
+     * @param url The URL to the track.
+     */
+    constructor (url: string) {
+        this.url = url
+        if (isValidURL(url)) throw new Error('Invalid URL.')
+        this.sound = new Howl({ src: [url], html5: true })
+    }
 }

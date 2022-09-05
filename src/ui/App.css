@@ -5,3 +5,8 @@
 h1 {
     color: aqua;
 }
+
+body {
+    background-color: #333;
+    font-family: 'Verdana';
+}

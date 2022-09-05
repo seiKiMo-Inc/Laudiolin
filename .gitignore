@@ -4,7 +4,9 @@ node_modules/
 # Build artifacts.
 build/
 js/
+dist
 
 # Development files.
 .env
 files/
+package-lock.json
