@@ -1,0 +1,29 @@
+.SearchResult {
+  @apply flex flex-wrap items-center my-0 mx-auto p-5 overflow-hidden;
+  &:hover {
+     background-color: #272d41 !important;
+   }
+}
+
+.Title {
+    align-self: center;
+    margin-left: 20px;
+}
+
+#figure {
+    display: inline-flex;
+    vertical-align: bottom;
+}
+
+#statusButton {
+    align-self: center;
+    margin-right: 20px;
+}
+
+#image {
+    max-width: 100px;
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.7);
+    }
+}

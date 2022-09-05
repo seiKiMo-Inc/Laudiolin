@@ -1,29 +1,77 @@
 import React from "react";
+import { Figure } from "react-bootstrap";
+import Button from "@components/Button";
+
+import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { playFromResult, togglePlayback } from "@backend/audio";
+
 import type { SearchResult } from "@backend/types";
 
-import "@css/SearchTrack.css";
+import "@css/SearchTrack.scss";
 
-interface IProps extends SearchResult {
-
+interface IProps {
+    result: SearchResult;
 }
 interface IState {
-
+    playing: boolean;
+    hasPlayed: boolean;
 }
 
 /* A track that appears when searching for it. */
 class SearchTrack extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            playing: false,
+            hasPlayed: false
+        };
     }
 
+    playTrack = () => {
+        const hasPlayed = this.state.hasPlayed;
+        const isPlaying = this.state.playing;
+
+        if(hasPlayed) {
+            togglePlayback(); // Pause/resume the player.
+            this.setState({ playing: !isPlaying });
+        } else {
+            this.setState({ hasPlayed: true })
+
+            // Play the track from the specified result.
+            playFromResult(this.props.result).then(() => {
+                // Change the state to playing.
+                this.setState({ playing: !isPlaying });
+            });
+        }
+    };
+
+    preview = () => {
+        alert("This should bring the user to a laudiolin-based song preview.");
+    };
+
     render() {
+        const result = this.props.result;
+
         return (
-            <div id="container">
-                <svg id="image" src={this.props.icon} alt="Album art" />
-                <div id="info">
-                    <h3>{this.props.title}</h3>
-                    <p>{this.props.artist}</p>
-                </div>
+            <div className="SearchResult list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
+                <Figure id="figure">
+                    <Figure.Caption id="statusButton">
+                        <Button icon={this.state.playing ? faPause : faPlay} onClick={this.playTrack} />
+                    </Figure.Caption>
+
+                    <a onClick={this.preview}>
+                        <Figure.Image src={result.icon} id="image" />
+                    </a>
+
+                    <Figure.Caption className="Title result-title">
+                        <a onClick={this.preview}>
+                            <span>{result.title}</span>
+                        </a>
+
+                        <p className="text-gray-600">{result.artist}</p>
+                    </Figure.Caption>
+                </Figure>
             </div>
         );
     }
