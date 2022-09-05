@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
-import Controls from './components/controls'
+import Container from 'react-bootstrap/Container';
+import Controls from "./components/controls";
+import Navigation from "./components/navbar";
 import Button from "react-bootstrap/Button";
 interface IProps {}
 interface IState {}
@@ -9,20 +11,22 @@ function clickButton() {
         alert("You clicked on the notification!");
 }
 class App extends React.Component<IProps, IState> {
-
     render() {
         return (
             <div>
-                <h1 className="text-3xl font-bold underline">Hello world!</h1>
+                <Navigation />
+                <Container>
+                    <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
-                <br />
+                    <br />
 
-                <Button variant="primary" onClick={clickButton}>
-                    Really Cool Button!
-                </Button>
+                    <Button variant="primary" onClick={clickButton}>
+                        Really Cool Button!
+                    </Button>
 
-                <br />
-                <Controls></Controls>
+                    <br />
+                    <Controls></Controls>
+                </Container>
             </div>
         );
     }

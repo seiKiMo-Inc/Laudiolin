@@ -13,6 +13,8 @@
     "start:dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\""
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "howler": "^2.2.3",
     "url": "^0.11.0"
   },
