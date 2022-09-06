@@ -4,14 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faPlay,
-    faPause,
-    faVolumeMute,
-    faVolumeUp,
-    faVolumeDown,
-    faLink,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faLink } from "@fortawesome/free-solid-svg-icons";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -25,22 +18,27 @@ interface IState {
     url: string;
 }
 
-const toggleTrack = (track: Track, state: IState, setState: any) => {
+const toggleTrack = (track: Track, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
     track.sound.playing() ? track.sound.pause() : track.sound.play();
-    setState({ playing: !state.playing });
+    setState({ ...state, playing: !state.playing });
 };
 
-function changeVolume(track: Track, value: number, setState: any) {
+function changeVolume(
+    track: Track,
+    state: IState,
+    value: number,
+    setState: React.Dispatch<React.SetStateAction<IState>>
+) {
     track.sound.volume(value / 100);
-    setState({ volume: value });
+    setState({ ...state, volume: value });
 }
 
-const toggleMute = (track: Track, state: IState, setState: any) => {
+const toggleMute = (track: Track, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
     state.muted ? track.sound.mute(false) : track.sound.mute(true);
-    setState({ muted: !state.muted });
+    setState({ ...state, muted: !state.muted });
 };
 
-const setProgress = (track: Track, value: number, setState: any) => {
+const setProgress = (track: Track, value: number) => {
     track.sound.seek(value);
 };
 
@@ -97,10 +95,7 @@ class Controls extends React.Component<IProps, IState> {
                             verticalAlign: "middle",
                         }}
                     />
-                    <OverlayTrigger
-                        placement="top"
-                        overlay={<Tooltip id="tooltip-top">Load URL</Tooltip>}
-                    >
+                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Load URL</Tooltip>}>
                         <Button
                             variant="outline-primary"
                             size="lg"
@@ -110,10 +105,7 @@ class Controls extends React.Component<IProps, IState> {
                             <FontAwesomeIcon icon={faLink} />
                         </Button>
                     </OverlayTrigger>
-                    <OverlayTrigger
-                        placement="top"
-                        overlay={<Tooltip id="tooltip-top">Play/Pause</Tooltip>}
-                    >
+                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Play/Pause</Tooltip>}>
                         <Button
                             variant="outline-primary"
                             size="lg"
@@ -123,10 +115,7 @@ class Controls extends React.Component<IProps, IState> {
                         </Button>
                     </OverlayTrigger>
                     <span>
-                        <OverlayTrigger
-                            placement="top"
-                            overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}
-                        >
+                        <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
                             <Button
                                 id="volume"
                                 variant="outline-primary"
@@ -155,7 +144,12 @@ class Controls extends React.Component<IProps, IState> {
                                 max="100"
                                 value={this.state.volume}
                                 onChange={(e) =>
-                                    changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))
+                                    changeVolume(
+                                        this.track,
+                                        this.state,
+                                        parseInt(e.target.value),
+                                        this.setState.bind(this)
+                                    )
                                 }
                                 style={{
                                     maxWidth: "100px",
@@ -165,19 +159,18 @@ class Controls extends React.Component<IProps, IState> {
                                     margin: "10px",
                                     marginTop: "10px",
                                 }}
-                                className={"form-range"} />
+                                className={"form-range"}
+                            />
                         </OverlayTrigger>
                     </span>
                 </span>
                 <ProgressBar
-                    style={{ height: "10px", backgroundColor: "#eee"}}
+                    style={{ height: "10px", backgroundColor: "#eee" }}
                     now={(this.state.progress / this.track.sound.duration()) * 100}
                     onClick={(e) =>
                         setProgress(
                             this.track,
-                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
-                                this.track.sound.duration(),
-                            this.setState.bind(this)
+                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) * this.track.sound.duration()
                         )
                     }
                 />
