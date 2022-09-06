@@ -4,7 +4,16 @@ import Button from "react-bootstrap/Button";
 import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
+import {
+    faPlay,
+    faPause,
+    faVolumeMute,
+    faVolumeUp,
+    faVolumeDown,
+    faLink,
+} from "@fortawesome/free-solid-svg-icons";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 interface IProps {}
 interface IState {
@@ -12,6 +21,7 @@ interface IState {
     muted: boolean;
     volume: number;
     progress: number;
+    url: string;
 }
 
 const toggleTrack = (track: Track, state: IState, setState: any) => {
@@ -39,8 +49,13 @@ class Controls extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.track = new Track("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
-        this.state = { playing: false, muted: false, volume: 100, progress: 0 };
+        this.state = { playing: false, muted: false, volume: 100, progress: 0, url: "" };
     }
+    setURL = (url: string) => {
+        this.track.sound.stop();
+        this.track = new Track(url);
+        this.setState({ url: url });
+    };
 
     componentDidMount() {
         setInterval(() => {
@@ -67,30 +82,64 @@ class Controls extends React.Component<IProps, IState> {
                         margin: "0 auto",
                     }}
                 >
-                    <Button
-                        variant="outline-primary"
-                        size="lg"
-                        onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
+                    <Form.Control
+                        type="text"
+                        placeholder="URL"
+                        value={this.state.url}
+                        style={{
+                            maxWidth: "150px",
+                            display: "inline-block",
+                            verticalAlign: "middle",
+                        }}
+                    />
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip id="tooltip-top">Load URL</Tooltip>}
                     >
-                        <FontAwesomeIcon icon={this.state.playing ? faPause : faPlay} />
-                    </Button>
-                    <span>
                         <Button
                             variant="outline-primary"
                             size="lg"
-                            onClick={() => toggleMute(this.track, this.state, this.setState.bind(this))}
+                            onClick={() => this.setURL(this.state.url)}
                             style={{ margin: "10px", marginTop: "10px" }}
                         >
-                            <FontAwesomeIcon
-                                icon={
-                                    this.state.muted || this.state.volume == 0
-                                        ? faVolumeMute
-                                        : this.state.volume < 50
-                                            ? faVolumeDown
-                                            : faVolumeUp
-                                }
-                            />
+                            <FontAwesomeIcon icon={faLink} />
                         </Button>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip id="tooltip-top">Play/Pause</Tooltip>}
+                    >
+                        <Button
+                            variant="outline-primary"
+                            size="lg"
+                            onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
+                        >
+                            <FontAwesomeIcon icon={this.state.playing ? faPause : faPlay} />
+                        </Button>
+                    </OverlayTrigger>
+                    <span>
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}
+                        >
+                            <Button
+                                id="volume"
+                                variant="outline-primary"
+                                size="lg"
+                                onClick={() => toggleMute(this.track, this.state, this.setState.bind(this))}
+                                style={{ margin: "10px", marginTop: "10px" }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={
+                                        this.state.muted || this.state.volume == 0
+                                            ? faVolumeMute
+                                            : this.state.volume < 50
+                                                ? faVolumeDown
+                                                : faVolumeUp
+                                    }
+                                />
+                            </Button>
+                        </OverlayTrigger>
                         <Form.Control
                             type="range"
                             min="0"
