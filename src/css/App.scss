@@ -73,13 +73,6 @@ h1 {
     max-width: 1000px;
 }
 
-.SearchResults {
-    @apply flex flex-wrap items-center my-0 mx-auto p-5 overflow-hidden;
-    &:hover {
-        background-color: #272d41 !important;
-    }
-}
-
 .result-title {
     @apply overflow-hidden;
     white-space: nowrap;
