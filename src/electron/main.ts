@@ -4,7 +4,7 @@ import electronIsDev from "electron-is-dev";
 const createWindow = () => {
     const window = new BrowserWindow({
         // Default window dimensions.
-        width: 800, height: 600,
+        width: 800, height: 600, minWidth: 400, minHeight: 300,
 
         // Browser preferences.
         autoHideMenuBar: true,
