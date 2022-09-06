@@ -23,9 +23,9 @@
   ],
   "rules": {
     "react/prop-types": "off",
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"],
-    "indent": ["error", 4],
+    "quotes": ["warn", "double"],
+    "semi": ["warn", "always"],
+    "indent": ["warn", 4],
     "no-empty-interface": 0
   }
 }

@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 interface IProps {}
 interface IState {
@@ -58,8 +59,11 @@ class Controls extends React.Component<IProps, IState> {
     };
 
     componentDidMount() {
+        this.track.sound.on("end", () => {
+            this.setState({ playing: false });
+        });
         setInterval(() => {
-            this.setState({ progress: this.track.sound.seek() });
+            this.setState({ progress: this.track.sound.seek() || 0 });
         }, 100);
     }
 
@@ -85,6 +89,7 @@ class Controls extends React.Component<IProps, IState> {
                     <Form.Control
                         type="text"
                         placeholder="URL"
+                        className={"form-floating"}
                         value={this.state.url}
                         style={{
                             maxWidth: "150px",
@@ -140,24 +145,33 @@ class Controls extends React.Component<IProps, IState> {
                                 />
                             </Button>
                         </OverlayTrigger>
-                        <Form.Control
-                            type="range"
-                            min="0"
-                            max="100"
-                            defaultValue={this.state.volume}
-                            onChange={(e) =>
-                                changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))
-                            }
-                            style={{
-                                maxWidth: "150px",
-                                display: "inline-block",
-                                verticalAlign: "middle",
-                            }}
-                        />
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={<Tooltip id="tooltip-top">{this.state.volume}%</Tooltip>}
+                        >
+                            <Form.Control
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={this.state.volume}
+                                onChange={(e) =>
+                                    changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))
+                                }
+                                style={{
+                                    maxWidth: "100px",
+                                    height: "10px",
+                                    display: "inline-block",
+                                    verticalAlign: "middle",
+                                    margin: "10px",
+                                    marginTop: "10px",
+                                }}
+                                className={"form-range"} />
+                        </OverlayTrigger>
                     </span>
                 </span>
-                <div
-                    style={{ padding: "0px", backgroundColor: "#6c757d" }}
+                <ProgressBar
+                    style={{ height: "10px", backgroundColor: "#eee"}}
+                    now={(this.state.progress / this.track.sound.duration()) * 100}
                     onClick={(e) =>
                         setProgress(
                             this.track,
@@ -166,15 +180,7 @@ class Controls extends React.Component<IProps, IState> {
                             this.setState.bind(this)
                         )
                     }
-                >
-                    <div
-                        style={{
-                            backgroundColor: "#0e86f0",
-                            height: "7px",
-                            width: `${(this.state.progress / this.track.sound.duration()) * 100}%`,
-                        }}
-                    ></div>
-                </div>
+                />
             </div>
         );
     }
