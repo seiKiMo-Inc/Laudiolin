@@ -5,14 +5,13 @@ import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
-import ProgressBar from 'react-bootstrap/ProgressBar';
 
 interface IProps {}
 interface IState {
     playing: boolean;
     muted: boolean;
-    duration: number;
     volume: number;
+    progress: number;
 }
 
 const toggleTrack = (track: Track, state: IState, setState: any) => {
@@ -31,10 +30,8 @@ const toggleMute = (track: Track, state: IState, setState: any) => {
 };
 
 const setProgress = (track: Track, value: number, setState: any) => {
-    /*
-    * TODO: `this.track.sound.duration` doesnt work.
-    */
-}
+    track.sound.seek(value);
+};
 
 class Controls extends React.Component<IProps, IState> {
     track: Track;
@@ -42,24 +39,34 @@ class Controls extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.track = new Track("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
-        this.state = { playing: false, muted: false, duration: 0, volume: 100 };
+        this.state = { playing: false, muted: false, volume: 100, progress: 0 };
+    }
+
+    componentDidMount() {
+        setInterval(() => {
+            this.setState({ progress: this.track.sound.seek() });
+        }, 100);
     }
 
     render() {
         return (
-            <div style={{
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-                backgroundColor: "#212529",
-                padding: "10px",
-            }}>
-                <span style={{
-                    display: "table",
-                    margin: "0 auto"
-                }}>
+            <div
+                style={{
+                    position: "fixed",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 1000,
+                    backgroundColor: "#212529",
+                    padding: "10px",
+                }}
+            >
+                <span
+                    style={{
+                        display: "table",
+                        margin: "0 auto",
+                    }}
+                >
                     <Button
                         variant="outline-primary"
                         size="lg"
@@ -79,8 +86,8 @@ class Controls extends React.Component<IProps, IState> {
                                     this.state.muted || this.state.volume == 0
                                         ? faVolumeMute
                                         : this.state.volume < 50
-                                        ? faVolumeDown
-                                        : faVolumeUp
+                                            ? faVolumeDown
+                                            : faVolumeUp
                                 }
                             />
                         </Button>
@@ -89,16 +96,35 @@ class Controls extends React.Component<IProps, IState> {
                             min="0"
                             max="100"
                             defaultValue={this.state.volume}
-                            onChange={(e) => changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))}
-                            style={{ maxWidth: "150px" ,
+                            onChange={(e) =>
+                                changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))
+                            }
+                            style={{
+                                maxWidth: "150px",
                                 display: "inline-block",
                                 verticalAlign: "middle",
                             }}
                         />
                     </span>
                 </span>
-                <div style={{ paddingBottom: "5px", paddingTop: "5px" }}>
-                    <ProgressBar now={50 /* PLACEHOLDER */} style={{ height: "7px" }} />
+                <div
+                    style={{ padding: "0px", backgroundColor: "#6c757d" }}
+                    onClick={(e) =>
+                        setProgress(
+                            this.track,
+                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+                                this.track.sound.duration(),
+                            this.setState.bind(this)
+                        )
+                    }
+                >
+                    <div
+                        style={{
+                            backgroundColor: "#0e86f0",
+                            height: "7px",
+                            width: `${(this.state.progress / this.track.sound.duration()) * 100}%`,
+                        }}
+                    ></div>
                 </div>
             </div>
         );
