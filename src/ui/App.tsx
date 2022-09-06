@@ -15,7 +15,8 @@ class App extends React.Component<IProps, IState> {
         return (
             <>
                 <Navigation />
-                <Container style={{ height: "100vh", width: "auto" }}>
+
+                <Container style={{ paddingTop: "20px" }}>
                     <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
                     <br />
@@ -23,10 +24,9 @@ class App extends React.Component<IProps, IState> {
                     <Button variant="primary" onClick={clickButton}>
                         Really Cool Button!
                     </Button>
-
-                    <br />
-                    <Controls></Controls>
                 </Container>
+
+                <Controls />
             </>
         );
     }

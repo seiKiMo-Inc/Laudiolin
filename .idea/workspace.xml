@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Laudiolin-Backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../Laudiolin-Backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/laudiolin-electron.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/laudiolin-electron.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="Extend `root` to full page and put `controls` in-line for styling later">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/components/controls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/controls.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/navbar.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,8 +71,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662413054792</updated>
-      <workItem from="1662413061373" duration="7370000" />
+      <workItem from="1662413061373" duration="16438000" />
     </task>
+    <task id="LOCAL-00001" summary="Extend `root` to full page and put `controls` in-line for styling later">
+      <created>1662423979892</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1662423979892</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,5 +96,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Extend `root` to full page and put `controls` in-line for styling later" />
+    <option name="LAST_COMMIT_MESSAGE" value="Extend `root` to full page and put `controls` in-line for styling later" />
   </component>
 </project>

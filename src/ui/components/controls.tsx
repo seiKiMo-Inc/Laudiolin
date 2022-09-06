@@ -5,6 +5,7 @@ import { Track } from "../../backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 interface IProps {}
 interface IState {
@@ -29,6 +30,12 @@ const toggleMute = (track: Track, state: IState, setState: any) => {
     setState({ muted: !state.muted });
 };
 
+const setProgress = (track: Track, value: number, setState: any) => {
+    /*
+    * TODO: `this.track.sound.duration` doesnt work.
+    */
+}
+
 class Controls extends React.Component<IProps, IState> {
     track: Track;
 
@@ -40,8 +47,19 @@ class Controls extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div>
-                <span>
+            <div style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 1000,
+                backgroundColor: "#212529",
+                padding: "10px",
+            }}>
+                <span style={{
+                    display: "table",
+                    margin: "0 auto"
+                }}>
                     <Button
                         variant="outline-primary"
                         size="lg"
@@ -79,6 +97,9 @@ class Controls extends React.Component<IProps, IState> {
                         />
                     </span>
                 </span>
+                <div style={{ paddingBottom: "5px", paddingTop: "5px" }}>
+                    <ProgressBar now={50 /* PLACEHOLDER */} style={{ height: "7px" }} />
+                </div>
             </div>
         );
     }

@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 function Navigation() {
     return (
         <Navbar bg="dark" variant="dark">
-            <Container>
+            <Container style={{ margin: 0, marginLeft: "40px" }}>
                 <Navbar.Brand>Laudiolin</Navbar.Brand>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
