@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Laudiolin-Backend/.idea/laudiolin-backend.iml" filepath="$PROJECT_DIR$/../Laudiolin-Backend/.idea/laudiolin-backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/laudiolin-electron.iml" filepath="$PROJECT_DIR$/.idea/laudiolin-electron.iml" />
     </modules>
   </component>

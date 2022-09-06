@@ -13,9 +13,9 @@ function clickButton() {
 class App extends React.Component<IProps, IState> {
     render() {
         return (
-            <div>
+            <>
                 <Navigation />
-                <Container>
+                <Container style={{ height: "100vh", width: "auto" }}>
                     <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
                     <br />
@@ -27,7 +27,7 @@ class App extends React.Component<IProps, IState> {
                     <br />
                     <Controls></Controls>
                 </Container>
-            </div>
+            </>
         );
     }
 }

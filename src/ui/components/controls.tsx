@@ -41,7 +41,7 @@ class Controls extends React.Component<IProps, IState> {
     render() {
         return (
             <div>
-                <div>
+                <span>
                     <Button
                         variant="outline-primary"
                         size="lg"
@@ -49,11 +49,12 @@ class Controls extends React.Component<IProps, IState> {
                     >
                         <FontAwesomeIcon icon={this.state.playing ? faPause : faPlay} />
                     </Button>
-                    <div>
+                    <span>
                         <Button
                             variant="outline-primary"
                             size="lg"
                             onClick={() => toggleMute(this.track, this.state, this.setState.bind(this))}
+                            style={{ margin: "10px", marginTop: "10px" }}
                         >
                             <FontAwesomeIcon
                                 icon={
@@ -71,10 +72,13 @@ class Controls extends React.Component<IProps, IState> {
                             max="100"
                             defaultValue={this.state.volume}
                             onChange={(e) => changeVolume(this.track, parseInt(e.target.value), this.setState.bind(this))}
-                            style={{ width: "fit-content" }}
+                            style={{ maxWidth: "150px" ,
+                                display: "inline-block",
+                                verticalAlign: "middle",
+                            }}
                         />
-                    </div>
-                </div>
+                    </span>
+                </span>
             </div>
         );
     }

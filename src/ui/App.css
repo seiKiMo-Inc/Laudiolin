@@ -10,4 +10,10 @@ body {
     background-color: #333;
     font-family: 'Verdana';
     color: white;
+    overflow: hidden;
+}
+
+#root {
+    height: 100vh;
+    width: auto;
 }
