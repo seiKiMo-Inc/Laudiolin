@@ -4,10 +4,12 @@ import Button from "react-bootstrap/Button";
 import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faLink } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faLink, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
+import ProgressBarComponent from "./MusicControls/ProgressBar";
+import VolumeControl from "./MusicControls/VolumeControl";
 
 interface IProps {}
 interface IState {
@@ -16,6 +18,7 @@ interface IState {
     volume: number;
     progress: number;
     url: string;
+    lightshow: boolean;
 }
 
 const toggleTrack = (track: Track, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
@@ -42,13 +45,40 @@ const setProgress = (track: Track, value: number) => {
     track.sound.seek(value);
 };
 
+
+
 class Controls extends React.Component<IProps, IState> {
     track: Track;
 
     constructor(props: IProps) {
         super(props);
-        this.track = new Track("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
-        this.state = { playing: false, muted: false, volume: 100, progress: 0, url: "" };
+        this.track = new Track("https://app.magix.lol/download?id=fWoxszxtkk4&source=YouTube");
+        this.state = {
+            playing: false,
+            muted: false,
+            volume: 100,
+            progress: 0,
+            url: "",
+            lightshow: false,
+
+
+        };
+    }
+    originalColors = [];
+
+    lightshow() {
+        if (this.state.lightshow) {
+            const elements = document.getElementsByTagName("*");
+            for (let i = 0; i < elements.length; i++) {
+                const element = (elements[i] as HTMLElement);
+                this.originalColors.push(element.style.backgroundColor);
+                element.style.backgroundColor =
+                    "#" + Math.floor(Math.random() * 16777215).toString(16);
+                setTimeout(() => {
+                    element.style.backgroundColor = this.originalColors[i];
+                }, 500);
+            }
+        }
     }
     setURL = (url: string) => {
         this.track.sound.stop();
@@ -62,6 +92,8 @@ class Controls extends React.Component<IProps, IState> {
         });
         setInterval(() => {
             this.setState({ progress: this.track.sound.seek() || 0 });
+            this.lightshow();
+
         }, 100);
     }
 
@@ -86,7 +118,7 @@ class Controls extends React.Component<IProps, IState> {
                 >
                     <Form.Control
                         type="text"
-                        placeholder="URL"
+                        placeholder="MP3 URL"
                         className={"form-floating"}
                         value={this.state.url}
                         style={{
@@ -100,7 +132,7 @@ class Controls extends React.Component<IProps, IState> {
                             variant="outline-primary"
                             size="lg"
                             onClick={() => this.setURL(this.state.url)}
-                            style={{ margin: "10px", marginTop: "10px" }}
+                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
                         >
                             <FontAwesomeIcon icon={faLink} />
                         </Button>
@@ -110,69 +142,34 @@ class Controls extends React.Component<IProps, IState> {
                             variant="outline-primary"
                             size="lg"
                             onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
+                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
                         >
                             <FontAwesomeIcon icon={this.state.playing ? faPause : faPlay} />
                         </Button>
                     </OverlayTrigger>
-                    <span>
-                        <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
-                            <Button
-                                id="volume"
-                                variant="outline-primary"
-                                size="lg"
-                                onClick={() => toggleMute(this.track, this.state, this.setState.bind(this))}
-                                style={{ margin: "10px", marginTop: "10px", maxWidth: "50px", verticalAlign: "middle"}}
-                            >
-                                <FontAwesomeIcon
-                                    icon={
-                                        this.state.muted || this.state.volume == 0
-                                            ? faVolumeMute
-                                            : this.state.volume < 50
-                                                ? faVolumeDown
-                                                : faVolumeUp
-                                    }
-                                />
-                            </Button>
-                        </OverlayTrigger>
-                        <OverlayTrigger
-                            placement="top"
-                            overlay={<Tooltip id="tooltip-top">{this.state.volume}%</Tooltip>}
+                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Lightshow Mode</Tooltip>}>
+                        <Button
+                            variant="outline-primary"
+                            size="lg"
+                            onClick={() => this.setState({ lightshow: !this.state.lightshow })}
+                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
                         >
-                            <Form.Control
-                                type="range"
-                                min="0"
-                                max="100"
-                                value={this.state.volume}
-                                onChange={(e) =>
-                                    changeVolume(
-                                        this.track,
-                                        this.state,
-                                        parseInt(e.target.value),
-                                        this.setState.bind(this)
-                                    )
-                                }
-                                style={{
-                                    maxWidth: "100px",
-                                    height: "10px",
-                                    display: "inline-block",
-                                    verticalAlign: "middle",
-                                    margin: "10px",
-                                    marginTop: "10px",
-                                }}
-                                className={"form-range"}
-                            />
-                        </OverlayTrigger>
-                    </span>
+                            <FontAwesomeIcon icon={faLightbulb} />
+                        </Button>
+                    </OverlayTrigger>
+                    <VolumeControl
+                        volume={this.state.volume}
+                        muted={this.state.muted}
+                        setVolume={(value) =>
+                            changeVolume(this.track, this.state, value, this.setState.bind(this))
+                        }
+                        toggleMute={() => toggleMute(this.track, this.state, this.setState.bind(this))}
+                    />
                 </span>
-                <ProgressBar
-                    style={{ height: "10px", backgroundColor: "#eee" }}
-                    now={(this.state.progress / this.track.sound.duration()) * 100}
-                    onClick={(e) =>
-                        setProgress(
-                            this.track,
-                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) * this.track.sound.duration()
-                        )
-                    }
+                <ProgressBarComponent
+                    progress={this.state.progress}
+                    duration={this.track.sound.duration()}
+                    setProgress={(value) => setProgress(this.track, value)}
                 />
             </div>
         );

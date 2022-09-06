@@ -6,20 +6,19 @@ import { Container, Button } from "react-bootstrap";
 import Navigation from "components/NavBar";
 import Controls from "components/Controls";
 
-interface IProps {
-
-}
-
+interface IProps {}
 interface IState {
-
+    showControls: boolean;
 }
-
-function clickButton() {
-    new Notification("Button", { body: "You clicked on the button!" }).onclick = () =>
-        alert("You clicked on the notification!");
-}
-
 class App extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            showControls: true,
+        };
+    }
+
     render() {
         return (
             <>
@@ -30,12 +29,12 @@ class App extends React.Component<IProps, IState> {
 
                     <br />
 
-                    <Button variant="primary" onClick={clickButton}>
-                        Really Cool Button!
+                    <Button variant="primary" onClick={() => this.setState({ showControls: !this.state.showControls })}>
+                        Toggle Controls
                     </Button>
                 </Container>
 
-                <Controls />
+                {this.state.showControls && <Controls />}
             </>
         );
     }
