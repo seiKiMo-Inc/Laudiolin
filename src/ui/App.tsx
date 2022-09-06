@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import Container from 'react-bootstrap/Container';
-import Button from "react-bootstrap/Button";
+import { Container, Button } from "react-bootstrap";
 
 import Navigation from "components/NavBar";
 import Controls from "components/Controls";
@@ -26,8 +25,8 @@ class App extends React.Component<IProps, IState> {
             <>
                 <Navigation />
 
-                <Container style={{ paddingTop: "20px" }}>
-                    <h1 className="text-3xl font-bold underline">Hello world!</h1>
+                <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+                    <h1 className="text-3xl">Hello world!</h1>
 
                     <br />
 
