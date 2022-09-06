@@ -3,11 +3,19 @@
     "jsx": "react",
     "module": "commonjs",
     "target": "es2022",
+    "baseUrl": "src",
     "moduleResolution": "node",
 
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+
+    "paths": {
+      "backend/*": ["backend/*"],
+      "frontend/*": ["ui/*"],
+      "components/*": ["ui/components/*"],
+      "app/*": ["*"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }

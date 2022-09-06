@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
     mode: "development",
     entry: `${__dirname}/../src/index.tsx`,
@@ -13,7 +14,11 @@ module.exports = {
     },
     resolve: {
         alias: {
-            ["@"]: `${__dirname}/../src`
+            ["@"]: `${__dirname}/../src`,
+            app: `${__dirname}/../src`,
+            components: `${__dirname}/../src/ui/components`,
+            backend: `${__dirname}/../src/backend`,
+            frontend: `${__dirname}/../src/ui`
         },
         extensions: [".tsx", ".ts", ".js"]
     },
