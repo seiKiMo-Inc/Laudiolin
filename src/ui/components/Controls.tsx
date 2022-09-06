@@ -5,13 +5,13 @@ import { Track } from "backend/music";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown } from "@fortawesome/free-solid-svg-icons";
-import ProgressBar from "react-bootstrap/ProgressBar";
 
 interface IProps {}
 interface IState {
     playing: boolean;
     muted: boolean;
     volume: number;
+    progress: number;
 }
 
 const toggleTrack = (track: Track, state: IState, setState: any) => {
@@ -39,7 +39,13 @@ class Controls extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.track = new Track("https://app.magix.lol/download?id=c6rCRy6SrtU&source=YouTube");
-        this.state = { playing: false, muted: false, volume: 100 };
+        this.state = { playing: false, muted: false, volume: 100, progress: 0 };
+    }
+
+    componentDidMount() {
+        setInterval(() => {
+            this.setState({ progress: this.track.sound.seek() });
+        }, 100);
     }
 
     render() {
@@ -101,15 +107,14 @@ class Controls extends React.Component<IProps, IState> {
                         />
                     </span>
                 </span>
-                <div style={{ paddingBottom: "5px", paddingTop: "5px" }}>
-                    {/* TODO: Set Duration on Click
-                        TODO: doesn't update unless the UI updates on any user input :(
-                    */}
-                    <ProgressBar
-                        now={this.track.sound.seek()}
-                        style={{ height: "7px" }}
-                        max={this.track.sound.duration() * 100}
-                    />
+                <div style={{ padding: "0px", backgroundColor: "#6c757d"}}>
+                    <div
+                        style={{
+                            backgroundColor: "#0e86f0",
+                            height: "7px",
+                            width: `${(this.state.progress / this.track.sound.duration()) * 100}%`,
+                        }}
+                    ></div>
                 </div>
             </div>
         );
