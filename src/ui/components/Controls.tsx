@@ -107,7 +107,17 @@ class Controls extends React.Component<IProps, IState> {
                         />
                     </span>
                 </span>
-                <div style={{ padding: "0px", backgroundColor: "#6c757d"}}>
+                <div
+                    style={{ padding: "0px", backgroundColor: "#6c757d" }}
+                    onClick={(e) =>
+                        setProgress(
+                            this.track,
+                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+                                this.track.sound.duration(),
+                            this.setState.bind(this)
+                        )
+                    }
+                >
                     <div
                         style={{
                             backgroundColor: "#0e86f0",
