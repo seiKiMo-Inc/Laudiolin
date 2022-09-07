@@ -4,7 +4,7 @@ import { SearchResults } from "backend/search";
 
 const SearchResultsElement = (props: { results: SearchResults }) => {
     return (
-        <Container>
+        <Container style={{ marginTop: "20px" }}>
             <div className="list-group">
                 {[props.results.top, ...props.results.results].map((result) => {
                     return (

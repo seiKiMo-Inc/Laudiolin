@@ -7,7 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 class Navigation extends React.Component<any, any> {
     render() {
         return (
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" style={{ position: "fixed", width: "100%" }}>
                 <Container style={{ margin: 0, marginLeft: "40px" }}>
                     <Navbar.Brand>Laudiolin</Navbar.Brand>
                     <Navbar.Collapse id="basic-navbar-nav">

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="Extend `root` to full page and put `controls` in-line for styling later">
+    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="Style `Controls` and a few UI tweaks.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/components/controls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/controls.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/components/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/Controls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/Controls.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/SearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/SearchResults.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,18 +36,18 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Projects/Laudiolin-Backend",
-    "list.type.of.created.stylesheet": "CSS",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "D:\\Projects\\Laudiolin\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/Laudiolin-Backend&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Projects\\Laudiolin\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="start:dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -72,6 +74,7 @@
       <option name="presentableId" value="Default" />
       <updated>1662413054792</updated>
       <workItem from="1662413061373" duration="16438000" />
+      <workItem from="1662513057171" duration="3982000" />
     </task>
     <task id="LOCAL-00001" summary="Extend `root` to full page and put `controls` in-line for styling later">
       <created>1662423979892</created>

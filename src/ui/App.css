@@ -10,10 +10,27 @@ body {
     background-color: #333;
     font-family: 'Verdana';
     color: white;
-    overflow: hidden;
 }
 
 #root {
     height: 100vh;
     width: auto;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3484fc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0c6cfc;
 }
