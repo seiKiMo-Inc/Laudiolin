@@ -19,4 +19,4 @@ module.exports = {
         path: `${__dirname}/../dist`,
         filename: "electron.js"
     }
-}
+};

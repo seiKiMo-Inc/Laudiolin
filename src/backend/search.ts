@@ -14,7 +14,7 @@ const noResults: SearchResults = {
  * @param engine The search engine to use.
  * @return The results of the search.
  */
-export async function searchFor(query: string, engine: string = "all"): Promise<SearchResults> {
+export async function searchFor(query: string, engine = "all"): Promise<SearchResults> {
     const response = await fetch(`${constants.APP_URL}/search/${query}?query=${engine}`);
 
     if(response.status == 404) {

@@ -23,9 +23,26 @@
   ],
   "rules": {
     "react/prop-types": "off",
-    "quotes": ["warn", "double"],
-    "semi": ["warn", "always"],
-    "indent": ["warn", 4],
+    "quotes": [
+      "warn",
+      "double"
+    ],
+    "semi": [
+      "warn",
+      "always"
+    ],
+    "indent": [
+      "warn",
+      4
+    ],
     "@typescript-eslint/no-empty-interface": 0
+  },
+  "settings": {
+    "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "fragment": "Fragment",
+      "version": "detect"
+    }
   }
 }

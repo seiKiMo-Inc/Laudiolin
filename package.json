@@ -7,6 +7,7 @@
     "build": "webpack",
     "electron": "cross-env ELECTRON_IS_DEV=0 electron dist/electron.js",
     "electron:dev": "cross-env ELECTRON_IS_DEV=1 nodemon",
+    "lint": "eslint src/**/*.ts",
     "react": "webpack --config webpack/react.config.js",
     "react:dev": "webpack serve --config webpack/react.config.js --mode=development",
     "start": "npm run build && npm run electron",
