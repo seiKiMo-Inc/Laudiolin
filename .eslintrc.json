@@ -26,6 +26,6 @@
     "quotes": ["warn", "double"],
     "semi": ["warn", "always"],
     "indent": ["warn", 4],
-    "no-empty-interface": 0
+    "@typescript-eslint/no-empty-interface": 0
   }
 }
