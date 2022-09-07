@@ -1,6 +1,6 @@
-import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
 import { SearchResults } from "backend/search";
+import React from "react";
+import { Col, Container, Figure, Row } from "react-bootstrap";
 
 interface IProps {
     results: SearchResults;
@@ -20,9 +20,13 @@ class SearchResultsElement extends React.Component<IProps, never> {
                             <div className="list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
                                 <Row>
                                     <Col>
-                                        <Image src={result.icon} />
-                                        <a href={result.url}>{result.title}</a>
-                                        <div className="text-gray-600">{result.artist}</div>
+                                        <Figure>
+                                            <Figure.Image src={result.icon} />
+                                            <Figure.Caption>
+                                                <a href={result.url}>{result.title}</a>
+                                                <p className="text-gray-600">{result.artist}</p>
+                                            </Figure.Caption>
+                                        </Figure>
                                     </Col>
                                 </Row>
                             </div>

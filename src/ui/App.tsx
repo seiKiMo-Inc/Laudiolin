@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
 
-import { Container, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
-import Navigation from "components/NavBar";
-import Controls from "components/Controls";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Controls from "components/Controls";
+import Navigation from "components/NavBar";
+import Button from "./components/Button";
 import SearchResultsElement from "./components/SearchResults";
 
 const exampleSearchResults = {
@@ -28,7 +28,7 @@ const exampleSearchResults = {
     ],
 };
 
-interface IProps {}
+interface IProps { }
 interface IState {
     showControls: boolean;
     darkMode: boolean;
@@ -59,10 +59,10 @@ class App extends React.Component<IProps, IState> {
                 <Navigation />
                 <Container style={{ paddingBottom: "20%" }}>
                     <br />
-                    <Button variant="primary" onClick={() => this.setState({ showControls: !this.state.showControls })}>
-                        <FontAwesomeIcon icon={faLink} />
-                        ⠀Toggle Controls
+                    <Button onClick={() => this.setState({ showControls: !this.state.showControls })} icon={faLink}>
+                        Toggle Controls
                     </Button>
+                    <Button onClick={() => this.toggleDarkMode()}>Toggle Dark mode</Button>
                     <SearchResultsElement results={exampleSearchResults}></SearchResultsElement>
                 </Container>
 

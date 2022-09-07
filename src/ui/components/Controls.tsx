@@ -1,17 +1,14 @@
-import React from "react";
-import "../App.css";
-import Button from "react-bootstrap/Button";
-import { Track } from "backend/music";
-import Form from "react-bootstrap/Form";
+import { faLightbulb, faLink, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faLink, faLightbulb } from "@fortawesome/free-solid-svg-icons";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-
+import { Track } from "backend/music";
+import VolumeControl from "components/MusicControls/VolumeControl";
+import React from "react";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Form from "react-bootstrap/Form";
+import "../App.css";
+import Button from "./Button";
 import ProgressBarComponent from "./MusicControls/ProgressBar";
-import VolumeControl from "./MusicControls/VolumeControl";
-
-interface IProps {}
+interface IProps { }
 interface IState {
     playing: boolean;
     muted: boolean;
@@ -74,9 +71,12 @@ class Controls extends React.Component<IProps, IState> {
                 this.originalColors.push(element.style.backgroundColor);
                 element.style.backgroundColor =
                     "#" + Math.floor(Math.random() * 16777215).toString(16);
-                setTimeout(() => {
-                    element.style.backgroundColor = this.originalColors[i];
-                }, 500);
+            }
+        } else {
+            const elements = document.getElementsByTagName("*");
+            for (let i = 0; i < elements.length; i++) {
+                const element = (elements[i] as HTMLElement);
+                element.style.backgroundColor = this.originalColors[i];
             }
         }
     }
@@ -106,7 +106,7 @@ class Controls extends React.Component<IProps, IState> {
                     left: 0,
                     right: 0,
                     zIndex: 1000,
-                    backgroundColor: "#212529",
+                    backgroundColor: "#1a1a1a",
                     padding: "10px",
                 }}
             >
@@ -114,6 +114,7 @@ class Controls extends React.Component<IProps, IState> {
                     style={{
                         display: "table",
                         margin: "0 auto",
+                        padding: "10px"
                     }}
                 >
                     <Form.Control
@@ -122,41 +123,32 @@ class Controls extends React.Component<IProps, IState> {
                         className={"form-floating"}
                         value={this.state.url}
                         style={{
-                            maxWidth: "150px",
+                            maxWidth: "10%",
                             display: "inline-block",
                             verticalAlign: "middle",
                         }}
                     />
-                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Load URL</Tooltip>}>
+                    <ButtonGroup>
                         <Button
                             variant="outline-primary"
                             size="lg"
                             onClick={() => this.setURL(this.state.url)}
-                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
                         >
                             <FontAwesomeIcon icon={faLink} />
                         </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Play/Pause</Tooltip>}>
                         <Button
                             variant="outline-primary"
                             size="lg"
                             onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
-                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
-                        >
-                            <FontAwesomeIcon icon={this.state.playing ? faPause : faPlay} />
-                        </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Lightshow Mode</Tooltip>}>
+                            icon={this.state.playing ? faPause : faPlay}
+                        />
                         <Button
                             variant="outline-primary"
                             size="lg"
                             onClick={() => this.setState({ lightshow: !this.state.lightshow })}
-                            style={{ margin: "10px", marginTop: "10px", marginRight: "5px" }}
-                        >
-                            <FontAwesomeIcon icon={faLightbulb} />
-                        </Button>
-                    </OverlayTrigger>
+                            icon={faLightbulb}
+                        />
+                    </ButtonGroup>
                     <VolumeControl
                         volume={this.state.volume}
                         muted={this.state.muted}

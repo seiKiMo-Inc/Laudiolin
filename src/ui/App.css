@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    background-color: #333;
+    @apply bg-white dark:bg-slate-900;
     font-family: 'Verdana';
     color: white;
     --nav-height: 50px;
