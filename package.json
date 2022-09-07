@@ -9,9 +9,9 @@
     "electron:dev": "cross-env ELECTRON_IS_DEV=1 nodemon",
     "lint": "eslint src/**/*.ts",
     "react": "webpack --config webpack/react.config.js",
-    "react:dev": "webpack serve --config webpack/react.config.js --mode=development",
-    "start": "npm run build && npm run electron",
-    "start:dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\""
+    "dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\"",
+    "dev:react": "webpack serve --config webpack/react.config.js --mode=development",
+    "start": "npm run build && npm run electron"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.2.0",

@@ -57,8 +57,7 @@ class App extends React.Component<IProps, IState> {
         return (
             <>
                 <Navigation />
-                <Container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-                    <h1 className="text-3xl">Space Filler</h1> {/* for fixed Navbar, there is a better way but lazy */}
+                <Container style={{ paddingBottom: "20%" }}>
                     <br />
                     <Button variant="primary" onClick={() => this.setState({ showControls: !this.state.showControls })}>
                         <FontAwesomeIcon icon={faLink} />

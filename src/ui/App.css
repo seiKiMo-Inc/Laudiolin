@@ -2,14 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    color: aqua;
-}
-
 body {
     background-color: #333;
     font-family: 'Verdana';
     color: white;
+    --nav-height: 50px;
+    padding-top: var(--nav-height);
+}
+
+h1 {
+    color: aqua;
 }
 
 #root {
@@ -20,17 +22,19 @@ body {
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #374151;
+    background: #2c2c2c;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #3484fc;
+    border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #0c6cfc;
+.nav--hidden {
+    transform: translateY(calc(-1 * var(--nav-height)));
+    box-shadow: none;
 }
