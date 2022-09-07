@@ -23,6 +23,7 @@ const blankResults: SearchResults = {
 
 interface IProps {}
 interface IState {
+    skip: boolean;
     searchQuery: string;
     searchResults: SearchResults;
 }
@@ -32,12 +33,23 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
+            skip: false,
             searchQuery: "",
             searchResults: blankResults
         };
     }
 
-    componentDidMount() {
+    reloadHook = () => {
+        // Clear the search results.
+        this.setState({
+            skip: true,
+            searchResults: blankResults
+        });
+        // Re-render the page.
+        this.search();
+    };
+
+    search = () => {
         // Get the search query.
         const query = getQuery();
         // Check query validity.
@@ -47,12 +59,25 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         doSearch(query, {
             engine: "YouTube",
             accuracy: true
-        }).then((results) => this.setState({ searchResults: results }));
+        }).then((results) =>
+            this.setState({ skip: false,
+                searchResults: results }));
+    };
+
+    componentDidMount() {
+        // Listen for reload.
+        window.addEventListener("reload", this.reloadHook);
+        // Perform search.
+        this.search();
     }
 
     componentWillUnmount() {
+        // Remove the reload listener.
+        window.removeEventListener("reload", this.reloadHook);
+
         // Clear the data.
         this.setState({
+            skip: false,
             searchQuery: "",
             searchResults: blankResults
         });
@@ -63,7 +88,8 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         const results = search.results;
 
         // Perform DOM reload check.
-        if (results.length == 0 && getQuery(true) == "") {
+        if (!this.state.skip && results.length == 0
+            && getQuery(true) == "") {
             return <Navigate to={Pages.home} />;
         }
 

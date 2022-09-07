@@ -52,6 +52,9 @@ class Navigation extends React.Component<IProps, IState> {
         // Redirect to the search page.
         const { navigate } = this.props;
         navigate(Pages.searchResults);
+
+        // Perform a search.
+        window.dispatchEvent(new Event("reload"));
     };
 
     searchButton = () => {
@@ -61,6 +64,9 @@ class Navigation extends React.Component<IProps, IState> {
 
         // Set the search query.
         setQuery(query);
+
+        // Perform a search.
+        window.dispatchEvent(new Event("reload"));
     };
 
     componentDidMount() {
