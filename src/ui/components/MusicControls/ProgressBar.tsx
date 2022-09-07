@@ -7,28 +7,34 @@ interface IProps {
     setProgress: (value: number) => void;
 }
 
-const ProgressBarComponent: React.FC<IProps> = (props) => {
-    return (
-        <ProgressBar
-            className="rounded progress-bar dark:bg-gray-700 relative"
-            onClick={(e) =>
-                props.setProgress(
-                    (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
-                    props.duration
-                )
-            }
-            animated
-            now={(props.progress / props.duration) * 100}
-            label={
-                props.duration > 0
-                    ? `${Math.round(props.progress)}/${Math.round(props.duration)}`
-                    : ""
-            }
-            style={{
-                height: "10px"
-            }}
-        />
-    );
-};
+class ProgressBarComponent extends React.Component<IProps, never> {
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <ProgressBar
+                className="rounded progress-bar dark:bg-gray-700 relative"
+                onClick={(e) =>
+                    this.props.setProgress(
+                        (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+                        this.props.duration
+                    )
+                }
+                animated
+                now={(this.props.progress / this.props.duration) * 100}
+                label={
+                    this.props.duration > 0
+                        ? `${Math.round(this.props.progress)}/${Math.round(this.props.duration)}`
+                        : ""
+                }
+                style={{
+                    height: "10px"
+                }}
+            />
+        );
+    }
+}
 
 export default ProgressBarComponent;

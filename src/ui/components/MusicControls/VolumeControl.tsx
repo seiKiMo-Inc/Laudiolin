@@ -13,51 +13,54 @@ interface IProps {
     toggleMute: () => void;
 }
 
-const VolumeControl: React.FC<IProps> = (props) => {
-    return (
-        <span>
-            <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
-                <Button
-                    id="volume"
-                    variant="outline-primary"
-                    size="lg"
-                    onClick={() => props.toggleMute()}
-                    style={{ margin: "10px", marginTop: "10px", maxWidth: "50px", verticalAlign: "middle"}}
+class VolumeControl extends React.Component<IProps, never> {
+    render() {
+        return (
+            <span>
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
+                    <Button
+                        id="volume"
+                        variant="outline-primary"
+                        size="lg"
+                        onClick={() => this.props.toggleMute()}
+                        style={{ margin: "10px", marginTop: "10px", maxWidth: "50px", verticalAlign: "middle"}}
+                    >
+                        <FontAwesomeIcon
+                            icon={
+                                this.props.muted || this.props.volume == 0
+                                    ? faVolumeMute
+                                    : this.props.volume
+                                        ? faVolumeDown
+                                        : faVolumeUp
+                            }
+                        />
+                    </Button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip id="tooltip-top">{this.props.volume}%</Tooltip>}
                 >
-                    <FontAwesomeIcon
-                        icon={
-                            props.muted || props.volume == 0
-                                ? faVolumeMute
-                                : props.volume
-                                    ? faVolumeDown
-                                    : faVolumeUp
-                        }
+                    <Form.Control
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={this.props.volume}
+                        onChange={(e) => this.props.setVolume(parseInt(e.target.value))}
+                        style={{
+                            maxWidth: "100px",
+                            height: "10px",
+                            display: "inline-block",
+                            verticalAlign: "middle",
+                            margin: "10px",
+                            marginTop: "10px",
+                            padding: "0px",
+                        }}
+                        className={"form-range"}
                     />
-                </Button>
-            </OverlayTrigger>
-            <OverlayTrigger
-                placement="top"
-                overlay={<Tooltip id="tooltip-top">{props.volume}%</Tooltip>}
-            >
-                <Form.Control
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={props.volume}
-                    onChange={(e) => props.setVolume(parseInt(e.target.value))}
-                    style={{
-                        maxWidth: "100px",
-                        height: "10px",
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                        margin: "10px",
-                        marginTop: "10px",
-                    }}
-                    className={"form-range"}
-                />
-            </OverlayTrigger>
-        </span>
-    );
-};
+                </OverlayTrigger>
+            </span>
+        );
+    }
+}
 
 export default VolumeControl;

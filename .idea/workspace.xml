@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="Add `scrollbar`, fixed `Navbar` and more UI tweaks">
+    <list default="true" id="1631c650-4b64-44e7-a3f2-79a816d4c870" name="Changes" comment="Switch `SearchResultsElement` to a Class based component">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/components/SearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/SearchResults.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/MusicControls/ProgressBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/MusicControls/ProgressBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/components/MusicControls/VolumeControl.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/components/MusicControls/VolumeControl.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1662413054792</updated>
       <workItem from="1662413061373" duration="16438000" />
-      <workItem from="1662513057171" duration="5445000" />
+      <workItem from="1662513057171" duration="7250000" />
     </task>
     <task id="LOCAL-00001" summary="Extend `root` to full page and put `controls` in-line for styling later">
       <created>1662423979892</created>
@@ -86,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662517265317</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Switch `SearchResultsElement` to a Class based component">
+      <created>1662518646862</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1662518646862</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,6 +114,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Extend `root` to full page and put `controls` in-line for styling later" />
     <MESSAGE value="Add `scrollbar`, fixed `Navbar` and more UI tweaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add `scrollbar`, fixed `Navbar` and more UI tweaks" />
+    <MESSAGE value="Switch `SearchResultsElement` to a Class based component" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switch `SearchResultsElement` to a Class based component" />
   </component>
 </project>
