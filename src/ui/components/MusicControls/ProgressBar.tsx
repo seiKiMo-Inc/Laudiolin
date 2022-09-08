@@ -6,7 +6,6 @@ interface IProps {
     duration: number;
     setProgress: (value: number) => void;
 }
-
 class ProgressBarComponent extends React.Component<IProps, never> {
     constructor(props: IProps) {
         super(props);
@@ -15,7 +14,7 @@ class ProgressBarComponent extends React.Component<IProps, never> {
     render() {
         return (
             <ProgressBar
-                className="rounded progress-bar dark:bg-gray-700 relative"
+                className="rounded progress-bar dark:bg-gray-700 bg-slate-100 relative"
                 onClick={(e) =>
                     this.props.setProgress(
                         (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *

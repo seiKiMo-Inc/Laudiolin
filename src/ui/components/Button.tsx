@@ -2,20 +2,19 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import React from "react";
-import { Button } from "react-bootstrap";
-import { ButtonVariant } from "react-bootstrap/esm/types";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 interface IState { }
 
 interface IProps {
     icon?: IconDefinition;
-    onClick: () => void;
+    onClick?: () => void;
     children?: React.ReactNode;
     style?: React.CSSProperties;
     id?: string;
     className?: string;
-    size?: "sm" | "lg";
-    variant?: ButtonVariant
+    tooltip?: string;
 }
 
 class ButtonWrapper extends React.Component<IProps, IState> {
@@ -24,19 +23,40 @@ class ButtonWrapper extends React.Component<IProps, IState> {
     }
 
     render() {
-        return (
-            <Button
-                variant={this.props.variant || (document.documentElement.classList.contains("dark") ? "outline-light" : "outline-secondary")}
-                onClick={this.props.onClick}
-                style={this.props.style}
-                size={this.props.size}
-                id={this.props.id}
-                className={this.props.className}
-            >
-                {this.props.icon ? <FontAwesomeIcon icon={this.props.icon} style={this.props.children ? { marginRight: "5px" } : {}} /> : null}
-                {this.props.children}
-            </Button>
-        );
+        if (this.props.tooltip) {
+            return (
+                <OverlayTrigger
+                    placement="top"
+                    overlay={
+                        <Tooltip id="tooltip-top">
+                            {this.props.tooltip}
+                        </Tooltip>
+                    }
+                >
+                    <button
+                        onClick={this.props.onClick}
+                        style={this.props.style}
+                        id={this.props.id}
+                        className={this.props.className}
+                    >
+                        {this.props.icon ? <FontAwesomeIcon icon={this.props.icon} style={this.props.children ? { marginRight: "5px", fill: "inherit" } : {}} /> : null}
+                        {this.props.children}
+                    </button>
+                </OverlayTrigger>
+            );
+        } else {
+            return (
+                <button
+                    onClick={this.props.onClick}
+                    style={this.props.style}
+                    id={this.props.id}
+                    className={this.props.className}
+                >
+                    {this.props.icon ? <FontAwesomeIcon icon={this.props.icon} style={this.props.children ? { marginRight: "5px" } : {}} /> : null}
+                    {this.props.children}
+                </button>
+            );
+        }
     }
 }
 

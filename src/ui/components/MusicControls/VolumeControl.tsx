@@ -15,13 +15,12 @@ interface IProps {
 class VolumeControl extends React.Component<IProps, never> {
     render() {
         return (
-            <>
+            <span>
                 <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
                     <Button
-                        variant="outline-primary"
-                        size="lg"
+                        className={"control"}
+                        tooltip={"mute/unmute"}
                         onClick={() => this.props.toggleMute()}
-                        style={{ margin: "10px", marginTop: "10px", maxWidth: "50px" }}
                         icon={
                             this.props.muted || this.props.volume == 0
                                 ? faVolumeMute
@@ -38,18 +37,10 @@ class VolumeControl extends React.Component<IProps, never> {
                         max="100"
                         value={this.props.volume}
                         onChange={(e) => this.props.setVolume(parseInt(e.target.value))}
-                        style={{
-                            maxWidth: "100px",
-                            height: "10px",
-                            display: "inline-block",
-                            verticalAlign: "middle",
-                            marginTop: "10px",
-                            padding: "0px",
-                        }}
-                        className={"form-range"}
+                        className={"cursor-pointer dark:bg-slate-800 h-6"}
                     />
                 </OverlayTrigger>
-            </>
+            </span>
         );
     }
 }

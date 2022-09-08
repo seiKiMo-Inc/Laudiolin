@@ -8,6 +8,12 @@ A very simple music player written in TypeScript using Electron and React.
 1. run `npm i`
 1. run `npm run dev`
 
-## Contributing
+## Development and Contributing
 
-You can make a pull request, just please run `npm run lint` (optional: `npm run lint -- --fix`)... 🥺🙏
+We accept pull requests if you want to ~~fix shit code~~ contribute!
+
+1. make a fork
+1. make a branch for your awesome feature!
+1. run `npm run lint`
+1. commit the changes
+1. make a pull request!

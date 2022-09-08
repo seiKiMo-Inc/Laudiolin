@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "howler": "^2.2.3",
+    "sass": "^1.54.9",
     "url": "^0.11.0"
   },
   "devDependencies": {

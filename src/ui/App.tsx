@@ -1,12 +1,10 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
 
 import { Container } from "react-bootstrap";
 
-import { faLink } from "@fortawesome/free-solid-svg-icons";
 import Controls from "components/Controls";
 import Navigation from "components/NavBar";
-import Button from "./components/Button";
 import SearchResultsElement from "./components/SearchResults";
 
 const exampleSearchResults = {
@@ -29,28 +27,20 @@ const exampleSearchResults = {
 };
 
 interface IProps { }
-interface IState {
-    showControls: boolean;
-    darkMode: boolean;
-}
+interface IState { }
 class App extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = {
-            showControls: true,
-            darkMode: false,
-        };
+        const darkmode = localStorage.getItem("darkMode") === "true";
+        document.documentElement.classList.toggle("dark", darkmode);
     }
 
     // for the future (maybe)
     toggleDarkMode() {
-        this.setState({ darkMode: !this.state.darkMode });
-        document.documentElement.classList.toggle("dark");
-    }
-
-    componentDidMount() {
-        document.documentElement.classList.toggle("dark");
+        const darkmode = !document.documentElement.classList.contains("dark");
+        localStorage.setItem("darkMode", darkmode.toString());
+        document.documentElement.classList.toggle("dark", darkmode);
     }
 
     render() {
@@ -58,15 +48,9 @@ class App extends React.Component<IProps, IState> {
             <>
                 <Navigation />
                 <Container style={{ paddingBottom: "20%" }}>
-                    <br />
-                    <Button onClick={() => this.setState({ showControls: !this.state.showControls })} icon={faLink}>
-                        Toggle Controls
-                    </Button>
-                    <Button onClick={() => this.toggleDarkMode()}>Toggle Dark mode</Button>
                     <SearchResultsElement results={exampleSearchResults}></SearchResultsElement>
                 </Container>
-
-                {this.state.showControls && <Controls />}
+                <Controls />
             </>
         );
     }

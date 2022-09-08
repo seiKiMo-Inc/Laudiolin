@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-white dark:bg-slate-900 transition-all;
+    font-family: 'Verdana';
+    --nav-height: 13vh;
+    padding-top: var(--nav-height);
+    * {
+        @apply transition-all;
+    }
+}
+
+h1 {
+    color: aqua;
+}
+
+#root {
+    height: 100vh;
+    width: auto;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2c2c2c;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3484fc;
+    border-radius: 10px;
+}
+
+.nav--hidden {
+    transform: translateY(calc(-1 * var(--nav-height)));
+    box-shadow: none;
+}
+
+.controls {
+    @apply p-2 fixed inset-x-0 bottom-0 bg-slate-600 dark:bg-slate-800 transition-all;
+    z-index: 99;
+    .control {
+        $p: &;
+        @apply ml-4 py-2 px-4 transition-all rounded-full hover:bg-slate-800 dark:hover:bg-slate-300 fill-blue-700;
+        svg {
+            path {
+                @apply transition-all text-blue-300 dark:text-white;
+            }
+        }
+        &:hover {
+            svg {
+                path {
+                    @apply dark:text-black text-white;
+                }
+            }
+        }
+    }
+}
+
+.navbar {
+    @apply bg-slate-600 dark:bg-slate-800 text-slate-800 w-full fixed transition-all;
+}
