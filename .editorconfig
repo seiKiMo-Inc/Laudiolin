@@ -10,5 +10,5 @@ trim_trailing_whitespace = true
 max_line_length = 120
 tab_width = 4
 
-[*.json]
+[{*.json, *.svelte, *.html, *.css}]
 indent_size = 2
