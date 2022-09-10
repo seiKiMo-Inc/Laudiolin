@@ -4,13 +4,11 @@
 
     onMount(() => {
         linksContainer = document.querySelector(".linksContainer");
-        console.log(linksContainer);
     });
 
     function toggleDropdown(e) {
         linksContainer.classList.toggle("hidden");
         linksContainer.classList.toggle("lg:visible");
-        console.log(linksContainer);
     }
 </script>
 
@@ -39,7 +37,7 @@
 
 <style>
     .main-nav {
-        @apply flex items-center justify-between flex-wrap backdrop-blur bg-slate-900/20 p-6;
+        @apply flex items-center justify-between flex-wrap backdrop-blur bg-slate-900 p-6;
         @apply bg-gradient-to-r from-slate-900 to-black;
     }
     .navlink {

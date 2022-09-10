@@ -16,7 +16,7 @@ body::-webkit-scrollbar {
 
 @layer components {
     .button-outline {
-        @apply inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white mt-4 lg:mt-0 transition-all bg-clip-text;
+        @apply inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white lg:mt-0 transition-all bg-clip-text;
     }
     .button-outline:hover {
         @apply hover:border-transparent hover:text-teal-500 hover:bg-white;
