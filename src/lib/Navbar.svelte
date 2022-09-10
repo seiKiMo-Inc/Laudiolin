@@ -2,7 +2,7 @@
 
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "svelte";
+import { useEffect, useState } from "svelte-check";
 import { Button, FormControl, Navbar } from "sveltestrap";
 
 
