@@ -1,40 +1,37 @@
 <script lang="ts">
+  import { faMoon } from "@fortawesome/free-solid-svg-icons";
+  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  import { useEffect, useState } from "svelte-check";
+  import { Button, FormControl, Navbar } from "sveltestrap";
 
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "svelte-check";
-import { Button, FormControl, Navbar } from "sveltestrap";
-
-
-
-    function setup() {
-        const [showNav, setShowNav] = useState(true);
-        const [lastScrollY, setLastScrollY] = useState(0);
-        useEffect(() => {
-            const handleScroll = () => {
-                const currentScrollY = window.scrollY;
-                if (currentScrollY > lastScrollY) {
-                    setShowNav(false);
-                } else {
-                    setShowNav(true);
-                }
-                setLastScrollY(currentScrollY);
-            };
-            window.addEventListener("scroll", handleScroll);
-            return () => {
-                window.removeEventListener("scroll", handleScroll);
-            };
-        }, [lastScrollY]);
-        const toggleDarkMode = () => {
-            const darkmode = !document.documentElement.classList.contains("dark");
-            localStorage.setItem("darkMode", darkmode.toString());
-            document.documentElement.classList.toggle("dark", darkmode);
-        };
-        return {
-            showNav,
-            toggleDarkMode,
-        };
-
+  function setup() {
+    const [showNav, setShowNav] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    useEffect(() => {
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY) {
+          setShowNav(false);
+        } else {
+          setShowNav(true);
+        }
+        setLastScrollY(currentScrollY);
+      };
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, [lastScrollY]);
+    const toggleDarkMode = () => {
+      const darkmode = !document.documentElement.classList.contains("dark");
+      localStorage.setItem("darkMode", darkmode.toString());
+      document.documentElement.classList.toggle("dark", darkmode);
+    };
+    return {
+      showNav,
+      toggleDarkMode,
+    };
+  }
 </script>
 
 <Navbar
