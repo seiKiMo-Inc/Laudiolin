@@ -1,66 +1,57 @@
-<script lang="ts">
-  import { faMoon } from "@fortawesome/free-solid-svg-icons";
-  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  import { useEffect, useState } from "svelte-check";
-  import { Button, FormControl, Navbar } from "sveltestrap";
+<script>
+    import { onMount } from "svelte";
+    let linksContainer;
 
-  function setup() {
-    const [showNav, setShowNav] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-    useEffect(() => {
-      const handleScroll = () => {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY) {
-          setShowNav(false);
-        } else {
-          setShowNav(true);
-        }
-        setLastScrollY(currentScrollY);
-      };
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }, [lastScrollY]);
-    const toggleDarkMode = () => {
-      const darkmode = !document.documentElement.classList.contains("dark");
-      localStorage.setItem("darkMode", darkmode.toString());
-      document.documentElement.classList.toggle("dark", darkmode);
-    };
-    return {
-      showNav,
-      toggleDarkMode
-    };
-  }
+    onMount(() => {
+        linksContainer = document.querySelector(".linksContainer");
+        console.log(linksContainer);
+    });
+
+    function toggleDropdown(e) {
+        linksContainer.classList.toggle("hidden");
+        linksContainer.classList.toggle("lg:visible");
+        console.log(linksContainer);
+    }
 </script>
 
-<Navbar
-  className={"navbar"}
-  style={{
-        top: showNav ? 0 : -100,
-        zIndex: 100
-    }}
-  variant="dark"
->
-  <Button
-    className={"ml-4 py-2 px-3 bg-slate-500 dark:bg-slate-200 transition-all rounded-full"}
-    onClick={toggleDarkMode}
-  >
-    <FontAwesomeIcon icon={faMoon} />
-  </Button>
-  <Navbar.Brand>Laudiolin</Navbar.Brand>
-  <Navbar.Collapse>
-    <div className={"inline-flex rounded-md shadow-sm"}>
-      <FormControl
-        className="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-        placeholder="query"
-        type="text"
-      />
-      <Button
-        className={"inline-flex items-center py-2 px-4 text-sm font-medium bg-transparent rounded-l-lg  text-white dark:border-indigo-600 dark:hover:bg-gray-700 dark:focus:bg-gray-700"}
-      >
-        Search
-      </Button>
+<nav class="main-nav">
+    <div class="flex items-center flex-shrink-0 text-white mr-6">
+        <span class="font-semibold text-xl tracking-tights title">Laudiolin</span>
     </div>
-  </Navbar.Collapse>
-</Navbar>;
+    <div class="block lg:hidden">
+        <button class="button-outline" on:click={toggleDropdown}>
+            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20"
+                ><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg
+            >
+        </button>
+    </div>
+    <div class="linksContainer hidden lg:hidden">
+        <div class="text-sm">
+            <a href="#responsive-header" class="navlink"> Docs </a>
+            <a href="#responsive-header" class="navlink"> Examples </a>
+            <a href="#responsive-header" class="navlink"> Blog </a>
+        </div>
+        <div>
+            <a href="#" class="button-outline">Download</a>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .main-nav {
+        @apply flex items-center justify-between flex-wrap backdrop-blur bg-slate-900/20 p-6;
+        @apply bg-gradient-to-r from-slate-900 to-black;
+    }
+    .navlink {
+        @apply block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4;
+    }
+
+    .linksContainer {
+        @apply w-full flex-grow lg:flex lg:items-center lg:w-auto;
+    }
+
+    .title {
+        @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500;
+        font-family: "GAU_font_cube_R";
+    }
+</style>

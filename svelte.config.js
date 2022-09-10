@@ -13,12 +13,12 @@ const config = {
 
     kit: {
         // hydrate the <div id="svelte"> element in src/app.html
-        target: '#svelte',
+        target: "#svelte",
         ssr: false,
         adapter: adapter({
-            pages: 'build',
-            assets: 'build',
-            fallback: 'index.html'
+            pages: "build",
+            assets: "build",
+            fallback: "index.html"
         })
     }
 };

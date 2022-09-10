@@ -3,8 +3,22 @@
 @tailwind utilities;
 
 body {
-  background-color: #222;
-  color: #fff;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #222;
+    color: #fff;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
+@layer components {
+    .button-outline {
+        @apply inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white mt-4 lg:mt-0 transition-all bg-clip-text;
+    }
+    .button-outline:hover {
+        @apply hover:border-transparent hover:text-teal-500 hover:bg-white;
+    }
+}

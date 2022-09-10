@@ -59,7 +59,9 @@
         "height": 720,
         "resizable": true,
         "title": "Laudiolin",
-        "width": 1280
+        "width": 1280,
+        "minHeight": 280,
+        "minWidth": 360
       }
     ]
   }

@@ -1,82 +1,75 @@
-<script>
-  import { onMount } from "svelte";
+<script lang="ts">
+    export let showControls = true;
+    export let playing = false;
 
-  let paused = true;
-  const buttonEvent = () => (paused = !paused);
-  onMount(() => {
-    document.querySelector(".button").addEventListener("click", function() {
-      this.classList.toggle("paused");
-    });
-  });
+    export function togglePlaying() {
+        playing = !playing;
+        console.log("how are you?");
+    }
 </script>
 
-<div>
-  <center>
-    <div style="padding:10px;max-width:60px;max-height:60px;">
-      <button class="button paused" on:click={buttonEvent} />
-    </div>
-    <div>
-      <span class="currentTime">00:00</span> /
-      <span class="duration">00:00</span>
-    </div>
-    <br>
-    <input class="volume" max="1" min="0" step=".01" type="range" value=".5" />
-  </center>
-
+<div style="display: {showControls ? 'unset' : 'none'}" class="controls">
+    <span
+        style="display: table;
+        margin: 0 auto;
+        padding: 10px"
+    >
+        <button
+            class="previous control-button"
+            on:click={() => {
+                console.log("previous");
+            }}
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                ><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" /><path d="M0 0h24v24H0z" fill="none" /></svg
+            >
+        </button>
+        <button class="play control-button" on:click={togglePlaying}>
+            {#if playing}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    ><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /><path
+                        d="M0 0h24v24H0z"
+                        fill="none"
+                    /></svg
+                >
+            {:else}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    ><path d="M8 5v14l11-7z" /><path d="M0 0h24v24H0z" fill="none" /></svg
+                >
+            {/if}
+        </button>
+        <button
+            class="next control-button"
+            on:click={() => {
+                console.log("next");
+            }}
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                ><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" /><path
+                    d="M0 0h24v24H0z"
+                    fill="none"
+                /></svg
+            >
+        </button>
+    </span>
 </div>
 
 <style>
-  .button {
-    border: 0;
-    background: transparent;
-    box-sizing: border-box;
-    width: 60px;
-    height: 60px;
-    border-color: transparent transparent transparent #404040;
-    transition: 100ms all ease;
-    cursor: pointer;
-    border-style: solid;
-    border-width: 30px 0 30px 60px;
-  }
+    .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 100;
+    }
 
-  .button.paused {
-    border-style: double;
-    width: 60px;
-    height: 60px;
-    border-width: 0px 0px 0px 60px;
-  }
-
-  .volume {
-    width: 100px;
-    height: 10px;
-    background: #404040;
-    border-radius: 5px;
-    margin: 0 10px;
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-
-  .volume::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #404040;
-    cursor: pointer;
-  }
-
-  .volume::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #404040;
-    cursor: pointer;
-  }
-
-  .button:hover {
-    border-color: transparent transparent transparent #404040;
-  }
+    .control-button svg {
+        @apply w-20;
+        fill: white;
+    }
 </style>
