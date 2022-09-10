@@ -1,10 +1,20 @@
 <script>
     import Controls from "./lib/Controls.svelte";
+
+    import {invoke} from "@tauri-apps/api/tauri";
+
+    async function download() {
+      console.log(await invoke("download", {
+        id: "cWtgGTCAjYY", engine: "YouTube"
+      }));
+    }
 </script>
 
 <main>
-    <div class="center">
-    <Controls />
+  <div class="center">
+  <Controls />
+
+  <button on:click={download}>Download</button>
 </main>
 
 <style>
