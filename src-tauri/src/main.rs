@@ -3,11 +3,21 @@
     windows_subsystem = "windows"
 )]
 
+#![feature(once_cell)]
+
+use tauri::{App, Wry};
+
 mod backend;
 mod wrapper;
+mod audio;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
+    // Download audio file.
+    let file = wrapper::download("YuEl6hHwMMI", "YouTube");
+    // Play audio file.
+    audio::play_audio(file);
+
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
@@ -18,6 +28,32 @@ fn main() {
 
             wrapper::search, wrapper::download
         ])
+        .setup(|app| {
+            // Bind app to once_cell.
+            wrapper::TauriApp::set(app.handle());
+
+            // Setup event listeners.
+            setup_listeners(app);
+            // Create app data directory.
+            create_data_dir(app);
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+/// Sets up the event listeners.
+/// app: The Tauri app.
+fn setup_listeners(app: &mut App<Wry>) {
+
+}
+
+/// Creates the app data directory.
+/// app: The Tauri app.
+fn create_data_dir(app: &mut App<Wry>) {
+    let data_dir = app.path_resolver().app_dir().unwrap();
+    if !data_dir.exists() {
+        std::fs::create_dir(data_dir).unwrap();
+    }
 }

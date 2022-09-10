@@ -1,6 +1,33 @@
 // A Tauri-based wrapper for Laudiolin Rust bindings.
 
 use crate::backend::{DownloadOptions, SearchOptions, SearchResults};
+use once_cell::sync::OnceCell;
+use tauri::{Manager, Wry, AppHandle};
+use tauri::api::path;
+use serde::Serialize;
+
+static APP_INSTANCE: OnceCell<AppHandle<Wry>> = OnceCell::new();
+pub struct TauriApp {
+
+}
+impl TauriApp {
+    pub fn global() -> &'static AppHandle<Wry> {
+        APP_INSTANCE.get().expect("App instance not initialized")
+    }
+
+    pub fn set(app: AppHandle<Wry>) {
+        APP_INSTANCE.set(app).unwrap();
+    }
+
+    pub fn emit<S: Serialize + Clone>(event: &str, payload: S) {
+        TauriApp::global().emit_all(event, payload).unwrap();
+    }
+
+    pub fn file(path: String) -> String {
+        TauriApp::global().path_resolver().app_dir().unwrap()
+            .join(path).to_str().unwrap().to_string()
+    }
+}
 
 /// Performs a search for the query.
 /// query: The query to search for.
@@ -24,9 +51,9 @@ pub fn search(query: &str, engine: &str) -> SearchResults {
 #[tauri::command]
 pub fn download(id: &str, engine: &str) -> String {
     let options = DownloadOptions {
-        engine: engine.to_string()
+        engine: engine.to_string(),
+        file_path: TauriApp::file(format!("{}.mp3", id))
     };
-
 
     let file_name = tauri::async_runtime::block_on(async {
         crate::backend::download(id, options).await

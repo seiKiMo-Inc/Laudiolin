@@ -9,7 +9,8 @@ pub struct SearchOptions {
     pub engine: String
 }
 pub struct DownloadOptions {
-    pub engine: String
+    pub engine: String,
+    pub file_path: String
 }
 
 #[derive(Serialize, Deserialize)]
@@ -59,9 +60,10 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
     }
 
     // Save the response to a file.
-    let mut file = std::fs::File::create(format!("{}.mp3", id)).unwrap();
+    let file_path = options.file_path;
+    let mut file = std::fs::File::create(file_path.clone()).unwrap();
     file.write_all(response.bytes().await.unwrap().as_ref()).unwrap();
 
     // Return the path to the file.
-    Ok(format!("{}.mp3", id))
+    Ok(file_path)
 }

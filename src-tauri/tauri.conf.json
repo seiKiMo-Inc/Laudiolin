@@ -12,7 +12,11 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "protocol": {
+        "asset": true,
+        "assetScope": ["$DATA", "$DATA/*"]
+      }
     },
     "bundle": {
       "active": true,
@@ -29,7 +33,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "laudiolin",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -48,7 +52,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self' https://asset.localhost; media-src 'self' https://asset.localhost"
     },
     "updater": {
       "active": false
