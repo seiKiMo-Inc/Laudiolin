@@ -7,8 +7,8 @@ import Button from "./Button";
 
 interface IProps { }
 interface IState {
-    lastScrollY;
-    showNav;
+    lastScrollY: any;
+    showNav: any;
 }
 class Navigation extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -39,11 +39,13 @@ class Navigation extends React.Component<IProps, IState> {
 
         this.setState({ lastScrollY: currentScrollY });
     };
+
     toggleDarkMode() {
         const darkmode = !document.documentElement.classList.contains("dark");
         localStorage.setItem("darkMode", darkmode.toString());
         document.documentElement.classList.toggle("dark", darkmode);
     }
+
     render() {
         const { showNav } = this.state;
         return (
@@ -60,21 +62,14 @@ class Navigation extends React.Component<IProps, IState> {
                     <Navbar.Brand>Laudiolin</Navbar.Brand>
                 </Container>
                 <Navbar.Collapse>
-                    <Form>
-                        <Row>
-                            <Col>
-
-                                <FormControl
-                                    type="text"
-                                    placeholder="query"
-                                    className="mr-sm-2 w-full"
-                                />
-                            </Col>
-                            <Col>
-                                <Button className={"py-2 px-4 bg-blue-500 border-b-0 rounded-lg text-white dark:bg-indigo-600"}>Search</Button>
-                            </Col>
-                        </Row>
-                    </Form>
+                    <div className={"inline-flex rounded-md shadow-sm"}>
+                        <FormControl
+                            type="text"
+                            placeholder="query"
+                            className="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                        />
+                        <Button className={"inline-flex items-center py-2 px-4 text-sm font-medium bg-transparent rounded-l-lg  text-white dark:border-indigo-600 dark:hover:bg-gray-700 dark:focus:bg-gray-700"}>Search</Button>
+                    </div>
                 </Navbar.Collapse>
             </Navbar>
         );
