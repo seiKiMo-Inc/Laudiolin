@@ -1,0 +1,37 @@
+[package]
+name = "laudiolin"
+version = "0.1.0"
+description = "A Tauri-based music player."
+authors = ["KingRainbow44", "Arikatsu", "Shichiha"]
+license = ""
+repository = "https://github.com/Dumbfuckery-Inc/Laudiolin"
+edition = "2021"
+rust-version = "1.57"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.0.0", features = [] }
+
+[dependencies]
+# Tauri
+tauri = { version = "1.0.0", features = ["api-all"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Backend (HTTP & WebSockets)
+reqwest = "0.11.11"
+websocket = "0.26.5"
+
+# Global
+once_cell = "1.14.0"
+
+[features]
+# by default Tauri runs in production mode
+# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
+default = [ "custom-protocol" ]
+# this feature is used used for production builds where `devPath` points to the filesystem
+# DO NOT remove this
+custom-protocol = [ "tauri/custom-protocol" ]
