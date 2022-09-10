@@ -36,7 +36,7 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
                                query, options.engine)).await.unwrap();
 
     // Check the response code.
-    if response.status() != 200 {
+    if response.status() != 301 {
         return Err("Request failed.");
     }
 
@@ -50,11 +50,11 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 /// options: The options to use for the download.
 pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'static str> {
     // Perform the request.
-    let response = get(format!("https://app.magix.lol/download?query={}&engine={}",
+    let response = get(format!("https://app.magix.lol/download?id={}&engine={}",
                                id, options.engine)).await.unwrap();
 
     // Check the status code.
-    if response.status() != 200 {
+    if response.status() != 301 {
         return Err("Request failed.");
     }
 
