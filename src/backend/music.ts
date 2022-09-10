@@ -2,8 +2,9 @@ import { Howl } from "howler";
 import { URL } from "url";
 
 /**
- * Checks if a string is a valid URL.
- * @param url The URL to check.
+ * It returns true if the given string is a valid URL, and false otherwise
+ * @param {string} url - The URL to validate.
+ * @returns A boolean value.
  */
 const isValidURL = (url: string) => {
     try {
@@ -14,27 +15,18 @@ const isValidURL = (url: string) => {
     }
 };
 
-/**
- * A track.
- */
-export class Track {
-    /**
-     * The URL to the track.
-     */
+export class Song {
     url: string;
+    title?: string;
+    author?: string;
+}
 
-    /**
-     * The Howl instance.
-     */
+export class Track {
+    Songs: Song[];
     sound: Howl;
-
-    /**
-     * Creates a new track.
-     * @param url The URL to the track.
-     */
-    constructor (url: string) {
-        this.url = url;
-        if (isValidURL(url)) throw new Error("Invalid URL.");
-        this.sound = new Howl({ src: [url], html5: true });
+    constructor (Songs: Song[]) {
+        this.Songs = Songs;
+        this.sound = new Howl({src: Songs[0].url, html5: true});
     }
 }
+

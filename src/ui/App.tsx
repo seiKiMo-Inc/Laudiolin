@@ -12,7 +12,7 @@ const exampleSearchResults = {
         title: "Firefox",
         artist: "Mozilla",
         duration: Infinity,
-        url: "https://crepe.moe/fqOXk3F1",
+        url: "/",
         icon: "https://crepe.moe/c/fqOXk3F1",
     },
     results: [
@@ -20,7 +20,7 @@ const exampleSearchResults = {
             title: "Best song ever",
             artist: "Heretic",
             duration: Infinity,
-            url: "",
+            url: "/",
             icon: "https://crepe.moe/c/Ojwx9dUB",
         },
     ],

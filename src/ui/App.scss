@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 body {
-    @apply bg-white dark:bg-slate-900 transition-all;
+    @apply bg-white dark:bg-slate-900 transition-all bg-contain bg-fixed;
     font-family: 'Verdana';
     --nav-height: 13vh;
     padding-top: var(--nav-height);
+    color: white;
     * {
         @apply transition-all;
     }

@@ -1,6 +1,6 @@
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { Col, Form, FormControl, Row } from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "./Button";
@@ -60,21 +60,15 @@ class Navigation extends React.Component<IProps, IState> {
                     <Navbar.Brand>Laudiolin</Navbar.Brand>
                 </Container>
                 <Navbar.Collapse>
-                    <Form>
-                        <Row>
-                            <Col>
+                    <div className={"inline-flex rounded-md shadow-sm"}>
 
-                                <FormControl
-                                    type="text"
-                                    placeholder="query"
-                                    className="mr-sm-2 w-full"
-                                />
-                            </Col>
-                            <Col>
-                                <Button className={"py-2 px-4 bg-blue-500 border-b-0 rounded-lg text-white dark:bg-indigo-600"}>Search</Button>
-                            </Col>
-                        </Row>
-                    </Form>
+                        <FormControl
+                            type="text"
+                            placeholder="query"
+                            className="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                        />
+                        <Button className={"inline-flex items-center py-2 px-4 text-sm font-medium bg-transparent rounded-l-lg  text-white dark:border-indigo-600 dark:hover:bg-gray-700 dark:focus:bg-gray-700"}>Search</Button>
+                    </div>
                 </Navbar.Collapse>
             </Navbar>
         );

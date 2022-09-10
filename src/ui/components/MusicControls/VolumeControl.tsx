@@ -37,7 +37,7 @@ class VolumeControl extends React.Component<IProps, never> {
                         max="100"
                         value={this.props.volume}
                         onChange={(e) => this.props.setVolume(parseInt(e.target.value))}
-                        className={"cursor-pointer dark:bg-slate-800 h-6"}
+                        className={"cursor-pointer dark:bg-slate-800 bg-slate-700 h-6"}
                     />
                 </OverlayTrigger>
             </span>

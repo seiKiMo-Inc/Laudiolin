@@ -1,9 +1,10 @@
 import { faLightbulb, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { Track } from "backend/music";
 import VolumeControl from "components/MusicControls/VolumeControl";
+import { Howl } from "howler";
 import React from "react";
 import Button from "./Button";
-import ProgressBarComponent from "./MusicControls/ProgressBar";
+import ProgressBar from "./MusicControls/ProgressBar";
 interface IProps {
     style?: React.CSSProperties
 
@@ -15,11 +16,17 @@ interface IState {
     progress: number;
     lightshow: boolean;
     showControls: boolean;
+    songIndex: number;
 }
 
 const toggleTrack = (track: Track, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
-    track.sound.playing() ? track.sound.pause() : track.sound.play();
-    setState({ ...state, playing: !state.playing });
+    if (track.sound.playing()) {
+        track.sound.pause();
+        setState({ ...state, playing: false });
+    } else {
+        track.sound.play();
+        setState({ ...state, playing: true });
+    }
 };
 
 function changeVolume(
@@ -40,7 +47,18 @@ const toggleMute = (track: Track, state: IState, setState: React.Dispatch<React.
 const setProgress = (track: Track, value: number) => {
     track.sound.seek(value);
 };
+let songi = 0;
 
+const exampleTrack = new Track([
+    {
+        url: "https://app.magix.lol/download?id=fWoxszxtkk4",
+    },
+    {
+        url: "https://app.magix.lol/download?id=e-fA-gBCkj0",
+        title: "Locked Out Of Heaven",
+        author: "Bruno Mars"
+    }
+]);
 
 
 class Controls extends React.Component<IProps, IState> {
@@ -48,14 +66,15 @@ class Controls extends React.Component<IProps, IState> {
     showControls: true;
     constructor(props: IProps) {
         super(props);
-        this.track = new Track("https://app.magix.lol/download?id=fWoxszxtkk4&source=YouTube");
+        this.track = exampleTrack;
         this.state = {
             playing: false,
             muted: false,
             volume: 100,
             progress: 0,
             lightshow: false,
-            showControls: true
+            showControls: true,
+            songIndex: 0
         };
     }
     originalColors = [];
@@ -79,15 +98,13 @@ class Controls extends React.Component<IProps, IState> {
     toggleControls = () => {
         this.setState({ showControls: !this.state.showControls });
     };
-    setURL = (url: string) => {
-        this.track.sound.stop();
-        this.track = new Track(url);
-        this.setState({ playing: false });
-    };
 
     componentDidMount() {
         this.track.sound.on("end", () => {
-            this.setState({ playing: false });
+            // TODO: fix this scuffed-ass thing :(
+            songi += 0.5;
+            if (songi % 1 == 0)
+                this.track.sound = new Howl({ src: this.track.Songs[songi].url, html5: true });
         });
         setInterval(() => {
             this.setState({ progress: this.track.sound.seek() || 0 });
@@ -114,14 +131,14 @@ class Controls extends React.Component<IProps, IState> {
                     >
                         <Button
                             className={"control"}
-                            tooltip={"play/pause"}
-                            onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
-                            icon={this.state.playing ? faPause : faPlay}
+                            onClick={() => this.setState({ lightshow: !this.state.lightshow })}
+                            icon={faLightbulb}
                         />
                         <Button
                             className={"control"}
-                            onClick={() => this.setState({ lightshow: !this.state.lightshow })}
-                            icon={faLightbulb}
+                            tooltip={"play/pause"}
+                            onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
+                            icon={this.state.playing ? faPause : faPlay}
                         />
                         <VolumeControl
                             volume={this.state.volume}
@@ -132,7 +149,7 @@ class Controls extends React.Component<IProps, IState> {
                             toggleMute={() => toggleMute(this.track, this.state, this.setState.bind(this))}
                         />
                     </span>
-                    <ProgressBarComponent
+                    <ProgressBar
                         progress={this.state.progress}
                         duration={this.track.sound.duration()}
                         setProgress={(value) => setProgress(this.track, value)}
