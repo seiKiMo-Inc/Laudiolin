@@ -1,4 +1,4 @@
-const config = {
+export default {
     content: ['./src/**/*.{html,js,svelte,ts}'],
     mode: 'jit',
     theme: {
@@ -7,5 +7,3 @@ const config = {
     darkMode: 'class',
     plugins: []
 };
-
-module.exports = config;

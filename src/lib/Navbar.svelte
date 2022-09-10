@@ -29,38 +29,38 @@
     };
     return {
       showNav,
-      toggleDarkMode,
+      toggleDarkMode
     };
   }
 </script>
 
 <Navbar
-    variant="dark"
-    style={{
+  className={"navbar"}
+  style={{
         top: showNav ? 0 : -100,
         zIndex: 100
     }}
-    className={"navbar"}
+  variant="dark"
 >
-    <Button
-        onClick={toggleDarkMode}
-        className={"ml-4 py-2 px-3 bg-slate-500 dark:bg-slate-200 transition-all rounded-full"}
-    >
-        <FontAwesomeIcon icon={faMoon} />
-    </Button>
-    <Navbar.Brand>Laudiolin</Navbar.Brand>
-    <Navbar.Collapse>
-        <div className={"inline-flex rounded-md shadow-sm"}>
-            <FormControl
-                type="text"
-                placeholder="query"
-                className="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-            />
-            <Button
-                className={"inline-flex items-center py-2 px-4 text-sm font-medium bg-transparent rounded-l-lg  text-white dark:border-indigo-600 dark:hover:bg-gray-700 dark:focus:bg-gray-700"}
-            >
-                Search
-            </Button>
-        </div>
-    </Navbar.Collapse>
+  <Button
+    className={"ml-4 py-2 px-3 bg-slate-500 dark:bg-slate-200 transition-all rounded-full"}
+    onClick={toggleDarkMode}
+  >
+    <FontAwesomeIcon icon={faMoon} />
+  </Button>
+  <Navbar.Brand>Laudiolin</Navbar.Brand>
+  <Navbar.Collapse>
+    <div className={"inline-flex rounded-md shadow-sm"}>
+      <FormControl
+        className="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+        placeholder="query"
+        type="text"
+      />
+      <Button
+        className={"inline-flex items-center py-2 px-4 text-sm font-medium bg-transparent rounded-l-lg  text-white dark:border-indigo-600 dark:hover:bg-gray-700 dark:focus:bg-gray-700"}
+      >
+        Search
+      </Button>
+    </div>
+  </Navbar.Collapse>
 </Navbar>;

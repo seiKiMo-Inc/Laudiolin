@@ -1,6 +1,6 @@
 <script>
+  import { invoke } from "@tauri-apps/api/tauri";
   import Controls from "components/Controls.svelte";
-  import {invoke} from "@tauri-apps/api/tauri";
 
   async function download() {
     console.log(await invoke("download", {
