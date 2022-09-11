@@ -1,7 +1,19 @@
-# Tauri + React + Typescript
+# Laudiolin
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+A very simple music player written in TypeScript using Electron and React.
 
-## Recommended IDE Setup
+## Running
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- Clone the project
+- run `npm i`
+- run `npm run dev`
+
+## Development and Contributing
+
+We accept pull requests if you want to ~~fix shit code~~ contribute!
+
+- make a fork
+- make a branch for your awesome feature!
+- run `npm run lint`
+- commit the changes
+- make a pull request!
