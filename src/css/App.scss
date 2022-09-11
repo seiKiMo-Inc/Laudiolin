@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: GAU_CUBE;
+    src: url(/GAU_CUBE.TTF);
+}
+
+@font-face {
+    font-family: GAU_CUBE_R;
+    src: url(/GAU_CUBE_R.TTF);
+}
+
 body {
     @apply bg-white dark:bg-[#292F36] transition-all;
     @apply bg-gradient-to-t from-indigo-500/20 to-[#292F36];
@@ -100,5 +110,5 @@ h1 {
 
 .titleLogo {
     @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500 ml-2;
-    font-family: "GAU_font_cube_R";
+    font-family: GAU_CUBE_R;
 }
