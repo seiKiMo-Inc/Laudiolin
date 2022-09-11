@@ -18,10 +18,10 @@
 
     "baseUrl": ".",
     "paths": {
-      "app/*": ["src/*"],
-      "components/*": ["src/ui/components/*"],
-      "css/*": ["src/css/*"],
-      "backend/*": ["src/backend/*"]
+      "@app/*": ["src/*"],
+      "@components/*": ["src/ui/components/*"],
+      "@css/*": ["src/css/*"],
+      "@backend/*": ["src/backend/*"]
     }
   },
   "include": ["src"],

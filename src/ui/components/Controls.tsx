@@ -1,10 +1,10 @@
 import React from "react";
 import { faLightbulb, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
-import VolumeControl from "components/music/VolumeControl";
+import VolumeControl from "@components/music/VolumeControl";
 import Button from "./Button";
-import ProgressBarComponent from "components/music/ProgressBar";
+import ProgressBarComponent from "@components/music/ProgressBar";
 
-import { Track } from "backend/audio";
+import { Track } from "@backend/audio";
 
 interface IProps {
     style?: React.CSSProperties

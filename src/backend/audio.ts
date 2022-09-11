@@ -1,9 +1,9 @@
 import { emit, listen } from "@tauri-apps/api/event";
 import { Howl, Howler } from "howler";
-import { file } from "backend/fs";
+import { file } from "@backend/fs";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type { FilePayload } from "backend/types";
+import type { FilePayload } from "@backend/types";
 
 let currentTrack: Track|null = null;
 

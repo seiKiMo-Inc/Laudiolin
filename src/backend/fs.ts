@@ -1,4 +1,4 @@
-import type { FilePayload } from "backend/types";
+import type { FilePayload } from "@backend/types";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 /**

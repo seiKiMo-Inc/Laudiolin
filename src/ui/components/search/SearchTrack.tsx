@@ -1,12 +1,11 @@
-import React from "react";
-import {SearchResult} from "backend/search";
+import React  from "react";
+import type { SearchResult } from "@backend/types";
 
-import "css/SearchTrack.css";
+import "@css/SearchTrack.css";
 
-interface IProps {
-    track: SearchResult;
+interface IProps extends SearchResult {
+
 }
-
 interface IState {
 
 }
@@ -18,21 +17,15 @@ class SearchTrack extends React.Component<IProps, IState> {
     }
 
     render() {
-        const track = this.props.track;
-
-        if(track) {
-            return (
-                <div id="searchTrack">
-                    <img src={track.icon} alt={track.title}/>
-                </div>
-            );
-        }
-
         return (
-            <div>
-                <a>There is no track!</a>
+            <div id="container">
+                <img id="image" src={this.props.icon} alt="Album art" />
+                <div id="info">
+                    <h3>{this.props.title}</h3>
+                    <p>{this.props.artist}</p>
+                </div>
             </div>
-        )
+        );
     }
 }
 
