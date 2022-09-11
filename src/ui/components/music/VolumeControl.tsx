@@ -13,6 +13,10 @@ interface IProps {
 }
 
 class VolumeControl extends React.Component<IProps, never> {
+    componentDidMount(): void {
+        this.props.setVolume(parseInt(localStorage.getItem("volume") as string) || this.props.volume);
+    }
+
     render() {
         return (
             <span>
@@ -36,8 +40,12 @@ class VolumeControl extends React.Component<IProps, never> {
                         min="0"
                         max="100"
                         value={this.props.volume}
-                        onChange={(e) => this.props.setVolume(parseInt(e.target.value))}
+                        onChange={(e) => {
+                            localStorage.setItem("volume", e.target.value);
+                            this.props.setVolume(parseInt(e.target.value));
+                        }}
                         className={"cursor-pointer dark:bg-slate-800 h-6"}
+                        style={{ verticalAlign: "middle", marginLeft: 25 }}
                     />
                 </OverlayTrigger>
             </span>
