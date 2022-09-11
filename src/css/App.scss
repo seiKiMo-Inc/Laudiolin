@@ -24,6 +24,7 @@ h1 {
 /* Scrollbar */
 
 ::-webkit-scrollbar {
+    display: none;
     width: 6px;
 }
 
@@ -34,6 +35,32 @@ h1 {
 ::-webkit-scrollbar-thumb {
     background: #3484fc;
     border-radius: 10px;
+}
+
+.titlebar {
+    height: 30px;
+    background: #1f2838;
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+}
+
+.titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+  
+}
+
+.titlebar-button:hover {
+    background: #3484fc;
 }
 
 .nav--hidden {
@@ -64,4 +91,5 @@ h1 {
 
 .navbar {
     @apply bg-slate-600 dark:bg-slate-800 text-slate-800 w-full fixed transition-all;
+    margin-top: 28px;
 }

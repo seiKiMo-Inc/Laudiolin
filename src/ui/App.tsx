@@ -6,6 +6,7 @@ import { Container } from "react-bootstrap";
 import Controls from "components/Controls";
 import Navigation from "components/NavBar";
 import SearchResultsElement from "./components/SearchResults";
+import TitleBar from "./components/TitleBar";
 
 const exampleSearchResults = {
     top: {
@@ -46,9 +47,10 @@ class App extends React.Component<IProps, IState> {
     render() {
         return (
             <>
+                <TitleBar />
                 <Navigation />
-                <Container style={{ paddingBottom: "20%" }}>
-                {/* <SearchResultsElement results={exampleSearchResults}></SearchResultsElement> */}
+                <Container style={{ paddingBottom: "20%", overflowY: "auto" }}>
+                    {/* <SearchResultsElement results={exampleSearchResults}></SearchResultsElement> */}
                 </Container>
                 <Controls />
             </>
