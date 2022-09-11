@@ -5,7 +5,8 @@
 
 #![feature(once_cell)]
 
-use tauri::{App, Wry};
+use tauri::{Manager, App, Wry};
+use window_shadows::set_shadow;
 
 mod backend;
 mod wrapper;
@@ -36,6 +37,9 @@ fn main() {
             setup_listeners(app);
             // Create app data directory.
             create_data_dir(app);
+            
+            let window = app.get_window("main").unwrap();
+            set_shadow(&window, true).expect("Unsupported platform!");
 
             Ok(())
         })
