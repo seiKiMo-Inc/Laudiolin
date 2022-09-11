@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 body {
-    @apply bg-white dark:bg-slate-900 transition-all;
-    font-family: 'Verdana';
+    @apply bg-white dark:bg-[#292F36] transition-all;
+    @apply bg-gradient-to-t from-indigo-500/20 to-[#292F36];
+
+    font-family: "Verdana";
     --nav-height: 13vh;
     padding-top: var(--nav-height);
     * {
@@ -56,7 +58,6 @@ h1 {
     align-items: center;
     width: 30px;
     height: 30px;
-  
 }
 
 .titlebar-button:hover {
@@ -70,6 +71,8 @@ h1 {
 
 .controls {
     @apply p-2 fixed inset-x-0 bottom-0 bg-slate-600 dark:bg-slate-800 transition-all;
+    @apply bg-gradient-to-r from-indigo-900/20 to-black;
+
     z-index: 99;
     .control {
         $p: &;
@@ -90,6 +93,12 @@ h1 {
 }
 
 .navbar {
-    @apply bg-slate-600 dark:bg-slate-800 text-slate-800 w-full fixed transition-all;
+    @apply bg-black flex flex-wrap items-center justify-between h-16 p-6 fixed w-full transition-all;
+    @apply bg-gradient-to-r from-indigo-500/20 to-black;
     margin-top: 28px;
+}
+
+.titleLogo {
+    @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500 ml-2;
+    font-family: "GAU_font_cube_R";
 }
