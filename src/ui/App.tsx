@@ -1,5 +1,5 @@
 import React from "react";
-import "css/App.scss";
+import "../css/App.scss";
 
 import { Container } from "react-bootstrap";
 
@@ -48,7 +48,7 @@ class App extends React.Component<IProps, IState> {
             <>
                 <Navigation />
                 <Container style={{ paddingBottom: "20%" }}>
-                <SearchResultsElement results={exampleSearchResults}></SearchResultsElement>
+                {/* <SearchResultsElement results={exampleSearchResults}></SearchResultsElement> */}
                 </Container>
                 <Controls />
             </>
