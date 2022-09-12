@@ -6,7 +6,7 @@ class HomePage extends React.Component {
         return (
             <div style={{ textAlign: "center", fontSize: 100, color: "white" }}>
                 <h1>Home</h1>
-                <Link to="/search-results" style={{ fontSize: 20, textDecoration: "underline" }}>Go To Search Results</Link>
+                <Link to="/search-results" style={{ fontSize: 20 }}>{'>'}go to search results</Link>
             </div>
         );
     }

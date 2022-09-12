@@ -1,5 +1,5 @@
 import React from "react";
-import { faLightbulb, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import VolumeControl from "@components/music/VolumeControl";
 import Button from "./Button";
 import ProgressBarComponent from "@components/music/ProgressBar";
@@ -18,13 +18,13 @@ interface IState {
     showControls: boolean;
 }
 
-const toggleTrack = (track: Track|undefined, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
+const toggleTrack = (track: Track | undefined, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
     track?.isPlaying() ? track?.pause() : track?.resume();
     setState({ ...state, playing: !state.playing });
 };
 
 function changeVolume(
-    track: Track|undefined,
+    track: Track | undefined,
     state: IState,
     value: number,
     setState: React.Dispatch<React.SetStateAction<IState>>
@@ -33,23 +33,27 @@ function changeVolume(
     setState({ ...state, volume: value });
 }
 
-const toggleMute = (track: Track|undefined, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
+const toggleMute = (track: Track | undefined, state: IState, setState: React.Dispatch<React.SetStateAction<IState>>) => {
     state.muted ? track?.unmute() : track?.mute();
     setState({ ...state, muted: !state.muted });
 };
 
-const setProgress = (track: Track|undefined, value: number) => {
+const setProgress = (track: Track | undefined, value: number) => {
     track?.seek(value);
 };
 
 class Controls extends React.Component<IProps, IState> {
-    track: Track|undefined;
+    track: Track | undefined;
     showControls: boolean = true;
     originalColors: string[] = [];
 
     constructor(props: IProps) {
         super(props);
-        // this.track = new Track("https://app.magix.lol/download?id=fWoxszxtkk4&source=YouTube");
+        this.track = new Track({
+            file_path: "https://app.magix.lol/download?id=RF9fEOz6LNU&source=YouTube",
+            volume: 1.0
+        });
+        this.track.play()
         this.state = {
             playing: false,
             muted: false,
@@ -60,30 +64,15 @@ class Controls extends React.Component<IProps, IState> {
         };
     }
 
-    lightshow() {
-        const elements = document.getElementsByTagName("*");
-        if (this.state.lightshow) {
-            for (let i = 0; i < elements.length; i++) {
-                const element = (elements[i] as HTMLElement);
-                this.originalColors.push(element.style.backgroundColor);
-                element.style.backgroundColor =
-                    "#" + Math.floor(Math.random() * 16777215).toString(16);
-            }
-        } else {
-            for (let i = 0; i < elements.length; i++)
-                (elements[i] as HTMLElement).style.backgroundColor = this.originalColors[i];
-        }
-    }
-
     toggleControls = () => {
         this.setState({ showControls: !this.state.showControls });
     };
 
-    setURL = (url: string) => {
-        this.track?.stop();
-        // this.track = new Track(url);
-        this.setState({ playing: false });
-    };
+    // setURL = (url: string) => {
+    //     this.track?.stop();
+    //     this.track = new Track(file_path);
+    //     this.setState({ playing: false });
+    // };
 
     async componentDidMount() {
         // this.track.on("end", () => {
@@ -91,13 +80,13 @@ class Controls extends React.Component<IProps, IState> {
         // });
         setInterval(() => {
             this.setState({ progress: this.track?.seek() || 0 });
-            this.lightshow();
 
         }, 100);
     }
 
     render() {
-        // @ts-ignore
+        console.log(this.state.playing);
+
         return (
             <>
                 <div
@@ -118,11 +107,6 @@ class Controls extends React.Component<IProps, IState> {
                             tooltip={"play/pause"}
                             onClick={() => toggleTrack(this.track, this.state, this.setState.bind(this))}
                             icon={this.state.playing ? faPause : faPlay}
-                        />
-                        <Button
-                            className={"control"}
-                            onClick={() => this.setState({ lightshow: !this.state.lightshow })}
-                            icon={faLightbulb}
                         />
                         <VolumeControl
                             volume={this.state.volume}

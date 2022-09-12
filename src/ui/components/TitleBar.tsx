@@ -1,17 +1,24 @@
 import React from "react";
 import { appWindow } from '@tauri-apps/api/window';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faArrowRight, faCircle, faHome, faSquare, faWindowMaximize, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 
 interface IProps { }
 
 interface IState {
     isMaximized: boolean;
+    isBackEnabled: boolean;
+    isNextEnabled: boolean;
 }
 
-class TitleBar extends React.Component<IProps, IState> {  
+class TitleBar extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
             isMaximized: false,
+            isBackEnabled: false,
+            isNextEnabled: false,
         }
     }
 
@@ -32,29 +39,33 @@ class TitleBar extends React.Component<IProps, IState> {
     close = () => {
         appWindow.close();
     }
+    back = () => {
+        window.history.back();
+    }
+    next = () => {
+        window.history.forward();
+    }
 
     render() {
         return (
             <div className="titlebar" data-tauri-drag-region>
-                <div className="titlebar-button" id="titlebar-minimize" onClick={this.minimize}>
-                    <img
-                        src="https://api.iconify.design/mdi:window-minimize.svg"
-                        alt="minimize"
-                        style={{ filter: "invert(100%)" }}
-                    />
+                <div className="titlebar-button mr-0 text-white" id="titlebar-back" onClick={this.back} title="Back">
+                    <FontAwesomeIcon icon={faArrowLeft} />
                 </div>
-                <div className="titlebar-button" id="titlebar-maximize" onClick={this.state.isMaximized ? this.unmaximize : this.maximize}>
-                    <img
-                        src="https://api.iconify.design/mdi:window-maximize.svg"
-                        alt="maximize"
-                        style={{ filter: "invert(100%)" }}
-                    />
+                <div className="titlebar-button mr-0 text-white" id="titlebar-home" title="Home">
+                    <Link to="/"><FontAwesomeIcon icon={faHome} /></Link>
                 </div>
-                <div className="titlebar-button" id="titlebar-close" onClick={this.close}>
-                    <img 
-                        src="https://api.iconify.design/mdi:close.svg" 
-                        alt="close" 
-                        style={{ filter: "invert(100%)" }} />
+                <div className="titlebar-button mr-auto text-white" id="titlebar-next" onClick={this.next} title="Next">
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </div>
+                <div className="titlebar-button text-green-500" id="titlebar-minimize" onClick={this.minimize} title="Minimize">
+                    <FontAwesomeIcon icon={faCircle} />
+                </div>
+                <div className="titlebar-button text-yellow-500" id="titlebar-maximize" onClick={this.state.isMaximized ? this.unmaximize : this.maximize} title="Maximize">
+                    <FontAwesomeIcon icon={faCircle} />
+                </div>
+                <div className="titlebar-button text-red-500" id="titlebar-close" onClick={this.close} title="Close">
+                    <FontAwesomeIcon icon={faCircle} />
                 </div>
             </div>
         );

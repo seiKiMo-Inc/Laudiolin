@@ -25,19 +25,19 @@ body {
 }
 
 h1 {
-    color: aqua;
+    @apply text-transparent bg-clip-text;
+    @apply bg-gradient-to-t from-purple-900 to-cyan-600;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 #root {
-    height: 100vh;
-    width: auto;
+    @apply h-screen w-auto;
 }
 
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-    display: none;
-    width: 6px;
+    @apply hidden w-1;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,29 +50,17 @@ h1 {
 }
 
 .titlebar {
-    height: 30px;
+    @apply flex justify-end h-8 fixed inset-x-0 top-0 select-none;
     background: #1f2838;
-    user-select: none;
-    display: flex;
-    justify-content: flex-end;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     z-index: 10000;
 }
 
 .titlebar-button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
+    @apply inline-flex items-center justify-center h-8 w-8 self-center;
     &:hover {
         background: #3484fc;
     }
 }
-
 
 .nav--hidden {
     transform: translateY(calc(-1 * var(--nav-height)));
@@ -80,28 +68,22 @@ h1 {
 }
 
 .ContentContainer {
-    padding-bottom: 20%; 
-    overflow-y: auto; 
+    @apply m-auto overflow-y-auto;
+    padding-bottom: 20%;
     max-width: 1000px;
-    margin: auto;
 }
 
 .SearchResults {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin: 0 auto;
-    padding: 20px;
+    @apply flex flex-wrap items-center my-0 mx-auto p-5 overflow-hidden;
     &:hover {
         background-color: #272d41 !important;
     }
 }
 
-
 .result-title {
-    width: 800px;
+    @apply overflow-hidden;
     white-space: nowrap;
-    overflow: hidden;
+    width: 800px;
 
     &:not(:hover) {
         text-overflow: ellipsis;
@@ -110,7 +92,7 @@ h1 {
     &:hover,
     &:focus {
         span {
-            animation: scroll-text 9s 0s infinite; 
+            animation: scroll-text 9s 0s infinite;
             display: inline-block;
             color: #3484fc;
         }

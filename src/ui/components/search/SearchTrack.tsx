@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import type { SearchResult } from "@backend/types";
 
 import "@css/SearchTrack.css";
@@ -19,7 +19,7 @@ class SearchTrack extends React.Component<IProps, IState> {
     render() {
         return (
             <div id="container">
-                <img id="image" src={this.props.icon} alt="Album art" />
+                <svg id="image" src={this.props.icon} alt="Album art" />
                 <div id="info">
                     <h3>{this.props.title}</h3>
                     <p>{this.props.artist}</p>
