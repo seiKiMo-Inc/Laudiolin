@@ -68,11 +68,11 @@ h1 {
     align-items: center;
     width: 30px;
     height: 30px;
+    &:hover {
+        background: #3484fc;
+    }
 }
 
-.titlebar-button:hover {
-    background: #3484fc;
-}
 
 .nav--hidden {
     transform: translateY(calc(-1 * var(--nav-height)));
@@ -92,10 +92,44 @@ h1 {
     align-items: center;
     margin: 0 auto;
     padding: 20px;
+    &:hover {
+        background-color: #272d41 !important;
+    }
 }
 
-.SearchResults:hover {
-    background-color: #272d41 !important;
+
+.result-title {
+    width: 800px;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:not(:hover) {
+        text-overflow: ellipsis;
+    }
+
+    &:hover,
+    &:focus {
+        span {
+            animation: scroll-text 9s 0s infinite; 
+            display: inline-block;
+            color: #3484fc;
+        }
+    }
+
+    @keyframes scroll-text {
+        0% {
+            transform: translateX(0%);
+        }
+        90% {
+            transform: translateX(-100%);
+        }
+        95% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(0%);
+        }
+    }
 }
 
 .controls {

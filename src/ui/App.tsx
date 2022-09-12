@@ -19,7 +19,7 @@ const exampleSearchResults = {
     },
     results: [
         {
-            title: "Kirameki",
+            title: "Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki Kirameki",
             artist: "Hikaru Station",
             duration: 145000,
             url: "https://open.spotify.com/track/2UO5jOiGCLKiLCm8O6qhCb?si=5cd496d912f34081",
