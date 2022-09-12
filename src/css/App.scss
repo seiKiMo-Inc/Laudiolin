@@ -79,6 +79,26 @@ h1 {
     box-shadow: none;
 }
 
+.ContentContainer {
+    padding-bottom: 20%; 
+    overflow-y: auto; 
+    max-width: 1000px;
+    margin: auto;
+}
+
+.SearchResults {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #435170;
+}
+
+.SearchResults:hover {
+    background-color: #272d41 !important;
+}
+
 .controls {
     @apply p-2 fixed inset-x-0 bottom-0 bg-slate-600 dark:bg-slate-800 transition-all;
     @apply bg-gradient-to-r from-indigo-900/20 to-black;

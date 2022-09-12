@@ -11,19 +11,19 @@ import SearchTrack from "@components/search/SearchTrack";
 
 const exampleSearchResults = {
     top: {
-        title: "Firefox",
-        artist: "Mozilla",
-        duration: Infinity,
-        url: "https://crepe.moe/fqOXk3F1",
-        icon: "https://crepe.moe/c/fqOXk3F1",
+        title: "光るなら",
+        artist: "Goose house",
+        duration: 252133,
+        url: "https://open.spotify.com/track/2BlDX1yfT0ea5wo0vjCKKa",
+        icon: "https://i.scdn.co/image/ab67616d0000b2730735b9b1d06b65bbd8814825",
     },
     results: [
         {
-            title: "Best song ever",
-            artist: "Heretic",
-            duration: Infinity,
-            url: "",
-            icon: "https://crepe.moe/c/Ojwx9dUB",
+            title: "Kirameki",
+            artist: "Hikaru Station",
+            duration: 145000,
+            url: "https://open.spotify.com/track/2UO5jOiGCLKiLCm8O6qhCb?si=5cd496d912f34081",
+            icon: "https://i.scdn.co/image/ab67616d00001e021d24f8fa55739bdf2fecfd24",
         },
     ],
 };
@@ -50,9 +50,8 @@ class App extends React.Component<IProps, IState> {
             <>
                 <TitleBar />
                 <Navigation />
-                <Container style={{ paddingBottom: "20%", overflowY: "auto" }}>
-                    {/* <SearchResultsElement results={exampleSearchResults}></SearchResultsElement> */}
-                    <SearchTrack title={"光るなら"} artist={"Goose house"} icon={"https://i.scdn.co/image/ab67616d0000b2730735b9b1d06b65bbd8814825"} url={"https://open.spotify.com/track/2BlDX1yfT0ea5wo0vjCKKa"} duration={252133} />
+                <Container className="ContentContainer">
+                    <SearchResultsElement results={exampleSearchResults}></SearchResultsElement>
                 </Container>
                 <Controls />
             </>
