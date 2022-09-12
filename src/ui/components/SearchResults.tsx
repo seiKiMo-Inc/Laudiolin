@@ -20,7 +20,7 @@ class SearchResultsElement extends React.Component<IProps, never> {
                             <div className="SearchResults list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
                                 <Row>
                                     <Col>
-                                        <Figure style={{ display: "inline-flex" }}>
+                                        <Figure style={{ display: "inline-flex", verticalAlign: "bottom" }}>
                                             <Figure.Image src={result.icon} style={{ maxWidth: 100 }} />
                                             <Figure.Caption style={{ alignSelf: "center", marginLeft: 20 }}>
                                                 <a href={result.url}>{result.title}</a>
