@@ -1,15 +1,15 @@
 import { emit, listen } from "@tauri-apps/api/event";
 import { Howl, Howler } from "howler";
+
 import { file } from "@backend/fs";
+import { sendGatewayMessage } from "@backend/gateway";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type { FilePayload } from "@backend/types";
+import type { FilePayload, VolumePayload } from "@backend/types";
 
 let currentTrack: Track|null = null;
 
-type PlayAudioPayload = FilePayload & {
-    volume: number;
-};
+type PlayAudioPayload = FilePayload & VolumePayload;
 
 /**
  * Sets up event listeners.
@@ -17,6 +17,7 @@ type PlayAudioPayload = FilePayload & {
 export async function setupListeners() {
     console.log("Setting up audio event listeners...");
     await listen("play_audio", playAudio);
+    await listen("set_volume", updateVolume);
 }
 
 /**
@@ -34,13 +35,26 @@ export function getCurrentTrack(notNull: boolean = false): Track|null {
 }
 
 /**
+ * Sets the player's volume.
+ * Emits a volume packet to the gateway.
+ * @param volume The volume.
+ */
+export function setVolume(volume: number) {
+    // Set the player's volume.
+    Howler.volume(volume);
+    // Emit a volume packet to the gateway.
+    sendGatewayMessage(<VolumePayload> {
+        type: "volume",
+        timestamp: Date.now(),
+        volume
+    });
+}
+
+/**
  * Plays an audio file.
  * @param event The event.
  */
 function playAudio(event: Event<any>) {
-    console.log("Event received.")
-    console.log(event.payload);
-
     // Stop the current track if there is one.
     if(currentTrack) {
         currentTrack.stop();
@@ -50,6 +64,18 @@ function playAudio(event: Event<any>) {
     currentTrack = new Track(event.payload);
     // Play the track.
     currentTrack.play();
+}
+
+/**
+ * Sets the global player volume.
+ * @param event The event.
+ */
+function updateVolume(event: Event<any>) {
+    // Parse the payload from the event.
+    const payload: VolumePayload = event.payload;
+
+    // Set the volume.
+    Howler.volume(payload.volume);
 }
 
 export class Track {

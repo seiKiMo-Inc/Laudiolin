@@ -33,11 +33,12 @@ fn main() {
             // Bind app to once_cell.
             wrapper::TauriApp::set(app.handle());
 
-            // Setup event listeners.
-            setup_listeners(app);
+            // Initialize backend wrapper.
+            wrapper::initialize();
             // Create app data directory.
             create_data_dir(app);
-            
+
+            // Set the window shadow.
             let window = app.get_window("main").unwrap();
             set_shadow(&window, true).expect("Unsupported platform!");
 
@@ -45,12 +46,6 @@ fn main() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-/// Sets up the event listeners.
-/// app: The Tauri app.
-fn setup_listeners(app: &mut App<Wry>) {
-
 }
 
 /// Creates the app data directory.

@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "package": "tauri build",
     "tauri": "tauri",
 
     "start:dev": "tauri dev"

@@ -1,6 +1,7 @@
 // A Tauri-based wrapper for Laudiolin Rust bindings.
 
-use crate::backend::{DownloadOptions, SearchOptions, SearchResults};
+use crate::backend::*;
+
 use once_cell::sync::OnceCell;
 use tauri::{Manager, Wry, AppHandle};
 use serde::Serialize;
@@ -27,6 +28,47 @@ impl TauriApp {
             .join(path).to_str().unwrap().to_string()
     }
 }
+
+// Defining structures for events. \\
+
+#[derive(Clone, Serialize)]
+struct MessagePayload {
+    data: String
+}
+#[derive(Clone, Serialize)]
+struct VolumePayload {
+    volume: u8
+}
+
+// Implementations for backend structures. \\
+
+static CLIENT_INSTANCE: OnceCell<Client> = OnceCell::new();
+
+/// Sets the audio player's volume.
+/// volume: Percentage out of 1.0 (100).
+pub fn volume(volume: u8) {
+    TauriApp::emit("set_volume", VolumePayload { volume });
+}
+
+/// Sends data to the gateway.
+/// data: The data to send.
+pub fn send(data: String) {
+    TauriApp::emit("send_message", MessagePayload { data });
+}
+
+pub fn initialize() {
+    // Create client instance.
+    CLIENT_INSTANCE.set(Client {}).unwrap();
+
+    // Setup event listeners.
+    TauriApp::global().listen_global("receive_message", |event| {
+        gateway_handle_message(
+            CLIENT_INSTANCE.get().expect("Client instance not initialized"),
+            event.payload().expect("Unable to decode payload"));
+    });
+}
+
+// Wrapper methods for the Laudiolin backend. \\
 
 /// Performs a search for the query.
 /// query: The query to search for.

@@ -1,6 +1,9 @@
 export type FilePayload = {
     file_path: string;
 }
+export type VolumePayload = {
+    volume: number;
+}
 
 export type SearchResult = {
     title: string;
