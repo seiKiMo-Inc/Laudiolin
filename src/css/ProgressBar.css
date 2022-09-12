@@ -1,0 +1,27 @@
+#ProgressBar {
+    display: flex;
+    align-items: center;
+}
+
+p {
+    color: white;
+    font-family: monospace;
+    font-size: large;
+}
+
+#timestamp-start {
+    margin-right: 10px;
+    margin-left: 10%;
+}
+
+#timestamp-end {
+    margin-left: 10px;
+    margin-right: 10%;
+}
+
+.MainProgressBar {
+    height: 10px;
+    width: 100%;
+    display: inline-block;
+}
+
