@@ -64,7 +64,8 @@ pub fn initialize() {
     TauriApp::global().listen_global("receive_message", |event| {
         gateway_handle_message(
             CLIENT_INSTANCE.get().expect("Client instance not initialized"),
-            event.payload().expect("Unable to decode payload"));
+            event.payload().expect("Unable to decode payload"))
+            .expect("Unable to handle message");
     });
 }
 

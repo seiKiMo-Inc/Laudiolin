@@ -68,7 +68,7 @@ pub struct GatewayMessage {
 /// This function is called by the gateway when a message is received.
 /// client: The client handling the message.
 /// data: The message received. (JSON)
-pub async fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'static str> {
+pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'static str> {
     // Parse the gateway message.
     let parsed_data: GatewayMessage = serde_json::from_str(data).unwrap();
 
