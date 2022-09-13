@@ -2,7 +2,8 @@ import React from "react";
 import { appWindow } from '@tauri-apps/api/window';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight, faCircle, faHome, faSquare, faWindowMaximize, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Pages } from "../constants";
 
 interface IProps { }
 
@@ -39,9 +40,11 @@ class TitleBar extends React.Component<IProps, IState> {
     close = () => {
         appWindow.close();
     }
+
     back = () => {
         window.history.back();
     }
+
     next = () => {
         window.history.forward();
     }
@@ -52,9 +55,11 @@ class TitleBar extends React.Component<IProps, IState> {
                 <div className="titlebar-button mr-0 text-white" id="titlebar-back" onClick={this.back} title="Back">
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </div>
-                <div className="titlebar-button mr-0 text-white" id="titlebar-home" title="Home">
-                    <Link to="/"><FontAwesomeIcon icon={faHome} /></Link>
-                </div>
+                <Link to={Pages.home}>
+                    <div className="titlebar-button mr-0 text-white" id="titlebar-home" title="Home">
+                        <FontAwesomeIcon icon={faHome} />
+                    </div>
+                </Link>
                 <div className="titlebar-button mr-auto text-white" id="titlebar-next" onClick={this.next} title="Next">
                     <FontAwesomeIcon icon={faArrowRight} />
                 </div>

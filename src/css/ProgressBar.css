@@ -3,7 +3,7 @@
     align-items: center;
 }
 
-p {
+#timestamp-start, #timestamp-end {
     color: white;
     font-family: monospace;
     font-size: large;
@@ -24,4 +24,3 @@ p {
     width: 100%;
     display: inline-block;
 }
-

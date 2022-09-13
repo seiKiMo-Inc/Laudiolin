@@ -8,6 +8,7 @@ import "@css/App.scss";
 
 import HomePage from "./pages/Home";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import { Pages } from "./constants";
 
 import Controls from "@components/Controls";
 import Navigation from "@components/NavBar";
@@ -38,8 +39,8 @@ class App extends React.Component<IProps, IState> {
                     <Navigation />
                     {/* I recommend making a CONSTANTS file for page names to not make it hassle for changing names everywhere */}
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/search-results" element={<SearchResultsPage />} />
+                        <Route path={Pages.home} element={<HomePage />} />
+                        <Route path={Pages.searchResults} element={<SearchResultsPage />} />
                     </Routes>
                     <Controls />
                 </>

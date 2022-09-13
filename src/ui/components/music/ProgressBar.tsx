@@ -28,7 +28,7 @@ class ProgressBarComponent extends React.Component<IProps, never> {
             <span id="ProgressBar">
                 {
                 /**
-                 * @todo Make the timestamps actually convert duration to minutes and seconds but I cant test since the songs dont play rn :skull:
+                 * @todo Make the timestamps actually convert duration to minutes and seconds but I cant test since I still need to fix the audio player :skull:
                  * Using the msToMinutes function above
                  * And remove the label too ig.
                  */

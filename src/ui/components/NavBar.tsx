@@ -1,9 +1,6 @@
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { FormControl } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import Button from "./Button";
 
 interface IProps { }
 interface IState {
@@ -51,12 +48,9 @@ class Navigation extends React.Component<IProps, IState> {
                     top: showNav ? 0 : -100,
                     zIndex: 100,
                 }}
-
             >
-
                 <Container>
                     <h1 className="titleLogo">Laudiolin</h1>
-
                 </Container>
             </Navbar>
         );

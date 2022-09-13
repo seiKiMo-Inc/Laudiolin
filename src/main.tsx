@@ -15,7 +15,7 @@ import * as gateway from "@backend/gateway";
         gateway.setupGateway({
             encrypted: false,
             address: "localhost",
-            port: 3001
+            port: 6463
         });
     }, 3000);
 

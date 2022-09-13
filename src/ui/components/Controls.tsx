@@ -85,8 +85,6 @@ class Controls extends React.Component<IProps, IState> {
     }
 
     render() {
-        console.log(this.state.playing);
-
         return (
             <>
                 <div

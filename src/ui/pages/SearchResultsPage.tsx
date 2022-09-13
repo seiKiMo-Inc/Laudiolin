@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import SearchResultsElement from "../components/SearchResults";
 import { Link } from "react-router-dom";
+import { Pages } from "../constants";
 
 const exampleSearchResults = {
     top: {
@@ -35,7 +36,7 @@ class SearchResultsPage extends React.Component {
             <Container className="ContentContainer">
                 <SearchResultsElement results={exampleSearchResults}></SearchResultsElement>
                 <br />
-                <Link to="/" style={{ color: "white", textDecoration: "underline" }}>Go To Home</Link>
+                <Link to={Pages.home} style={{ color: "white", textDecoration: "underline" }}>Go To Home</Link>
             </Container>
         );
     }
