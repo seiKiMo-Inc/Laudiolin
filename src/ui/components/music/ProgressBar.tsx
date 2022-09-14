@@ -16,12 +16,13 @@ class ProgressBarComponent extends React.Component<IProps, never> {
     msToMinutes = (duration: number) => {
         let minutes: number = Math.floor(duration / 60000);
         let seconds: any = ((duration % 60000) / 1000).toFixed(0);
+
         return (
             seconds == 60 ?
                 (minutes + 1) + ":00" :
                 minutes + ":" + (seconds < 10 ? "0" : "") + seconds
         );
-    }
+    };
 
     render() {
         return (

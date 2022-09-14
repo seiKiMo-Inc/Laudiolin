@@ -1,10 +1,12 @@
 import React from "react";
+
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
-import VolumeControl from "@components/music/VolumeControl";
+
 import Button from "./Button";
+import VolumeControl from "@components/music/VolumeControl";
 import ProgressBarComponent from "@components/music/ProgressBar";
 
-import { Track } from "@backend/audio";
+import { Track, setVolume } from "@backend/audio";
 
 interface IProps {
     style?: React.CSSProperties
@@ -14,7 +16,7 @@ interface IState {
     muted: boolean;
     volume: number;
     progress: number;
-    lightshow: boolean;
+    lightShow: boolean;
     showControls: boolean;
 }
 
@@ -29,7 +31,9 @@ function changeVolume(
     value: number,
     setState: React.Dispatch<React.SetStateAction<IState>>
 ) {
-    track?.volume(value / 100);
+    // Set the player volume.
+    setVolume(value / 100);
+    // Call the state callback.
     setState({ ...state, volume: value });
 }
 
@@ -53,13 +57,15 @@ class Controls extends React.Component<IProps, IState> {
             file_path: "https://app.magix.lol/download?id=RF9fEOz6LNU&source=YouTube",
             volume: 1.0
         });
-        this.track.play()
+
+        this.track.play();
+
         this.state = {
             playing: false,
             muted: false,
             volume: 100,
             progress: 0,
-            lightshow: false,
+            lightShow: false,
             showControls: true
         };
     }
