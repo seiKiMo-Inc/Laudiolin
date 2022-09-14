@@ -26,14 +26,7 @@ class ProgressBarComponent extends React.Component<IProps, never> {
     render() {
         return (
             <span id="ProgressBar">
-                {
-                /**
-                 * @todo Make the timestamps actually convert duration to minutes and seconds but I cant test since I still need to fix the audio player :skull:
-                 * Using the msToMinutes function above
-                 * And remove the label too ig.
-                 */
-                }
-                <p id="timestamp-start">{this.msToMinutes(0)}</p>
+                <p id="timestamp-start">{this.msToMinutes(this.props.duration)}</p>
                 <ProgressBar
                     className="MainProgressBar rounded progress-bar dark:bg-gray-700 bg-slate-100 relative"
                     onClick={(e) =>
@@ -50,7 +43,7 @@ class ProgressBarComponent extends React.Component<IProps, never> {
                             : ""
                     }
                 />
-                <p id="timestamp-end">{this.msToMinutes(217612)}</p>
+                <p id="timestamp-end">{this.msToMinutes(this.props.duration)}</p>
             </span>
         );
     }
