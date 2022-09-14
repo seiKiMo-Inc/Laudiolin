@@ -1,5 +1,6 @@
 import React from "react";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
+import ProgressBar from "@components/common/ProgressBar";
 
 import "@css/ProgressBar.css";
 
@@ -28,19 +29,21 @@ class ProgressBarComponent extends React.Component<IProps, never> {
     };
 
     render() {
+        const progress = (this.props.progress / this.props.duration) * 100;
+
         return (
             <span id="ProgressBar">
                 <p id="timestamp-start">{this.msToMinutes(this.props.duration)}</p>
                 <ProgressBar
-                    // rounded progress-bar dark:bg-gray-700 bg-slate-100 relative
-                    className="MainProgressBar rounded progress-bar dark:bg-gray-700 bg-slate-100 relative"
-                    // onClick={(e) =>
-                    //     this.props.setProgress(
-                    //         (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
-                    //         this.props.duration
-                    //     )
-                    // }
-                    now={60}
+                    color={"#3484fc"}
+                    className="dark:bg-gray-700 bg-slate-100 relative"
+                    progress={progress}
+                    onClick={(e) =>
+                        this.props.setProgress(
+                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+                            this.props.duration
+                        )
+                    }
                 />
 
                 <p id="timestamp-end">{this.msToMinutes(this.props.duration)}</p>
