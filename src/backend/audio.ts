@@ -39,12 +39,15 @@ export function getCurrentTrack(notNull: boolean = false): Track|null {
  * Play an audio track from a search result.
  * @param track The search result of the track to play.
  */
-export async function playFromResult(track: SearchResult): Promise<void> {
+export async function playFromResult(track: SearchResult): Promise<Track> {
     // TODO: Check settings for if user wants to download or stream audio.
 
     // Download the audio file.
     // TODO: Check settings for the user's preferred search engine.
     await invoke("play_from", { track });
+
+    // Return the track.
+    return currentTrack;
 }
 
 /**
