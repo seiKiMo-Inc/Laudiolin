@@ -129,14 +129,3 @@ h1 {
         }
     }
 }
-
-.navbar {
-    @apply bg-black flex flex-wrap items-center justify-between h-16 p-6 fixed w-full transition-all;
-    @apply bg-gradient-to-r from-indigo-500/20 to-black;
-    margin-top: 28px;
-}
-
-.titleLogo {
-    @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500 ml-2;
-    font-family: GAU_CUBE_R;
-}

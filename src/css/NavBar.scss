@@ -1,0 +1,41 @@
+.navbar {
+    @apply bg-black flex flex-wrap items-center justify-between h-16 p-6 fixed w-full transition-all;
+    @apply bg-gradient-to-r from-indigo-500/20 to-black;
+
+    margin-top: 28px;
+}
+
+#Title {
+    @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500 ml-2;
+    font-family: GAU_CUBE_R;
+}
+
+#NavbarContainer {
+    display: inline-flex;
+}
+
+#Search {
+    position: absolute;
+    right: 10px;
+    margin-top: -8px;
+}
+
+#SearchInput {
+    padding: 6px;
+    border: none;
+    font-size: 17px;
+    color: white;
+    font-family: sans-serif;
+    background-color: #272d41;
+    &:focus {
+        outline: none
+    }
+}
+
+#SearchIcon {
+    color: white;
+    padding: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #3484fc;
+}

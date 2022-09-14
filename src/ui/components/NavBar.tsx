@@ -1,18 +1,36 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
+import { Link } from "react-router-dom";
 
-interface IProps { }
+import { Pages } from "@app/constants";
+import { setQuery } from "@backend/search";
+
+import Button from "./Button"
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+
+import "@css/NavBar.scss";
+
+/* Redirect method. */
+// const navigate = useNavigate();
+
+interface IProps {
+
+}
 interface IState {
     lastScrollY: any;
     showNav: any;
+    searchQuery: string;
 }
+
 class Navigation extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+
         this.state = {
             lastScrollY: 0,
             showNav: true,
+            searchQuery: ""
         };
     }
 
@@ -23,6 +41,28 @@ class Navigation extends React.Component<IProps, IState> {
         this.setState({ lastScrollY: currentScrollY });
     };
 
+    inputQuery = event => {
+        this.setState({ searchQuery: event.target.value });
+    };
+
+    searchEnter = event => {
+        if(event.key != "Enter") return;
+
+        // Set the search query.
+        setQuery(this.state.searchQuery);
+        // Redirect to the search results page.
+        // navigate(Pages.searchResults);
+    };
+
+    searchButton = () => {
+        // Validate the search query.
+        const query = this.state.searchQuery;
+        if(query.length < 1) return;
+
+        // Set the search query.
+        setQuery(query);
+    };
+
     componentDidMount() {
         window.addEventListener("scroll", this.handleScroll);
     }
@@ -31,11 +71,10 @@ class Navigation extends React.Component<IProps, IState> {
         window.removeEventListener("scroll", this.handleScroll);
     }
 
-
     toggleDarkMode() {
-        const darkmode = !document.documentElement.classList.contains("dark");
-        localStorage.setItem("darkMode", darkmode.toString());
-        document.documentElement.classList.toggle("dark", darkmode);
+        const darkMode = !document.documentElement.classList.contains("dark");
+        localStorage.setItem("darkMode", darkMode.toString());
+        document.documentElement.classList.toggle("dark", darkMode);
     }
 
     render() {
