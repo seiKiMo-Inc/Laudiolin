@@ -12,21 +12,9 @@ mod backend;
 mod wrapper;
 mod audio;
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    // Download audio file.
-    let file = wrapper::download("YuEl6hHwMMI", "YouTube");
-    // Play audio file.
-    audio::play_audio(file);
-
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            greet,
-
             wrapper::search, wrapper::download,
             audio::play_from
         ])

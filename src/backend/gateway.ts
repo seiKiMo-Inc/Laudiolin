@@ -1,5 +1,7 @@
 import { emit, listen } from "@tauri-apps/api/event";
 
+import { player } from "@backend/audio";
+
 import type { Event } from "@tauri-apps/api/helpers/event";
 
 let gateway: WebSocket|null = null;
@@ -20,6 +22,10 @@ type InitializeMessage = BaseGatewayMessage & {
 type LatencyMessage = BaseGatewayMessage & {
     type: "latency";
 };
+type VolumeMessage = BaseGatewayMessage & {
+    type: "volume";
+    volume: number;
+};
 
 type GatewayMessagePayload = {
     data: string;
@@ -31,6 +37,12 @@ type GatewayMessagePayload = {
 export async function setupListeners() {
     console.log("Setting up gateway event listeners...");
     await listen("send_message", sendMessage);
+
+    // Setup audio listener for gateway.
+    player.on("volume", volume => {
+        // Send the volume to the gateway.
+        sendGatewayMessage(JSON.stringify(<VolumeMessage> { volume }));
+    });
 }
 
 /**

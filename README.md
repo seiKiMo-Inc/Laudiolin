@@ -1,6 +1,7 @@
 # Laudiolin
 
-A very simple music player written in TypeScript using Electron and React.
+A very simple music player written in TypeScript using Electron and React.\
+*pronounced eL-auDiO-liN*
 
 ## Running
 
