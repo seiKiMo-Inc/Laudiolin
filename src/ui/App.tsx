@@ -8,8 +8,9 @@ import {
 import HomePage from "@pages/Home";
 import SearchResultsPage from "@pages/SearchResultsPage";
 import { Pages } from "@app/constants";
+import { player } from "@backend/audio";
 
-import Controls from "@components/Controls";
+import Controls from "@components/player/Controls";
 import Navigation from "@components/NavBar";
 import TitleBar from "@components/TitleBar";
 
@@ -43,7 +44,7 @@ class App extends React.Component<any, any> {
                         <Route path={Pages.searchResults} element={<SearchResultsPage />} />
                     </Routes>
 
-                    <Controls />
+                    <Controls player={player} />
                 </>
             </Router>
         );

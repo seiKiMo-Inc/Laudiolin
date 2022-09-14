@@ -47,6 +47,14 @@ class Controls extends React.Component<IProps, IState> {
         else player.resume();
     }
 
+    setProgress = progress => {
+        // Check if the player is playing a song.
+        if(player.getCurrentTrack() == null) return;
+
+        // Set the player progress.
+        player.setProgress(progress);
+    }
+
     componentDidMount() {
         this.seekTask = setInterval(() => {
             this.setState({ progress: player.getProgress() });
@@ -57,6 +65,7 @@ class Controls extends React.Component<IProps, IState> {
         player.on("pause", () => this.forceUpdate());
         player.on("stop", () => this.forceUpdate());
         player.on("volume", () => this.forceUpdate());
+        player.on("seek", () => this.forceUpdate());
     }
 
     componentWillUnmount() {
@@ -89,9 +98,9 @@ class Controls extends React.Component<IProps, IState> {
                 </span>
 
                 <ProgressBarComponent
-                    progress={this.state.progress}
+                    progress={player.getProgress()}
                     duration={player.getDuration()}
-                    setProgress={() => this.state.progress}
+                    setProgress={this.setProgress}
                 />
             </div>
         );

@@ -58,7 +58,8 @@ pub struct SearchResults {
 
 #[derive(Serialize, Deserialize)]
 pub struct GatewayMessage {
-    pub type_: String,
+    #[serde(rename = "type")]
+    pub _type: String,
     pub timestamp: u64
 }
 
@@ -72,7 +73,7 @@ pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'stati
     // Parse the gateway message.
     let parsed_data: GatewayMessage = serde_json::from_str(data).unwrap();
 
-    match parsed_data.type_.as_str() {
+    match parsed_data._type.as_str() {
         "volume" => Ok(client.volume(parse_volume(data))),
 
         _ => Err("Unknown message type.")

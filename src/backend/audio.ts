@@ -103,6 +103,19 @@ export class MusicPlayer extends EventEmitter {
     }
 
     /**
+     * Sets the current song progress.
+     * @param progress The progress to seek to.
+     */
+    setProgress(progress: number) {
+        if(!this.currentTrack) return;
+
+        // Seek to the given progress.
+        this.currentTrack.seek(progress);
+        // Emit seek event.
+        this.emit("seek", progress);
+    }
+
+    /**
      * Returns the current progress of the playing track.
      * @returns -1 if there is no track playing.
      */
@@ -212,7 +225,8 @@ export class MusicPlayer extends EventEmitter {
      */
     setVolume(volume: number) {
         // Set the player's volume.
-        Howler.volume(volume);
+        Howler.volume(volume / 100);
+        this.volume = volume;
         // Emit volume event.
         this.emit("volume", volume);
     }

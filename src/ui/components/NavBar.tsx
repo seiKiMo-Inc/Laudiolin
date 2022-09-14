@@ -61,6 +61,12 @@ class Navigation extends React.Component<IProps, IState> {
 
         // Set the search query.
         setQuery(query);
+
+        // Check if the user is on the search results page.
+        if(window.location.pathname == Pages.searchResults) {
+            // Force re-render the page.
+            // TODO: Force re-render the search results page.
+        }
     };
 
     componentDidMount() {
