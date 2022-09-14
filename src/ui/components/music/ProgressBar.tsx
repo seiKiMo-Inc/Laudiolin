@@ -33,7 +33,7 @@ class ProgressBarComponent extends React.Component<IProps, never> {
 
         return (
             <span id="ProgressBar">
-                <p id="timestamp-start">{this.msToMinutes(this.props.duration)}</p>
+                <p id="timestamp-start">{this.msToMinutes(this.props.progress)}</p>
                 <ProgressBar
                     color={"#3484fc"}
                     className="dark:bg-gray-700 bg-slate-100 relative"

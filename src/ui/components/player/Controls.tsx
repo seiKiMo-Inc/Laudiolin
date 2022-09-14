@@ -2,9 +2,11 @@ import React from "react";
 
 import { player, MusicPlayer } from "@backend/audio";
 import Button from "@components/Button";
-import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faForward, faBackward } from "@fortawesome/free-solid-svg-icons";
 import VolumeControl from "@components/music/VolumeControl";
 import ProgressBarComponent from "@components/music/ProgressBar";
+
+import "@css/Controls.scss";
 
 interface IProps {
     player: MusicPlayer;
@@ -72,15 +74,20 @@ class Controls extends React.Component<IProps, IState> {
         clearInterval(this.seekTask);
     }
 
+    lmao = () => {
+        alert("lmao gotta implement this later");
+    }
+
     render() {
         return (
             <div className={"controls"}>
-                <span
-                    style={{
-                        display: "table",
-                        margin: "0 auto",
-                        padding: "10px"
-                    }}>
+                <span id="controls-components">
+
+                    <Button
+                        className={"control"}
+                        icon={faBackward}
+                        onClick={this.lmao}
+                    />
 
                     <Button
                         className={"control"}
@@ -89,12 +96,19 @@ class Controls extends React.Component<IProps, IState> {
                         onClick={this.toggleTrackState}
                     />
 
+                    <Button
+                        className={"control"}
+                        icon={faForward}
+                        onClick={this.lmao}
+                    />
+
                     <VolumeControl
                         volume={player.getVolume()}
                         muted={player.getVolume() == 0}
                         setVolume={value => player.setVolume(value)}
                         toggleMute={this.toggleMute}
                     />
+
                 </span>
 
                 <ProgressBarComponent

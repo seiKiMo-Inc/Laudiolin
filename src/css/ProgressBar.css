@@ -1,6 +1,7 @@
 #ProgressBar {
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 #timestamp-start, #timestamp-end {

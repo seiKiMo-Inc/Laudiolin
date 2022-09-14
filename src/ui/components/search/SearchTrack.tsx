@@ -57,7 +57,7 @@ class SearchTrack extends React.Component<IProps, IState> {
             <div className="SearchResult list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
                 <Figure id="figure">
                     <Figure.Caption id="statusButton">
-                        <Button icon={this.state.playing ? faPause : faPlay} onClick={this.playTrack} />
+                        <Button icon={this.state.hasPlayed ? this.state.playing ? faPause : faPlay : faPlay } onClick={this.playTrack} />
                     </Figure.Caption>
 
                     <a onClick={this.preview}>

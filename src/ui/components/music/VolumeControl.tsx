@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Button from "../Button";
+import "@css/Controls.scss";
 
 interface IProps {
     volume: number;
@@ -19,7 +20,7 @@ class VolumeControl extends React.Component<IProps, never> {
 
     render() {
         return (
-            <span>
+            <span id="VolumeControls">
                 <OverlayTrigger placement="top" overlay={
                     <Tooltip id="tooltip-top">Mute/Unmute</Tooltip>
                 }>
@@ -47,7 +48,7 @@ class VolumeControl extends React.Component<IProps, never> {
                             localStorage.setItem("volume", e.target.value);
                             this.props.setVolume(parseInt(e.target.value));
                         }}
-                        className={"cursor-pointer dark:bg-slate-800 h-6"}
+                        className={"cursor-pointer"}
                         style={{ verticalAlign: "middle", marginLeft: 25 }}
                     />
                 </OverlayTrigger>

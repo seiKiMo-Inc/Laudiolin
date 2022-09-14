@@ -15,6 +15,7 @@
 body {
     @apply bg-white dark:bg-[#292F36] transition-all;
     @apply bg-gradient-to-t from-indigo-500/20 to-[#292F36];
+    background-attachment: fixed;
 
     font-family: "Verdana";
     --nav-height: 13vh;
@@ -103,29 +104,6 @@ h1 {
         }
         100% {
             transform: translateX(0%);
-        }
-    }
-}
-
-.controls {
-    @apply p-2 fixed inset-x-0 bottom-0 bg-slate-600 dark:bg-slate-800 transition-all;
-    @apply bg-gradient-to-r from-indigo-900/20 to-black;
-
-    z-index: 99;
-    .control {
-        $p: &;
-        @apply ml-4 py-2 px-4 transition-all rounded-full hover:bg-slate-800 dark:hover:bg-slate-300 fill-blue-700;
-        svg {
-            path {
-                @apply transition-all text-blue-300 dark:text-white;
-            }
-        }
-        &:hover {
-            svg {
-                path {
-                    @apply dark:text-black text-white;
-                }
-            }
         }
     }
 }

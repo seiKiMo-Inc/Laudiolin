@@ -20,7 +20,6 @@ class ProgressBar extends React.Component<IProps, never> {
         width: "100%",
         backgroundColor: "#e0e0de",
         borderRadius: 50,
-        margin: 50
     };
 
     render() {
