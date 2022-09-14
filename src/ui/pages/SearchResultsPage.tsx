@@ -67,10 +67,6 @@ class SearchResultsPage extends React.Component<IProps, IState> {
                         <SearchResultsList results={this.state.searchResults} /> :
                         <h1>Nothing found.</h1>
                 }
-
-                <br />
-
-                <Link to={Pages.home} style={{ color: "white", textDecoration: "underline" }}>Go To Home</Link>
             </Container>
         );
     }

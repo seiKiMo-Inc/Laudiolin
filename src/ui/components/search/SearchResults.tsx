@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import SearchTrack from "@components/search/SearchTrack";
+import SearchResultsLoading from "@components/search/SearchResultsLoading";
 
 import { SearchResults } from "@backend/types";
 
@@ -21,7 +22,7 @@ class SearchResultsList extends React.Component<IProps, never> {
                 <div className="list-group">
                     {
                         results.length == 0 ? (
-                            <h3>There are no search results.</h3>
+                            <SearchResultsLoading />
                         ) : results.map(result => {
                             return (
                                 <SearchTrack key={result.id} result={result} />
