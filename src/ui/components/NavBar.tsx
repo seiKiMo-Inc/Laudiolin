@@ -49,8 +49,22 @@ class Navigation extends React.Component<IProps, IState> {
                     zIndex: 100,
                 }}
             >
-                <Container>
-                    <h1 className="titleLogo">Laudiolin</h1>
+                <Container id="NavbarContainer">
+                    <h1 id="Title">Laudiolin</h1>
+                    <div id="Search">
+                        <input id="SearchInput" type="text"
+                               name="search"
+                               placeholder="Search..."
+                               autoComplete="off"
+                               autoCorrect="off"
+                               onChange={this.inputQuery}
+                               onKeyDown={this.searchEnter}
+                        />
+
+                        <Link to={Pages.searchResults} onClick={this.searchButton}>
+                            <Button id="SearchIcon" icon={faMagnifyingGlass} />
+                        </Link>
+                    </div>
                 </Container>
             </Navbar>
         );
