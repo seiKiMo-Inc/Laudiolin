@@ -1,5 +1,4 @@
-import type { SearchOptions, SearchResult } from "@backend/types";
-import SearchTrack from "@components/search/SearchTrack";
+import type { SearchOptions } from "@backend/types";
 
 import { invoke } from "@tauri-apps/api";
 
@@ -16,19 +15,4 @@ export async function doSearch(query: string, options: SearchOptions) {
     });
 
     console.log(results);
-}
-
-/**
- * Converts a SearchResult to a SearchTrack.
- * @param result The SearchResult to convert.
- */
-export function fromResult(result: SearchResult): SearchTrack {
-    return new SearchTrack({
-        title: result.title,
-        artist: result.artist,
-        icon: result.icon,
-        url: result.url,
-        id: result.id,
-        duration: result.duration,
-    });
 }
