@@ -3,7 +3,7 @@ import { appWindow } from '@tauri-apps/api/window';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight, faCircle, faHome, faSquare, faWindowMaximize, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
 import { Link, useNavigate } from "react-router-dom";
-import { Pages } from "../constants";
+import { Pages } from "@app/constants";
 
 interface IProps { }
 

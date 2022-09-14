@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -20,6 +19,7 @@
     "paths": {
       "@app/*": ["src/*"],
       "@components/*": ["src/ui/components/*"],
+      "@pages/*": ["src/ui/pages/*"],
       "@css/*": ["src/css/*"],
       "@backend/*": ["src/backend/*"]
     }
