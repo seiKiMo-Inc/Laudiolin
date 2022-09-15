@@ -7,6 +7,8 @@ import {
 
 import HomePage from "@pages/Home";
 import SearchResultsPage from "@pages/SearchResultsPage";
+import SettingsPage from "@pages/SettingsPage";
+
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
 
@@ -42,6 +44,7 @@ class App extends React.Component<any, any> {
                     <Routes>
                         <Route path={Pages.home} element={<HomePage />} />
                         <Route path={Pages.searchResults} element={<SearchResultsPage />} />
+                        <Route path={Pages.settings} element={<SettingsPage />} />
                     </Routes>
 
                     <Controls player={player} />
