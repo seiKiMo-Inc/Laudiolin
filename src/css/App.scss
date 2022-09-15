@@ -17,7 +17,7 @@ body {
     @apply bg-gradient-to-t from-indigo-500/20 to-[#292F36];
     background-attachment: fixed;
 
-    font-family: "Verdana";
+    font-family: "Verdana", sans-serif;
     --nav-height: 13vh;
     padding-top: var(--nav-height);
     * {
