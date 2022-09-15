@@ -2,20 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 // Setup event listeners.
+import * as fs from "@backend/fs";
 import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
+import * as settings from "@backend/settings";
 
 (async() => {
+    // Initialize the file system.
+    await fs.initialize();
+    // Fetch the application settings.
+    await settings.reloadSettings();
+
     // Setup listeners.
     await audio.setupListeners();
     await gateway.setupListeners();
 
     // Run gateway setup after.
     setTimeout(() => {
+        const config = settings.gateway();
         gateway.setupGateway({
-            encrypted: false,
-            address: "localhost",
-            port: 6463
+            encrypted: config.encrypted,
+            address: config.address,
+            port: config.gateway_port
         });
     }, 3000);
 

@@ -11,12 +11,14 @@ use window_shadows::set_shadow;
 mod backend;
 mod wrapper;
 mod audio;
+mod settings;
 
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             wrapper::search, wrapper::download,
-            audio::play_from
+            audio::play_from,
+            settings::read_from_file, settings::get_settings
         ])
         .setup(|app| {
             // Bind app to once_cell.

@@ -6,6 +6,8 @@ use once_cell::sync::OnceCell;
 use tauri::{Manager, Wry, AppHandle};
 use serde::Serialize;
 
+use crate::settings::{GatewaySettings, get_settings};
+
 static APP_INSTANCE: OnceCell<AppHandle<Wry>> = OnceCell::new();
 pub struct TauriApp {
 
@@ -54,6 +56,18 @@ pub fn volume(volume: u8) {
 /// data: The data to send.
 pub fn send(data: String) {
     TauriApp::emit("send_message", MessagePayload { data });
+}
+
+/// Returns gateway settings.
+pub fn gateway() -> GatewaySettings {
+    return get_settings().gateway;
+}
+
+pub fn protocol() -> String {
+    return match gateway().encrypted {
+        true => "https",
+        false => "http"
+    }.to_string();
 }
 
 pub fn initialize() {
