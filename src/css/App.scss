@@ -23,6 +23,8 @@ body {
     * {
         @apply transition-all;
     }
+
+    user-select: none;
 }
 
 h1 {
