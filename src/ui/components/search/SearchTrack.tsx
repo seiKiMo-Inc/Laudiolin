@@ -28,6 +28,17 @@ class SearchTrack extends React.Component<IProps, IState> {
         };
     }
 
+    componentDidMount() {
+        // Listen for player events.
+        player.on("stop", () => {
+            if(!this.state.hasPlayed) return;
+            this.setState({
+                playing: !this.state.playing,
+                hasPlayed: !this.state.hasPlayed
+            });
+        });
+    }
+
     playTrack = () => {
         const hasPlayed = this.state.hasPlayed;
         const isPlaying = this.state.playing;
@@ -36,7 +47,9 @@ class SearchTrack extends React.Component<IProps, IState> {
             player.togglePlayback(); // Pause/resume the player.
             this.setState({ playing: !isPlaying });
         } else {
-            this.setState({ hasPlayed: true })
+            // Check if the player is currently playing.
+            if(player.isPlaying()) player.stopTrack();
+            this.setState({ hasPlayed: true });
 
             // Play the track from the specified result.
             playFromResult(this.props.result).then(() => {

@@ -69,8 +69,11 @@ export class MusicPlayer extends EventEmitter {
         const handle = track.getHandle();
 
         handle.on("end", () => {
+            // Set the player as paused.
+            this.isPaused = true;
             // Emit end event.
             this.emit("end", track);
+
             // Play the next track.
             this.playNext();
         });
@@ -93,14 +96,31 @@ export class MusicPlayer extends EventEmitter {
             // Play the next track in the queue.
             this.playTrack(this.trackQueue.shift()!);
         } else {
+            // Clear the player.
+            this.clearPlayer();
             // Emit stop event.
             this.emit("stop");
         }
     }
 
     /*
-     * Track utilities.
+     * Player utilities.
      */
+
+    /**
+     * Clears the player's current status.
+     */
+    clearPlayer(): void {
+        // Check if a track is playing.
+        if(this.isPlaying()) return;
+
+        // Clear the current track.
+        this.currentTrack = null;
+        // Clear the track queue.
+        this.trackQueue.length = 0;
+        // Set the player as paused.
+        this.isPaused = true;
+    }
 
     /**
      * Returns the currently playing track.
@@ -148,7 +168,7 @@ export class MusicPlayer extends EventEmitter {
     }
 
     /*
-     * Player utilities.
+     * Track utilities.
      */
 
     /**
@@ -341,9 +361,6 @@ export class Track {
      * Stops the track gracefully.
      */
     public stop() {
-        // Fade out the track.
-        this.howl.fade(1, 0, 1000, this.id);
-        // Stop the track after the fade out.
         this.howl.stop();
     }
 
@@ -390,6 +407,7 @@ export class Track {
      * Pauses the track.
      */
     public pause() {
+        // TODO: Implement fading the track.
         this.howl.pause();
     }
 

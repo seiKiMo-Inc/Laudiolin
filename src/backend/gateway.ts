@@ -103,10 +103,12 @@ export function sendGatewayMessage(message: object) {
  * @param data The track data.
  */
 function update(data: any) {
+    const track = player.getCurrentTrack();
+
     // Send player information to the gateway.
     sendGatewayMessage(<NowPlayingMessage> {
         type: "playing", timestamp: Date.now(),
-        track: player.getCurrentTrack().getData(),
+        track: track ? track.getData() : null,
         seek: player.getProgress()
     });
 }
