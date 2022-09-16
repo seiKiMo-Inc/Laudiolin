@@ -8,10 +8,15 @@ import type {
 } from "@backend/types";
 
 import "@css/Settings.scss";
+import Button from "@components/Button";
+import { faFolder } from "@fortawesome/free-solid-svg-icons";
+import { open } from "@tauri-apps/api/dialog";
+import { appDir } from "@tauri-apps/api/path";
 
 interface IProps {
 
 }
+
 interface IState {
     search: SearchSettings,
     audio: AudioSettings,
@@ -29,14 +34,9 @@ class Settings extends React.Component<IProps, IState> {
             gateway: config.gateway(),
             ui: config.ui()
         };
-
-        this.setSearch = this.setSearch.bind(this);
-        this.setAudio = this.setSearch.bind(this);
-        this.setGateway = this.setGateway.bind(this);
-        this.setUi = this.setUi.bind(this);
     }
 
-    setSearch(accuracy: boolean, engine: SearchEngine) {
+    setSearch = (accuracy?: boolean, engine?: SearchEngine) => {
         this.setState({
             search: {
                 accuracy: accuracy,
@@ -45,7 +45,7 @@ class Settings extends React.Component<IProps, IState> {
         });
     }
 
-    setAudio(download_path: string) {
+    setAudio = (download_path: string) => {
         this.setState({
             audio: {
                 download_path: download_path
@@ -53,7 +53,7 @@ class Settings extends React.Component<IProps, IState> {
         });
     }
 
-    setGateway(encrypted: boolean, address: string, port: number, gateway_port: number) {
+    setGateway = (encrypted?: boolean, address?: string, port?: number, gateway_port?: number) => {
         this.setState({
             gateway: {
                 encrypted: encrypted,
@@ -64,7 +64,7 @@ class Settings extends React.Component<IProps, IState> {
         });
     }
 
-    setUi(background_color: string, background_url: string) {
+    setUi = (background_color?: string, background_url?: string) => {
         this.setState({
             ui: {
                 background_color: background_color,
@@ -72,6 +72,10 @@ class Settings extends React.Component<IProps, IState> {
             }
         });
     }
+
+    toggleDropdown = () => {
+        document.getElementById("engineDropdown").classList.toggle("show");
+    };
 
     async componentDidMount() {
         this.setState({
@@ -81,7 +85,19 @@ class Settings extends React.Component<IProps, IState> {
             ui: config.ui()
         });
 
-       await config.reloadSettings();
+        await config.reloadSettings();
+    }
+
+    DirSelectorFunction = async () => {
+        const result = await open({
+            defaultPath: await appDir(),
+            multiple: false,
+            directory: true
+        });
+
+        if (result) {
+            this.setAudio(result as string);
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
@@ -90,52 +106,119 @@ class Settings extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <Container className="SettingsContainer">
-                <table className="SettingsOptions" id="search-settings">
-                    <tr>
-                        <th scope="row">Accuracy:</th>
-                        <td>[checkbox]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Engine:</th>
-                        <td>[dropdown]</td>
-                    </tr>
+            <>
+                <table className="SettingsOptions">
+                    <tbody>
+                        <div>
+                            <h2 className="SettingsHeadings">Search Settings</h2>
+                            <tr>
+                                <th scope="row">Accuracy:</th>
+                                <td>
+                                    <input type="checkbox" id="check"
+                                           onChange={(e) => e.currentTarget.checked ? this.setSearch(true) : this.setSearch(false)} />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Engine:</th>
+                                <td>
+                                    <button onClick={this.toggleDropdown} className="dropbtn">Select Engine</button>
+                                    <div id="engineDropdown" className="dropdown-content">
+                                        <p onClick={() => this.setSearch(...[], "Youtube" as SearchEngine)}>Youtube</p>
+                                        <p onClick={() => this.setSearch(...[], "Spotify" as SearchEngine)}>Spotify</p>
+                                        <p onClick={() => this.setSearch(...[], "Soundcloud" as SearchEngine)}>Soundcloud</p>
+                                        <p onClick={() => this.setSearch(...[], "All" as SearchEngine)}>All</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </div>
+                        <div>
+                            <h2 className="SettingsHeadings">Audio Settings</h2>
+                            <tr>
+                                <th scope="row">Downloads Folder:</th>
+                                <td>
+                                    <input
+                                        className="dirInputText"
+                                        type="text"
+                                        value={this.state.audio.download_path}
+                                        readOnly
+                                    />
+                                    <Button className="dirSelector" icon={faFolder} onClick={async () => this.DirSelectorFunction()} />
+                                </td>
+                            </tr>
+                        </div>
+                        <div>
+                            <h2 className="SettingsHeadings">Gateway Settings</h2>
+                            <tr>
+                                <th scope="row">Toggle Encryption:</th>
+                                <td>
+                                    <input type="checkbox" id="check"
+                                           onChange={(e) => e.currentTarget.checked ? this.setGateway(true) : this.setGateway(false)} />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address:</th>
+                                <td>
+                                    <input
+                                        className="normalInputText"
+                                        type="text"
+                                        value={this.state.gateway.address}
+                                        onInput={(e) => this.setGateway(...[], e.currentTarget.value)}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Port:</th>
+                                <td>
+                                    <input
+                                        className="normalInputText"
+                                        type="number"
+                                        value={this.state.gateway.port}
+                                        onInput={(e) => this.setGateway(...[], ...[], e.currentTarget.valueAsNumber)}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Gateway Port:</th>
+                                <td>
+                                    <input
+                                        className="normalInputText"
+                                        type="number"
+                                        value={this.state.gateway.gateway_port}
+                                        onInput={(e) => this.setGateway(...[], ...[], ...[], e.currentTarget.valueAsNumber)}
+                                    />
+                                </td>
+                            </tr>
+                        </div>
+                        <div>
+                            <h2 className="SettingsHeadings">UI Settings</h2>
+                            <tr>
+                                <th scope="row">Background Color:</th>
+                                <td>
+                                    <input
+                                        className="normalInputText"
+                                        type="text"
+                                        placeholder="#000000"
+                                        value={this.state.ui.background_color}
+                                        onInput={(e) => this.setUi(e.currentTarget.value)}
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Background URL:</th>
+                                <td>
+                                    <input
+                                        className="normalInputText"
+                                        type="text"
+                                        placeholder="https://example.com/image.png"
+                                        value={this.state.ui.background_url}
+                                        onInput={(e) => this.setUi(...[], e.currentTarget.value)}
+                                    />
+                                </td>
+                            </tr>
+                        </div>
+                    </tbody>
                 </table>
-                <table className="SettingsOptions" id="audio-settings">
-                    <tr>
-                        <th scope="row">Downloads Folder:</th>
-                        <td>[path]</td>
-                    </tr>
-                </table>
-                <table className="SettingsOptions" id="gateway-settings">
-                    <tr>
-                        <th scope="row">Toggle Encryption:</th>
-                        <td>[checkbox]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Address:</th>
-                        <td>[input]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Port:</th>
-                        <td>[input]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gateway Port:</th>
-                        <td>[input]</td>
-                    </tr>
-                </table>
-                <table className="SettingsOptions" id="ui-settings">
-                    <tr>
-                        <th scope="row">Background Color:</th>
-                        <td>[input]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Background URL:</th>
-                        <td>[input]</td>
-                    </tr>
-                </table>
-            </Container>
+            </>
         );
     }
 }

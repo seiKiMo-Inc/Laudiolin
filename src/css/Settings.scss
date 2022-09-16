@@ -1,19 +1,116 @@
-td {
-    text-align: center;
+table {
+    color: #9ca3af;
+    margin: auto;
 }
 
-tr:nth-child(even) {
-    background-color: #eee;
+td {
+    margin-left: auto;
 }
 
 th[scope="row"] {
-    background-color: #d7d9f2;
+    align-self: center;
+    font-size: large;
+}
+
+tr {
+    display: flex;
+    padding: 15px;
 }
 
 .SettingsOptions {
-    border-collapse: collapse;
-    border: 2px solid rgb(200, 200, 200);
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: .8rem;
+    width: 50%;
+    background-color: #1f2838;
+}
+
+.SettingsHeadings {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    font-family: sans-serif;
+    color: #3498db;
+    font-style: italic;
+    padding: 30px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.dirSelector svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: sub;
+    color: #2980B9;
+}
+
+#check {
+    width: 20px;
+    height: 20px;
+    accent-color: #2980B9;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.dropbtn {
+    background-color: #2980B9;
+    color: white;
+    padding: 5px;
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content p {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content p:hover {
+    cursor: pointer;
+    background-color: #ddd;
+}
+
+.show {
+    display:block;
+}
+
+.dirInputText {
+    margin-right: 10px;
+    padding: 5px;
+    background-color: #272d41;
+    &:focus {
+        outline: none;
+    }
+}
+
+.normalInputText {
+    padding: 5px;
+    background-color: #272d41;
+    &:focus {
+        outline: none;
+    }
 }

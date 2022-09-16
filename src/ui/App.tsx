@@ -47,6 +47,9 @@ class App extends React.Component<any, any> {
                         <Route path={Pages.settings} element={<SettingsPage />} />
                     </Routes>
 
+                    {/* empty div to keep content above player */}
+                    <div className="clear"></div>
+
                     <Controls player={player} />
                 </>
             </Router>

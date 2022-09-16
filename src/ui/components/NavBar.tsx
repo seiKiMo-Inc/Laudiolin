@@ -7,7 +7,7 @@ import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
 
 import Button from "./Button"
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons"
 
 import "@css/NavBar.scss";
 
@@ -96,6 +96,15 @@ class Navigation extends React.Component<IProps, IState> {
             >
                 <Container id="NavbarContainer">
                     <h1 id="Title">Laudiolin</h1>
+                    {/*
+                    TODO: put this in a dropdown menu (maybe). placeholder rn.
+                    */}
+                    <Link to={Pages.settings}>
+                        <Button
+                            icon={faCog}
+                            className="SettingsButton"
+                        />
+                    </Link>
                     <div id="Search">
                         <input id="SearchInput" type="text"
                                name="search"

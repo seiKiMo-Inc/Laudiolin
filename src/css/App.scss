@@ -66,7 +66,7 @@ h1 {
 }
 
 .nav--hidden {
-    transform: translateY(calc(-1 * var(--nav-height)));
+    transform: translateY(calc(-1vh * var(--nav-height)));
     box-shadow: none;
 }
 
@@ -108,4 +108,9 @@ h1 {
             transform: translateX(0%);
         }
     }
+}
+
+.clear {
+    clear: both;
+    height: 105px;
 }
