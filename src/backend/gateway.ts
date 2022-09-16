@@ -1,10 +1,13 @@
 import { emit, listen } from "@tauri-apps/api/event";
 
-import { player, Track } from "@backend/audio";
+import { player } from "@backend/audio";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
+import type { TrackData } from "@backend/types";
 
-let gateway: WebSocket | null = null;
+let connected: boolean = false;
+let gateway: WebSocket|null = null;
+const messageQueue: object[] = [];
 
 type GatewayConfig = {
     encrypted: boolean;
@@ -28,7 +31,7 @@ type LatencyMessage = BaseGatewayMessage & {
 // To server.
 type NowPlayingMessage = BaseGatewayMessage & {
     type: "playing";
-    track: Track | null;
+    track: TrackData|null;
     seek: number;
 };
 
@@ -51,15 +54,11 @@ export async function setupListeners() {
     await listen("send_message", sendMessage);
 
     // Setup audio listeners for gateway.
-    player.on("volume", (volume) => {
+    player.on("volume", volume => {
         // Send the volume to the gateway.
-        sendGatewayMessage(
-            JSON.stringify(<VolumeMessage>{
-                type: "volume",
-                volume,
-                send_back: false
-            })
-        );
+        sendGatewayMessage(<VolumeMessage> {
+            type: "volume", volume, send_back: false
+        });
     });
 
     player.on("start", update);
@@ -68,6 +67,7 @@ export async function setupListeners() {
     // player.on("resume", update);
     player.on("end", update);
     player.on("seek", update);
+    player.on("update", update);
 }
 
 /**
@@ -88,15 +88,14 @@ export function setupGateway(config: GatewayConfig) {
  * Sends a message to the gateway.
  * @param message The raw message data.
  */
-export function sendGatewayMessage(message: string | object) {
-    // Serialize message if it is an object.
-    if (typeof message === "object") {
-        message = JSON.stringify(message);
+export function sendGatewayMessage(message: object) {
+    if(!connected) {
+        // Queue the message.
+        messageQueue.push(message); return;
     }
 
     // Send the message to the gateway.
-    gateway?.send(message);
-    console.log("Sent message to gateway:", message);
+    gateway?.send(JSON.stringify(message));
 }
 
 /**
@@ -104,12 +103,10 @@ export function sendGatewayMessage(message: string | object) {
  * @param data The track data.
  */
 function update(data: any) {
-    console.log("Sent player information to gateway.");
-
     // Send player information to the gateway.
-    sendGatewayMessage(<NowPlayingMessage>{
-        type: "playing",
-        track: player.getCurrentTrack(),
+    sendGatewayMessage(<NowPlayingMessage> {
+        type: "playing", timestamp: Date.now(),
+        track: player.getCurrentTrack().getData(),
         seek: player.getProgress()
     });
 }
@@ -122,7 +119,7 @@ function sendMessage(event: Event<any>) {
     // Parse the payload from the event.
     const payload: GatewayMessagePayload = event.payload;
     // Send the message to the gateway.
-    sendGatewayMessage(payload.data);
+    sendGatewayMessage(JSON.parse(payload.data));
 }
 
 /**
@@ -140,21 +137,25 @@ async function onMessage(event: MessageEvent) {
     // Parse the message.
     const message: BaseGatewayMessage = JSON.parse(event.data);
     // Check if the message should be handled.
-    switch (message.type) {
+    switch(message.type) {
         case "initialize":
+            gateway?.send(JSON.stringify(<InitializeMessage> {
+                type: "initialize"
+            }));
+
+            // Log gateway handshake.
             console.debug("Gateway handshake complete.");
-            gateway?.send(
-                JSON.stringify(<InitializeMessage>{
-                    type: "initialize"
-                })
-            );
+
+            // Set connected to true.
+            connected = true;
+            // Send all queued messages.
+            messageQueue.forEach(message => sendGatewayMessage(message));
+
             return;
         case "latency":
-            gateway?.send(
-                JSON.stringify(<LatencyMessage>{
-                    type: "latency"
-                })
-            );
+            gateway?.send(JSON.stringify(<LatencyMessage> {
+                type: "latency"
+            }));
             return;
     }
 
@@ -167,7 +168,11 @@ async function onMessage(event: MessageEvent) {
  */
 function onClose() {
     console.debug("Gateway connection closed.");
+
+    // Set connected to false.
+    connected = false;
     // TODO: Display message to user.
+    // TODO: Reconnect to the gateway.
 }
 
 /**
@@ -176,4 +181,5 @@ function onClose() {
 function onError() {
     console.debug("Gateway connection error.");
     // TODO: Display message to user.
+    // TODO: Reconnect to the gateway.
 }
