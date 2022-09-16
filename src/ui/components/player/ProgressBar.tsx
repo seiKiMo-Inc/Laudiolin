@@ -16,16 +16,21 @@ class ProgressBarComponent extends React.Component<IProps, never> {
     }
 
     msToMinutes = (duration: number) => {
-        if (duration == -1) return "--:--";
+        if(duration <= 0) return "--:--";
 
         let minutes: number = Math.floor(duration / 60);
         let seconds: any = (duration % 60).toFixed(0);
 
-        return seconds == 60 ? minutes + 1 + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        return (
+            seconds == 60 ?
+                (minutes + 1) + ":00" :
+                minutes + ":" + (seconds < 10 ? "0" : "") + seconds
+        );
     };
 
     render() {
-        const progress = (this.props.progress / this.props.duration) * 100;
+        const progress = this.props.duration > 0 ?
+            (this.props.progress / this.props.duration) * 100 : 0;
 
         return (
             <span id="ProgressBar">
@@ -36,7 +41,8 @@ class ProgressBarComponent extends React.Component<IProps, never> {
                     progress={progress}
                     onClick={(e) =>
                         this.props.setProgress(
-                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) * this.props.duration
+                            (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) *
+                            this.props.duration
                         )
                     }
                 />
