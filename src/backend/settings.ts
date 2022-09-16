@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { data } from "@backend/fs";
 
 import type { UserSettings, SearchSettings, AudioSettings, GatewaySettings, UISettings } from "@backend/types";
 
@@ -9,7 +10,7 @@ let settings: UserSettings | null = null;
  */
 export async function reloadSettings() {
     // Load the settings from the settings file.
-    await invoke("read_from_file", { filePath: "settings.json" });
+    await invoke("read_from_file", { filePath: data("settings.json") });
     // Set settings from backend.
     settings = await invoke("get_settings");
 }

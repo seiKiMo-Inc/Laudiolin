@@ -32,11 +32,11 @@ class SearchTrack extends React.Component<IProps, IState> {
         const hasPlayed = this.state.hasPlayed;
         const isPlaying = this.state.playing;
 
-        if (hasPlayed) {
+        if(hasPlayed) {
             player.togglePlayback(); // Pause/resume the player.
             this.setState({ playing: !isPlaying });
         } else {
-            this.setState({ hasPlayed: true });
+            this.setState({ hasPlayed: true })
 
             // Play the track from the specified result.
             playFromResult(this.props.result).then(() => {
@@ -57,10 +57,12 @@ class SearchTrack extends React.Component<IProps, IState> {
             <div className="SearchResult list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
                 <Figure id="figure">
                     <Figure.Caption id="statusButton">
-                        <Button
-                            icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay}
-                            onClick={this.playTrack}
-                        />
+                        <Button icon={
+                            this.state.hasPlayed ?
+                                this.state.playing ?
+                                    faPause : faPlay
+                                : faPlay
+                        } onClick={this.playTrack} />
                     </Figure.Caption>
 
                     <a onClick={this.preview}>
