@@ -17,8 +17,6 @@ interface IState {
 }
 
 class Controls extends React.Component<IProps, IState> {
-    private seekTask = null;
-
     constructor(props: IProps) {
         super(props);
 
@@ -58,20 +56,13 @@ class Controls extends React.Component<IProps, IState> {
     };
 
     componentDidMount() {
-        this.seekTask = setInterval(() => {
-            this.setState({ progress: player.getProgress() });
-        }, 100);
-
         // Register event listeners for the player.
         player.on("play", () => this.forceUpdate());
         player.on("pause", () => this.forceUpdate());
         player.on("stop", () => this.forceUpdate());
         player.on("volume", () => this.forceUpdate());
         player.on("seek", () => this.forceUpdate());
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.seekTask);
+        player.on("update", () => this.forceUpdate());
     }
 
     lmao = () => {
