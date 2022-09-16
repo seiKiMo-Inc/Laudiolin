@@ -17,6 +17,7 @@ trait Backend {
      */
 
     fn volume(&self, volume: u8);
+    fn track_sync(&self, track: SearchResult, progress: u64);
 
     /*
      * Gateway functions.
@@ -26,11 +27,15 @@ trait Backend {
 }
 impl Backend for Client {
     fn volume(&self, volume: u8) {
-        crate::wrapper::volume(volume);
+        wrapper::volume(volume);
+    }
+
+    fn track_sync(&self, track: SearchResult, progress: u64) {
+        wrapper::track_sync(track, progress);
     }
 
     fn send(&self, data: String) {
-        crate::wrapper::send(data);
+        wrapper::send(data);
     }
 }
 
@@ -61,8 +66,7 @@ pub struct SearchResults {
 pub struct GatewayMessage {
     #[serde(rename = "type")]
     pub _type: String,
-    pub timestamp: u64,
-    pub message: String
+    pub timestamp: u64
 }
 
 // Backend Rust bindings for the Laudiolin gateway. \\
@@ -77,11 +81,10 @@ pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'stati
 
     match parsed_data._type.as_str() {
         "volume" => Ok(client.volume(parse_volume(data))),
+        "listening" => Ok(()),
+        "sync" => Ok(client.track_sync(parse_track(data), parse_progress(data))),
 
-        _ => {
-            println!("{}", parsed_data.message);
-            Err("Invalid message type")
-        }
+        _ => Err("Invalid message type")
     }
 }
 
@@ -99,10 +102,28 @@ pub async fn gateway_message(gateway: &Client, data: impl Serialize) {
 
 #[derive(Deserialize)]
 pub struct VolumeMessage {
-    pub type_: String,
+    #[serde(rename = "type")]
+    pub _type: String,
     pub timestamp: u64,
     pub volume: u8,
     pub send_back: bool
+}
+#[derive(Deserialize)]
+pub struct ListeningMessage {
+    #[serde(rename = "type")]
+    pub _type: String,
+    pub timestamp: u64,
+    pub listen: bool,
+    #[serde(rename = "totalClients")]
+    pub total_clients: u64
+}
+#[derive(Deserialize)]
+pub struct SyncMessage {
+    #[serde(rename = "type")]
+    pub _type: String,
+    pub timestamp: u64,
+    pub track: SearchResult,
+    pub progress: u64
 }
 
 /// Internal method for parsing JSON.
@@ -114,6 +135,12 @@ where T: Deserialize<'a> {
 
 fn parse_volume(data: &str) -> u8 {
     let data: VolumeMessage = parse(data); data.volume
+}
+fn parse_track(data: &str) -> SearchResult {
+    let data: SyncMessage = parse(data); data.track
+}
+fn parse_progress(data: &str) -> u64 {
+    let data: SyncMessage = parse(data); data.progress
 }
 
 // Backend Rust bindings for the Laudiolin API. \\
@@ -145,6 +172,11 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// options: The options to use for the download.
 pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'static str> {
+    // Check if the file already exists.
+    if std::path::Path::new(&options.file_path).exists() {
+        return Ok(options.file_path);
+    }
+
     // Get the user settings.
     let gateway = wrapper::gateway();
 

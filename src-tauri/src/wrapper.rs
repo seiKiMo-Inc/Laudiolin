@@ -41,6 +41,11 @@ struct MessagePayload {
 struct VolumePayload {
     volume: u8
 }
+#[derive(Clone, Serialize)]
+struct TrackSyncPayload {
+    track: SearchResult,
+    progress: u64
+}
 
 // Implementations for backend structures. \\
 
@@ -50,6 +55,17 @@ static CLIENT_INSTANCE: OnceCell<Client> = OnceCell::new();
 /// volume: Percentage out of 1.0 (100).
 pub fn volume(volume: u8) {
     TauriApp::emit("set_volume", VolumePayload { volume });
+}
+
+/// Syncs the player with the specified data.
+/// track: The track to play (if not already playing).
+/// progress: The progress of the track. (seek)
+pub fn track_sync(track: SearchResult, progress: u64) {
+    let payload = TrackSyncPayload {
+        track, progress
+    };
+
+    TauriApp::emit("track_sync", payload);
 }
 
 /// Sends data to the gateway.
