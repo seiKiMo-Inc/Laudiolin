@@ -1,6 +1,6 @@
 .navbar {
     @apply bg-black flex flex-wrap items-center justify-between h-16 p-6 fixed w-full transition-all;
-    @apply bg-gradient-to-r from-indigo-500/20 to-black;
+    @apply bg-gradient-to-r from-indigo-900/25 to-black;
 
     margin-top: 28px;
 }
@@ -28,7 +28,7 @@
     font-family: sans-serif;
     background-color: #272d41;
     &:focus {
-        outline: none
+        outline: none;
     }
 }
 

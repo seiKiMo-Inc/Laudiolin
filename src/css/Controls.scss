@@ -1,11 +1,11 @@
 .controls {
-    @apply p-2 fixed inset-x-0 bottom-0 bg-slate-600 dark:bg-slate-800 transition-all;
-    @apply bg-gradient-to-r from-indigo-900/20 to-black;
+    @apply p-2 fixed inset-x-0 bottom-0 bg-black transition-all;
+    @apply bg-gradient-to-r from-black via-indigo-900/30 to-black;
 
     z-index: 99;
     .control {
         $p: &;
-        @apply ml-4 py-2 px-4 transition-all rounded-full hover:bg-slate-800 dark:hover:bg-slate-300 fill-blue-700;
+        @apply ml-4 py-2 px-4 transition-all rounded-full hover:bg-slate-800 dark:hover:bg-slate-300 fill-blue-700 border-white;
         svg {
             path {
                 @apply transition-all text-blue-300 dark:text-white;
