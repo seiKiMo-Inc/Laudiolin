@@ -5,7 +5,7 @@ import React from "react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-interface IState { }
+interface IState {}
 
 interface IProps {
     icon?: IconDefinition;
@@ -25,21 +25,19 @@ class ButtonWrapper extends React.Component<IProps, IState> {
     render() {
         if (this.props.tooltip) {
             return (
-                <OverlayTrigger
-                    placement="top"
-                    overlay={
-                        <Tooltip id="tooltip-top">
-                            {this.props.tooltip}
-                        </Tooltip>
-                    }
-                >
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">{this.props.tooltip}</Tooltip>}>
                     <button
                         onClick={this.props.onClick}
                         style={this.props.style}
                         id={this.props.id}
                         className={this.props.className}
                     >
-                        {this.props.icon ? <FontAwesomeIcon icon={this.props.icon} style={this.props.children ? { marginRight: "5px", fill: "inherit" } : {}} /> : null}
+                        {this.props.icon ? (
+                            <FontAwesomeIcon
+                                icon={this.props.icon}
+                                style={this.props.children ? { marginRight: "5px", fill: "inherit" } : {}}
+                            />
+                        ) : null}
                         {this.props.children}
                     </button>
                 </OverlayTrigger>
@@ -52,7 +50,12 @@ class ButtonWrapper extends React.Component<IProps, IState> {
                     id={this.props.id}
                     className={this.props.className}
                 >
-                    {this.props.icon ? <FontAwesomeIcon icon={this.props.icon} style={this.props.children ? { marginRight: "5px" } : {}} /> : null}
+                    {this.props.icon ? (
+                        <FontAwesomeIcon
+                            icon={this.props.icon}
+                            style={this.props.children ? { marginRight: "5px" } : {}}
+                        />
+                    ) : null}
                     {this.props.children}
                 </button>
             );

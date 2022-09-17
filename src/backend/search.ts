@@ -9,7 +9,8 @@ let nextQuery: string = "";
  * @param query The search query.
  */
 export function setQuery(query: string) {
-    nextQuery = query; console.log("next query is now " + nextQuery);
+    nextQuery = query;
+    console.log("next query is now " + nextQuery);
 }
 
 /**
@@ -19,7 +20,8 @@ export function getQuery() {
     // Cache the next query.
     const query = nextQuery;
     // Clear the query and return the cache.
-    nextQuery = ""; return query;
+    nextQuery = "";
+    return query;
 }
 
 /**

@@ -9,15 +9,13 @@ import { faFolder } from "@fortawesome/free-solid-svg-icons";
 import { open } from "@tauri-apps/api/dialog";
 import { appDir } from "@tauri-apps/api/path";
 
-interface IProps {
-
-}
+interface IProps {}
 
 interface IState {
-    search: SearchSettings,
-    audio: AudioSettings,
-    gateway: GatewaySettings,
-    ui: UISettings
+    search: SearchSettings;
+    audio: AudioSettings;
+    gateway: GatewaySettings;
+    ui: UISettings;
 }
 
 class Settings extends React.Component<IProps, IState> {
@@ -110,32 +108,54 @@ class Settings extends React.Component<IProps, IState> {
                     <tr>
                         <th scope="row">Accuracy:</th>
                         <td>
-                            <input type="checkbox" id="check"
-                                   onChange={(e) => e.currentTarget.checked ? this.setSearch(true) : this.setSearch(false)} />
+                            <input
+                                type="checkbox"
+                                id="check"
+                                onChange={(e) =>
+                                    e.currentTarget.checked ? this.setSearch(true) : this.setSearch(false)
+                                }
+                            />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">Engine:</th>
                         <td>
-                            <button onClick={this.toggleDropdown}
-                                    className="dropbtn">Search Engine</button>
+                            <button onClick={this.toggleDropdown} className="dropbtn">
+                                Search Engine
+                            </button>
                             <div id="engineDropdown" className="dropdown-content">
-                                <p onClick={() => {
-                                    this.setSearch(...[], "YouTube" as SearchEngine);
-                                    this.toggleDropdown();
-                                }}>YouTube</p>
-                                <p onClick={() => {
-                                    this.setSearch(...[], "Spotify" as SearchEngine);
-                                    this.toggleDropdown();
-                                }}>Spotify</p>
-                                <p onClick={() => {
-                                    this.setSearch(...[], "SoundCloud" as SearchEngine);
-                                    this.toggleDropdown();
-                                }}>SoundCloud</p>
-                                <p onClick={() => {
-                                    this.setSearch(...[], "All" as SearchEngine);
-                                    this.toggleDropdown();
-                                }}>All</p>
+                                <p
+                                    onClick={() => {
+                                        this.setSearch(...[], "YouTube" as SearchEngine);
+                                        this.toggleDropdown();
+                                    }}
+                                >
+                                    YouTube
+                                </p>
+                                <p
+                                    onClick={() => {
+                                        this.setSearch(...[], "Spotify" as SearchEngine);
+                                        this.toggleDropdown();
+                                    }}
+                                >
+                                    Spotify
+                                </p>
+                                <p
+                                    onClick={() => {
+                                        this.setSearch(...[], "SoundCloud" as SearchEngine);
+                                        this.toggleDropdown();
+                                    }}
+                                >
+                                    SoundCloud
+                                </p>
+                                <p
+                                    onClick={() => {
+                                        this.setSearch(...[], "All" as SearchEngine);
+                                        this.toggleDropdown();
+                                    }}
+                                >
+                                    All
+                                </p>
                             </div>
                         </td>
                     </tr>
@@ -153,8 +173,11 @@ class Settings extends React.Component<IProps, IState> {
                                 value={this.state.audio.download_path}
                                 readOnly
                             />
-                            <Button className="dirSelector" icon={faFolder}
-                                    onClick={async () => this.DirSelectorFunction()} />
+                            <Button
+                                className="dirSelector"
+                                icon={faFolder}
+                                onClick={async () => this.DirSelectorFunction()}
+                            />
                         </td>
                     </tr>
                 </tbody>
@@ -165,8 +188,13 @@ class Settings extends React.Component<IProps, IState> {
                     <tr>
                         <th scope="row">Toggle Encryption:</th>
                         <td>
-                            <input type="checkbox" id="check"
-                                   onChange={(e) => e.currentTarget.checked ? this.setGateway(true) : this.setGateway(false)} />
+                            <input
+                                type="checkbox"
+                                id="check"
+                                onChange={(e) =>
+                                    e.currentTarget.checked ? this.setGateway(true) : this.setGateway(false)
+                                }
+                            />
                         </td>
                     </tr>
                     <tr>

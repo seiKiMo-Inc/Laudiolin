@@ -1,5 +1,5 @@
 import React from "react";
-import "@css/Loader.scss"
+import "@css/Loader.scss";
 
 class SearchResultsLoading extends React.Component {
     render() {

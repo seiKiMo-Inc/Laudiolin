@@ -20,15 +20,13 @@ class SearchResultsList extends React.Component<IProps, never> {
         return (
             <Container style={{ marginTop: "20px" }}>
                 <div className="list-group">
-                    {
-                        results.length == 0 ? (
-                            <SearchResultsLoading />
-                        ) : results.map(result => {
-                            return (
-                                <SearchTrack key={result.id} result={result} />
-                            );
+                    {results.length == 0 ? (
+                        <SearchResultsLoading />
+                    ) : (
+                        results.map((result) => {
+                            return <SearchTrack key={result.id} result={result} />;
                         })
-                    }
+                    )}
                 </div>
             </Container>
         );

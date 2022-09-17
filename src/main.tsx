@@ -7,7 +7,7 @@ import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
 
-(async() => {
+(async () => {
     // Initialize the file system.
     await fs.initialize();
     // Fetch the application settings.

@@ -19,9 +19,7 @@ const blankResults: SearchResults = {
     results: []
 };
 
-interface IProps {
-
-}
+interface IProps {}
 interface IState {
     searchQuery: string;
     searchResults: SearchResults;
@@ -41,13 +39,13 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         // Get the search query.
         const query = getQuery();
         // Check query validity.
-        if(query == null || query == "")
-            return;
+        if (query == null || query == "") return;
 
         // Perform a search.
         doSearch(query, {
-            engine: "YouTube", accuracy: true
-        }).then(results => this.setState({ searchResults: results }));
+            engine: "YouTube",
+            accuracy: true
+        }).then((results) => this.setState({ searchResults: results }));
     }
 
     componentWillUnmount() {
@@ -62,11 +60,11 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         return (
             <AnimatePages>
                 <Container className="ContentContainer">
-                    {
-                        this.state.searchResults ?
-                            <SearchResultsList results={this.state.searchResults} /> :
-                            <h1>Nothing found.</h1>
-                    }
+                    {this.state.searchResults ? (
+                        <SearchResultsList results={this.state.searchResults} />
+                    ) : (
+                        <h1>Nothing found.</h1>
+                    )}
                 </Container>
             </AnimatePages>
         );

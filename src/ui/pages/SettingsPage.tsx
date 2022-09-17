@@ -8,7 +8,7 @@ class SettingsPage extends React.Component {
             <AnimatePages>
                 <Settings />
             </AnimatePages>
-        )
+        );
     }
 }
 

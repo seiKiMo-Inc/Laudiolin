@@ -1,7 +1,7 @@
 export const Pages = {
-    home: '/',
-    searchResults: '/search-results',
-    settings: '/settings'
+    home: "/",
+    searchResults: "/search-results",
+    settings: "/settings"
 };
 
 export const PageTransitions = {

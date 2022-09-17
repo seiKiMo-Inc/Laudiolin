@@ -19,22 +19,26 @@ class ProgressBar extends React.Component<IProps, never> {
         height: 10,
         width: "100%",
         backgroundColor: "#e0e0de",
-        borderRadius: 50,
+        borderRadius: 50
     };
 
     render() {
         return (
-            <div className={`MainProgressBar ${this.props.className}`}
-                 style={this.container}
-                 onClick={this.props.onClick}
+            <div
+                className={`MainProgressBar ${this.props.className}`}
+                style={this.container}
+                onClick={this.props.onClick}
             >
-                <div style={{
-                    height: "100%",
-                    width: `${this.props.progress}%`,
-                    backgroundColor: this.props.color,
-                    borderRadius: "inherit",
-                    textAlign: "right"
-                }} onClick={this.props.onClick}/>
+                <div
+                    style={{
+                        height: "100%",
+                        width: `${this.props.progress}%`,
+                        backgroundColor: this.props.color,
+                        borderRadius: "inherit",
+                        textAlign: "right"
+                    }}
+                    onClick={this.props.onClick}
+                />
             </div>
         );
     }

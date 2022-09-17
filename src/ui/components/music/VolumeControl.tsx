@@ -21,9 +21,7 @@ class VolumeControl extends React.Component<IProps, never> {
     render() {
         return (
             <span id="VolumeControls">
-                <OverlayTrigger placement="top" overlay={
-                    <Tooltip id="tooltip-top">Mute/Unmute</Tooltip>
-                }>
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
                     <Button
                         className={"control"}
                         tooltip={"mute/unmute"}
@@ -32,8 +30,8 @@ class VolumeControl extends React.Component<IProps, never> {
                             this.props.muted || this.props.volume == 0
                                 ? faVolumeMute
                                 : this.props.volume < 50
-                                    ? faVolumeDown
-                                    : faVolumeUp
+                                ? faVolumeDown
+                                : faVolumeUp
                         }
                     ></Button>
                 </OverlayTrigger>
@@ -44,7 +42,7 @@ class VolumeControl extends React.Component<IProps, never> {
                         min="0"
                         max="100"
                         value={this.props.volume}
-                        onChange={e => {
+                        onChange={(e) => {
                             localStorage.setItem("volume", e.target.value);
                             this.props.setVolume(parseInt(e.target.value));
                         }}

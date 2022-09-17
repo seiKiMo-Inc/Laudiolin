@@ -2,7 +2,7 @@ import type { FilePayload } from "@backend/types";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { appDir, sep } from "@tauri-apps/api/path";
 
-let dataDirectory: string|null = null;
+let dataDirectory: string | null = null;
 
 /**
  * Initializes the file system frontend handler.

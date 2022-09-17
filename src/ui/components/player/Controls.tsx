@@ -33,29 +33,29 @@ class Controls extends React.Component<IProps, IState> {
         const muted = player.getVolume() == 0;
 
         // Toggle the mute state.
-        if(muted) player.unmute();
+        if (muted) player.unmute();
         else player.mute();
     };
 
     toggleTrackState = () => {
         // Check if the player is playing a song.
-        if(player.getCurrentTrack() == null) return;
+        if (player.getCurrentTrack() == null) return;
 
         // Get the player state.
         const isPlaying = player.isPlaying();
 
         // Toggle the player state.
-        if(isPlaying) player.pause();
+        if (isPlaying) player.pause();
         else player.resume();
-    }
+    };
 
-    setProgress = progress => {
+    setProgress = (progress) => {
         // Check if the player is playing a song.
-        if(player.getCurrentTrack() == null) return;
+        if (player.getCurrentTrack() == null) return;
 
         // Set the player progress.
         player.setProgress(progress);
-    }
+    };
 
     componentDidMount() {
         this.seekTask = setInterval(() => {
@@ -76,18 +76,13 @@ class Controls extends React.Component<IProps, IState> {
 
     lmao = () => {
         alert("lmao gotta implement this later");
-    }
+    };
 
     render() {
         return (
             <div className={"controls"}>
                 <span id="controls-components">
-
-                    <Button
-                        className={"control"}
-                        icon={faBackward}
-                        onClick={this.lmao}
-                    />
+                    <Button className={"control"} icon={faBackward} onClick={this.lmao} />
 
                     <Button
                         className={"control"}
@@ -96,19 +91,14 @@ class Controls extends React.Component<IProps, IState> {
                         onClick={this.toggleTrackState}
                     />
 
-                    <Button
-                        className={"control"}
-                        icon={faForward}
-                        onClick={this.lmao}
-                    />
+                    <Button className={"control"} icon={faForward} onClick={this.lmao} />
 
                     <VolumeControl
                         volume={player.getVolume()}
                         muted={player.getVolume() == 0}
-                        setVolume={value => player.setVolume(value)}
+                        setVolume={(value) => player.setVolume(value)}
                         toggleMute={this.toggleMute}
                     />
-
                 </span>
 
                 <ProgressBarComponent
