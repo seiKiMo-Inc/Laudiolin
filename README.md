@@ -3,11 +3,24 @@
 A very simple music player written in TypeScript using Tauri and React.\
 *pronounced eL-auDiO-liN*
 
-## Running
+## Quickstart
 
+- Install [Node.js](https://nodejs.org/en/)
+- Install [Rust](https://www.rust-lang.org/tools/install)
 - Clone the project
-- run `npm i`
-- run `npm run dev`
+
+### Running
+
+```
+npm i
+npm run start:dev
+```
+
+### Building
+
+- run `npm run package` for `release` build
+- run `npm run package --debug` for `debug` build
+
 
 ## Development and Contributing
 
