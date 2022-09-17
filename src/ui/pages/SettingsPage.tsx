@@ -1,10 +1,13 @@
 import React from "react";
-import Settings from "@components/settings/Settings"
+import Settings from "@components/settings/Settings";
+import AnimatePages from "@components/AnimatePages";
 
 class SettingsPage extends React.Component {
     render() {
         return (
-            <Settings />
+            <AnimatePages>
+                <Settings />
+            </AnimatePages>
         )
     }
 }

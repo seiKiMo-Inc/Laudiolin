@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import AnimatePages from "@components/AnimatePages";
 
 import { Container } from "react-bootstrap";
 import SearchResultsList from "@components/search/SearchResults";
 
-import { Pages } from "@app/constants";
 import { getQuery, doSearch } from "@backend/search";
 import type { SearchResults } from "@backend/types";
 
@@ -61,13 +60,15 @@ class SearchResultsPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <Container className="ContentContainer">
-                {
-                    this.state.searchResults ?
-                        <SearchResultsList results={this.state.searchResults} /> :
-                        <h1>Nothing found.</h1>
-                }
-            </Container>
+            <AnimatePages>
+                <Container className="ContentContainer">
+                    {
+                        this.state.searchResults ?
+                            <SearchResultsList results={this.state.searchResults} /> :
+                            <h1>Nothing found.</h1>
+                    }
+                </Container>
+            </AnimatePages>
         );
     }
 }
