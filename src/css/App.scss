@@ -60,6 +60,7 @@ h1 {
 .titlebar-button {
     @apply inline-flex items-center justify-center h-8 w-8 self-center;
     &:hover {
+        cursor: pointer;
         background: #3484fc;
     }
 }

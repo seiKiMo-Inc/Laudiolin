@@ -16,6 +16,7 @@
 
 #Search {
     position: absolute;
+    display: inline-flex;
     right: 10px;
     margin-top: -8px;
 }
@@ -38,21 +39,24 @@
     padding-left: 10px;
     padding-right: 10px;
     background-color: #3484fc;
-}
-
-.SettingsButton svg {
-    color: cornflowerblue;
-    width: 20px;
-    height: 20px;
+    width: 38px;
+    height: 38px;
+    svg {
+        vertical-align: middle;
+    }
 }
 
 .SettingsButton {
     margin-right: 20px;
-}
-
-.SettingsButton:hover {
-    animation: spin 0.5s linear infinite;
-    filter: brightness(0.7);
+    svg {
+        color: cornflowerblue;
+        width: 20px;
+        height: 20px;
+    }
+    &:hover {
+        animation: spin 0.5s linear infinite;
+        filter: brightness(0.7);
+    }
 }
 
 @keyframes spin {
