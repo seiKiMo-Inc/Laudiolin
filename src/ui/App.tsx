@@ -38,6 +38,8 @@ class App extends React.Component<any, any> {
             <Router>
                 <>
                     <TitleBar />
+                    {/* empty div to keep content below title bar */}
+                    <div className="clearTop"></div>
 
                     <Navigation />
 
@@ -48,7 +50,7 @@ class App extends React.Component<any, any> {
                     </Routes>
 
                     {/* empty div to keep content above player */}
-                    <div className="clear"></div>
+                    <div className="clearBottom"></div>
 
                     <Controls player={player} />
                 </>
