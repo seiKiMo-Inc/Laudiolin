@@ -71,17 +71,18 @@ class Navigation extends React.Component<IProps, IState> {
 
     componentDidMount() {
         window.addEventListener("scroll", this.handleScroll);
+        localStorage.setItem("darkMode", "true");
     }
 
     componentWillUnmount() {
         window.removeEventListener("scroll", this.handleScroll);
     }
 
-    toggleDarkMode() {
-        const darkMode = !document.documentElement.classList.contains("dark");
-        localStorage.setItem("darkMode", darkMode.toString());
-        document.documentElement.classList.toggle("dark", darkMode);
-    }
+    // toggleDarkMode() {
+    //     const darkMode = !document.documentElement.classList.contains("dark");
+    //     localStorage.setItem("darkMode", darkMode.toString());
+    //     document.documentElement.classList.toggle("dark", darkMode);
+    // }
 
     render() {
         const { showNav } = this.state;
