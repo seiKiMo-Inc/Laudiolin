@@ -95,16 +95,16 @@ class Navigation extends React.Component<IProps, IState> {
                 }}
             >
                 <Container id="NavbarContainer">
-                    <h1 id="Title">Laudiolin</h1>
-                    {/*
-                    TODO: put this in a dropdown menu (maybe). placeholder rn.
-                    */}
                     <Link to={Pages.settings}>
                         <Button
                             icon={faCog}
                             className="SettingsButton"
                         />
                     </Link>
+                    <h1 id="Title">Laudiolin</h1>
+                    {/*
+                    TODO: put this in a dropdown menu (maybe). placeholder rn.
+                    */}
                     <div id="Search">
                         <input id="SearchInput" type="text"
                                name="search"

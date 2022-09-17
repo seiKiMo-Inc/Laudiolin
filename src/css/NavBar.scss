@@ -41,8 +41,25 @@
 }
 
 .SettingsButton svg {
-    color: white;
-    margin-left: 20px;
+    color: cornflowerblue;
     width: 20px;
     height: 20px;
+}
+
+.SettingsButton {
+    margin-right: 20px;
+}
+
+.SettingsButton:hover {
+    animation: spin 0.5s linear infinite;
+    filter: brightness(0.7);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
