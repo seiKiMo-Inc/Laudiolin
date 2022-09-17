@@ -15,6 +15,8 @@ th[scope="row"] {
 tr {
     display: flex;
     padding: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .SettingsOptions {
@@ -35,12 +37,16 @@ tr {
     padding: 30px;
     padding-bottom: 10px;
     text-transform: uppercase;
+    text-decoration: underline;
+    th {
+        margin: auto;
+    }
 }
 
 .dirSelector svg {
     width: 20px;
     height: 20px;
-    vertical-align: sub;
+    vertical-align: middle;
     color: #2980b9;
 }
 
