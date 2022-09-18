@@ -1,17 +1,23 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-
-import * as config from "@backend/settings";
-import type { SearchSettings, AudioSettings, GatewaySettings, UISettings, SearchEngine } from "@backend/types";
-
-import "@css/Settings.scss";
 import Button from "@components/Button";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
+
+import * as config from "@backend/settings";
+import type {
+    SearchSettings,
+    AudioSettings,
+    GatewaySettings,
+    UISettings,
+    SearchEngine,
+    UserSettings
+} from "@backend/types";
+
 import { open } from "@tauri-apps/api/dialog";
 import { appDir } from "@tauri-apps/api/path";
 
-interface IProps {}
+import "@css/Settings.scss";
 
+interface IProps {}
 interface IState {
     search: SearchSettings;
     audio: AudioSettings;
@@ -72,18 +78,7 @@ class Settings extends React.Component<IProps, IState> {
         document.getElementById("engineDropdown").classList.toggle("show");
     };
 
-    async componentDidMount() {
-        this.setState({
-            search: config.search(),
-            audio: config.audio(),
-            gateway: config.gateway(),
-            ui: config.ui()
-        });
-
-        await config.reloadSettings();
-    }
-
-    DirSelectorFunction = async () => {
+    selectDirectory = async () => {
         const result = await open({
             defaultPath: await appDir(),
             multiple: false,
@@ -95,8 +90,20 @@ class Settings extends React.Component<IProps, IState> {
         }
     };
 
+    async componentDidMount() {
+        this.setState({
+            search: config.search(),
+            audio: config.audio(),
+            gateway: config.gateway(),
+            ui: config.ui()
+        });
+
+        await config.reloadSettings();
+    }
+
     componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
-        // TODO: Update settings from state.
+        // Save the current state as the new config.
+        config.saveSettings(this.state as UserSettings);
     }
 
     render() {
@@ -149,7 +156,7 @@ class Settings extends React.Component<IProps, IState> {
                                     <Button
                                         className="dirSelector"
                                         icon={faFolder}
-                                        onClick={async () => this.DirSelectorFunction()}
+                                        onClick={async () => this.selectDirectory()}
                                     />
                                 </td>
                             </tr>

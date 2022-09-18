@@ -28,6 +28,14 @@ export function getSettings(): UserSettings | null {
 }
 
 /**
+ * Saves the specified settings to the settings file.
+ * @param settings The settings to save.
+ */
+export async function saveSettings(settings: UserSettings): void {
+    await invoke("save_settings", { settings });
+}
+
+/**
  * Returns the cached user settings.
  */
 export function search(): SearchSettings {

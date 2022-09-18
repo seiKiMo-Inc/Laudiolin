@@ -5,6 +5,7 @@ use serde_json::{from_str, to_string};
 use std::path::Path;
 use std::fs::File;
 use std::io::{Read, Write};
+use crate::wrapper::TauriApp;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct UserSettings {
@@ -89,4 +90,19 @@ pub fn read_from_file(file_path: &str) {
 #[tauri::command]
 pub fn get_settings() -> UserSettings {
     unsafe { SETTINGS.clone().unwrap() }
+}
+
+/// Saves the user's settings to a file and memory.
+/// settings: The settings to save.
+#[tauri::command]
+pub fn save_settings(settings: UserSettings) {
+    // Write the settings to variable.
+    unsafe { SETTINGS = Some(settings.clone()); }
+    // Serialize the settings.
+    let serialized = to_string(&settings).expect("Unable to serialize settings");
+    // Write the settings to file.
+    let file_path = TauriApp::file("settings.json".to_string());
+    let mut file = File::create(file_path).expect("Unable to create file");
+    file.write_all(serialized.as_bytes())
+        .expect("Unable to save settings");
 }
