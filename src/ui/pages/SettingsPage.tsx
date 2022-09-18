@@ -4,7 +4,7 @@ import AnimatePages from "@components/AnimatePages";
 
 class SettingsPage extends React.Component {
     render() {
-        return(
+        return (
             <AnimatePages>
                 <Settings />
             </AnimatePages>

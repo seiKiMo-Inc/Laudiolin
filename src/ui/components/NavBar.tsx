@@ -11,10 +11,9 @@ import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/NavBar.scss";
 
-/* Redirect method. */
-// const navigate = useNavigate();
+interface IProps {
 
-interface IProps {}
+}
 interface IState {
     lastScrollY: any;
     showNav: any;
@@ -22,6 +21,8 @@ interface IState {
 }
 
 class Navigation extends React.Component<IProps, IState> {
+    redirectTo: string | null = null;
+
     constructor(props: IProps) {
         super(props);
 
@@ -44,12 +45,13 @@ class Navigation extends React.Component<IProps, IState> {
     };
 
     searchEnter = (event) => {
-        if (event.key != "Enter") return;
+        if (event.key != "Enter") return false;
 
         // Set the search query.
         setQuery(this.state.searchQuery);
-        // Redirect to the search results page.
-        // navigate(Pages.searchResults);
+        // Redirect to the search page.
+        this.redirectTo = Pages.searchResults;
+        this.forceUpdate();
     };
 
     searchButton = () => {
@@ -77,6 +79,7 @@ class Navigation extends React.Component<IProps, IState> {
 
     render() {
         const { showNav } = this.state;
+
         return (
             <Navbar
                 className="navbar"
