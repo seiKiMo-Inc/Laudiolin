@@ -31,7 +31,7 @@ export function getSettings(): UserSettings | null {
  * Saves the specified settings to the settings file.
  * @param settings The settings to save.
  */
-export async function saveSettings(settings: UserSettings): void {
+export async function saveSettings(settings: UserSettings): Promise<void> {
     await invoke("save_settings", { settings });
 }
 

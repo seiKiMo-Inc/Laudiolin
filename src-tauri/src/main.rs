@@ -18,7 +18,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             wrapper::search, wrapper::download,
             audio::play_from,
-            settings::read_from_file, settings::get_settings
+            settings::read_from_file, settings::get_settings, settings::save_settings
         ])
         .setup(|app| {
             // Bind app to once_cell.

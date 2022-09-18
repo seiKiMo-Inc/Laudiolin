@@ -4,10 +4,6 @@ import { faFolder } from "@fortawesome/free-solid-svg-icons";
 
 import * as config from "@backend/settings";
 import type {
-    SearchSettings,
-    AudioSettings,
-    GatewaySettings,
-    UISettings,
     SearchEngine,
     UserSettings
 } from "@backend/types";
@@ -17,60 +13,86 @@ import { appDir } from "@tauri-apps/api/path";
 
 import "@css/Settings.scss";
 
-interface IProps {}
 interface IState {
-    search: SearchSettings;
-    audio: AudioSettings;
-    gateway: GatewaySettings;
-    ui: UISettings;
+    accuracy: boolean,
+    engine: SearchEngine,
+    download_path: string,
+    encrypted: boolean,
+    address: string,
+    port: number,
+    gateway_port: number,
+    background_color: string,
+    background_url: string,
 }
 
-class Settings extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+class Settings extends React.Component<any, IState> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
-            search: config.search(),
-            audio: config.audio(),
-            gateway: config.gateway(),
-            ui: config.ui()
+            accuracy: false,
+            engine: "YouTube",
+            download_path: "downloads",
+            encrypted: true,
+            address: "app.magix.lol",
+            port: 443,
+            gateway_port: 443,
+            background_color: "",
+            background_url: "",
         };
     }
 
-    setSearch = (accuracy?: boolean, engine?: SearchEngine) => {
-        this.setState({
-            search: {
-                accuracy: accuracy,
-                engine: engine
-            }
+    setAccuracy = async (accuracy: boolean) => {
+        await this.setState({
+            accuracy: accuracy
         });
     }
 
-    setAudio = (download_path: string) => {
-        this.setState({
-            audio: {
-                download_path: download_path
-            }
+    setEngine = async (engine: SearchEngine) => {
+        await this.setState({
+            engine: engine
         });
     }
 
-    setGateway = (encrypted?: boolean, address?: string, port?: number, gateway_port?: number) => {
-        this.setState({
-            gateway: {
-                encrypted: encrypted,
-                address: address,
-                port: port,
-                gateway_port: gateway_port
-            }
+    setDownloadPath = async (download_path: string) => {
+        await this.setState({
+            download_path: download_path
         });
     }
 
-    setUi = (background_color?: string, background_url?: string) => {
-        this.setState({
-            ui: {
-                background_color: background_color,
-                background_url: background_url
-            }
+    setEncryption = async (encrypted: boolean) => {
+        await this.setState({
+            encrypted: encrypted
+        });
+    }
+
+    setAddress = async (address: string) => {
+        await this.setState({
+            address: address
+        });
+    }
+
+    setPort = async (port: number) => {
+        await this.setState({
+            port: port
+        });
+    }
+
+    setGatewayPort = async (gateway_port: number) => {
+        await this.setState({
+            gateway_port: gateway_port
+        });
+    }
+
+    setBackgroundColor = async (background_color: string) => {
+        await this.setState({
+            background_color: background_color
+        });
+    }
+
+    setBackgroundUrl = async (background_url: string) => {
+        await this.setState({
+            background_url: background_url
         });
     }
 
@@ -86,24 +108,49 @@ class Settings extends React.Component<IProps, IState> {
         });
 
         if (result) {
-            this.setAudio(result as string);
+            await this.setDownloadPath(result as string);
         }
     }
 
     async componentDidMount() {
-        this.setState({
-            search: config.search(),
-            audio: config.audio(),
-            gateway: config.gateway(),
-            ui: config.ui()
+        await this.setState({
+            accuracy: config.search().accuracy,
+            engine: config.search().engine,
+            download_path: config.audio().download_path,
+            encrypted: config.gateway().encrypted,
+            address: config.gateway().address,
+            port: config.gateway().port,
+            gateway_port: config.gateway().gateway_port,
+            background_color: config.ui().background_color,
+            background_url: config.ui().background_url,
         });
-
-        await config.reloadSettings();
     }
 
-    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
+    componentWillUnmount() {
+        window.location.reload();
+    }
+
+    async componentDidUpdate() {
         // Save the current state as the new config.
-        config.saveSettings(this.state as UserSettings);
+        await config.saveSettings({
+            search: {
+                accuracy: this.state.accuracy,
+                engine: this.state.engine
+            },
+            audio: {
+                download_path: this.state.download_path
+            },
+            gateway: {
+                encrypted: this.state.encrypted,
+                address: this.state.address,
+                port: this.state.port,
+                gateway_port: this.state.gateway_port
+            },
+            ui: {
+                background_color: this.state.background_color,
+                background_url: this.state.background_url
+            }
+        } as UserSettings);
     }
 
     render() {
@@ -116,8 +163,12 @@ class Settings extends React.Component<IProps, IState> {
                 <tr>
                     <th scope="row">Accuracy:</th>
                     <td>
-                        <input type="checkbox" id="check"
-                               onChange={(e) => e.currentTarget.checked ? this.setSearch(true) : this.setSearch(false)} />
+                        <input
+                            type="checkbox"
+                            id="check"
+                            checked={this.state.accuracy}
+                            onChange={(e) => this.setAccuracy(e.currentTarget.checked)}
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -126,20 +177,20 @@ class Settings extends React.Component<IProps, IState> {
                         <button onClick={this.toggleDropdown}
                                 className="dropbtn">Search Engine</button>
                         <div id="engineDropdown" className="dropdown-content">
-                            <p onClick={() => {
-                                this.setSearch(...[], "YouTube" as SearchEngine);
+                            <p onClick={async () => {
+                                await this.setEngine("YouTube" as SearchEngine);
                                 this.toggleDropdown();
                             }}>YouTube</p>
-                            <p onClick={() => {
-                                this.setSearch(...[], "Spotify" as SearchEngine);
+                            <p onClick={async () => {
+                                await this.setEngine("Spotify" as SearchEngine);
                                 this.toggleDropdown();
                             }}>Spotify</p>
-                            <p onClick={() => {
-                                this.setSearch(...[], "SoundCloud" as SearchEngine);
+                            <p onClick={async () => {
+                                await this.setEngine("SoundCloud" as SearchEngine);
                                 this.toggleDropdown();
                             }}>SoundCloud</p>
-                            <p onClick={() => {
-                                this.setSearch(...[], "All" as SearchEngine);
+                            <p onClick={async () => {
+                                await this.setEngine("All" as SearchEngine);
                                 this.toggleDropdown();
                             }}>All</p>
                         </div>
@@ -156,7 +207,7 @@ class Settings extends React.Component<IProps, IState> {
                         <input
                             className="dirInputText"
                             type="text"
-                            value={this.state.audio.download_path}
+                            value={this.state.download_path}
                             readOnly
                         />
                         <Button className="dirSelector" icon={faFolder}
@@ -171,8 +222,12 @@ class Settings extends React.Component<IProps, IState> {
                 <tr>
                     <th scope="row">Toggle Encryption:</th>
                     <td>
-                        <input type="checkbox" id="check"
-                               onChange={(e) => e.currentTarget.checked ? this.setGateway(true) : this.setGateway(false)} />
+                        <input
+                            type="checkbox"
+                            id="check"
+                            checked={this.state.encrypted}
+                            onChange={(e) => e.currentTarget.checked ? this.setEncryption(true) : this.setEncryption(false)}
+                        />
                     </td>
                 </tr>
                 <tr>
@@ -181,8 +236,8 @@ class Settings extends React.Component<IProps, IState> {
                         <input
                             className="normalInputText"
                             type="text"
-                            value={this.state.gateway.address}
-                            onInput={(e) => this.setGateway(...[], e.currentTarget.value)}
+                            value={this.state.address}
+                            onInput={(e) => this.setAddress(e.currentTarget.value)}
                         />
                     </td>
                 </tr>
@@ -192,8 +247,8 @@ class Settings extends React.Component<IProps, IState> {
                         <input
                             className="normalInputText"
                             type="number"
-                            value={this.state.gateway.port}
-                            onInput={(e) => this.setGateway(...[], ...[], e.currentTarget.valueAsNumber)}
+                            value={this.state.port}
+                            onInput={(e) => this.setPort(e.currentTarget.valueAsNumber)}
                         />
                     </td>
                 </tr>
@@ -203,8 +258,8 @@ class Settings extends React.Component<IProps, IState> {
                         <input
                             className="normalInputText"
                             type="number"
-                            value={this.state.gateway.gateway_port}
-                            onInput={(e) => this.setGateway(...[], ...[], ...[], e.currentTarget.valueAsNumber)}
+                            value={this.state.gateway_port}
+                            onInput={(e) => this.setGatewayPort(e.currentTarget.valueAsNumber)}
                         />
                     </td>
                 </tr>
@@ -220,8 +275,8 @@ class Settings extends React.Component<IProps, IState> {
                             className="normalInputText"
                             type="text"
                             placeholder="#000000"
-                            value={this.state.ui.background_color}
-                            onInput={(e) => this.setUi(e.currentTarget.value)}
+                            value={this.state.background_color}
+                            onInput={(e) => this.setBackgroundColor(e.currentTarget.value)}
                         />
                     </td>
                 </tr>
@@ -232,8 +287,8 @@ class Settings extends React.Component<IProps, IState> {
                             className="normalInputText"
                             type="text"
                             placeholder="https://example.com/image.png"
-                            value={this.state.ui.background_url}
-                            onInput={(e) => this.setUi(...[], e.currentTarget.value)}
+                            value={this.state.background_url}
+                            onInput={(e) => this.setBackgroundUrl(e.currentTarget.value)}
                         />
                     </td>
                 </tr>
