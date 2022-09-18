@@ -7,6 +7,7 @@ import SearchResultsList from "@components/search/SearchResults";
 import { Pages } from "@app/constants";
 import { getQuery, doSearch } from "@backend/search";
 import type { SearchResults } from "@backend/types";
+import AnimatePages from "@components/AnimatePages";
 
 const blankResults: SearchResults = {
     top: {
@@ -67,9 +68,11 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         }
 
         return (
-            <Container className="ContentContainer">
-                {search ? <SearchResultsList results={search} /> : <h1>Nothing found.</h1>}
-            </Container>
+            <AnimatePages>
+                <Container className="ContentContainer">
+                    {search ? <SearchResultsList results={search} /> : <h1>Nothing found.</h1>}
+                </Container>
+            </AnimatePages>
         );
     }
 }
