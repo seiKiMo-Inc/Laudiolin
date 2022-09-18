@@ -19,7 +19,8 @@ export function getQuery() {
     // Cache the next query.
     const query = nextQuery;
     // Clear the query and return the cache.
-    nextQuery = ""; return query;
+    nextQuery = "";
+    return query;
 }
 
 /**

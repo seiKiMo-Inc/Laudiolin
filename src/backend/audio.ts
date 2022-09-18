@@ -6,10 +6,7 @@ import { EventEmitter } from "events";
 import { file } from "@backend/fs";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type {
-    SearchResult, TrackData,
-    FilePayload, VolumePayload, TrackPayload
-} from "@backend/types";
+import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload } from "@backend/types";
 
 /**
  * Events:
@@ -29,7 +26,7 @@ export class MusicPlayer extends EventEmitter {
     private readonly updateTask: any;
 
     private readonly trackQueue: Track[] = [];
-    private currentTrack: Track|null = null;
+    private currentTrack: Track | null = null;
     private isPaused: boolean = true;
     private volume: number = 100;
 
@@ -52,7 +49,7 @@ export class MusicPlayer extends EventEmitter {
      * Emits an update event.
      */
     private emitUpdate(): void {
-        if(this.currentTrack == null || this.isPaused) return;
+        if (this.currentTrack == null || this.isPaused) return;
 
         this.emit("update", {
             track: this.currentTrack,
@@ -86,13 +83,13 @@ export class MusicPlayer extends EventEmitter {
      */
     private playNext() {
         // Check if there is already a song playing.
-        if(this.currentTrack) {
+        if (this.currentTrack) {
             // Stop the current track.
             this.currentTrack.stop();
         }
 
         // Check if there are any tracks in the queue.
-        if(this.trackQueue.length > 0) {
+        if (this.trackQueue.length > 0) {
             // Play the next track in the queue.
             this.playTrack(this.trackQueue.shift()!);
         } else {
@@ -112,7 +109,7 @@ export class MusicPlayer extends EventEmitter {
      */
     clearPlayer(): void {
         // Check if a track is playing.
-        if(this.isPlaying()) return;
+        if (this.isPlaying()) return;
 
         // Clear the current track.
         this.currentTrack = null;
@@ -125,7 +122,7 @@ export class MusicPlayer extends EventEmitter {
     /**
      * Returns the currently playing track.
      */
-    getCurrentTrack(): Track|null {
+    getCurrentTrack(): Track | null {
         return this.currentTrack;
     }
 
@@ -141,7 +138,7 @@ export class MusicPlayer extends EventEmitter {
      * @returns -1 if there is no track playing.
      */
     getDuration(): number {
-        if(!this.currentTrack) return -1;
+        if (!this.currentTrack) return -1;
         return this.currentTrack.duration();
     }
 
@@ -150,7 +147,7 @@ export class MusicPlayer extends EventEmitter {
      * @param progress The progress to seek to.
      */
     setProgress(progress: number) {
-        if(!this.currentTrack) return;
+        if (!this.currentTrack) return;
 
         // Seek to the given progress.
         this.currentTrack.seek(progress);
@@ -163,7 +160,7 @@ export class MusicPlayer extends EventEmitter {
      * @returns -1 if there is no track playing.
      */
     getProgress(): number {
-        if(!this.currentTrack) return -1;
+        if (!this.currentTrack) return -1;
         return this.getCurrentTrack().seek();
     }
 
@@ -178,16 +175,16 @@ export class MusicPlayer extends EventEmitter {
      */
     playTrack(track: Track, stopCurrent = true) {
         // Check if the track should be added to the queue.
-        if(!stopCurrent && this.currentTrack.isPlaying()) {
+        if (!stopCurrent && this.currentTrack.isPlaying()) {
             // Add track to the queue.
             this.trackQueue.push(track);
             // Emit queued event.
-            this.emit("queued", track); return;
+            this.emit("queued", track);
+            return;
         }
 
         // Stop the current track.
-        if(stopCurrent && this.isPlaying())
-            this.stopTrack();
+        if (stopCurrent && this.isPlaying()) this.stopTrack();
 
         // Apply event listeners.
         this.setupTrackListeners(track);
@@ -206,7 +203,7 @@ export class MusicPlayer extends EventEmitter {
      * Haults the player's currently playing track.
      */
     stopTrack() {
-        if(!this.currentTrack) return;
+        if (!this.currentTrack) return;
 
         // Stop the current track.
         this.currentTrack.stop();
@@ -238,9 +235,9 @@ export class MusicPlayer extends EventEmitter {
      * Toggles the player's mute state.
      */
     togglePlayback() {
-        if(!this.currentTrack) return;
+        if (!this.currentTrack) return;
 
-        if(this.isPlaying()) this.pause();
+        if (this.isPlaying()) this.pause();
         else this.resume();
     }
 
@@ -248,7 +245,7 @@ export class MusicPlayer extends EventEmitter {
      * Pauses the player's currently playing track.
      */
     pause() {
-        if(!this.currentTrack) return;
+        if (!this.currentTrack) return;
 
         // Pause the current track.
         this.currentTrack.pause();
@@ -262,7 +259,7 @@ export class MusicPlayer extends EventEmitter {
      * Resumes the player's currently playing track.
      */
     resume() {
-        if(!this.currentTrack) return;
+        if (!this.currentTrack) return;
 
         // Resume the current track.
         this.currentTrack.resume();
@@ -430,12 +427,13 @@ export class Track {
  * Constants & Utility methods.
  */
 
-let currentTrack: Track|null = null;
+let currentTrack: Track | null = null;
 export const player: MusicPlayer = new MusicPlayer();
 
-type PlayAudioPayload = FilePayload & VolumePayload & {
-    track_data: TrackData;
-};
+type PlayAudioPayload = FilePayload &
+    VolumePayload & {
+        track_data: TrackData;
+    };
 type TrackSyncPayload = TrackPayload;
 
 /**
@@ -468,10 +466,9 @@ export async function playFromResult(track: SearchResult): Promise<Track> {
  * @deprecated Use {@link MusicPlayer#pause} instead.
  */
 export function togglePlayback() {
-    if(!currentTrack) return;
+    if (!currentTrack) return;
 
-    if(currentTrack.isPlaying())
-        currentTrack.pause();
+    if (currentTrack.isPlaying()) currentTrack.pause();
     else currentTrack.resume();
 }
 
@@ -519,7 +516,7 @@ async function syncToTrack(event: Event<any>) {
     // Check if the track needs to be played.
     const track = payload.track;
     const playing = player.getCurrentTrack();
-    if(!playing || track.id != playing.getData().id) {
+    if (!playing || track.id != playing.getData().id) {
         // Play the track.
         await invoke("play_from", { track });
     }

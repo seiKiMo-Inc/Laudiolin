@@ -6,17 +6,15 @@ import { Link } from "react-router-dom";
 import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
 
-import Button from "./Button"
-import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons"
+import Button from "./Button";
+import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/NavBar.scss";
 
 /* Redirect method. */
 // const navigate = useNavigate();
 
-interface IProps {
-
-}
+interface IProps {}
 interface IState {
     lastScrollY: any;
     showNav: any;
@@ -41,12 +39,12 @@ class Navigation extends React.Component<IProps, IState> {
         this.setState({ lastScrollY: currentScrollY });
     };
 
-    inputQuery = event => {
+    inputQuery = (event) => {
         this.setState({ searchQuery: event.target.value });
     };
 
-    searchEnter = event => {
-        if(event.key != "Enter") return;
+    searchEnter = (event) => {
+        if (event.key != "Enter") return;
 
         // Set the search query.
         setQuery(this.state.searchQuery);
@@ -57,7 +55,7 @@ class Navigation extends React.Component<IProps, IState> {
     searchButton = () => {
         // Validate the search query.
         const query = this.state.searchQuery;
-        if(query.length < 1) return;
+        if (query.length < 1) return;
 
         // Set the search query.
         setQuery(query);
@@ -85,7 +83,7 @@ class Navigation extends React.Component<IProps, IState> {
                 variant="dark"
                 style={{
                     top: showNav ? 0 : -100,
-                    zIndex: 100,
+                    zIndex: 100
                 }}
             >
                 <Container id="NavbarContainer">
@@ -94,19 +92,18 @@ class Navigation extends React.Component<IProps, IState> {
                     TODO: put this in a dropdown menu (maybe). placeholder rn.
                     */}
                     <Link to={Pages.settings}>
-                        <Button
-                            icon={faCog}
-                            className="SettingsButton"
-                        />
+                        <Button icon={faCog} className="SettingsButton" />
                     </Link>
                     <div id="Search">
-                        <input id="SearchInput" type="text"
-                               name="search"
-                               placeholder="Search..."
-                               autoComplete="off"
-                               autoCorrect="off"
-                               onChange={this.inputQuery}
-                               onKeyDown={this.searchEnter}
+                        <input
+                            id="SearchInput"
+                            type="text"
+                            name="search"
+                            placeholder="Search..."
+                            autoComplete="off"
+                            autoCorrect="off"
+                            onChange={this.inputQuery}
+                            onKeyDown={this.searchEnter}
                         />
 
                         <Link to={Pages.searchResults} onClick={this.searchButton}>
