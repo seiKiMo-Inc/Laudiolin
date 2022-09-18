@@ -13,7 +13,8 @@
     "package": "tauri build",
     "tauri": "tauri",
 
-    "start:dev": "tauri dev"
+    "start:dev": "tauri dev",
+    "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\""
   },
 
   "dependencies": {
@@ -21,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-router-dom": "6.3.0",
+    "framer-motion": "^7.3.5",
 
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
