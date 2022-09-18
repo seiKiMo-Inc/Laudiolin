@@ -1,9 +1,10 @@
 import React from "react";
-import AnimatePages from "@components/AnimatePages";
+import { Navigate } from "react-router-dom";
 
 import { Container } from "react-bootstrap";
 import SearchResultsList from "@components/search/SearchResults";
 
+import { Pages } from "@app/constants";
 import { getQuery, doSearch } from "@backend/search";
 import type { SearchResults } from "@backend/types";
 
@@ -19,7 +20,9 @@ const blankResults: SearchResults = {
     results: []
 };
 
-interface IProps {}
+interface IProps {
+
+}
 interface IState {
     searchQuery: string;
     searchResults: SearchResults;
@@ -39,13 +42,13 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         // Get the search query.
         const query = getQuery();
         // Check query validity.
-        if (query == null || query == "") return;
+        if(query == null || query == "")
+            return;
 
         // Perform a search.
         doSearch(query, {
-            engine: "YouTube",
-            accuracy: true
-        }).then((results) => this.setState({ searchResults: results }));
+            engine: "YouTube", accuracy: true
+        }).then(results => this.setState({ searchResults: results }));
     }
 
     componentWillUnmount() {
@@ -57,16 +60,24 @@ class SearchResultsPage extends React.Component<IProps, IState> {
     }
 
     render() {
+        const search = this.state.searchResults;
+        const results = search.results;
+
+        // Perform DOM reload check.
+        if(results.length == 0 && getQuery() == "") {
+            return (
+                <Navigate to={Pages.home} />
+            );
+        }
+
         return (
-            <AnimatePages>
-                <Container className="ContentContainer">
-                    {this.state.searchResults ? (
-                        <SearchResultsList results={this.state.searchResults} />
-                    ) : (
+            <Container className="ContentContainer">
+                {
+                    search ?
+                        <SearchResultsList results={search} /> :
                         <h1>Nothing found.</h1>
-                    )}
-                </Container>
-            </AnimatePages>
+                }
+            </Container>
         );
     }
 }

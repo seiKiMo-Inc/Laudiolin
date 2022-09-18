@@ -1,9 +1,10 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+
 import SearchTrack from "@components/search/SearchTrack";
 import SearchResultsLoading from "@components/search/SearchResultsLoading";
 
-import { SearchResults } from "@backend/types";
+import type { SearchResults } from "@backend/types";
 
 interface IProps {
     results: SearchResults;
