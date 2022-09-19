@@ -9,6 +9,8 @@ import type { Event } from "@tauri-apps/api/helpers/event";
 import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload } from "@backend/types";
 
 /**
+ * TODO: Move music player to the backend. (Rust)
+ *
  * Events:
  * - start: Emitted when a track starts playing.
  * - stop: Emitted when the player stops playing or when there are no more tracks.
