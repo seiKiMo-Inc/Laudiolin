@@ -185,19 +185,19 @@ export class MusicPlayer extends EventEmitter {
      */
     public async queuePlaylist(playlist: Playlist, autoPlay = true) {
         // Check player state.
-        if(autoPlay && this.isPlaying()) {
+        if (autoPlay && this.isPlaying()) {
             this.stopTrack();
             this.clearPlayer();
         }
 
         // Extract the playable tracks.
         const tracks = [];
-        for(const track of playlist.tracks) {
+        for (const track of playlist.tracks) {
             tracks.push(await makeTrack(track));
         }
 
         // Play the first track if specified.
-        if(autoPlay) {
+        if (autoPlay) {
             this.playTrack(tracks.shift()!);
         }
 
@@ -264,7 +264,7 @@ export class MusicPlayer extends EventEmitter {
     backTrack() {
         // Check if there is a track playing.
         // TODO: Check if #getProgress is in milliseconds.
-        if(this.currentTrack && this.getProgress() > 3) {
+        if (this.currentTrack && this.getProgress() > 3) {
             // Seek to the start of the track.
             this.setProgress(0);
             return;
@@ -388,9 +388,7 @@ export class Track {
     private readonly data: TrackData;
     private id: number = 0;
 
-    constructor(
-        private readonly payload: PlayAudioPayload
-    ) {
+    constructor(private readonly payload: PlayAudioPayload) {
         this.howl = new Howl({
             src: [file(payload)],
             volume: payload.volume
@@ -508,7 +506,7 @@ type PlayAudioPayload = FilePayload &
         track_data: TrackData;
     };
 type PlayPlaylistPayload = {
-    playlist: Playlist
+    playlist: Playlist;
 };
 type TrackSyncPayload = TrackPayload;
 

@@ -11,9 +11,7 @@ import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/NavBar.scss";
 
-interface IProps {
-
-}
+interface IProps {}
 interface IState {
     lastScrollY: any;
     showNav: any;

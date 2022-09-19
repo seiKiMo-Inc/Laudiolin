@@ -58,27 +58,27 @@ class SearchTrack extends React.Component<IProps, IState> {
                 this.setState({ playing: !isPlaying });
             });
         }
-    }
+    };
 
     preview1 = () => {
         alert("This should bring the user to a laudiolin-based song preview.");
-    }
+    };
 
     preview2 = () => {
         alert("Will bind functions to it when its implemented.");
-    }
+    };
 
     openTrackSource = () => {
         window.open(this.props.result.url, "_blank");
-    }
+    };
 
     copyTrackURL = async () => {
         await navigator.clipboard.writeText(this.props.result.url);
-    }
+    };
 
     toggleDropdown = () => {
         document.getElementById("trackDropdown").classList.toggle("show");
-    }
+    };
 
     render() {
         const result = this.props.result;
@@ -107,27 +107,40 @@ class SearchTrack extends React.Component<IProps, IState> {
                     </Figure.Caption>
 
                     <Figure.Caption id="searchDropdownButton">
-                        <Button
-                            icon={faNavicon}
-                            onClick={this.toggleDropdown}
-                        />
+                        <Button icon={faNavicon} onClick={this.toggleDropdown} />
                         <div id="trackDropdown" className="dropdown-content">
-                            <p onClick={() => {
-                                this.playTrack();
-                                this.toggleDropdown();
-                            }}>Play</p>
-                            <p onClick={() => {
-                                this.preview2();
-                                this.toggleDropdown();
-                            }}>Add to playlist</p>
-                            <p onClick={() => {
-                                this.openTrackSource();
-                                this.toggleDropdown();
-                            }}>Open track source</p>
-                            <p onClick={async () => {
-                                await this.copyTrackURL();
-                                this.toggleDropdown();
-                            }}>Copy track URL</p>
+                            <p
+                                onClick={() => {
+                                    this.playTrack();
+                                    this.toggleDropdown();
+                                }}
+                            >
+                                Play
+                            </p>
+                            <p
+                                onClick={() => {
+                                    this.preview2();
+                                    this.toggleDropdown();
+                                }}
+                            >
+                                Add to playlist
+                            </p>
+                            <p
+                                onClick={() => {
+                                    this.openTrackSource();
+                                    this.toggleDropdown();
+                                }}
+                            >
+                                Open track source
+                            </p>
+                            <p
+                                onClick={async () => {
+                                    await this.copyTrackURL();
+                                    this.toggleDropdown();
+                                }}
+                            >
+                                Copy track URL
+                            </p>
                         </div>
                     </Figure.Caption>
                 </Figure>
