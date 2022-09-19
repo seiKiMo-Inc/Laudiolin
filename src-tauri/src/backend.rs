@@ -24,6 +24,12 @@ trait Backend {
      */
 
     fn send(&self, data: String);
+
+    /*
+     * Data functions.
+     */
+
+    fn save_playlist(&self, playlist: Playlist);
 }
 impl Backend for Client {
     fn volume(&self, volume: u8) {
@@ -37,6 +43,10 @@ impl Backend for Client {
     fn send(&self, data: String) {
         wrapper::send(data);
     }
+
+    fn save_playlist(&self, playlist: Playlist) {
+        wrapper::save_playlist(playlist);
+    }
 }
 
 pub struct SearchOptions {
@@ -47,6 +57,7 @@ pub struct DownloadOptions {
     pub file_path: String
 }
 
+/// Doubles as a track.
 #[derive(Clone, Serialize, Deserialize)]
 pub struct SearchResult {
     pub title: String,
@@ -60,6 +71,15 @@ pub struct SearchResult {
 pub struct SearchResults {
     pub top: SearchResult,
     pub results: Vec<SearchResult>
+}
+
+#[derive(Clone, Serialize, Deserialize)]
+pub struct Playlist {
+    pub id: String,
+    pub name: String,
+    pub description: String,
+    pub icon: String,
+    pub tracks: Vec<SearchResult>
 }
 
 #[derive(Serialize, Deserialize)]

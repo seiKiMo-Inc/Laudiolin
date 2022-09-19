@@ -122,6 +122,8 @@ export class MusicPlayer extends EventEmitter {
         this.currentTrack = null;
         // Clear the track queue.
         this.trackQueue.length = 0;
+        // Clear the backtrack queue.
+        this.backTrackQueue.length = 0;
         // Set the player as paused.
         this.isPaused = true;
     }
@@ -169,6 +171,38 @@ export class MusicPlayer extends EventEmitter {
     getProgress(): number {
         if (!this.currentTrack) return -1;
         return this.getCurrentTrack().seek();
+    }
+
+    /*
+     * Playlist utilities.
+     */
+
+    /**
+     * Adds the playlist to the queue.
+     * Plays the first track if specified.
+     * @param playlist The playlist to add to the queue.
+     * @param autoPlay Should the first playlist track automatically play?
+     */
+    public async queuePlaylist(playlist: Playlist, autoPlay = true) {
+        // Check player state.
+        if(autoPlay && this.isPlaying()) {
+            this.stopTrack();
+            this.clearPlayer();
+        }
+
+        // Extract the playable tracks.
+        const tracks = [];
+        for(const track of playlist.tracks) {
+            tracks.push(await makeTrack(track));
+        }
+
+        // Play the first track if specified.
+        if(autoPlay) {
+            this.playTrack(tracks.shift()!);
+        }
+
+        // Add the tracks to the queue.
+        this.trackQueue.push(...tracks);
     }
 
     /*
@@ -467,7 +501,6 @@ export class Track {
  * Constants & Utility methods.
  */
 
-let currentTrack: Track | null = null;
 export const player: MusicPlayer = new MusicPlayer();
 
 type PlayAudioPayload = FilePayload &
@@ -494,15 +527,23 @@ export async function setupListeners() {
  * Play an audio track from a search result.
  * @param track The search result of the track to play.
  */
-export async function playFromResult(track: SearchResult): Promise<Track> {
+export async function playFromResult(track: SearchResult): Promise<void> {
     // TODO: Check settings for if user wants to download or stream audio.
 
     // Download the audio file.
     // TODO: Check settings for the user's preferred search engine.
     await invoke("play_from", { track });
+}
 
-    // Return the track.
-    return currentTrack;
+/**
+ * Makes a track object from track data.
+ * @param trackData The track data to make a track object from.
+ */
+export async function makeTrack(trackData: TrackData): Promise<Track> {
+    // Get the play audio payload.
+    const payload = await invoke("make_track", { track: trackData });
+    // Make a new track object.
+    return new Track(payload as PlayAudioPayload);
 }
 
 /**
@@ -521,7 +562,10 @@ function playAudio(event: Event<any>) {
  * @param event The event.
  */
 function playPlaylist(event: Event<any>) {
-    // TODO: Play the playlist.
+    // Get the playlist.
+    const playlist = event.payload.playlist;
+    // Play the playlist.
+    player.queuePlaylist(playlist, true);
 }
 
 /**

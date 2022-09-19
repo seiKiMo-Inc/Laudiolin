@@ -28,6 +28,13 @@ export type SearchOptions = {
 };
 
 export type TrackData = SearchResult;
+export type Playlist = {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    tracks: TrackData[];
+};
 
 export type UserSettings = {
     search: SearchSettings;

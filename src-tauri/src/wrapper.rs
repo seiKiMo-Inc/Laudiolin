@@ -74,6 +74,12 @@ pub fn send(data: String) {
     TauriApp::emit("send_message", MessagePayload { data });
 }
 
+/// Saves the specified playlist as a file.
+/// playlist: The playlist to save.
+pub fn save_playlist(playlist: Playlist) {
+
+}
+
 /// Returns gateway settings.
 pub fn gateway() -> GatewaySettings {
     return get_settings().gateway;

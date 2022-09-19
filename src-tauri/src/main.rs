@@ -17,7 +17,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             wrapper::search, wrapper::download,
-            audio::play_from,
+            audio::make_track, audio::play_from, audio::play_playlist,
             settings::read_from_file, settings::get_settings, settings::save_settings
         ])
         .setup(|app| {
