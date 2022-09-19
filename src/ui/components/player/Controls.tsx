@@ -61,15 +61,11 @@ class Controls extends React.Component<IProps, IState> {
         player.on("update", () => this.forceUpdate());
     }
 
-    lmao = () => {
-        alert("lmao gotta implement this later");
-    };
-
     render() {
         return (
             <div className={"controls"}>
                 <span id="controls-components">
-                    <Button className={"control"} icon={faBackward} onClick={this.lmao} />
+                    <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} />
 
                     <Button
                         className={"control"}
@@ -77,7 +73,7 @@ class Controls extends React.Component<IProps, IState> {
                         onClick={this.toggleTrackState}
                     />
 
-                    <Button className={"control"} icon={faForward} onClick={this.lmao} />
+                    <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} />
 
                     <VolumeControl
                         volume={player.getVolume()}

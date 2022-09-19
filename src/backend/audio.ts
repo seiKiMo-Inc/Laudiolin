@@ -6,7 +6,7 @@ import { EventEmitter } from "events";
 import { file } from "@backend/fs";
 
 import type { Event } from "@tauri-apps/api/helpers/event";
-import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload } from "@backend/types";
+import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload, Playlist } from "@backend/types";
 
 /**
  * TODO: Move music player to the backend. (Rust)
@@ -27,12 +27,15 @@ import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload 
 export class MusicPlayer extends EventEmitter {
     private readonly updateTask: any;
 
+    private readonly backTrackQueue: Track[] = [];
     private readonly trackQueue: Track[] = [];
     private currentTrack: Track | null = null;
-    private isPaused: boolean = true;
     private volume: number = 100;
 
     private originalVolume: number = -1;
+    private isPaused: boolean = true;
+    private isShuffled: boolean = false;
+    private isLooped: number = 0; // 0 = no loop, 1 = loop track, 2 = loop queue
 
     constructor() {
         super();
@@ -92,6 +95,8 @@ export class MusicPlayer extends EventEmitter {
 
         // Check if there are any tracks in the queue.
         if (this.trackQueue.length > 0) {
+            // Add this track to the backtrack queue.
+            this.backTrackQueue.push(this.currentTrack.clone());
             // Play the next track in the queue.
             this.playTrack(this.trackQueue.shift()!);
         } else {
@@ -219,6 +224,30 @@ export class MusicPlayer extends EventEmitter {
     }
 
     /**
+     * Returns to the most previous track.
+     * If in the middle of playing, return to the start of this track.
+     */
+    backTrack() {
+        // Check if there is a track playing.
+        // TODO: Check if #getProgress is in milliseconds.
+        if(this.currentTrack && this.getProgress() > 3) {
+            // Seek to the start of the track.
+            this.setProgress(0);
+            return;
+        }
+
+        // Check if there are any tracks in the backtrack queue.
+        if (this.backTrackQueue.length > 0) {
+            // Get the previous track.
+            const track = this.backTrackQueue.pop();
+            // Play the previous track.
+            this.playTrack(track!);
+            // Add the track to the queue.
+            this.trackQueue.unshift(track!);
+        }
+    }
+
+    /**
      * Skips to the next track.
      */
     skipTrack() {
@@ -325,7 +354,9 @@ export class Track {
     private readonly data: TrackData;
     private id: number = 0;
 
-    constructor(payload: PlayAudioPayload) {
+    constructor(
+        private readonly payload: PlayAudioPayload
+    ) {
         this.howl = new Howl({
             src: [file(payload)],
             volume: payload.volume
@@ -335,9 +366,16 @@ export class Track {
     }
 
     /**
+     * Returns a shallow clone of this track.
+     */
+    public clone(): Track {
+        return new Track(this.payload);
+    }
+
+    /**
      * Returns the track's data.
      */
-    getData(): TrackData {
+    public getData(): TrackData {
         return this.data;
     }
 
@@ -436,6 +474,9 @@ type PlayAudioPayload = FilePayload &
     VolumePayload & {
         track_data: TrackData;
     };
+type PlayPlaylistPayload = {
+    playlist: Playlist
+};
 type TrackSyncPayload = TrackPayload;
 
 /**
@@ -446,6 +487,7 @@ export async function setupListeners() {
     await listen("play_audio", playAudio);
     await listen("set_volume", updateVolume);
     await listen("track_sync", syncToTrack);
+    await listen("play_playlist", playPlaylist);
 }
 
 /**
@@ -464,27 +506,6 @@ export async function playFromResult(track: SearchResult): Promise<Track> {
 }
 
 /**
- * Pauses/unpauses the current track.
- * @deprecated Use {@link MusicPlayer#pause} instead.
- */
-export function togglePlayback() {
-    if (!currentTrack) return;
-
-    if (currentTrack.isPlaying()) currentTrack.pause();
-    else currentTrack.resume();
-}
-
-/**
- * Sets the player's volume.
- * Emits a volume packet to the gateway.
- * @param volume The volume.
- * @deprecated Use {@link MusicPlayer#setVolume} instead.
- */
-export function setVolume(volume: number) {
-    player.setVolume(volume);
-}
-
-/**
  * Plays an audio file.
  * @param event The event.
  */
@@ -493,6 +514,14 @@ function playAudio(event: Event<any>) {
     const track = new Track(event.payload);
     // Add the track to the player.
     player.playTrack(track);
+}
+
+/**
+ * Plays a playlist.
+ * @param event The event.
+ */
+function playPlaylist(event: Event<any>) {
+    // TODO: Play the playlist.
 }
 
 /**
