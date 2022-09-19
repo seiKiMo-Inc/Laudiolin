@@ -126,3 +126,21 @@ h1 {
         @apply text-indigo-600;
     }
 }
+
+.dropdown-content p {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    background-color: #272d41;
+    font-size: 15px;
+}
+
+.dropdown-content p:hover {
+    cursor: pointer;
+    background-color: #1e293b;
+}
+
+.show {
+    display: block;
+}
