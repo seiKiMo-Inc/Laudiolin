@@ -35,3 +35,40 @@
         accent-color: #2980b9;
     }
 }
+
+.current-track {
+    position: fixed;
+    bottom: 45px;
+    vertical-align: bottom;
+    z-index: 10000;
+
+    img {
+        max-width: 130px;
+        box-shadow: black 0px 0px 10px;
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+}
+
+#current-track-text {
+    position: absolute;
+    font-family: system-ui;
+    margin-left: 140px;
+    left: 0;
+    width: 30%;
+    margin-top: -10px;
+
+    h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    h4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        filter: brightness(0.5);
+    }
+}

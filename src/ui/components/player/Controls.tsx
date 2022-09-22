@@ -63,8 +63,18 @@ class Controls extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div className={"controls"}>
+            <>
+                <div className={"controls"}>
                 <span id="controls-components">
+                    {
+                        player.getCurrentTrack() != null ? (
+                            <div id="current-track-text">
+                                <h3>{player.getCurrentTrack().getData().title}</h3>
+                                <h4>{player.getCurrentTrack().getData().artist}</h4>
+                            </div>
+                        ) : ""
+                    }
+
                     <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} />
 
                     <Button
@@ -83,12 +93,21 @@ class Controls extends React.Component<IProps, IState> {
                     />
                 </span>
 
-                <ProgressBarComponent
-                    progress={player.getProgress()}
-                    duration={player.getDuration()}
-                    setProgress={this.setProgress}
-                />
-            </div>
+                    <ProgressBarComponent
+                        progress={player.getProgress()}
+                        duration={player.getDuration()}
+                        setProgress={this.setProgress}
+                    />
+                </div>
+
+                {
+                    player.getCurrentTrack() != null ? (
+                        <div className={"current-track"}>
+                            <img src={player.getCurrentTrack().getData().icon} alt={"current-track-img"} />
+                        </div>
+                    ) : ""
+                }
+            </>
         );
     }
 }
