@@ -6,6 +6,7 @@ use serde::Serialize;
 use serde_json::{from_str};
 use std::fs::read_to_string;
 use crate::backend::{Playlist, SearchResult};
+use crate::file_exists;
 use crate::wrapper::{TauriApp, download};
 use crate::settings::get_settings;
 
@@ -27,7 +28,7 @@ pub fn make_track(track: SearchResult) -> PlayAudioPayload {
     // Download the track.
     let file_path = download(track.id.as_str(),
                              get_settings().search.engine.as_str());
-    
+
     PlayAudioPayload {
         file_path,
         track_data: track,
@@ -39,13 +40,18 @@ pub fn make_track(track: SearchResult) -> PlayAudioPayload {
 /// track: The search result of the track to play.
 #[tauri::command]
 pub fn play_from(track: SearchResult) {
+    let id = track.id.as_str();
     // TODO: Check frontend for TODOs.
 
-    // Download the audio track.
-    let file_name = download(track.id.as_str(), "YouTube");
+    // Check if the file is already downloaded.
+    let mut file_path = TauriApp::file(format!("{}.mp3", id.clone()));
+    if !file_exists(file_path.clone()) {
+        // Download the audio track.
+        file_path = download(id, "YouTube");
+    }
 
     // Play audio from the downloaded track.
-    play_audio(file_name, track);
+    play_audio(file_path, track);
 }
 
 /// Plays the specified audio file with the specified track data.
