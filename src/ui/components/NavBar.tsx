@@ -9,9 +9,13 @@ import { setQuery } from "@backend/search";
 import Button from "./Button";
 import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
 
+import Navigator from "@components/Navigator";
+
 import "@css/NavBar.scss";
 
-interface IProps {}
+interface IProps {
+    navigate: (path: string) => void;
+}
 interface IState {
     lastScrollY: any;
     showNav: any;
@@ -19,8 +23,6 @@ interface IState {
 }
 
 class Navigation extends React.Component<IProps, IState> {
-    redirectTo: string | null = null;
-
     constructor(props: IProps) {
         super(props);
 
@@ -48,8 +50,8 @@ class Navigation extends React.Component<IProps, IState> {
         // Set the search query.
         setQuery(this.state.searchQuery);
         // Redirect to the search page.
-        this.redirectTo = Pages.searchResults;
-        this.forceUpdate();
+        const { navigate } = this.props;
+        navigate(Pages.searchResults);
     };
 
     searchButton = () => {
@@ -114,4 +116,4 @@ class Navigation extends React.Component<IProps, IState> {
     }
 }
 
-export default Navigation;
+export default Navigator(Navigation);
