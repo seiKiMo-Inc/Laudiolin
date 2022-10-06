@@ -7,7 +7,7 @@ import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
 
-import { invoke } from "@tauri-apps/api/tauri"
+import { invoke } from "@tauri-apps/api/tauri";
 
 (async () => {
     // Initialize the file system.

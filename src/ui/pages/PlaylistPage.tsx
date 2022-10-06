@@ -2,16 +2,10 @@ import React from "react";
 
 import PlaylistTracks from "@components/playlist/PlaylistTracks";
 
-interface IProps {
+interface IProps {}
+interface IState {}
 
-}
-interface IState {
-
-}
-
-const tracks = [
-    "cool track"
-];
+const tracks = ["cool track"];
 
 class PlaylistPage extends React.Component<IProps, IState> {
     constructor(props) {

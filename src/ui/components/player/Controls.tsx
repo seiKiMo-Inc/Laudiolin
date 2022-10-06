@@ -65,33 +65,33 @@ class Controls extends React.Component<IProps, IState> {
         return (
             <>
                 <div className={"controls"}>
-                <span id="controls-components">
-                    {
-                        player.getCurrentTrack() != null ? (
+                    <span id="controls-components">
+                        {player.getCurrentTrack() != null ? (
                             <div id="current-track-text">
                                 <h3>{player.getCurrentTrack().getData().title}</h3>
                                 <h4>{player.getCurrentTrack().getData().artist}</h4>
                             </div>
-                        ) : ""
-                    }
+                        ) : (
+                            ""
+                        )}
 
-                    <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} />
+                        <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} />
 
-                    <Button
-                        className={"control"}
-                        icon={player.isPlaying() ? faPause : faPlay}
-                        onClick={this.toggleTrackState}
-                    />
+                        <Button
+                            className={"control"}
+                            icon={player.isPlaying() ? faPause : faPlay}
+                            onClick={this.toggleTrackState}
+                        />
 
-                    <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} />
+                        <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} />
 
-                    <VolumeControl
-                        volume={player.getVolume()}
-                        muted={player.getVolume() == 0}
-                        setVolume={(value) => player.setVolume(value)}
-                        toggleMute={this.toggleMute}
-                    />
-                </span>
+                        <VolumeControl
+                            volume={player.getVolume()}
+                            muted={player.getVolume() == 0}
+                            setVolume={(value) => player.setVolume(value)}
+                            toggleMute={this.toggleMute}
+                        />
+                    </span>
 
                     <ProgressBarComponent
                         progress={player.getProgress()}
@@ -100,13 +100,13 @@ class Controls extends React.Component<IProps, IState> {
                     />
                 </div>
 
-                {
-                    player.getCurrentTrack() != null ? (
-                        <div className={"current-track"}>
-                            <img src={player.getCurrentTrack().getData().icon} alt={"current-track-img"} />
-                        </div>
-                    ) : ""
-                }
+                {player.getCurrentTrack() != null ? (
+                    <div className={"current-track"}>
+                        <img src={player.getCurrentTrack().getData().icon} alt={"current-track-img"} />
+                    </div>
+                ) : (
+                    ""
+                )}
             </>
         );
     }

@@ -107,7 +107,7 @@ function saveToStorage(event: Event<any>) {
  * @param key The key to get the value of.
  * @param fallback The fallback value to return if the key does not exist.
  */
-export function get(key: string, fallback: string|null = null): string | null {
+export function get(key: string, fallback: string | null = null): string | null {
     return localStorage.getItem(key) ?? fallback;
 }
 

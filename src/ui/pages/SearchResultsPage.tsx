@@ -59,9 +59,7 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         doSearch(query, {
             engine: "YouTube",
             accuracy: true
-        }).then((results) =>
-            this.setState({ skip: false,
-                searchResults: results }));
+        }).then((results) => this.setState({ skip: false, searchResults: results }));
     };
 
     componentDidMount() {
@@ -88,8 +86,7 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         const results = search.results;
 
         // Perform DOM reload check.
-        if (!this.state.skip && results.length == 0
-            && getQuery(true) == "") {
+        if (!this.state.skip && results.length == 0 && getQuery(true) == "") {
             return <Navigate to={Pages.home} />;
         }
 

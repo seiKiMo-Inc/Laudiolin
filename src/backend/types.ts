@@ -24,7 +24,7 @@ export type RichPresence = {
     matchSecret?: string;
     joinSecret?: string;
     spectateSecret?: string;
-}
+};
 
 export type SearchEngine = "YouTube" | "Spotify" | "all";
 export type SearchResult = {

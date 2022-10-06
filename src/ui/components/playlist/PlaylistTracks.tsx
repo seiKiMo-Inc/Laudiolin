@@ -2,9 +2,7 @@ import React from "react";
 
 import PlaylistTrack from "@components/playlist/PlaylistTrack";
 
-interface IProps {
-
-}
+interface IProps {}
 
 class PlaylistTracks extends React.Component<any, any> {
     constructor(props: any) {
@@ -14,11 +12,9 @@ class PlaylistTracks extends React.Component<any, any> {
     render() {
         return (
             <>
-                {
-                    this.props.tracks.map((track, index) => {
-                        return <PlaylistTrack key={index} track={track} />;
-                    })
-                }
+                {this.props.tracks.map((track, index) => {
+                    return <PlaylistTrack key={index} track={track} />;
+                })}
             </>
         );
     }
