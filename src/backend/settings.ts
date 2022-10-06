@@ -15,6 +15,9 @@ export async function reloadSettings() {
     await invoke("read_from_file", { filePath: data("settings.json") });
     // Set settings from backend.
     settings = await invoke("get_settings");
+
+    // Set dark mode to the system preference.
+    applySystemDarkMode();
 }
 
 /*
@@ -91,6 +94,16 @@ export function ui(): UISettings {
 export async function setupListeners() {
     console.log("Setting up settings event listeners...");
     await listen("save_storage", saveToStorage);
+}
+
+/**
+ * Applies dark-mode to the page.
+ */
+function applySystemDarkMode() {
+    // Check if dark mode is present.
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.body.classList.add("dark"); // Set dark mode.
+    }
 }
 
 /**
