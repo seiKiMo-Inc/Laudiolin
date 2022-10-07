@@ -8,7 +8,6 @@ import { player, playFromResult } from "@backend/audio";
 import type { SearchResult } from "@backend/types";
 
 import "@css/SearchTrack.scss";
-import { SearchEngine } from "@backend/types";
 
 interface IProps {
     result: SearchResult;
@@ -20,6 +19,14 @@ interface IState {
 
 /* A track that appears when searching for it. */
 class SearchTrack extends React.Component<IProps, IState> {
+    updateState = () => {
+        if (!this.state.hasPlayed) return;
+        this.setState({
+            playing: !this.state.playing,
+            hasPlayed: !this.state.hasPlayed
+        });
+    };
+
     constructor(props: IProps) {
         super(props);
 
@@ -31,13 +38,16 @@ class SearchTrack extends React.Component<IProps, IState> {
 
     componentDidMount() {
         // Listen for player events.
-        player.on("stop", () => {
-            if (!this.state.hasPlayed) return;
-            this.setState({
-                playing: !this.state.playing,
-                hasPlayed: !this.state.hasPlayed
-            });
-        });
+        player.on("stop", this.updateState);
+        player.on("resume", this.updateState);
+        player.on("pause", this.updateState);
+    }
+
+    componentWillUnmount() {
+        // Un-listen for player events.
+        player.removeListener("stop", this.updateState);
+        player.removeListener("resume", this.updateState);
+        player.removeListener("pause", this.updateState);
     }
 
     playTrack = () => {

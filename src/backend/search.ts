@@ -8,18 +8,18 @@ let nextQuery: string = "";
  * Sets the next search query.
  * @param query The search query.
  */
-export function setQuery(query: string) {
+export function setQuery(query: string): void {
     nextQuery = query;
 }
 
 /**
  * Returns the next search query.
  */
-export function getQuery() {
+export function getQuery(check: boolean = false): string {
     // Cache the next query.
     const query = nextQuery;
     // Clear the query and return the cache.
-    nextQuery = "";
+    !check && (nextQuery = "");
     return query;
 }
 

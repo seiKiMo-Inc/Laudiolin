@@ -63,7 +63,7 @@ class SearchResultsPage extends React.Component<IProps, IState> {
         const results = search.results;
 
         // Perform DOM reload check.
-        if (results.length == 0 && getQuery() == "") {
+        if (results.length == 0 && getQuery(true) == "") {
             return <Navigate to={Pages.home} />;
         }
 

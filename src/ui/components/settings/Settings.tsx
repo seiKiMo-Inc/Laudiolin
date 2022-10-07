@@ -124,7 +124,9 @@ class Settings extends React.Component<any, IState> {
     }
 
     componentWillUnmount() {
-        window.location.reload();
+        // window.location.reload();
+        // TODO: Reload settings without reloading the window.
+        // TODO: Restart the websocket connection.
     }
 
     async componentDidUpdate() {
