@@ -1,0 +1,11 @@
+.title {
+    @apply text-transparent bg-clip-text;
+    @apply bg-gradient-to-t from-purple-900 to-cyan-600;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+#entry {
+    @apply text-transparent bg-clip-text;
+    @apply bg-gradient-to-t from-purple-900 to-cyan-600;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
