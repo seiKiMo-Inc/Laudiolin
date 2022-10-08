@@ -20,12 +20,6 @@ import { invoke } from "@tauri-apps/api/tauri"
     await gateway.setupListeners();
     await settings.setupListeners();
 
-    await invoke("update_presence", {
-        presence: {
-            details: "cool tauri things",
-        }
-    });
-
     // Run gateway setup after.
     setTimeout(() => {
         const config = settings.gateway();
