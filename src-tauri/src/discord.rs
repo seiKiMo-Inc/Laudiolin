@@ -23,8 +23,7 @@ pub struct Presence {
     pub small_image_key: String,
     pub small_image_text: String,
     pub party_id: String,
-    pub party_size: i64,
-    pub party_max: i64,
+    pub party_size: [i32; 2],
     pub match_secret: String,
     pub join_secret: String,
     pub spectate_secret: String,
@@ -55,10 +54,25 @@ pub fn update_presence(presence: Presence) {
     let payload = activity::Activity::new()
         .details(&*presence.details)
         .state(&*presence.state)
-        .timestamps(|t| t.start(presence.start_timestamp).end(presence.end_timestamp))
-        .assets(|a| a.large_image(&*presence.large_image_key).large_text(&*presence.large_image_text).small_image(&*presence.small_image_key).small_text(&*presence.small_image_text))
-        .party(|p| p.id(&*presence.party_id).size(presence.party_size, presence.party_max))
-        .secrets(|s| s.match_(&*presence.match_secret).join(&*presence.join_secret).spectate(&*presence.spectate_secret));
+        .timestamps(activity::Timestamps::new()
+            .start(presence.start_timestamp)
+            .end(presence.end_timestamp)
+        )
+        .assets(activity::Assets::new()
+            .large_image(&*presence.large_image_key)
+            .large_text(&*presence.large_image_text)
+            .small_image(&*presence.small_image_key)
+            .small_text(&*presence.small_image_text)
+        )
+        .party(activity::Party::new()
+            .id(&*presence.party_id)
+            .size(presence.party_size)
+        )
+        .secrets(activity::Secrets::new()
+            .r#match(&*presence.match_secret)
+            .join(&*presence.join_secret)
+            .spectate(&*presence.spectate_secret)
+        );
     client.set_activity(payload)
         .expect("Unable to update presence");
 }
