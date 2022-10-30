@@ -85,12 +85,15 @@ h1 {
         text-overflow: ellipsis;
     }
 
-    &:hover,
-    &:focus {
-        span {
-            animation: scroll-text 9s 0s infinite;
-            display: inline-block;
-            color: #3484fc;
+    a {
+        &:hover,
+        &:focus {
+            span {
+                animation: scroll-text 9s 0s infinite;
+                display: inline-block;
+                color: #3484fc;
+                cursor: pointer;
+            }
         }
     }
 
