@@ -130,6 +130,27 @@ h1 {
     }
 }
 
+#tooltip-top {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    background-color: rgba(0, 20, 40, 0.9);
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    z-index: 100;
+
+    ::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(0, 20, 40, 0.9) transparent transparent transparent;
+    }
+}
+
 .dropdown-content p {
     color: white;
     padding: 12px 16px;
