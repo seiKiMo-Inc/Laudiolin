@@ -1,16 +1,20 @@
 .SearchResult {
     @apply flex flex-wrap items-center my-0 mx-auto p-5 overflow-hidden;
     font-family: "Verdana", sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
+
     &:hover {
-     background-color: #272d41 !important;
+        background-color: #272d41 !important;
     }
 }
 
-.Title {
+.TrackInfo {
     align-self: center;
     margin-left: 20px;
-    max-width: 72%;
+
+    p {
+        font-size: 0.9rem;
+    }
 }
 
 #figure {
@@ -24,25 +28,31 @@
 }
 
 #image {
-    max-width: 100px;
+    max-width: 150px;
+
     &:hover {
         cursor: pointer;
         filter: brightness(0.7);
     }
 }
 
-#statusButtonImage svg:hover {
-    cursor: pointer;
-    filter: brightness(0.7);
+#statusButtonImage svg {
+    transform: scale(1.2);
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(0.7);
+    }
 }
 
-#searchDropdownButton {
-    align-self: center;
-    margin-left: -20px;
-    padding-left: 65px;
+.TrackOptions {
+    margin-top: 7.5px
+}
 
-    svg:hover {
-        cursor: pointer;
+.TrackOptionsButtons {
+    margin-right: 20px;
+
+    &:hover {
         filter: brightness(0.7);
     }
 }

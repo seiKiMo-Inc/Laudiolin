@@ -2,7 +2,7 @@ import React from "react";
 import { Figure } from "react-bootstrap";
 import Button from "@components/Button";
 
-import { faPause, faPlay, faNavicon } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faAdd, faShare, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { player, playFromResult } from "@backend/audio";
 
 import type { SearchResult } from "@backend/types";
@@ -108,51 +108,21 @@ class SearchTrack extends React.Component<IProps, IState> {
                         <Figure.Image src={result.icon} id="image" />
                     </a>
 
-                    <Figure.Caption className="Title result-title">
+                    <Figure.Caption className="TrackInfo result-title">
                         <a onClick={this.preview1}>
                             <span>{result.title}</span>
                         </a>
 
                         <p className="text-gray-600">{result.artist}</p>
+
+                        <Figure.Caption className="TrackOptions">
+                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.preview2} />
+                            <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
+                            <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
+                        </Figure.Caption>
+
                     </Figure.Caption>
 
-                    <Figure.Caption id="searchDropdownButton">
-                        <Button icon={faNavicon} onClick={this.toggleDropdown} />
-                        <div id="trackDropdown" className="dropdown-content">
-                            <p
-                                onClick={() => {
-                                    this.playTrack();
-                                    this.toggleDropdown();
-                                }}
-                            >
-                                Play
-                            </p>
-                            <p
-                                onClick={() => {
-                                    this.preview2();
-                                    this.toggleDropdown();
-                                }}
-                            >
-                                Add to playlist
-                            </p>
-                            <p
-                                onClick={() => {
-                                    this.openTrackSource();
-                                    this.toggleDropdown();
-                                }}
-                            >
-                                Open track source
-                            </p>
-                            <p
-                                onClick={async () => {
-                                    await this.copyTrackURL();
-                                    this.toggleDropdown();
-                                }}
-                            >
-                                Copy track URL
-                            </p>
-                        </div>
-                    </Figure.Caption>
                 </Figure>
             </div>
         );
