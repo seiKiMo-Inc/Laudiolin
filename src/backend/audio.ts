@@ -87,6 +87,8 @@ export class MusicPlayer extends EventEmitter {
      * @private
      */
     private playNext() {
+        const current = this.currentTrack;
+
         // Check if there is already a song playing.
         if (this.currentTrack) {
             // Stop the current track.
@@ -95,8 +97,6 @@ export class MusicPlayer extends EventEmitter {
 
         // Check if there are any tracks in the queue.
         if (this.trackQueue.length > 0) {
-            // Add this track to the backtrack queue.
-            this.backTrackQueue.push(this.currentTrack.clone());
             // Play the next track in the queue.
             this.playTrack(this.trackQueue.shift()!);
         } else {
@@ -104,6 +104,9 @@ export class MusicPlayer extends EventEmitter {
             this.clearPlayer();
             // Emit stop event.
             this.emit("stop");
+
+            // Add the current track to the backtrack queue.
+            current && this.backTrackQueue.push(current.clone());
         }
     }
 
@@ -115,9 +118,6 @@ export class MusicPlayer extends EventEmitter {
      * Clears the player's current status.
      */
     clearPlayer(): void {
-        // Check if a track is playing.
-        if (this.isPlaying()) return;
-
         // Clear the current track.
         this.currentTrack = null;
         // Clear the track queue.
@@ -224,8 +224,17 @@ export class MusicPlayer extends EventEmitter {
             return;
         }
 
+        // Check if a track is loaded.
+        if(this.currentTrack) {
+            // Push the current track to the backtrack queue.
+            this.backTrackQueue.push(this.currentTrack.clone());
+        }
+
         // Stop the current track.
-        if (stopCurrent && this.isPlaying()) this.stopTrack();
+        if (this.isPlaying()) {
+            // Stop the current track.
+            this.stopTrack();
+        }
 
         // Apply event listeners.
         this.setupTrackListeners(track);
@@ -272,6 +281,9 @@ export class MusicPlayer extends EventEmitter {
 
         // Check if there are any tracks in the backtrack queue.
         if (this.backTrackQueue.length > 0) {
+            // Stop the current track.
+            // Prevents backtracking loop.
+            this.stopTrack();
             // Get the previous track.
             const track = this.backTrackQueue.pop();
             // Play the previous track.
@@ -285,6 +297,8 @@ export class MusicPlayer extends EventEmitter {
      * Skips to the next track.
      */
     skipTrack() {
+        // Check if a track is loaded.
+        if (!this.currentTrack) return;
         // Play the next track.
         this.playNext();
     }
@@ -500,6 +514,8 @@ export class Track {
  */
 
 export const player: MusicPlayer = new MusicPlayer();
+// DEBUGGING SYMBOL:
+window["player"] = player;
 
 type PlayAudioPayload = FilePayload &
     VolumePayload & {

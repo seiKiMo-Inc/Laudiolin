@@ -60,7 +60,6 @@ class SearchTrack extends React.Component<IProps, IState> {
             this.setState({ playing: !isPlaying });
         } else {
             // Check if the player is currently playing.
-            if (player.isPlaying()) player.stopTrack();
             this.setState({ hasPlayed: true });
 
             // Play the track from the specified result.
