@@ -559,11 +559,11 @@ function playAudio(event: Event<any>) {
  * Plays a playlist.
  * @param event The event.
  */
-function playPlaylist(event: Event<any>) {
+async function playPlaylist(event: Event<any>) {
     // Get the playlist.
     const playlist = event.payload.playlist;
     // Play the playlist.
-    player.queuePlaylist(playlist, true);
+    await player.queuePlaylist(playlist, true);
 }
 
 /**
@@ -596,4 +596,59 @@ async function syncToTrack(event: Event<any>) {
 
     // Set the player's progress.
     player.setProgress(payload.progress);
+}
+
+// TODO: fetch all playlists
+export async function fetchPlaylists(): Promise<Playlist[]> {
+    // PLACEHOLDER
+    return [
+        {
+            id: "1",
+            name: "Test Playlist",
+            description: "A test playlist.",
+            icon: "https://i.scdn.co/image/ab67706c0000bebb7e710c74f1e638f148bf3164",
+            tracks: [
+                {
+                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                    artist: "Test Artist",
+                    title: "Test Title",
+                    duration: 100,
+                    id: "1",
+                    url: "https://i.imgur.com/0Z0Z0Z0.png"
+                },
+                {
+                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                    artist: "Test Artist",
+                    title: "Test Title",
+                    duration: 100,
+                    id: "2",
+                    url: "https://i.imgur.com/0Z0Z0Z0.png"
+                }
+            ]
+        },
+        {
+            id: "2",
+            name: "Test Playlist With bigger title aaaaaaaaaaaaaaaaaaaaaaa a",
+            description: "A test playlist.",
+            icon: "https://i.scdn.co/image/ab67616d00001e021d24f8fa55739bdf2fecfd24",
+            tracks: [
+                {
+                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                    artist: "Test Artist",
+                    title: "Test Title",
+                    duration: 100,
+                    id: "1",
+                    url: "https://i.imgur.com/0Z0Z0Z0.png"
+                },
+                {
+                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                    artist: "Test Artist",
+                    title: "Test Title",
+                    duration: 100,
+                    id: "2",
+                    url: "https://i.imgur.com/0Z0Z0Z0.png"
+                }
+            ]
+        }
+    ];
 }

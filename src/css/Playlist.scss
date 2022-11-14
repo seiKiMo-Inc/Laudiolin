@@ -9,3 +9,41 @@
     @apply bg-gradient-to-t from-purple-900 to-cyan-600;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
+
+.PlaylistsGrid {
+    font-family: "Verdana", sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 20px;
+
+    :hover {
+        filter: brightness(0.7);
+        cursor: pointer;
+    }
+}
+
+.PlaylistCards {
+    display: flex;
+    background: linear-gradient(90deg, #181c3b 0%, #333479 100%);
+    border-radius: 0 0 15px 0;
+
+    img {
+        width: 150px;
+        height: 70px;
+        object-fit: cover;
+        overflow: hidden;
+    }
+
+}
+
+.PlaylistCardText {
+    div {
+        line-height: 47px;
+        padding: 10px;
+        width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}

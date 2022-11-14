@@ -3,7 +3,7 @@ import { Figure } from "react-bootstrap";
 import Button from "@components/Button";
 
 import { faPause, faPlay, faAdd, faShare, faCopy } from "@fortawesome/free-solid-svg-icons";
-import { player, playFromResult } from "@backend/audio";
+import { player, playFromResult, fetchPlaylists } from "@backend/audio";
 
 import type { SearchResult } from "@backend/types";
 
@@ -74,8 +74,16 @@ class SearchTrack extends React.Component<IProps, IState> {
         alert("This should bring the user to a laudiolin-based song preview.");
     };
 
-    preview2 = () => {
-        alert("Will bind functions to it when its implemented.");
+    addToPlaylist = async () => {
+        const playlists = await fetchPlaylists();
+        const playlistNames = playlists.map(playlist => playlist.name);
+        const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
+        if (!playlist) return;
+        if (!playlistNames.includes(playlist)) {
+            alert("That playlist doesn't exist!");
+            return;
+        }
+        alert("This should add the track to the specified playlist.");
     };
 
     openTrackSource = () => {
@@ -84,10 +92,6 @@ class SearchTrack extends React.Component<IProps, IState> {
 
     copyTrackURL = async () => {
         await navigator.clipboard.writeText(this.props.result.url);
-    };
-
-    toggleDropdown = () => {
-        document.getElementById("trackDropdown").classList.toggle("show");
     };
 
     render() {
@@ -116,7 +120,7 @@ class SearchTrack extends React.Component<IProps, IState> {
                         <p className="text-gray-600">{result.artist}</p>
 
                         <Figure.Caption className="TrackOptions">
-                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.preview2} />
+                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.addToPlaylist} />
                             <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                             <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
                         </Figure.Caption>

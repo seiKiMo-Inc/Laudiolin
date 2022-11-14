@@ -6,7 +6,7 @@ interface IProps {
     track: TrackData;
 }
 
-class PlaylistTrack extends React.Component<any, any> {
+class PlaylistTrack extends React.Component<IProps, any> {
     constructor(props: any) {
         super(props);
     }
