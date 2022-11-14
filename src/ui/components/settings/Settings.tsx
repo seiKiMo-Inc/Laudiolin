@@ -39,56 +39,56 @@ class Settings extends React.Component<any, IState> {
         };
     }
 
-    setAccuracy = async (accuracy: boolean) => {
-        await this.setState({
+    setAccuracy = (accuracy: boolean) => {
+        this.setState({
             accuracy: accuracy
         });
     };
 
-    setEngine = async (engine: SearchEngine) => {
-        await this.setState({
+    setEngine = (engine: SearchEngine) => {
+        this.setState({
             engine: engine
         });
     };
 
-    setDownloadPath = async (download_path: string) => {
-        await this.setState({
+    setDownloadPath = (download_path: string) => {
+        this.setState({
             download_path: download_path
         });
     };
 
-    setEncryption = async (encrypted: boolean) => {
-        await this.setState({
+    setEncryption = (encrypted: boolean) => {
+        this.setState({
             encrypted: encrypted
         });
     };
 
-    setAddress = async (address: string) => {
-        await this.setState({
+    setAddress = (address: string) => {
+        this.setState({
             address: address
         });
     };
 
-    setPort = async (port: number) => {
-        await this.setState({
+    setPort = (port: number) => {
+        this.setState({
             port: port
         });
     };
 
-    setGatewayPort = async (gateway_port: number) => {
-        await this.setState({
+    setGatewayPort = (gateway_port: number) => {
+        this.setState({
             gateway_port: gateway_port
         });
     };
 
-    setBackgroundColor = async (background_color: string) => {
-        await this.setState({
+    setBackgroundColor = (background_color: string) => {
+        this.setState({
             background_color: background_color
         });
     };
 
-    setBackgroundUrl = async (background_url: string) => {
-        await this.setState({
+    setBackgroundUrl = (background_url: string) => {
+        this.setState({
             background_url: background_url
         });
     };
@@ -105,11 +105,12 @@ class Settings extends React.Component<any, IState> {
         });
 
         if (result) {
-            await this.setDownloadPath(result as string);
+            this.setDownloadPath(result as string);
         }
     };
 
     async componentDidMount() {
+        await config.reloadSettings()
         await this.setState({
             accuracy: config.search().accuracy,
             engine: config.search().engine,
@@ -123,14 +124,7 @@ class Settings extends React.Component<any, IState> {
         });
     }
 
-    componentWillUnmount() {
-        // window.location.reload();
-        // TODO: Reload settings without reloading the window.
-        // TODO: Restart the websocket connection.
-    }
-
-    async componentDidUpdate() {
-        // Save the current state as the new config.
+    async componentWillUnmount() {
         await config.saveSettings({
             search: {
                 accuracy: this.state.accuracy,
@@ -150,6 +144,8 @@ class Settings extends React.Component<any, IState> {
                 background_url: this.state.background_url
             }
         } as UserSettings);
+
+        // TODO: Restart the websocket connection.
     }
 
     render() {
@@ -178,32 +174,32 @@ class Settings extends React.Component<any, IState> {
                             </button>
                             <div id="engineDropdown" className="dropdown-content">
                                 <p
-                                    onClick={async () => {
-                                        await this.setEngine("YouTube" as SearchEngine);
+                                    onClick={() => {
+                                        this.setEngine("YouTube" as SearchEngine);
                                         this.toggleDropdown();
                                     }}
                                 >
                                     YouTube
                                 </p>
                                 <p
-                                    onClick={async () => {
-                                        await this.setEngine("Spotify" as SearchEngine);
+                                    onClick={() => {
+                                        this.setEngine("Spotify" as SearchEngine);
                                         this.toggleDropdown();
                                     }}
                                 >
                                     Spotify
                                 </p>
                                 <p
-                                    onClick={async () => {
-                                        await this.setEngine("SoundCloud" as SearchEngine);
+                                    onClick={() => {
+                                        this.setEngine("SoundCloud" as SearchEngine);
                                         this.toggleDropdown();
                                     }}
                                 >
                                     SoundCloud
                                 </p>
                                 <p
-                                    onClick={async () => {
-                                        await this.setEngine("All" as SearchEngine);
+                                    onClick={() => {
+                                        this.setEngine("All" as SearchEngine);
                                         this.toggleDropdown();
                                     }}
                                 >
@@ -224,7 +220,7 @@ class Settings extends React.Component<any, IState> {
                             <Button
                                 className="dirSelector"
                                 icon={faFolder}
-                                onClick={async () => this.selectDirectory()}
+                                onClick={() => this.selectDirectory()}
                             />
                         </td>
                     </tr>
