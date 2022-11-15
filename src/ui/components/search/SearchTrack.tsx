@@ -12,6 +12,7 @@ import "@css/SearchTrack.scss";
 interface IProps {
     result: SearchResult;
 }
+
 interface IState {
     playing: boolean;
     hasPlayed: boolean;
@@ -70,10 +71,12 @@ class SearchTrack extends React.Component<IProps, IState> {
         }
     };
 
+    // TODO: make the song page.
     preview1 = () => {
         alert("This should bring the user to a laudiolin-based song preview.");
     };
 
+    // TODO: make adding to playlists work.
     addToPlaylist = async () => {
         const playlists = await fetchAllPlaylists();
         const playlistNames = playlists.map(playlist => playlist.name);

@@ -55,3 +55,147 @@
     text-align: center;
     margin-top: 20px;
 }
+
+.PlaylistContainer {
+    font-family: "Verdana", sans-serif;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    height: 100%;
+}
+
+.PlaylistHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+    margin: 40px 20px 80px 20px;
+    height: 100px;
+
+    .PlaylistHeaderBG {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.3) blur(4px);
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        overflow: hidden;
+        z-index: 100000;
+    }
+
+    .PlaylistHeaderInfo {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        z-index: 10000;
+        margin-left: 10px;
+
+        h2 {
+            font-size: 25px;
+            color: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        p {
+            font-size: 18px;
+            color: #b4b3b3;
+            margin: 0;
+        }
+    }
+}
+
+.PlaylistIcon:hover {
+    transform: scale(1.4);
+}
+
+.PlaylistContent {
+    margin: 0 auto;
+    width: 800px;
+
+    :hover {
+        background: #181c3b;
+    }
+
+    .PlaylistTrack {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 800px;
+
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        #statusButton {
+            margin-right: 15px;
+            margin-left: 5px;
+
+            svg {
+                height: 20px;
+            }
+
+            :hover {
+                filter: brightness(0.8);
+            }
+        }
+
+        .PlaylistTrackText {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-left: 10px;
+
+            h2 {
+                font-size: 18px;
+                color: #fff;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            p {
+                font-size: 14px;
+                color: #9b9b9b;
+                margin: 0;
+            }
+
+            .PlaylistTrackButtons {
+                display: flex;
+                flex-direction: row;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+.PlaylistTrackIcon:hover {
+    filter: brightness(0.7);
+    cursor: pointer;
+}
+
+.PlaylistTrackTitle:hover {
+    color: #3484fc !important;
+    cursor: pointer;
+}

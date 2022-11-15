@@ -607,20 +607,20 @@ const playlists: Playlist[] = [
         icon: "https://i.scdn.co/image/ab67706c0000bebb7e710c74f1e638f148bf3164",
         tracks: [
             {
-                icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                artist: "Test Artist",
-                title: "Test Title",
+                icon: "https://i.scdn.co/image/ab67616d00001e02d3b27ed188ff76904ef0c300",
+                artist: "Given",
+                title: "冬のはなし",
                 duration: 100,
                 id: "1",
-                url: "https://i.imgur.com/0Z0Z0Z0.png"
+                url: "https://www.youtube.com/watch?v=YwxyAO7xsJs"
             },
             {
-                icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                artist: "Test Artist",
-                title: "Test Title",
+                icon: "https://i.scdn.co/image/ab67616d0000b2733e2780c2283bbcb8f5d740d0",
+                artist: "RADWIMPS, Toko Miura",
+                title: "Grand Escape (Movie Edit) [feat. Toko Miura]",
                 duration: 100,
                 id: "2",
-                url: "https://i.imgur.com/0Z0Z0Z0.png"
+                url: "https://www.youtube.com/watch?v=WwyDpKXG83A"
             }
         ]
     },

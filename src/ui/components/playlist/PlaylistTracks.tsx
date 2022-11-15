@@ -1,10 +1,14 @@
 import React from "react";
-
+import { TrackData } from "@backend/types";
 import PlaylistTrack from "@components/playlist/PlaylistTrack";
 
-interface IProps {}
+import "@css/Playlist.scss";
 
-class PlaylistTracks extends React.Component<any, any> {
+interface IProps {
+    tracks: TrackData[];
+}
+
+class PlaylistTracks extends React.Component<IProps, never> {
     constructor(props: any) {
         super(props);
     }
@@ -12,8 +16,10 @@ class PlaylistTracks extends React.Component<any, any> {
     render() {
         return (
             <>
-                {this.props.tracks.map((track, index) => {
-                    return <PlaylistTrack key={index} track={track} />;
+                {this.props.tracks.map((track) => {
+                    return (
+                        <PlaylistTrack key={track.id} track={track} />
+                    );
                 })}
             </>
         );

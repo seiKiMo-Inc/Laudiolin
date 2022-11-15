@@ -5,7 +5,9 @@ import { Playlist } from "@backend/types";
 import { fetchPlaylist } from "@backend/audio";
 
 import AnimatePages from "@components/AnimatePages";
-import { Container } from "react-bootstrap";
+import PlaylistTracks from "@components/playlist/PlaylistTracks";
+
+import "@css/Playlist.scss";
 
 interface IState {
     playlist: Playlist;
@@ -39,29 +41,19 @@ class PlaylistPage extends React.Component<any, IState> {
         }
         return (
             <AnimatePages>
-                <Container className="PlaylistContainer">
+                <div className="PlaylistContainer">
                     <div className="PlaylistHeader">
+                        <div className="PlaylistHeaderBG" style={{ backgroundImage: `url(${this.state.playlist.icon})` }}></div>
                         <img src={this.state.playlist.icon} className="PlaylistIcon" alt={this.state.playlist.name}/>
-                        <div className="PlaylistTitleText">
+                        <div className="PlaylistHeaderInfo">
                             <h2>{this.state.playlist.name}</h2>
-                            <h2>{this.state.playlist.description}</h2>
+                            <p>{this.state.playlist.description}</p>
                         </div>
                     </div>
                     <div className="PlaylistContent">
-                        <h2>Playlist content</h2>
-                        {this.state.playlist.tracks.map((track) => {
-                            return (
-                                <div className="PlaylistTrack" key={track.id}>
-                                    <img src={track.icon} className="PlaylistTrackIcon" alt={track.title}/>
-                                    <div className="PlaylistTrackText">
-                                        <h2 className="PlaylistTrackTitle">{track.title}</h2>
-                                        <h3 className="PlaylistTrackAuthor">{track.artist}</h3>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                        <PlaylistTracks tracks={this.state.playlist.tracks} />
                     </div>
-                </Container>
+                </div>
             </AnimatePages>
         );
     }
