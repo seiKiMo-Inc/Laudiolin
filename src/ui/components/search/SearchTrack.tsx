@@ -3,7 +3,7 @@ import { Figure } from "react-bootstrap";
 import Button from "@components/Button";
 
 import { faPause, faPlay, faAdd, faShare, faCopy } from "@fortawesome/free-solid-svg-icons";
-import { player, playFromResult, fetchPlaylists } from "@backend/audio";
+import { player, playFromResult, fetchAllPlaylists } from "@backend/audio";
 
 import type { SearchResult } from "@backend/types";
 
@@ -75,7 +75,7 @@ class SearchTrack extends React.Component<IProps, IState> {
     };
 
     addToPlaylist = async () => {
-        const playlists = await fetchPlaylists();
+        const playlists = await fetchAllPlaylists();
         const playlistNames = playlists.map(playlist => playlist.name);
         const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
         if (!playlist) return;

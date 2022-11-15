@@ -1,7 +1,9 @@
 import React from "react";
 import { Playlist } from "@backend/types";
-import { fetchPlaylists } from "@backend/audio";
+import { fetchAllPlaylists } from "@backend/audio";
+
 import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import "@css/Playlist.scss"
 
@@ -25,22 +27,27 @@ class PlaylistsGrid extends React.Component<any, IState> {
     }
 
     componentDidMount() {
-        fetchPlaylists().then((playlists) => {
+        fetchAllPlaylists().then((playlists) => {
             this.setState({ playlists: playlists });
         });
     }
 
     render() {
+        if (this.state.playlists.length == 0) {
+            return <h2 id="NoPlaylistMessage">No playlists found.</h2>
+        }
         return (
             <span className="PlaylistsGrid">
                 {this.state.playlists.map((playlist) => {
                     return (
-                        <Card key={playlist.id} className="PlaylistCards" onClick={() => this.cardClick(playlist)}>
-                            <Card.Img variant="top" src={playlist.icon} />
-                            <Card.Body className="PlaylistCardText">
-                                <Card.Title>{playlist.name}</Card.Title>
-                            </Card.Body>
-                        </Card>
+                        <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
+                            <Card className="PlaylistCards" onClick={() => this.cardClick(playlist)}>
+                                <Card.Img variant="top" src={playlist.icon} />
+                                <Card.Body className="PlaylistCardText">
+                                    <Card.Title>{playlist.name}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </Link>
                     );
                 })}
             </span>

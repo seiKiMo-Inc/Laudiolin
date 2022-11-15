@@ -598,57 +598,64 @@ async function syncToTrack(event: Event<any>) {
     player.setProgress(payload.progress);
 }
 
+// This is a placeholder for the playlist functions.
+const playlists: Playlist[] = [
+    {
+        id: "1",
+        name: "Test Playlist",
+        description: "A test playlist.",
+        icon: "https://i.scdn.co/image/ab67706c0000bebb7e710c74f1e638f148bf3164",
+        tracks: [
+            {
+                icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                artist: "Test Artist",
+                title: "Test Title",
+                duration: 100,
+                id: "1",
+                url: "https://i.imgur.com/0Z0Z0Z0.png"
+            },
+            {
+                icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                artist: "Test Artist",
+                title: "Test Title",
+                duration: 100,
+                id: "2",
+                url: "https://i.imgur.com/0Z0Z0Z0.png"
+            }
+        ]
+    },
+    {
+        id: "2",
+        name: "Test Playlist With bigger title aaaaaaaaaaaaaaaaaaaaaaa a",
+        description: "A test playlist.",
+        icon: "https://i.scdn.co/image/ab67616d00001e021d24f8fa55739bdf2fecfd24",
+        tracks: [
+            {
+                icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                artist: "Test Artist",
+                title: "Test Title",
+                duration: 100,
+                id: "1",
+                url: "https://i.imgur.com/0Z0Z0Z0.png"
+            },
+            {
+                icon: "https://i.imgur.com/0Z0Z0Z0.png",
+                artist: "Test Artist",
+                title: "Test Title",
+                duration: 100,
+                id: "2",
+                url: "https://i.imgur.com/0Z0Z0Z0.png"
+            }
+        ]
+    }
+];
+
 // TODO: fetch all playlists
-export async function fetchPlaylists(): Promise<Playlist[]> {
-    // PLACEHOLDER
-    return [
-        {
-            id: "1",
-            name: "Test Playlist",
-            description: "A test playlist.",
-            icon: "https://i.scdn.co/image/ab67706c0000bebb7e710c74f1e638f148bf3164",
-            tracks: [
-                {
-                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                    artist: "Test Artist",
-                    title: "Test Title",
-                    duration: 100,
-                    id: "1",
-                    url: "https://i.imgur.com/0Z0Z0Z0.png"
-                },
-                {
-                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                    artist: "Test Artist",
-                    title: "Test Title",
-                    duration: 100,
-                    id: "2",
-                    url: "https://i.imgur.com/0Z0Z0Z0.png"
-                }
-            ]
-        },
-        {
-            id: "2",
-            name: "Test Playlist With bigger title aaaaaaaaaaaaaaaaaaaaaaa a",
-            description: "A test playlist.",
-            icon: "https://i.scdn.co/image/ab67616d00001e021d24f8fa55739bdf2fecfd24",
-            tracks: [
-                {
-                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                    artist: "Test Artist",
-                    title: "Test Title",
-                    duration: 100,
-                    id: "1",
-                    url: "https://i.imgur.com/0Z0Z0Z0.png"
-                },
-                {
-                    icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                    artist: "Test Artist",
-                    title: "Test Title",
-                    duration: 100,
-                    id: "2",
-                    url: "https://i.imgur.com/0Z0Z0Z0.png"
-                }
-            ]
-        }
-    ];
+export async function fetchAllPlaylists(): Promise<Playlist[]> {
+    return playlists
+}
+
+// TODO: fecth playlist by id
+export async function fetchPlaylist(id: string): Promise<Playlist> {
+    return playlists.find(p => p.id == id)
 }

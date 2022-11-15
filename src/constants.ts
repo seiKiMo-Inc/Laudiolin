@@ -1,7 +1,8 @@
 export const Pages = {
     home: "/",
     searchResults: "/search-results",
-    settings: "/settings"
+    settings: "/settings",
+    playlist: "/playlist/:id",
 };
 
 export const PageTransitions = {

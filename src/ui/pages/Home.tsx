@@ -7,7 +7,7 @@ class HomePage extends React.Component<any, any> {
         return (
             <AnimatePages>
                 <div>
-                    <h2 style={{ fontSize: 25, color: "white", marginLeft: 30, fontFamily: "cursive" }}>Your Playlists</h2>
+                    <h2 style={{ fontSize: 25, color: "white", marginLeft: 30, fontFamily: "cursive" }}>Your Playlists:</h2>
                     <PlaylistsGrid />
                 </div>
             </AnimatePages>
