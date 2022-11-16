@@ -2,7 +2,7 @@ import { emit, listen } from "@tauri-apps/api/event";
 
 import { player } from "@backend/audio";
 
-import type { Event } from "@tauri-apps/api/helpers/event";
+import type { Event } from "@tauri-apps/api/event";
 import type { TrackData } from "@backend/types";
 
 let connected: boolean = false;

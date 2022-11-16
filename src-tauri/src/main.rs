@@ -9,6 +9,7 @@ use tauri::{Manager, App, Wry};
 use window_shadows::set_shadow;
 
 mod audio;
+mod handoff;
 mod backend;
 mod wrapper;
 mod discord;
@@ -37,6 +38,9 @@ fn main() {
             // TODO: Update.
             // let window = app.get_window("main").unwrap();
             // set_shadow(&window, true).expect("Unsupported platform!");
+
+            // DEBUG: Start HTTP handoff server.
+            handoff::handoff();
 
             Ok(())
         })
