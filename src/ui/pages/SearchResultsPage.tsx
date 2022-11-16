@@ -7,7 +7,7 @@ import SearchResultsList from "@components/search/SearchResults";
 import { Pages } from "@app/constants";
 import { getQuery, doSearch } from "@backend/search";
 import type { SearchResults } from "@backend/types";
-import AnimatePages from "@components/AnimatePages";
+import AnimatePages from "@components/common/AnimatePages";
 
 const blankResults: SearchResults = {
     top: {

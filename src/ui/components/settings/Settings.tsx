@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@components/Button";
+import Button from "@components/common/Button";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
 
 import * as config from "@backend/settings";

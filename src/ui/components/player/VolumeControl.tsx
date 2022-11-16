@@ -3,7 +3,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import Button from "../Button";
+import Button from "../common/Button";
 import "@css/Controls.scss";
 
 interface IProps {

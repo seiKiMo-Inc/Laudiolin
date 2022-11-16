@@ -3,7 +3,7 @@ import React from "react";
 import { TrackData } from "@backend/types";
 import { fetchAllPlaylists, player, playFromResult } from "@backend/audio";
 
-import Button from "@components/Button";
+import Button from "@components/common/Button";
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/Playlist.scss";

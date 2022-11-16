@@ -1,7 +1,7 @@
 import React from "react";
 
 import { player, MusicPlayer } from "@backend/audio";
-import Button from "@components/Button";
+import Button from "@components/common/Button";
 import { faPause, faPlay, faForward, faBackward } from "@fortawesome/free-solid-svg-icons";
 import VolumeControl from "@components/player/VolumeControl";
 import ProgressBarComponent from "@components/player/ProgressBar";

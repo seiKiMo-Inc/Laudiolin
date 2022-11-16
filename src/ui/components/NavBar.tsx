@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
 
-import Button from "./Button";
+import Button from "./common/Button";
 import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
 
-import Navigator from "@components/Navigator";
+import Navigator from "@components/common/Navigator";
 
 import "@css/NavBar.scss";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import AnimatePages from "@components/AnimatePages";
+import AnimatePages from "@components/common/AnimatePages";
 import PlaylistsGrid from "@components/playlist/PlaylistsGrid";
 
 class HomePage extends React.Component<any, any> {

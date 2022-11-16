@@ -1,6 +1,6 @@
 import React from "react";
 import Settings from "@components/settings/Settings";
-import AnimatePages from "@components/AnimatePages";
+import AnimatePages from "@components/common/AnimatePages";
 
 class SettingsPage extends React.Component {
     render() {
