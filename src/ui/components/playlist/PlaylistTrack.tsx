@@ -4,7 +4,7 @@ import { TrackData } from "@backend/types";
 import { fetchAllPlaylists, player, playFromResult } from "@backend/audio";
 
 import Button from "@components/Button";
-import { faPause, faPlay, faAdd, faShare, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/Playlist.scss";
 
@@ -52,7 +52,12 @@ class PlaylistTrack extends React.Component<IProps, IState> {
         alert("This should bring the user to a laudiolin-based song preview.");
     };
 
+    preview2 = () => {
+        alert("Download the song.");
+    }
+
     // TODO: make adding to playlists work.
+    // TODO: make a better pop up menu for playlists.
     addToPlaylist = async () => {
         const playlists = await fetchAllPlaylists();
         const playlistNames = playlists.map(playlist => playlist.name);
@@ -95,6 +100,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                         <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.addToPlaylist} />
                         <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                         <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
+                        <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.preview2} />
                     </div>
 
                 </div>
