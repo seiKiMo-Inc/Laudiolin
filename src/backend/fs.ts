@@ -1,6 +1,6 @@
 import type { FilePayload } from "@backend/types";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { appDir, sep } from "@tauri-apps/api/path";
+import { appDataDir, sep } from "@tauri-apps/api/path";
 
 let dataDirectory: string | null = null;
 
@@ -9,7 +9,7 @@ let dataDirectory: string | null = null;
  */
 export async function initialize() {
     // Get the data directory.
-    dataDirectory = await appDir();
+    dataDirectory = await appDataDir();
 }
 
 /**

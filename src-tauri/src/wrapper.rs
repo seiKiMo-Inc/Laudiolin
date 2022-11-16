@@ -26,7 +26,7 @@ impl TauriApp {
     }
 
     pub fn file(path: String) -> String {
-        TauriApp::global().path_resolver().app_dir().unwrap()
+        TauriApp::global().path_resolver().app_data_dir().unwrap()
             .join(path).to_str().unwrap().to_string()
     }
 }

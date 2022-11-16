@@ -51,13 +51,13 @@ fn main() {
 /// Creates the app data directory.
 /// app: The Tauri app.
 fn create_data_dir(app: &mut App<Wry>) {
-    let data_dir = app.path_resolver().app_dir().unwrap();
+    let data_dir = app.path_resolver().app_data_dir().unwrap();
     if !data_dir.exists() {
         std::fs::create_dir(data_dir).unwrap();
     }
 
     // Create the downloads folder if needed.
-    let downloads_dir = app.path_resolver().app_dir().unwrap()
+    let downloads_dir = app.path_resolver().app_data_dir().unwrap()
         .join("downloads");
     if !downloads_dir.exists() {
         std::fs::create_dir(downloads_dir).unwrap();

@@ -11,7 +11,7 @@ A very simple music player written in TypeScript using Tauri and React.\
 
 ### Running
 
-```
+```bash
 npm i
 npm run start:dev
 ```

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Playlist } from "@backend/types";
 import { fetchPlaylist } from "@backend/audio";
 
-import AnimatePages from "@components/AnimatePages";
+import AnimatePages from "@components/common/AnimatePages";
 import PlaylistTracks from "@components/playlist/PlaylistTracks";
 
 import "@css/Playlist.scss";
