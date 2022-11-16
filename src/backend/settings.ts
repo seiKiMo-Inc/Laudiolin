@@ -2,7 +2,7 @@ import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { data } from "@backend/fs";
 
-import type { Event } from "@tauri-apps/api/helpers/event";
+import type { Event } from "@tauri-apps/api/event";
 import type { UserSettings, SearchSettings, AudioSettings, GatewaySettings, UISettings } from "@backend/types";
 
 let settings: UserSettings | null = null;
