@@ -207,7 +207,7 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
         .await.expect("Failed to perform download request");
 
     // Check the status code.
-    if response.status() != 301 {
+    if response.status() != 200 || response.status() != 301 {
         return Err("Request failed.");
     }
 

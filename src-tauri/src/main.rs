@@ -51,6 +51,13 @@ fn create_data_dir(app: &mut App<Wry>) {
     if !data_dir.exists() {
         std::fs::create_dir(data_dir).unwrap();
     }
+
+    // Create the downloads folder if needed.
+    let downloads_dir = app.path_resolver().app_dir().unwrap()
+        .join("downloads");
+    if !downloads_dir.exists() {
+        std::fs::create_dir(downloads_dir).unwrap();
+    }
 }
 
 /// Checks if a file exists.

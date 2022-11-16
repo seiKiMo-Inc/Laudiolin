@@ -5,7 +5,7 @@ import { EventEmitter } from "events";
 
 import { file } from "@backend/fs";
 
-import type { Event } from "@tauri-apps/api/helpers/event";
+import type { Event } from "@tauri-apps/api/event";
 import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload, Playlist } from "@backend/types";
 
 /**
@@ -43,6 +43,8 @@ export class MusicPlayer extends EventEmitter {
         this.updateTask = setInterval(() => {
             // Emit update event.
             this.emitUpdate();
+            // Check for track end.
+            this.currentTrack?.checkEnd();
         }, 100);
     }
 
@@ -403,8 +405,13 @@ export class Track {
     private id: number = 0;
 
     constructor(private readonly payload: PlayAudioPayload) {
+        const isStreamed = payload.file_path.includes("http");
+        const filePath = isStreamed ? payload.file_path : file(payload);
+
         this.howl = new Howl({
-            src: [file(payload)],
+            html5: isStreamed,
+            format: "mp3",
+            src: [filePath],
             volume: payload.volume
         });
 
@@ -416,6 +423,16 @@ export class Track {
      */
     public clone(): Track {
         return new Track(this.payload);
+    }
+
+    /**
+     * Checks if the track has ended.
+     * Tracks can stop very close to the end of the duration.
+     */
+    public checkEnd(): void {
+        if (this.howl.duration() - this.howl.seek() < 1.4) {
+            this.stop();
+        }
     }
 
     /**
@@ -437,7 +454,9 @@ export class Track {
      * Sets the track's ID.
      */
     public play() {
-        this.id = this.howl.play();
+        this.howl.once("load", () => {
+            this.id = this.howl.play();
+        });
     }
 
     /**
@@ -542,8 +561,6 @@ export async function setupListeners() {
  * @param track The search result of the track to play.
  */
 export async function playFromResult(track: SearchResult): Promise<void> {
-    // TODO: Check settings for if user wants to download or stream audio.
-
     // Download the audio file.
     // TODO: Check settings for the user's preferred search engine.
     await invoke("play_from", { track });

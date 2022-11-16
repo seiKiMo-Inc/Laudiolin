@@ -130,7 +130,7 @@ pub fn search(query: &str, engine: &str) -> SearchResults {
 pub fn download(id: &str, engine: &str) -> String {
     let options = DownloadOptions {
         engine: engine.to_string(),
-        file_path: TauriApp::file(format!("{}.mp3", id))
+        file_path: TauriApp::file(format!("downloads/{}.mp3", id))
     };
 
     let file_name = tauri::async_runtime::block_on(async {
