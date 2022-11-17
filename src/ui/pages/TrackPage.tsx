@@ -1,16 +1,18 @@
 import React from "react";
 
 import { TrackData } from "@backend/types";
-import { fetchTrack } from "@backend/audio";
+import { fetchAllPlaylists, fetchTrack, player, playFromResult } from "@backend/audio";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
-import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faCopy, faDownload, faPause, faPlay, faShare } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/TrackPage.scss";
 
 interface IState {
-    track: TrackData
+    track: TrackData;
+    playing: boolean;
+    hasPlayed: boolean;
 }
 
 class TrackPage extends React.Component<any, IState> {
@@ -18,12 +20,63 @@ class TrackPage extends React.Component<any, IState> {
         super(props);
 
         this.state = {
-            track: null
+            track: null,
+            playing: false,
+            hasPlayed: false
         }
     }
 
+    playTrack = () => {
+        const hasPlayed = this.state.hasPlayed;
+        const isPlaying = this.state.playing;
+
+        if (hasPlayed) {
+            player.togglePlayback(); // Pause/resume the player.
+            this.setState({ playing: !isPlaying });
+        } else {
+            // Check if the player is currently playing.
+            if (player.isPlaying()) player.stopTrack();
+            this.setState({ hasPlayed: true });
+
+            playFromResult(this.state.track).then(() => {
+                // Change the state to playing.
+                this.setState({ playing: !isPlaying });
+            });
+        }
+    };
+
+    updateState = () => {
+        if (!this.state.hasPlayed) return;
+        this.setState({
+            playing: !this.state.playing,
+            hasPlayed: !this.state.hasPlayed
+        });
+    };
+
+    preview2 = () => {
+        alert("Download the song.");
+    }
+
+    // TODO: make adding to playlists work.
+    // TODO: make a better pop up menu for playlists.
+    addToPlaylist = async () => {
+        const playlists = await fetchAllPlaylists();
+        const playlistNames = playlists.map(playlist => playlist.name);
+        const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
+        if (!playlist) return;
+        if (!playlistNames.includes(playlist)) {
+            alert("That playlist doesn't exist!");
+            return;
+        }
+        alert("This should add the track to the specified playlist.");
+    };
+
     openTrackSource = () => {
-        window.open(this.props.track.url, "_blank");
+        window.open(this.props.result.url, "_blank");
+    };
+
+    copyTrackURL = async () => {
+        await navigator.clipboard.writeText(this.props.result.url);
     };
 
     msToMinutes = (duration: number) => {
@@ -44,11 +97,21 @@ class TrackPage extends React.Component<any, IState> {
 
         const root = document.getElementsByTagName("body")[0];
         root.style.overflow = "hidden";
+
+        // Listen for player events.
+        player.on("stop", this.updateState);
+        player.on("resume", this.updateState);
+        player.on("pause", this.updateState);
     }
 
     componentWillUnmount() {
         const root = document.getElementsByTagName("body")[0];
         root.style.overflow = "auto";
+
+        // Un-listen for player events.
+        player.removeListener("stop", this.updateState);
+        player.removeListener("resume", this.updateState);
+        player.removeListener("pause", this.updateState);
     }
 
     render() {
@@ -61,8 +124,16 @@ class TrackPage extends React.Component<any, IState> {
                 <img className="TrackImage" src={this.state.track.icon} alt="Track Icon" />
                 <h2 className="TrackTitle">{this.state.track.title}</h2>
                 <h3 className="TrackArtist">{this.state.track.artist}</h3>
-                <h3 className="TrackDuration">{this.msToMinutes(this.state.track.duration)}</h3>
-                <Button className="TrackRedirect" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>
+                <div className="TrackControls">
+                    <Button className="TrackPlay" onClick={this.playTrack} icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay} />
+                    <h3 className="TrackDuration">{this.msToMinutes(this.state.track.duration)}</h3>
+                </div>
+                <div className="TrackButtons">
+                    <Button className="TrackOptions" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>
+                    <Button icon={faAdd} className="TrackOptions" onClick={this.addToPlaylist}>Add to playlist</Button>
+                    <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy track URL</Button>
+                    <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download track</Button>
+                </div>
             </div>
         )
     }

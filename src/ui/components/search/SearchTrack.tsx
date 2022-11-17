@@ -21,14 +21,6 @@ interface IState {
 
 /* A track that appears when searching for it. */
 class SearchTrack extends React.Component<IProps, IState> {
-    updateState = () => {
-        if (!this.state.hasPlayed) return;
-        this.setState({
-            playing: !this.state.playing,
-            hasPlayed: !this.state.hasPlayed
-        });
-    };
-
     constructor(props: IProps) {
         super(props);
 
@@ -37,6 +29,14 @@ class SearchTrack extends React.Component<IProps, IState> {
             hasPlayed: false
         };
     }
+
+    updateState = () => {
+        if (!this.state.hasPlayed) return;
+        this.setState({
+            playing: !this.state.playing,
+            hasPlayed: !this.state.hasPlayed
+        });
+    };
 
     componentDidMount() {
         // Listen for player events.

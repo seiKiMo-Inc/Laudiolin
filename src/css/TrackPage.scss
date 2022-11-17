@@ -30,7 +30,7 @@
 }
 
 .TrackImage {
-    height: 250px;
+    height: 200px;
     margin: 20px;
     box-shadow: #000000 20px 20px 60px;
     z-index: 1;
@@ -51,22 +51,57 @@
     z-index: 1;
 }
 
+.TrackControls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    z-index: 1;
+    gap: 20px;
+}
+
 .TrackDuration {
     font-size: 15px;
     color: #ffffff;
     text-align: center;
-    margin-top: 20px;
     z-index: 1;
 }
 
-.TrackRedirect {
+.TrackButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 25px;
+    z-index: 1;
+}
+
+.TrackPlay {
+    z-index: 2;
+    font-size: 25px;
+    background-color: #5758a8;
+    padding: 12px 24px 12px 24px;
+    border-radius: 100%;
+    box-shadow: #000000 20px 20px 60px;
+
+    svg {
+        margin-right: -5px;
+    }
+}
+
+.TrackPlay:hover {
+    scale: 1.2;
+    background-color: #6a6ad9;
+    cursor: pointer;
+}
+
+.TrackOptions {
     font-size: 15px;
     color: #b9b9b9;
     text-align: center;
-    margin-top: 20px;
-    z-index: 1;
 }
 
-.TrackRedirect:hover {
+.TrackOptions:hover {
     color: #3484fc;
 }
