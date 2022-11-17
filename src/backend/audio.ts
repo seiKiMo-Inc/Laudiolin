@@ -631,7 +631,10 @@ async function syncToTrack(event: Event<any>) {
     player.setProgress(payload.progress);
 }
 
-// This is a placeholder for the playlist functions.
+/*
+ * EVERTHING BELOW THIS COMMENT IS A PLACEHOLDER FOR NOW.
+ */
+
 const playlists: Playlist[] = [
     {
         id: "1",
@@ -688,7 +691,12 @@ export async function fetchAllPlaylists(): Promise<Playlist[]> {
     return playlists
 }
 
-// TODO: fecth playlist by id
+// TODO: fetch playlist by id
 export async function fetchPlaylist(id: string): Promise<Playlist> {
     return playlists.find(p => p.id == id)
+}
+
+// TODO: fetch track by id
+export async function fetchTrack(id: string): Promise<TrackData> {
+    return playlists[0].tracks.find(t => t.id == id)
 }

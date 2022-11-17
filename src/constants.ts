@@ -3,6 +3,7 @@ export const Pages = {
     searchResults: "/search-results",
     settings: "/settings",
     playlist: "/playlist/:id",
+    track: "/track/:id",
 };
 
 export const PageTransitions = {

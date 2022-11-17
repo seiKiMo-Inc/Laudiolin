@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Figure } from "react-bootstrap";
 import Button from "@components/common/Button";
 
@@ -70,11 +71,6 @@ class SearchTrack extends React.Component<IProps, IState> {
         }
     };
 
-    // TODO: make the song page.
-    preview1 = () => {
-        alert("This should bring the user to a laudiolin-based song preview.");
-    };
-
     preview2 = () => {
         alert("Download the song.");
     }
@@ -115,14 +111,14 @@ class SearchTrack extends React.Component<IProps, IState> {
                         />
                     </Figure.Caption>
 
-                    <a onClick={this.preview1}>
+                    <Link to={`/track/${result.id}`}>
                         <Figure.Image src={result.icon} id="image" />
-                    </a>
+                    </Link>
 
                     <Figure.Caption className="TrackInfo result-title">
-                        <a onClick={this.preview1}>
+                        <Link to={`/track/${result.id}`}>
                             <span>{result.title}</span>
-                        </a>
+                        </Link>
 
                         <p className="text-gray-600">{result.artist}</p>
 

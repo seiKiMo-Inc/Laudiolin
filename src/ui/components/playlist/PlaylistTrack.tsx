@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { TrackData } from "@backend/types";
 import { fetchAllPlaylists, player, playFromResult } from "@backend/audio";
@@ -47,11 +48,6 @@ class PlaylistTrack extends React.Component<IProps, IState> {
         }
     };
 
-    // TODO: make the song page.
-    preview1 = () => {
-        alert("This should bring the user to a laudiolin-based song preview.");
-    };
-
     preview2 = () => {
         alert("Download the song.");
     }
@@ -89,11 +85,15 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                     onClick={this.playTrack}
                 />
 
-                <img src={track.icon} className="PlaylistTrackIcon" alt={track.title} onClick={this.preview1} />
+                <Link to={`/track/${track.id}`} className="trackInfo">
+                    <img src={track.icon} className="PlaylistTrackIcon" alt={track.title} />
+                </Link>
 
                 <div className="PlaylistTrackText">
 
-                    <h2 className="PlaylistTrackTitle" onClick={this.preview1}>{track.title}</h2>
+                    <Link to={`/track/${track.id}`} className="trackInfo">
+                        <h2 className="PlaylistTrackTitle">{track.title}</h2>
+                    </Link>
                     <p className="PlaylistTrackAuthor">{track.artist}</p>
 
                     <div className="PlaylistTrackButtons">

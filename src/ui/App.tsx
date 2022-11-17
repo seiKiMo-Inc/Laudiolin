@@ -5,6 +5,7 @@ import HomePage from "@pages/Home";
 import SearchResultsPage from "@pages/SearchResultsPage";
 import SettingsPage from "@pages/SettingsPage";
 import PlaylistPage from "@pages/PlaylistPage";
+import TrackPage from "@pages/TrackPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
@@ -45,6 +46,7 @@ class App extends React.Component<any, any> {
                         <Route path={Pages.searchResults} element={<SearchResultsPage />} />
                         <Route path={Pages.settings} element={<SettingsPage />} />
                         <Route path={Pages.playlist} element={<PlaylistPage />} />
+                        <Route path={Pages.track} element={<TrackPage />} />
                     </Routes>
 
                     {/* empty div to keep content above player */}
