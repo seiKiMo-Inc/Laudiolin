@@ -1,8 +1,8 @@
 import React from "react";
-import { useParams } from 'react-router-dom';
 
 import { Playlist } from "@backend/types";
 import { fetchPlaylist } from "@backend/audio";
+import Router from "@components/common/Router";
 
 import AnimatePages from "@components/common/AnimatePages";
 import PlaylistTracks from "@components/playlist/PlaylistTracks";
@@ -15,13 +15,6 @@ import "@css/Playlist.scss";
 interface IState {
     playlist: Playlist;
     banner: string;
-}
-
-export function withRouter(Children: React.ComponentClass) {
-    return(props) => {
-        const match  = { params: useParams() };
-        return <Children {...props}  match={match}/>
-    }
 }
 
 class PlaylistPage extends React.Component<any, IState> {
@@ -109,4 +102,4 @@ class PlaylistPage extends React.Component<any, IState> {
     }
 }
 
-export default withRouter(PlaylistPage)
+export default Router(PlaylistPage)
