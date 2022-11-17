@@ -6,11 +6,8 @@ import {
     faArrowRight,
     faCircle,
     faHome,
-    faSquare,
-    faWindowMaximize,
-    faWindowRestore
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Pages } from "@app/constants";
 
 interface IProps {}
@@ -31,22 +28,22 @@ class TitleBar extends React.Component<IProps, IState> {
         };
     }
 
-    minimize = () => {
-        appWindow.minimize();
+    minimize = async () => {
+        await appWindow.minimize();
     };
 
-    maximize = () => {
-        appWindow.maximize();
+    maximize = async () => {
+        await appWindow.maximize();
         this.setState({ isMaximized: true });
     };
 
-    unmaximize = () => {
-        appWindow.unmaximize();
+    unmaximize = async () => {
+        await appWindow.unmaximize();
         this.setState({ isMaximized: false });
     };
 
-    close = () => {
-        appWindow.close();
+    close = async () => {
+        await appWindow.close();
     };
 
     back = () => {
@@ -59,7 +56,7 @@ class TitleBar extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div className="titlebar" data-tauri-drag-region>
+            <div className="titlebar" data-tauri-drag-region={true}>
                 <div className="titlebar-button mr-0 text-white" id="titlebar-back" onClick={this.back} title="Back">
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </div>
