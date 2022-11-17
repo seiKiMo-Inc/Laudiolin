@@ -42,12 +42,12 @@ class TrackPage extends React.Component<any, IState> {
             });
         });
 
-        const root = document.getElementById("root");
+        const root = document.getElementsByTagName("body")[0];
         root.style.overflow = "hidden";
     }
 
     componentWillUnmount() {
-        const root = document.getElementById("root");
+        const root = document.getElementsByTagName("body")[0];
         root.style.overflow = "auto";
     }
 
