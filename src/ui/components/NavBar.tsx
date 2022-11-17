@@ -17,8 +17,6 @@ interface IProps {
     navigate: (path: string) => void;
 }
 interface IState {
-    lastScrollY: any;
-    showNav: any;
     searchQuery: string;
 }
 
@@ -27,18 +25,9 @@ class Navigation extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            lastScrollY: 0,
-            showNav: true,
             searchQuery: ""
         };
     }
-
-    handleScroll = () => {
-        const { lastScrollY } = this.state;
-        const currentScrollY = window.scrollY;
-        this.setState({ showNav: currentScrollY < lastScrollY });
-        this.setState({ lastScrollY: currentScrollY });
-    };
 
     inputQuery = (event) => {
         this.setState({ searchQuery: event.target.value });
@@ -69,14 +58,6 @@ class Navigation extends React.Component<IProps, IState> {
         window.dispatchEvent(new Event("reload"));
     };
 
-    componentDidMount() {
-        window.addEventListener("scroll", this.handleScroll);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("scroll", this.handleScroll);
-    }
-
     toggleDarkMode() {
         const darkMode = !document.documentElement.classList.contains("dark");
         localStorage.setItem("darkMode", darkMode.toString());
@@ -84,15 +65,14 @@ class Navigation extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { showNav } = this.state;
 
         return (
             <Navbar
                 className="navbar"
                 variant="dark"
                 style={{
-                    top: showNav ? 0 : -100,
-                    zIndex: 100
+                    top: 0,
+                    zIndex: 100000000
                 }}
             >
                 <Container id="NavbarContainer">
