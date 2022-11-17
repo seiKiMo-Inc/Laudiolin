@@ -1,0 +1,72 @@
+#NoTrackMessage {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #999;
+}
+
+.TrackContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    font-family: "Verdana", sans-serif;
+}
+
+.TrackBG {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.3) blur(4px);
+}
+
+.TrackImage {
+    height: 250px;
+    margin: 20px;
+    box-shadow: #000000 20px 20px 60px;
+    z-index: 1;
+}
+
+.TrackTitle {
+    font-size: 25px;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    z-index: 1;
+}
+
+.TrackArtist {
+    font-size: 15px;
+    color: #b9b9b9;
+    text-align: center;
+    z-index: 1;
+}
+
+.TrackDuration {
+    font-size: 15px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+    z-index: 1;
+}
+
+.TrackRedirect {
+    font-size: 15px;
+    color: #b9b9b9;
+    text-align: center;
+    margin-top: 20px;
+    z-index: 1;
+}
+
+.TrackRedirect:hover {
+    color: #3484fc;
+}
