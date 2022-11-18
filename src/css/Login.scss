@@ -1,0 +1,52 @@
+.LoginPage {
+    font-family: "Verdana", sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: -webkit-center;
+    max-width: 700px;
+}
+
+.LoginButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    gap: 30px;
+    background-color: #5865F2;
+    padding: 20px;
+    border-radius: 20px;
+
+    svg {
+        width: 25px;
+        height: 25px;
+        margin-top: -12px;
+    }
+}
+
+.LoginGuestText {
+    font-size: 15px;
+    color: #b9b9b9;
+    margin-top: 20px;
+}
+
+.LoginGuest {
+    color: #5865F2;
+}
+
+.LoginGuest:hover {
+    text-decoration: underline;
+}
+
+.LoginText {
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.LoginButton:hover {
+    scale: 1.1;
+}

@@ -130,9 +130,9 @@ class TrackPage extends React.Component<any, IState> {
                 </div>
                 <div className="TrackButtons">
                     <Button className="TrackOptions" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>
-                    <Button icon={faAdd} className="TrackOptions" onClick={this.addToPlaylist}>Add to playlist</Button>
-                    <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy track URL</Button>
-                    <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download track</Button>
+                    <Button icon={faAdd} className="TrackOptions" onClick={this.addToPlaylist}>Add To Playlist</Button>
+                    <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy Track URL</Button>
+                    <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download Track</Button>
                 </div>
             </div>
         )

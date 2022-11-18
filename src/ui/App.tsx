@@ -6,6 +6,7 @@ import SearchResultsPage from "@pages/SearchResultsPage";
 import SettingsPage from "@pages/SettingsPage";
 import PlaylistPage from "@pages/PlaylistPage";
 import TrackPage from "@pages/TrackPage";
+import LoginPage from "@pages/LoginPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
@@ -42,6 +43,7 @@ class App extends React.Component<any, any> {
                     <Navigation />
 
                     <Routes>
+                        <Route path={Pages.login} element={<LoginPage />} />
                         <Route path={Pages.home} element={<HomePage />} />
                         <Route path={Pages.searchResults} element={<SearchResultsPage />} />
                         <Route path={Pages.settings} element={<SettingsPage />} />

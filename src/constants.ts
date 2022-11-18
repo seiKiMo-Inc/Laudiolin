@@ -4,6 +4,7 @@ export const Pages = {
     settings: "/settings",
     playlist: "/playlist/:id",
     track: "/track/:id",
+    login: "/login",
 };
 
 export const PageTransitions = {
