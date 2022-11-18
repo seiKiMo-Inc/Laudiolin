@@ -18,6 +18,20 @@ const faDiscord: IconDefinition = {
 };
 
 class LoginPage extends React.Component {
+    componentDidMount() {
+        const navbar = document.getElementsByClassName("navbar")[0] as HTMLElement;
+        navbar.style.display = "none";
+        const controls = document.getElementsByClassName("controls")[0] as HTMLElement;
+        controls.style.display = "none";
+    }
+
+    componentWillUnmount() {
+        const navbar = document.getElementsByClassName("navbar")[0] as HTMLElement;
+        navbar.style.display = "block";
+        const controls = document.getElementsByClassName("controls")[0] as HTMLElement;
+        controls.style.display = "block";
+    }
+
     render() {
         return (
             <AnimatePages>
