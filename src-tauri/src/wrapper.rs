@@ -86,9 +86,9 @@ pub fn set_code(code: String) {
 
 /// Saves the specified playlist as a file.
 /// playlist: The playlist to save.
-pub fn save_playlist(playlist: Playlist) {
-
-}
+// pub fn save_playlist(playlist: Playlist) {
+//
+// }
 
 /// Returns gateway settings.
 pub fn gateway() -> GatewaySettings {
