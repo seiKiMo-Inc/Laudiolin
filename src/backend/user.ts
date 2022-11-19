@@ -2,15 +2,19 @@ import * as settings from "./settings";
 import type { Playlist, User, TrackData } from "./types";
 import { getSettings, saveSettings } from "./settings";
 
-let targetRoute = ``; // The base address for the backend.
+export let targetRoute = ``; // The base address for the backend.
 export let userData: User | null = undefined; // The loaded user data.
 export let playlists: Playlist[] = []; // The loaded playlist data.
 export let favorites: TrackData[] = []; // The loaded favorite tracks.
 
+/*
+ * HTTP request utilities.
+ */
+
 /**
  * Gets the authorization token from the local storage.
  */
-function token() {
+export function token() {
     return settings.get("user_token", "");
 }
 
@@ -21,6 +25,10 @@ export function loadRoute() {
     const config = settings.gateway();
     targetRoute = `${config.encrypted ? "https" : "http"}://${config.address}:${config.port}`;
 }
+
+/*
+ * Loading data from a token.
+ */
 
 /**
  * Attempts to get user data from the backend.
@@ -109,4 +117,87 @@ export function getUserId(): string {
  */
 export function getAvatar(): string {
     return userData ? userData.avatar : "";
+}
+
+/*
+ * Loading other user data.
+ */
+
+/**
+ * Loads a user from the backend.
+ * @param userId The user's ID.
+ */
+export async function getUserById(userId: string): Promise<User|null> {
+    const route = `${targetRoute}/user/${userId}`;
+    const response = await fetch(route, {
+        method: "GET", headers: { Authorization: token() }
+    });
+
+    // Check the response code.
+    if (response.status != 301) {
+        console.error(`Failed to get user data from the backend. Status code: ${response.status}`); return null;
+    }
+
+    return await response.json(); // Load the data into the user data variable.
+}
+
+/**
+ * Loads a user's playlists from the backend.
+ * @param user The user's data.
+ */
+export async function getUserPlaylists(user: User): Promise<Playlist[]|null> {
+    const route = `${targetRoute}/playlist`;
+    const playlists: Playlist[] = []; // The loaded playlists.
+
+    // Loop through the user's playlists.
+    for (const playlistId in user.playlists) {
+        const response = await fetch(`${route}/${playlistId}`, {
+            method: "GET", headers: { Authorization: token() }
+        });
+
+        // Check the response code.
+        if (response.status != 301) {
+            console.error(`Failed to get playlist data from the backend. Status code: ${response.status}`); return null;
+        }
+
+        playlists.push(await response.json()); // Load the data into the playlist array.
+    }
+
+    return playlists;
+}
+
+/*
+ * Modifying user data.
+ */
+
+/**
+ * Creates the playlist on the backend.
+ * @param playlist The playlist to create.
+ * @return The created playlist, or null if it failed.
+ */
+export async function createPlaylist(playlist: Playlist): Promise<Playlist|null> {
+    const route = `${targetRoute}/playlist/create`;
+    const response = await fetch(route, {
+        method: "POST", headers: { Authorization: token() },
+        body: JSON.stringify(playlist)
+    });
+
+    if (response.status != 201) {
+        console.error(`Failed to create playlist. Status code: ${response.status}`); return null;
+    }
+
+    return await response.json();
+}
+
+/**
+ * Deletes a playlist.
+ * @param playlistId The playlist's ID.
+ */
+export async function deletePlaylist(playlistId: string): Promise<boolean> {
+    const route = `${targetRoute}/playlist/${playlistId}`;
+    const response = await fetch(route, {
+        method: "DELETE", headers: { Authorization: token() }
+    });
+
+    return response.status == 200;
 }

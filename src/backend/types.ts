@@ -46,10 +46,13 @@ export type SearchOptions = {
 
 export type TrackData = SearchResult;
 export type Playlist = {
-    id: string;
+    owner?: string;
+    id?: string;
+
     name: string;
     description: string;
     icon: string;
+    isPrivate: boolean;
     tracks: TrackData[];
 };
 

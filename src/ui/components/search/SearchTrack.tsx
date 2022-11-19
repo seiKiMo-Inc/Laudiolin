@@ -108,6 +108,7 @@ class SearchTrack extends React.Component<IProps, IState> {
 
     render() {
         const result = this.props.result;
+        console.log(result);
 
         return (
             <div className="SearchResult list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
