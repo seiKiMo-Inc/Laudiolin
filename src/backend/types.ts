@@ -58,6 +58,7 @@ export type UserSettings = {
     audio: AudioSettings;
     gateway: GatewaySettings;
     ui: UISettings;
+    token: string;
 };
 export type SearchSettings = {
     accuracy: boolean;

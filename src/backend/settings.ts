@@ -16,8 +16,8 @@ export async function reloadSettings() {
     // Set settings from backend.
     settings = await invoke("get_settings");
 
-    // Set dark mode to the system preference.
-    applySystemDarkMode();
+    applySystemDarkMode(); // Set dark mode to the system preference.
+    save("user_token", settings.token); // Save the user's authentication token.
 }
 
 /*

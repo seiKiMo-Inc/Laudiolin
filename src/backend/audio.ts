@@ -647,7 +647,7 @@ const playlists: Playlist[] = [
                 artist: "Given",
                 title: "冬のはなし",
                 duration: 100,
-                id: "1",
+                id: "YwxyAO7xsJs",
                 url: "https://www.youtube.com/watch?v=YwxyAO7xsJs"
             },
             {
@@ -655,7 +655,7 @@ const playlists: Playlist[] = [
                 artist: "RADWIMPS, Toko Miura",
                 title: "Grand Escape (Movie Edit) [feat. Toko Miura]",
                 duration: 100,
-                id: "2",
+                id: "WwyDpKXG83A",
                 url: "https://www.youtube.com/watch?v=WwyDpKXG83A"
             }
         ]

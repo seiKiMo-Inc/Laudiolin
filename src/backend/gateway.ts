@@ -9,6 +9,8 @@ let connected: boolean = false;
 let gateway: WebSocket | null = null;
 const messageQueue: object[] = [];
 
+export let userToken: string | null = null;
+
 type GatewayConfig = {
     encrypted: boolean;
     address: string;
@@ -84,6 +86,9 @@ export function setupGateway(config: GatewayConfig) {
     gateway.onmessage = onMessage;
     gateway.onclose = onClose;
     gateway.onerror = onError;
+
+    // Load the user token.
+    userToken = localStorage.getItem("user_token");
 }
 
 /**

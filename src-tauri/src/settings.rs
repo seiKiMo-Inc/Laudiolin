@@ -12,7 +12,8 @@ pub struct UserSettings {
     pub search: SearchSettings,
     pub audio: AudioSettings,
     pub gateway: GatewaySettings,
-    pub ui: UISettings
+    pub ui: UISettings,
+    pub token: String
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -69,7 +70,8 @@ pub fn read_from_file(file_path: &str) {
             ui: UISettings {
                 background_color: "".to_string(),
                 background_url: "".to_string()
-            }
+            },
+            token: String::from("")
         }).expect("Unable to serialize default settings").as_bytes())
             .expect("Unable to save default settings");
     }
