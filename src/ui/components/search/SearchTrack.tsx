@@ -6,9 +6,10 @@ import Button from "@components/common/Button";
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { player, playFromResult, fetchAllPlaylists } from "@backend/audio";
 
-import type { SearchResult } from "@backend/types";
+import type { Playlist, SearchResult } from "@backend/types";
 
 import "@css/SearchTrack.scss";
+import Modal, { displayModal } from "@components/common/Modal";
 
 interface IProps {
     result: SearchResult;
@@ -17,6 +18,7 @@ interface IProps {
 interface IState {
     playing: boolean;
     hasPlayed: boolean;
+    playlists: Playlist[];
 }
 
 /* A track that appears when searching for it. */
@@ -26,7 +28,8 @@ class SearchTrack extends React.Component<IProps, IState> {
 
         this.state = {
             playing: false,
-            hasPlayed: false
+            hasPlayed: false,
+            playlists: []
         };
     }
 
@@ -43,6 +46,12 @@ class SearchTrack extends React.Component<IProps, IState> {
         player.on("stop", this.updateState);
         player.on("resume", this.updateState);
         player.on("pause", this.updateState);
+
+        window.onclick = (event) => {
+            if (event.target == document.getElementById("TrackModal")) {
+                this.hideModal();
+            }
+        };
     }
 
     componentWillUnmount() {
@@ -50,6 +59,8 @@ class SearchTrack extends React.Component<IProps, IState> {
         player.removeListener("stop", this.updateState);
         player.removeListener("resume", this.updateState);
         player.removeListener("pause", this.updateState);
+
+        window.onclick = null;
     }
 
     playTrack = () => {
@@ -75,17 +86,14 @@ class SearchTrack extends React.Component<IProps, IState> {
         alert("Download the song.");
     }
 
+    hideModal = () => {
+        const modal = document.getElementById("SearchModal");
+        modal.style.display = "none";
+    };
+
     // TODO: make adding to playlists work.
-    // TODO: make a better pop up menu for playlists.
     addToPlaylist = async () => {
-        const playlists = await fetchAllPlaylists();
-        const playlistNames = playlists.map(playlist => playlist.name);
-        const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
-        if (!playlist) return;
-        if (!playlistNames.includes(playlist)) {
-            alert("That playlist doesn't exist!");
-            return;
-        }
+        this.hideModal();
         alert("This should add the track to the specified playlist.");
     };
 
@@ -96,6 +104,7 @@ class SearchTrack extends React.Component<IProps, IState> {
     copyTrackURL = async () => {
         await navigator.clipboard.writeText(this.props.result.url);
     };
+
 
     render() {
         const result = this.props.result;
@@ -123,13 +132,27 @@ class SearchTrack extends React.Component<IProps, IState> {
                         <p className="text-gray-600">{result.artist}</p>
 
                         <Figure.Caption className="TrackOptions">
-                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.addToPlaylist} />
+                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => {
+                                displayModal("TrackModal")
+                                fetchAllPlaylists().then(playlists => {
+                                    this.setState({ playlists: playlists });
+                                })
+                            }}/>
                             <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                             <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
                             <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.preview2} />
                         </Figure.Caption>
 
                     </Figure.Caption>
+
+                    <Modal id="SearchModal" onSubmit={this.addToPlaylist}>
+                        <h2>Select Playlist</h2>
+                        <select>
+                            {this.state.playlists.map(playlist => {
+                                return <option value={playlist.id}>{playlist.name}</option>
+                            })}
+                        </select>
+                    </Modal>
 
                 </Figure>
             </div>

@@ -1,16 +1,18 @@
 import React from "react";
 
-import { TrackData } from "@backend/types";
+import { TrackData, Playlist } from "@backend/types";
 import { fetchAllPlaylists, fetchTrack, player, playFromResult } from "@backend/audio";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
+import Modal, { displayModal } from "@components/common/Modal";
 import { faAdd, faCopy, faDownload, faPause, faPlay, faShare } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/TrackPage.scss";
 
 interface IState {
     track: TrackData;
+    playlists: Playlist[];
     playing: boolean;
     hasPlayed: boolean;
 }
@@ -21,6 +23,7 @@ class TrackPage extends React.Component<any, IState> {
 
         this.state = {
             track: null,
+            playlists: [],
             playing: false,
             hasPlayed: false
         }
@@ -58,16 +61,8 @@ class TrackPage extends React.Component<any, IState> {
     }
 
     // TODO: make adding to playlists work.
-    // TODO: make a better pop up menu for playlists.
     addToPlaylist = async () => {
-        const playlists = await fetchAllPlaylists();
-        const playlistNames = playlists.map(playlist => playlist.name);
-        const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
-        if (!playlist) return;
-        if (!playlistNames.includes(playlist)) {
-            alert("That playlist doesn't exist!");
-            return;
-        }
+        this.hideModal();
         alert("This should add the track to the specified playlist.");
     };
 
@@ -88,6 +83,11 @@ class TrackPage extends React.Component<any, IState> {
         return seconds == 60 ? minutes + 1 + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     };
 
+    hideModal = () => {
+        const modal = document.getElementById("TrackModal");
+        modal.style.display = "none";
+    };
+
     componentDidMount() {
         fetchTrack(this.props.match.params.id).then((track) => {
             this.setState({
@@ -102,6 +102,12 @@ class TrackPage extends React.Component<any, IState> {
         player.on("stop", this.updateState);
         player.on("resume", this.updateState);
         player.on("pause", this.updateState);
+
+        window.onclick = (event) => {
+            if (event.target == document.getElementById("TrackModal")) {
+                this.hideModal();
+            }
+        };
     }
 
     componentWillUnmount() {
@@ -112,6 +118,8 @@ class TrackPage extends React.Component<any, IState> {
         player.removeListener("stop", this.updateState);
         player.removeListener("resume", this.updateState);
         player.removeListener("pause", this.updateState);
+
+        window.onclick = null;
     }
 
     render() {
@@ -130,10 +138,23 @@ class TrackPage extends React.Component<any, IState> {
                 </div>
                 <div className="TrackButtons">
                     <Button className="TrackOptions" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>
-                    <Button icon={faAdd} className="TrackOptions" onClick={this.addToPlaylist}>Add To Playlist</Button>
+                    <Button icon={faAdd} className="TrackOptions" onClick={() => {
+                        displayModal("TrackModal")
+                        fetchAllPlaylists().then(playlists => {
+                            this.setState({ playlists: playlists });
+                        })
+                    }}>Add To Playlist</Button>
                     <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy Track URL</Button>
                     <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download Track</Button>
                 </div>
+                <Modal id="TrackModal" onSubmit={this.addToPlaylist}>
+                    <h2>Select Playlist</h2>
+                    <select>
+                        {this.state.playlists.map(playlist => {
+                            return <option value={playlist.id}>{playlist.name}</option>
+                        })}
+                    </select>
+                </Modal>
             </div>
         )
     }

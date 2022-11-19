@@ -223,6 +223,14 @@ h1 {
     input:focus {
         outline: none;
     }
+
+    select {
+        background-color: #12326e;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
 }
 
 .CloseModal {
