@@ -10,7 +10,7 @@ let settings: UserSettings | null = null;
 /**
  * Loads settings from the settings file.
  */
-export async function reloadSettings(from: UserSettings | null) {
+export async function reloadSettings(from?: UserSettings | null) {
     if (!from) {
         // Load the settings from the settings file.
         await invoke("read_from_file", { filePath: data("settings.json") });

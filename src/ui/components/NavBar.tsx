@@ -21,6 +21,7 @@ interface IState {
     searchQuery: string;
     isGuest: boolean;
     userIcon: string;
+    location: string;
 }
 
 /* PLACEHOLDER */
@@ -34,8 +35,9 @@ class Navigation extends React.Component<IProps, IState> {
 
         this.state = {
             searchQuery: "",
-            isGuest: localStorage.getItem("isGuest") == "true",
-            userIcon: ""
+            isGuest: true,
+            userIcon: "",
+            location: window.location.pathname
         };
     }
 
@@ -75,9 +77,19 @@ class Navigation extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
+        this.setState({ isGuest: !(localStorage.getItem("isGuest") === "false") });
         getUserData().then((data) => {
             this.setState({ userIcon: data.userIcon || "" });
         });
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
+        if (this.state.location !== window.location.pathname) {
+            this.setState({
+                location: window.location.pathname,
+                isGuest: localStorage.getItem("isGuest") == "true"
+            });
+        }
     }
 
     render() {
