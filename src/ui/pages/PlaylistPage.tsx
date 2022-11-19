@@ -69,6 +69,10 @@ class PlaylistPage extends React.Component<any, IState> {
         }
     }
 
+    componentWillUnmount() {
+        window.onclick = null;
+    }
+
     render() {
         if (this.state.playlist == null) {
             return <h2 id="NoPlaylistMessage">No playlists found.</h2>
