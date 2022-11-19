@@ -50,7 +50,7 @@ pub fn play_from(track: SearchResult) {
         // Stream the audio track.
         let gateway = wrapper::gateway();
         let engine = get_settings().search.engine.clone();
-        source_path = format!("{}://{}:{}/stream?id={}&engine={}",
+        source_path = format!("{}://{}:{}/download?id={}&engine={}",
                               wrapper::protocol(), gateway.address,
                               gateway.port, id, engine);
     }

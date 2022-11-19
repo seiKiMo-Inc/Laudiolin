@@ -410,6 +410,7 @@ export class Track {
 
         this.howl = new Howl({
             html5: isStreamed,
+            preload: "metadata",
             format: "mp3",
             src: [filePath],
             volume: payload.volume
@@ -658,7 +659,8 @@ const playlists: Playlist[] = [
                 id: "WwyDpKXG83A",
                 url: "https://www.youtube.com/watch?v=WwyDpKXG83A"
             }
-        ]
+        ],
+        isPrivate: false
     },
     {
         id: "2",
@@ -682,7 +684,8 @@ const playlists: Playlist[] = [
                 id: "2",
                 url: "https://i.imgur.com/0Z0Z0Z0.png"
             }
-        ]
+        ],
+        isPrivate: false
     }
 ];
 

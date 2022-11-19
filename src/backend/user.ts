@@ -1,6 +1,6 @@
+import emitter from "./events";
 import * as settings from "./settings";
 import type { Playlist, User, TrackData } from "./types";
-import { getSettings, saveSettings } from "./settings";
 
 export let targetRoute = ``; // The base address for the backend.
 export let userData: User | null = undefined; // The loaded user data.
@@ -32,21 +32,31 @@ export function loadRoute() {
 
 /**
  * Attempts to get user data from the backend.
+ * @param code The user's authentication token.
  * @param loadData Whether to load the user data.
  */
-export async function login(loadData: boolean = true) {
+export async function login(code: string = "", loadData: boolean = true) {
+    if (code == "") code = token(); // If no code is provided, use the token.
+
     const route = `${targetRoute}/user`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: token() }
+        method: "GET", headers: { Authorization: code }
     });
 
     // Check the response code.
     if (response.status != 301) {
-        console.error(`Failed to get user data from the backend. Status code: ${response.status}`); return;
+        console.error(`Failed to get user data from the backend. Status code: ${response.status}`);
+        await logout(); // Log the user out.
+        window.location.href = "/login"; // Redirect to the login page.
+
+        return;
     }
 
     userData = await response.json(); // Load the data into the user data variable.
     console.debug("User data has been loaded."); // Log the success.
+
+    // Emit the login event.
+    emitter.emit("login", userData);
 
     if (loadData) {
         await loadPlaylists(); // Load the playlists.
@@ -62,9 +72,16 @@ export async function logout() {
     favorites = []; // Clear the favorite tracks.
 
     // Remove the authorization code.
-    const settings = getSettings();
-    settings.token = "";
-    await saveSettings(settings);
+    const newSettings = settings.getSettings();
+    newSettings.token = "";
+    await settings.saveSettings(newSettings);
+
+    // Set the user as logged out.
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("isGuest");
+
+    // Emit the logout event.
+    emitter.emit("logout");
 }
 
 /**

@@ -31,7 +31,7 @@ import * as settings from "@backend/settings";
 
     // Load user data if the user is logged in.
     user.loadRoute(); // Load the gateway route.
-    if (settings.get("user") != null)
+    if (localStorage.getItem("isAuthenticated") == "true")
         await user.login();
 
     // Continue setup.

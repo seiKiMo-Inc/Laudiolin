@@ -65,7 +65,7 @@ class LoginPage extends React.Component<IProps, IState> {
             this.props.navigate(Pages.home);
             this.setState({ waiting: false });
 
-            login();
+            login(code); // Login to the backend.
         });
     };
 

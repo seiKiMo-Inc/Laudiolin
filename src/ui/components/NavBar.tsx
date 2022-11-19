@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
 import { getAvatar } from "@backend/user";
+import emitter from "@backend/events";
 
 import Button from "./common/Button";
 import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
@@ -72,11 +73,15 @@ class Navigation extends React.Component<IProps, IState> {
         document.documentElement.classList.toggle("dark", darkMode);
     }
 
+    onLogin = () => this.forceUpdate();
+
     componentDidMount() {
         this.setState({
             isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest")),
             userIcon: getAvatar() || ""
         });
+
+        emitter.on("login", this.onLogin);
     }
 
     componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
@@ -86,6 +91,8 @@ class Navigation extends React.Component<IProps, IState> {
                 isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest"))
             });
         }
+
+        emitter.removeListener("login", this.onLogin);
     }
 
     render() {
