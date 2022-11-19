@@ -5,6 +5,7 @@ export const Pages = {
     playlist: "/playlist/:id",
     track: "/track/:id",
     login: "/login",
+    user: "/user"
 };
 
 export const PageTransitions = {

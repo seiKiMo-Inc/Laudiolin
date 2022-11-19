@@ -5,14 +5,24 @@ import AnimatePages from "@components/common/AnimatePages";
 import PlaylistsGrid from "@components/playlist/PlaylistsGrid";
 import { Pages } from "@app/constants";
 
-class HomePage extends React.Component<any, any> {
-    isLoggedIn: boolean = !(
-        (localStorage.getItem("isAuthenticated") === "false" || !localStorage.getItem("isAuthenticated")) &&
-        (localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest"))
-    );
+interface IState {
+    isLoggedIn: boolean;
+}
+
+class HomePage extends React.Component<any, IState> {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoggedIn:  !(
+                (localStorage.getItem("isAuthenticated") === "false" || !localStorage.getItem("isAuthenticated")) &&
+                (localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest"))
+            )
+        };
+    }
 
     render() {
-        if (!this.isLoggedIn)
+        if (!this.state.isLoggedIn)
             return <Navigate to={Pages.login} />;
 
         return (

@@ -16,8 +16,16 @@ import "@css/NavBar.scss";
 interface IProps {
     navigate: (path: string) => void;
 }
+
 interface IState {
     searchQuery: string;
+    isGuest: boolean;
+    userIcon: string;
+}
+
+/* PLACEHOLDER */
+async function getUserData(): Promise<any> {
+    return { userIcon: "https://i.pinimg.com/736x/d3/b8/e0/d3b8e0bf4f8bf05a915fdd0e36d12591.jpg" }
 }
 
 class Navigation extends React.Component<IProps, IState> {
@@ -25,7 +33,9 @@ class Navigation extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            searchQuery: ""
+            searchQuery: "",
+            isGuest: localStorage.getItem("isGuest") == "true",
+            userIcon: ""
         };
     }
 
@@ -64,6 +74,12 @@ class Navigation extends React.Component<IProps, IState> {
         document.documentElement.classList.toggle("dark", darkMode);
     }
 
+    componentDidMount() {
+        getUserData().then((data) => {
+            this.setState({ userIcon: data.userIcon || "" });
+        });
+    }
+
     render() {
 
         return (
@@ -80,7 +96,7 @@ class Navigation extends React.Component<IProps, IState> {
                         <Button icon={faCog} className="SettingsButton" />
                     </Link>
                     <h1 id="Title">Laudiolin</h1>
-                    <div id="Search">
+                    <div id="NavbarLeft">
                         <input
                             id="SearchInput"
                             type="text"
@@ -95,6 +111,16 @@ class Navigation extends React.Component<IProps, IState> {
                         <Link to={Pages.searchResults} onClick={this.searchButton}>
                             <Button id="SearchIcon" icon={faMagnifyingGlass} />
                         </Link>
+
+                        {this.state.isGuest ? (
+                            <Link to={Pages.login}>
+                                <Button id="NavLoginButton">Log In</Button>
+                            </Link>
+                        ) : (
+                            <Link to={Pages.user}>
+                                <img src={this.state.userIcon} id="NavPfp" alt="Profile Picture" />
+                            </Link>
+                        )}
                     </div>
                 </Container>
             </Navbar>

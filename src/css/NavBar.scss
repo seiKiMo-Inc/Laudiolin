@@ -14,7 +14,7 @@
     display: inline-flex;
 }
 
-#Search {
+#NavbarLeft {
     position: absolute;
     display: inline-flex;
     right: 10px;
@@ -65,5 +65,33 @@
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+#NavPfp {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid #3484fc;
+    margin-right: 10px;
+    margin-left: 20px;
+
+    &:hover {
+        scale: 1.2;
+    }
+}
+
+#NavLoginButton {
+    font-family: "Verdana", sans-serif;
+    background-color: #3484fc;
+    padding: 7px 14px 7px 14px;
+    margin-right: 5px;
+    margin-left: 20px;
+    border-radius: 5px;
+
+    &:hover {
+        filter: brightness(0.8);
     }
 }
