@@ -53,6 +53,14 @@ export type Playlist = {
     tracks: TrackData[];
 };
 
+export type User = {
+    playlists?: string[];
+    likedSongs?: string[];
+
+    userId?: string;
+    avatar?: string;
+};
+
 export type UserSettings = {
     search: SearchSettings;
     audio: AudioSettings;

@@ -29,7 +29,7 @@ trait Backend {
      * Data functions.
      */
 
-    fn save_playlist(&self, playlist: Playlist);
+    // fn save_playlist(&self, playlist: Playlist);
 }
 impl Backend for Client {
     fn volume(&self, volume: u8) {
@@ -44,9 +44,9 @@ impl Backend for Client {
         wrapper::send(data);
     }
 
-    fn save_playlist(&self, playlist: Playlist) {
-        wrapper::save_playlist(playlist);
-    }
+    // fn save_playlist(&self, playlist: Playlist) {
+    //     wrapper::save_playlist(playlist);
+    // }
 }
 
 pub struct SearchOptions {
@@ -111,12 +111,12 @@ pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'stati
 /// Sends a message to the gateway.
 /// gateway: The gateway to send messages to.
 /// data: The data to send. Should include a type and a timestamp.
-pub async fn gateway_message(gateway: &Client, data: impl Serialize) {
-    // Serialize the data.
-    let data = serde_json::to_string(&data).unwrap();
-    // Send the message.
-    gateway.send(data);
-}
+// pub async fn gateway_message(gateway: &Client, data: impl Serialize) {
+//     // Serialize the data.
+//     let data = serde_json::to_string(&data).unwrap();
+//     // Send the message.
+//     gateway.send(data);
+// }
 
 // Parsing methods for data received by the Laudiolin gateway. \\
 

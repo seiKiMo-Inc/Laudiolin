@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { login } from "@backend/user";
+
 import { Pages } from "@app/constants";
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
@@ -30,7 +32,7 @@ interface IState {
     waiting: boolean;
 }
 
-class LoginPage extends React.Component<any, IState> {
+class LoginPage extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 
@@ -62,6 +64,8 @@ class LoginPage extends React.Component<any, IState> {
             // Redirect to the home page.
             this.props.navigate(Pages.home);
             this.setState({ waiting: false });
+
+            login();
         });
     };
 

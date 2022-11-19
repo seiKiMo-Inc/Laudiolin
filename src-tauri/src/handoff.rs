@@ -5,7 +5,7 @@
 use std::sync::Arc;
 use std::thread;
 use crate::wrapper;
-use tiny_http::{Server, Response, Method};
+use tiny_http::{Server, Response};
 
 /// Opens the browser with the OAuth2 URL.
 #[tauri::command]
