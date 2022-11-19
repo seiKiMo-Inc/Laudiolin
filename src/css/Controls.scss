@@ -45,10 +45,12 @@
 
     img {
         max-width: 130px;
-        box-shadow: black 0px 0px 10px;
+        box-shadow: black 0 0 10px;
         &:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
+
+        padding-left: 10px;
     }
 }
 
