@@ -2,7 +2,9 @@ import React from "react";
 import Button from "@components/common/Button";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
 
+import * as user from "@backend/user";
 import * as config from "@backend/settings";
+import * as gateway from "@backend/gateway";
 import type { SearchEngine, UserSettings } from "@backend/types";
 
 import { open } from "@tauri-apps/api/dialog";
@@ -146,7 +148,9 @@ class Settings extends React.Component<any, IState> {
             token: config.getSettings().token
         } as UserSettings);
 
-        // TODO: Restart the websocket connection.
+        gateway.gateway.close();
+        gateway.setupGateway(config.gateway());
+        user.loadRoute(); // Load the gateway route.
     }
 
     render() {

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 
 // Setup event listeners.
 import * as fs from "@backend/fs";
+import * as user from "@backend/user";
 import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
@@ -27,6 +28,11 @@ import * as settings from "@backend/settings";
             port: config.gateway_port
         });
     }, 3000);
+
+    // Load user data if the user is logged in.
+    user.loadRoute(); // Load the gateway route.
+    if (settings.get("user") != null)
+        await user.login();
 
     // Continue setup.
     continueSetup();

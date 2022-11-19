@@ -6,7 +6,7 @@ import type { Event } from "@tauri-apps/api/event";
 import type { TrackData } from "@backend/types";
 
 let connected: boolean = false;
-let gateway: WebSocket | null = null;
+export let gateway: WebSocket | null = null;
 const messageQueue: object[] = [];
 
 export let userToken: string | null = null;

@@ -17,7 +17,7 @@ function token() {
 /**
  * Loads the target route from the config.
  */
-function loadRoute() {
+export function loadRoute() {
     const config = settings.gateway();
     targetRoute = `${config.encrypted ? "https" : "http"}://${config.address}:${config.port}`;
 }
