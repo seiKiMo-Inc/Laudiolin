@@ -23,7 +23,6 @@ class PlaylistsGrid extends React.Component<any, IState> {
     cardClick = (playlist: Playlist) => {
         // this.props.history.push(`/playlist/${playlist.id}`);
         // TODO: Make playlist pages.
-        console.log(playlist.name);
     }
 
     componentDidMount() {
