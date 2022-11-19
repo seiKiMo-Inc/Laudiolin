@@ -19,6 +19,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             wrapper::search, wrapper::download,
+            handoff::handoff, handoff::open_browser,
             audio::make_track, audio::play_from, audio::play_playlist,
             settings::read_from_file, settings::get_settings, settings::save_settings,
             discord::update_presence
@@ -35,12 +36,8 @@ fn main() {
             discord::initialize();
 
             // Set the window shadow.
-            // TODO: Update.
-            // let window = app.get_window("main").unwrap();
-            // set_shadow(&window, true).expect("Unsupported platform!");
-
-            // DEBUG: Start HTTP handoff server.
-            handoff::handoff();
+            let window = app.get_window("main").unwrap();
+            set_shadow(&window, true).expect("Unsupported platform!");
 
             Ok(())
         })

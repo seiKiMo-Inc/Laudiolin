@@ -46,6 +46,10 @@ struct TrackSyncPayload {
     track: SearchResult,
     progress: u64
 }
+#[derive(Clone, Serialize)]
+struct HandoffCodePayload {
+    code: String
+}
 
 // Implementations for backend structures. \\
 
@@ -72,6 +76,12 @@ pub fn track_sync(track: SearchResult, progress: u64) {
 /// data: The data to send.
 pub fn send(data: String) {
     TauriApp::emit("send_message", MessagePayload { data });
+}
+
+/// Sets the client's authorization code.
+/// code: The authorization code.
+pub fn set_code(code: String) {
+    TauriApp::emit("set_code", HandoffCodePayload { code });
 }
 
 /// Saves the specified playlist as a file.

@@ -2,6 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { Pages } from "@app/constants";
+import { invoke } from "@tauri-apps/api";
+import { listen } from "@tauri-apps/api/event";
+import { getSettings, saveSettings } from "@backend/settings";
+
+import Navigator from "@components/common/Navigator";
+
 import Button from "@components/common/Button";
 import AnimatePages from "@components/common/AnimatePages";
 import { IconDefinition, IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
@@ -17,7 +23,53 @@ const faDiscord: IconDefinition = {
     prefix: "fa" as IconPrefix
 };
 
-class LoginPage extends React.Component {
+interface IProps {
+    navigate: (path: string) => void;
+}
+interface IState {
+    waiting: boolean;
+}
+
+class LoginPage extends React.Component<any, IState> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            waiting: false
+        };
+    }
+
+    loginToDiscord = async () => {
+        if (this.state.waiting) return;
+        this.setState({ waiting: true });
+
+        // Perform handoff process.
+        await invoke("handoff");
+        await invoke("open_browser");
+
+        // Wait for an authorization code.
+        await listen("set_code", event => {
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("isGuest", "false");
+
+            // Get the authorization code.
+            const {code} = event.payload as any;
+            // Save the authorization code.
+            const settings = getSettings();
+            settings.token = code;
+            saveSettings(settings);
+
+            // Redirect to the home page.
+            this.props.navigate(Pages.home);
+            this.setState({ waiting: false });
+        });
+    };
+
+    loginAsGuest = () => {
+        localStorage.setItem("isAuthenticated", "false");
+        localStorage.setItem("isGuest", "true");
+    };
+
     componentDidMount() {
         const navbar = document.getElementsByClassName("navbar")[0] as HTMLElement;
         navbar.style.display = "none";
@@ -36,7 +88,7 @@ class LoginPage extends React.Component {
         return (
             <AnimatePages>
                 <div className="LoginPage">
-                    <Button className="LoginButton" icon={faDiscord}>
+                    <Button className="LoginButton" onClick={this.loginToDiscord} icon={faDiscord}>
                         Login With Discord
                     </Button>
                     <p className="LoginGuestText">
@@ -44,10 +96,7 @@ class LoginPage extends React.Component {
                         <Link
                             to={Pages.home}
                             className="LoginGuest"
-                            onClick={() => {
-                                localStorage.setItem("isAuthenticated", "false");
-                                localStorage.setItem("isGuest", "true");
-                            }}
+                            onClick={this.loginAsGuest}
                         >
                             Guest
                         </Link>
@@ -63,4 +112,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage;
+export default Navigator(LoginPage);

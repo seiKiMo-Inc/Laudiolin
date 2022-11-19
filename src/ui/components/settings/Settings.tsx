@@ -6,7 +6,7 @@ import * as config from "@backend/settings";
 import type { SearchEngine, UserSettings } from "@backend/types";
 
 import { open } from "@tauri-apps/api/dialog";
-import { appDir } from "@tauri-apps/api/path";
+import { appDataDir } from "@tauri-apps/api/path";
 
 import "@css/Settings.scss";
 
@@ -99,7 +99,7 @@ class Settings extends React.Component<any, IState> {
 
     selectDirectory = async () => {
         const result = await open({
-            defaultPath: await appDir(),
+            defaultPath: await appDataDir(),
             multiple: false,
             directory: true
         });

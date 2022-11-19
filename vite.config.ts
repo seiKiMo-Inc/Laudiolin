@@ -9,6 +9,10 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   css: {postcss},
 
+  optimizeDeps: {
+    include: ["@tauri-apps/api/tauri", "@tauri-apps/api/path"],
+  },
+
   // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
   clearScreen: false,

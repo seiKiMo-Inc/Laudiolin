@@ -83,7 +83,8 @@ pub fn read_from_file(file_path: &str) {
         .collect()).expect("Unable to read file");
 
     // Deserialize the settings file.
-    let settings = from_str(&file_content).expect("Unable to parse settings file.");
+    let settings = from_str(&file_content)
+        .expect("Unable to parse settings file.");
     // Set the settings.
     unsafe { SETTINGS = Some(settings); }
 }
