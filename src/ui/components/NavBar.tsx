@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
+import { getAvatar } from "@backend/user";
 
 import Button from "./common/Button";
 import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
@@ -22,11 +23,6 @@ interface IState {
     isGuest: boolean;
     userIcon: string;
     location: string;
-}
-
-/* PLACEHOLDER */
-async function getUserData(): Promise<any> {
-    return { userIcon: "https://i.pinimg.com/736x/d3/b8/e0/d3b8e0bf4f8bf05a915fdd0e36d12591.jpg" }
 }
 
 class Navigation extends React.Component<IProps, IState> {
@@ -77,9 +73,9 @@ class Navigation extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        this.setState({ isGuest: !(localStorage.getItem("isGuest") === "false") });
-        getUserData().then((data) => {
-            this.setState({ userIcon: data.userIcon || "" });
+        this.setState({
+            isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest")),
+            userIcon: getAvatar() || ""
         });
     }
 
@@ -87,7 +83,7 @@ class Navigation extends React.Component<IProps, IState> {
         if (this.state.location !== window.location.pathname) {
             this.setState({
                 location: window.location.pathname,
-                isGuest: localStorage.getItem("isGuest") == "true"
+                isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest"))
             });
         }
     }

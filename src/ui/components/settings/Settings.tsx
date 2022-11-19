@@ -142,7 +142,8 @@ class Settings extends React.Component<any, IState> {
             ui: {
                 background_color: this.state.background_color,
                 background_url: this.state.background_url
-            }
+            },
+            token: config.getSettings().token
         } as UserSettings);
 
         // TODO: Restart the websocket connection.
