@@ -73,7 +73,9 @@ class Navigation extends React.Component<IProps, IState> {
         document.documentElement.classList.toggle("dark", darkMode);
     }
 
-    onLogin = () => this.forceUpdate();
+    onLogin = () => {
+        this.setState({ userIcon: getAvatar() });
+    };
 
     componentDidMount() {
         this.setState({
@@ -88,15 +90,17 @@ class Navigation extends React.Component<IProps, IState> {
         if (this.state.location !== window.location.pathname) {
             this.setState({
                 location: window.location.pathname,
-                isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest"))
+                isGuest: !(localStorage.getItem("isGuest") === "false" || !localStorage.getItem("isGuest")),
             });
         }
 
-        emitter.removeListener("login", this.onLogin);
+        if (this.state.userIcon !== prevState.userIcon) {
+            this.setState({ userIcon: getAvatar() || "" });
+            emitter.removeListener("login", this.onLogin);
+        }
     }
 
     render() {
-
         return (
             <Navbar
                 className="navbar"
@@ -137,6 +141,7 @@ class Navigation extends React.Component<IProps, IState> {
                                     src={this.state.userIcon}
                                     id="NavPfp"
                                     alt="Profile Picture"
+                                    key={`pfp-${this.state.userIcon}`}
                                     onClick={() => toggleDropdown('NavUserDropdown')}
                                     onMouseOver={(e) => e.currentTarget.style.cursor = "pointer"}
                                 />
