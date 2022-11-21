@@ -21,6 +21,7 @@ import "@css/App.scss";
 
 interface IState {
     background: string;
+    backgroundBrightness: string;
 }
 
 class App extends React.Component<any, IState> {
@@ -31,7 +32,8 @@ class App extends React.Component<any, IState> {
         document.documentElement.classList.toggle("dark", darkMode);
 
         this.state = {
-            background: config.ui().background_url
+            background: config.ui().background_url,
+            backgroundBrightness: localStorage.getItem("background_brightness") || "100"
         }
     }
 
@@ -45,7 +47,10 @@ class App extends React.Component<any, IState> {
     componentDidMount() {
         emitter.on("settingsReload", () => {
             config.reloadSettings().then(() => {
-                this.setState({ background: config.ui().background_url });
+                this.setState({
+                    background: config.ui().background_url,
+                    backgroundBrightness: localStorage.getItem("background_brightness")
+                });
             });
         })
     }
@@ -56,7 +61,7 @@ class App extends React.Component<any, IState> {
                 <>
                     <div
                         className="AppBackgroundImage"
-                        style={{ backgroundImage: `url(${this.state.background})` }}
+                        style={{ backgroundImage: `url(${this.state.background})`, filter: `brightness(${this.state.backgroundBrightness}%)` }}
                     ></div>
 
                     <TitleBar />

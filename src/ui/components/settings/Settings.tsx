@@ -25,6 +25,7 @@ interface IState {
     gateway_port: number;
     background_color: string;
     background_url: string;
+    background_brightness: string;
 }
 
 class Settings extends React.Component<any, IState> {
@@ -40,7 +41,8 @@ class Settings extends React.Component<any, IState> {
             port: 443,
             gateway_port: 443,
             background_color: "",
-            background_url: ""
+            background_url: "",
+            background_brightness: "100%"
         };
     }
 
@@ -87,6 +89,12 @@ class Settings extends React.Component<any, IState> {
         });
     };
 
+    setBackgroundBrightness = (background_brightness: string) => {
+        this.setState({
+            background_brightness: background_brightness
+        });
+    }
+
     selectDirectory = async () => {
         const result = await open({
             defaultPath: await appDataDir(),
@@ -110,7 +118,8 @@ class Settings extends React.Component<any, IState> {
             port: config.gateway().port,
             gateway_port: config.gateway().gateway_port,
             background_color: config.ui().background_color,
-            background_url: config.ui().background_url
+            background_url: config.ui().background_url,
+            background_brightness: localStorage.getItem("background_brightness") || "100"
         });
     }
 
@@ -135,6 +144,7 @@ class Settings extends React.Component<any, IState> {
             },
             token: config.getSettings().token
         } as UserSettings);
+        localStorage.setItem("background_brightness", this.state.background_brightness);
 
         gateway.gateway.close();
         gateway.setupGateway(config.gateway());
@@ -250,6 +260,7 @@ class Settings extends React.Component<any, IState> {
                             <input
                                 className="normalInputText"
                                 type="number"
+                                min={1}
                                 value={this.state.port}
                                 onInput={(e) => this.setPort(e.currentTarget.valueAsNumber)}
                             />
@@ -269,6 +280,20 @@ class Settings extends React.Component<any, IState> {
                                 placeholder="https://example.com/image.png"
                                 value={this.state.background_url}
                                 onInput={(e) => this.setBackgroundUrl(e.currentTarget.value)}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Background Brightness:</th>
+                        <td>
+                            <input
+                                className="normalInputText"
+                                type="number"
+                                min={0}
+                                max={100}
+                                style={{ width: "166px" }}
+                                value={parseInt(this.state.background_brightness)}
+                                onInput={(e) => this.setBackgroundBrightness(e.currentTarget.value)}
                             />
                         </td>
                     </tr>
