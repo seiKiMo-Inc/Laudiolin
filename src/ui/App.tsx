@@ -10,6 +10,8 @@ import LoginPage from "@pages/LoginPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
+import * as config from "@backend/settings";
+import emitter from "@backend/events";
 
 import Controls from "@components/player/Controls";
 import Navigation from "@components/NavBar";
@@ -17,12 +19,20 @@ import TitleBar from "@components/TitleBar";
 
 import "@css/App.scss";
 
-class App extends React.Component<any, any> {
+interface IState {
+    background: string;
+}
+
+class App extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
 
         const darkMode = localStorage.getItem("darkMode") === "true";
         document.documentElement.classList.toggle("dark", darkMode);
+
+        this.state = {
+            background: config.ui().background_url
+        }
     }
 
     // for the future (maybe)
@@ -32,10 +42,23 @@ class App extends React.Component<any, any> {
         document.documentElement.classList.toggle("dark", darkMode);
     }
 
+    componentDidMount() {
+        emitter.on("settingsReload", () => {
+            config.reloadSettings().then(() => {
+                this.setState({ background: config.ui().background_url });
+            });
+        })
+    }
+
     render() {
         return (
             <Router>
                 <>
+                    <div
+                        className="AppBackgroundImage"
+                        style={{ backgroundImage: `url(${this.state.background})` }}
+                    ></div>
+
                     <TitleBar />
                     {/* empty div to keep content below title bar */}
                     <div className="clearTop"></div>

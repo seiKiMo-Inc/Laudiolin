@@ -50,7 +50,7 @@ export function search(): SearchSettings {
     return (
         settings?.search || {
             accuracy: false,
-            engine: "all"
+            engine: "All"
         }
     );
 }

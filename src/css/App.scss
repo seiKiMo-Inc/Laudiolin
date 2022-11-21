@@ -22,7 +22,7 @@ body {
     @apply bg-gradient-to-t from-indigo-900/25 to-black;
     background-attachment: fixed;
     --nav-height: 13vh;
-    font-family: Poppins !important;
+    font-family: Poppins, serif !important;
     padding-top: var(--nav-height);
     * {
         @apply transition-all;
@@ -38,6 +38,18 @@ h1 {
 
 #root {
     @apply h-screen w-auto;
+}
+
+.AppBackgroundImage {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.5);
 }
 
 /* Scrollbar */

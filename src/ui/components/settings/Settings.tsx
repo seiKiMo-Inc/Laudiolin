@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@components/common/Button";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
+import emitter from "@backend/events";
 
 import * as user from "@backend/user";
 import * as config from "@backend/settings";
@@ -80,12 +81,6 @@ class Settings extends React.Component<any, IState> {
         });
     };
 
-    setBackgroundColor = (background_color: string) => {
-        this.setState({
-            background_color: background_color
-        });
-    };
-
     setBackgroundUrl = (background_url: string) => {
         this.setState({
             background_url: background_url
@@ -144,6 +139,7 @@ class Settings extends React.Component<any, IState> {
         gateway.gateway.close();
         gateway.setupGateway(config.gateway());
         user.loadRoute(); // Load the gateway route.
+        emitter.emit("settingsReload");
     }
 
     render() {
@@ -263,18 +259,6 @@ class Settings extends React.Component<any, IState> {
                 <tbody>
                     <tr className="SettingsHeadings">
                         <th>UI Settings</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">Background Color:</th>
-                        <td>
-                            <input
-                                className="normalInputText"
-                                type="text"
-                                placeholder="#000000"
-                                value={this.state.background_color}
-                                onInput={(e) => this.setBackgroundColor(e.currentTarget.value)}
-                            />
-                        </td>
                     </tr>
                     <tr>
                         <th scope="row">Background URL:</th>
