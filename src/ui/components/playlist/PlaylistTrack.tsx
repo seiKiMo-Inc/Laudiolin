@@ -40,7 +40,6 @@ class PlaylistTrack extends React.Component<IProps, IState> {
             if (player.isPlaying()) player.stopTrack();
             this.setState({ hasPlayed: true });
 
-            // TODO: playFromPlaylist, this crashes the app lol
             playFromResult(this.props.track).then(() => {
                 // Change the state to playing.
                 this.setState({ playing: !isPlaying });

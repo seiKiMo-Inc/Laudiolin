@@ -20,11 +20,6 @@ class PlaylistsGrid extends React.Component<any, IState> {
         }
     }
 
-    cardClick = (playlist: Playlist) => {
-        // this.props.history.push(`/playlist/${playlist.id}`);
-        // TODO: Make playlist pages.
-    }
-
     componentDidMount() {
         fetchAllPlaylists().then((playlists) => {
             this.setState({ playlists: playlists });
@@ -40,7 +35,7 @@ class PlaylistsGrid extends React.Component<any, IState> {
                 {this.state.playlists.map((playlist) => {
                     return (
                         <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
-                            <Card className="PlaylistCards" onClick={() => this.cardClick(playlist)}>
+                            <Card className="PlaylistCards">
                                 <Card.Img variant="top" src={playlist.icon} />
                                 <Card.Body className="PlaylistCardText">
                                     <Card.Title>{playlist.name}</Card.Title>
