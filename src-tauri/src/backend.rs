@@ -190,14 +190,14 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 
 /// Fetches track data from a URL.
 /// url: The URL to fetch track data from.
-pub async fn url_search(url: &str) -> Result<SearchResult, &'static str> {
+pub async fn url_search(id: &str, options: SearchOptions) -> Result<SearchResult, &'static str> {
     // Get the user settings.
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response = get(format!("{}://{}:{}/fetch/{}",
+    let response = get(format!("{}://{}:{}/fetch/{}?query={}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, url))
+                               gateway.port, id, options.engine))
         .await.expect("Failed to perform search request");
 
     // Check the response code.

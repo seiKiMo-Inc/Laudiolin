@@ -136,9 +136,13 @@ pub fn search(query: &str, engine: &str) -> SearchResults {
 /// Fetches track data from a song URL.
 /// url: The URL to fetch data from.
 #[tauri::command]
-pub fn url_search(url: &str) -> SearchResult {
+pub fn url_search(url: &str, engine: &str) -> SearchResult {
+    let options = SearchOptions {
+        engine: engine.to_string()
+    };
+
     let result = tauri::async_runtime::block_on(async {
-        crate::backend::url_search(url).await
+        crate::backend::url_search(url, options).await
     });
 
     result.unwrap()
