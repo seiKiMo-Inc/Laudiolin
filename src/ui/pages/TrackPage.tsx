@@ -92,6 +92,7 @@ class TrackPage extends React.Component<any, IState> {
     };
 
     async componentDidMount() {
+        document.documentElement.scrollTop = 0;
         this.setState({
             track: await fetchTrackByUrl(this.props.match.params.id),
         });
