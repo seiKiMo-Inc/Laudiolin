@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Playlist } from "@backend/types";
-import { fetchPlaylist } from "@backend/audio";
+import { fetchPlaylist } from "@backend/playlist";
 import Router from "@components/common/Router";
 
 import AnimatePages from "@components/common/AnimatePages";
@@ -51,11 +51,9 @@ class PlaylistPage extends React.Component<any, IState> {
     };
 
     componentDidMount() {
-        fetchPlaylist(this.props.match.params.id).then((playlist) => {
-            this.setState({
-                playlist: playlist,
-                banner: localStorage.getItem(`playlist-${playlist.id}-banner` || null)
-            });
+        this.setState({
+            playlist: fetchPlaylist(this.props.match.params.id),
+            banner: localStorage.getItem(`playlist-${fetchPlaylist(this.props.match.params.id).id}-banner` || null)
         });
 
         window.onclick = (event) => {

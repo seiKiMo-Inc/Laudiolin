@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { TrackData } from "@backend/types";
-import { fetchAllPlaylists, player, playFromResult } from "@backend/audio";
+import { player, playFromResult } from "@backend/audio";
+import { fetchAllPlaylists } from "@backend/playlist";
 
 import Button from "@components/common/Button";
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
@@ -53,8 +54,8 @@ class PlaylistTrack extends React.Component<IProps, IState> {
 
     // TODO: make adding to playlists work.
     // TODO: make a better pop up menu for playlists.
-    addToPlaylist = async () => {
-        const playlists = await fetchAllPlaylists();
+    addToPlaylist = () => {
+        const playlists =  fetchAllPlaylists();
         const playlistNames = playlists.map(playlist => playlist.name);
         const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
         if (!playlist) return;

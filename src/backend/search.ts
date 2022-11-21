@@ -32,3 +32,7 @@ export function getQuery(check: boolean = false): string {
 export async function doSearch(query: string, options: SearchOptions): Promise<SearchResults> {
     return await invoke("search", { query, engine: options.engine });
 }
+
+export function fetchTrackByUrl(url: string): Promise<SearchResults> {
+    return
+}

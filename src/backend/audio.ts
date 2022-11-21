@@ -624,70 +624,26 @@ async function syncToTrack(event: Event<any>) {
  * EVERTHING BELOW THIS COMMENT IS A PLACEHOLDER FOR NOW.
  */
 
-const playlists: Playlist[] = [
+const tracks = [
     {
+        icon: "https://i.imgur.com/0Z0Z0Z0.png",
+        artist: "Test Artist",
+        title: "Test Title",
+        duration: 100,
         id: "1",
-        name: "Test Playlist",
-        description: "A test playlist.",
-        icon: "https://i.scdn.co/image/ab67706c0000bebb7e710c74f1e638f148bf3164",
-        tracks: [
-            {
-                icon: "https://i.scdn.co/image/ab67616d00001e02d3b27ed188ff76904ef0c300",
-                artist: "Given",
-                title: "冬のはなし",
-                duration: 100,
-                id: "YwxyAO7xsJs",
-                url: "https://www.youtube.com/watch?v=YwxyAO7xsJs"
-            },
-            {
-                icon: "https://i.scdn.co/image/ab67616d0000b2733e2780c2283bbcb8f5d740d0",
-                artist: "RADWIMPS, Toko Miura",
-                title: "Grand Escape (Movie Edit) [feat. Toko Miura]",
-                duration: 100,
-                id: "WwyDpKXG83A",
-                url: "https://www.youtube.com/watch?v=WwyDpKXG83A"
-            }
-        ],
-        isPrivate: false
+        url: "https://i.imgur.com/0Z0Z0Z0.png"
     },
     {
+        icon: "https://i.imgur.com/0Z0Z0Z0.png",
+        artist: "Test Artist",
+        title: "Test Title",
+        duration: 100,
         id: "2",
-        name: "Test Playlist With bigger title aaaaaaaaaaaaaaaaaaaaaaa a",
-        description: "A test playlist.",
-        icon: "https://i.scdn.co/image/ab67616d00001e021d24f8fa55739bdf2fecfd24",
-        tracks: [
-            {
-                icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                artist: "Test Artist",
-                title: "Test Title",
-                duration: 100,
-                id: "1",
-                url: "https://i.imgur.com/0Z0Z0Z0.png"
-            },
-            {
-                icon: "https://i.imgur.com/0Z0Z0Z0.png",
-                artist: "Test Artist",
-                title: "Test Title",
-                duration: 100,
-                id: "2",
-                url: "https://i.imgur.com/0Z0Z0Z0.png"
-            }
-        ],
-        isPrivate: false
+        url: "https://i.imgur.com/0Z0Z0Z0.png"
     }
-];
-
-// TODO: fetch all playlists
-export async function fetchAllPlaylists(): Promise<Playlist[]> {
-    return playlists
-}
-
-// TODO: fetch playlist by id
-export async function fetchPlaylist(id: string): Promise<Playlist> {
-    return playlists.find(p => p.id == id)
-}
+]
 
 // TODO: fetch track by id
 export async function fetchTrack(id: string): Promise<TrackData> {
-    return playlists[0].tracks.find(t => t.id == id)
+    return tracks.find(t => t.id == id)
 }

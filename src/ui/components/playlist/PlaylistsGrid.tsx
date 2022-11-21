@@ -1,6 +1,6 @@
 import React from "react";
 import { Playlist } from "@backend/types";
-import { fetchAllPlaylists } from "@backend/audio";
+import { fetchAllPlaylists } from "@backend/playlist";
 
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -21,9 +21,7 @@ class PlaylistsGrid extends React.Component<any, IState> {
     }
 
     componentDidMount() {
-        fetchAllPlaylists().then((playlists) => {
-            this.setState({ playlists: playlists });
-        });
+        this.setState({ playlists: fetchAllPlaylists() });
     }
 
     render() {

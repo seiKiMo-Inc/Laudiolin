@@ -4,7 +4,8 @@ import { Figure } from "react-bootstrap";
 import Button from "@components/common/Button";
 
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
-import { player, playFromResult, fetchAllPlaylists } from "@backend/audio";
+import { player, playFromResult } from "@backend/audio";
+import { fetchAllPlaylists } from "@backend/playlist";
 
 import type { Playlist, SearchResult } from "@backend/types";
 
@@ -134,9 +135,7 @@ class SearchTrack extends React.Component<IProps, IState> {
                         <Figure.Caption className="TrackOptions">
                             <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => {
                                 displayModal("TrackModal")
-                                fetchAllPlaylists().then(playlists => {
-                                    this.setState({ playlists: playlists });
-                                })
+                                this.setState({ playlists: fetchAllPlaylists() });
                             }}/>
                             <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                             <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />

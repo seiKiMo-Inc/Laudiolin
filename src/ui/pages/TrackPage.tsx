@@ -1,7 +1,8 @@
 import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
-import { fetchAllPlaylists, fetchTrack, player, playFromResult } from "@backend/audio";
+import { fetchTrack, player, playFromResult } from "@backend/audio";
+import { fetchAllPlaylists } from "@backend/playlist";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
@@ -140,9 +141,7 @@ class TrackPage extends React.Component<any, IState> {
                     <Button className="TrackOptions" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>
                     <Button icon={faAdd} className="TrackOptions" onClick={() => {
                         displayModal("TrackModal")
-                        fetchAllPlaylists().then(playlists => {
-                            this.setState({ playlists: playlists });
-                        })
+                        this.setState({ playlists: fetchAllPlaylists() });
                     }}>Add To Playlist</Button>
                     <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy Track URL</Button>
                     <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download Track</Button>
