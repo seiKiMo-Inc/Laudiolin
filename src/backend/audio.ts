@@ -618,31 +618,3 @@ async function syncToTrack(event: Event<any>) {
     // Set the player's progress.
     player.setProgress(payload.progress);
 }
-
-/*
- * EVERTHING BELOW THIS COMMENT IS A PLACEHOLDER FOR NOW.
- */
-
-const tracks = [
-    {
-        icon: "https://i.imgur.com/0Z0Z0Z0.png",
-        artist: "Test Artist",
-        title: "Test Title",
-        duration: 100,
-        id: "1",
-        url: "https://i.imgur.com/0Z0Z0Z0.png"
-    },
-    {
-        icon: "https://i.imgur.com/0Z0Z0Z0.png",
-        artist: "Test Artist",
-        title: "Test Title",
-        duration: 100,
-        id: "2",
-        url: "https://i.imgur.com/0Z0Z0Z0.png"
-    }
-]
-
-// TODO: fetch track by id
-export async function fetchTrack(id: string): Promise<TrackData> {
-    return tracks.find(t => t.id == id)
-}

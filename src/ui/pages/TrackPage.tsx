@@ -1,8 +1,9 @@
 import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
-import { fetchTrack, player, playFromResult } from "@backend/audio";
+import { player, playFromResult } from "@backend/audio";
 import { fetchAllPlaylists } from "@backend/playlist";
+import { fetchTrackByUrl } from "@backend/search";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
@@ -90,7 +91,8 @@ class TrackPage extends React.Component<any, IState> {
     };
 
     componentDidMount() {
-        fetchTrack(this.props.match.params.id).then((track) => {
+        // Do not comment about what I did here, I'm gonna cry.
+        fetchTrackByUrl(`https://${this.props.match.params.id}`).then((track) => {
             this.setState({
                 track: track
             });
