@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 
 import SearchTrack from "@components/search/SearchTrack";
-import SearchResultsLoading from "@components/search/SearchResultsLoading";
+import Loader from "@components/common/Loader";
 
 import type { SearchResults } from "@backend/types";
 
@@ -22,7 +22,7 @@ class SearchResultsList extends React.Component<IProps, never> {
             <Container style={{ marginTop: "20px" }}>
                 <div className="list-group">
                     {results.length == 0 ? (
-                        <SearchResultsLoading />
+                        <Loader />
                     ) : (
                         results.map((result) => {
                             return <SearchTrack key={result.id} result={result} />;

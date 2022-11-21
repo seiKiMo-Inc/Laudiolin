@@ -85,13 +85,13 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                     onClick={this.playTrack}
                 />
 
-                <Link to={`/track/${track.url.substring(0, 7)}`} className="trackInfo">
+                <Link to={`/track/${track.id}`} className="trackInfo">
                     <img src={track.icon} className="PlaylistTrackIcon" alt={track.title} />
                 </Link>
 
                 <div className="PlaylistTrackText">
 
-                    <Link to={`/track/${track.url.substring(0, 7)}`} className="trackInfo">
+                    <Link to={`/track/${track.id}`} className="trackInfo">
                         <h2 className="PlaylistTrackTitle">{track.title}</h2>
                     </Link>
                     <p className="PlaylistTrackAuthor">{track.artist}</p>

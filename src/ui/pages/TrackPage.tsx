@@ -8,6 +8,7 @@ import { fetchTrackByUrl } from "@backend/search";
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
 import Modal, { displayModal } from "@components/common/Modal";
+import Loader from "@components/common/Loader";
 import { faAdd, faCopy, faDownload, faPause, faPlay, faShare } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/TrackPage.scss";
@@ -90,12 +91,9 @@ class TrackPage extends React.Component<any, IState> {
         modal.style.display = "none";
     };
 
-    componentDidMount() {
-        // Do not comment about what I did here, I'm gonna cry.
-        fetchTrackByUrl(`https://${this.props.match.params.id}`).then((track) => {
-            this.setState({
-                track: track
-            });
+    async componentDidMount() {
+        this.setState({
+            track: await fetchTrackByUrl(this.props.match.params.id),
         });
 
         const root = document.getElementsByTagName("body")[0];
@@ -127,7 +125,7 @@ class TrackPage extends React.Component<any, IState> {
 
     render() {
         if (this.state.track === null) {
-            return <h2 id="NoTrackMessage">No Track found.</h2>;
+            return <Loader />;
         }
         return (
             <div className="TrackContainer" key={this.state.track.id}>

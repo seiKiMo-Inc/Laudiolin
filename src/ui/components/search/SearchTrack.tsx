@@ -121,12 +121,12 @@ class SearchTrack extends React.Component<IProps, IState> {
                         />
                     </Figure.Caption>
 
-                    <Link to={`/track/${result.url.substring(0, 7)}`}>
+                    <Link to={`/track/${result.id}`}>
                         <Figure.Image src={result.icon} id="SearchResultImage" />
                     </Link>
 
                     <Figure.Caption className="TrackInfo result-title">
-                        <Link to={`/track/${result.url.substring(0, 7)}`}>
+                        <Link to={`/track/${result.id}`}>
                             <span>{result.title}</span>
                         </Link>
 

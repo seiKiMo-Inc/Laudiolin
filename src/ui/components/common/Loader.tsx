@@ -1,7 +1,7 @@
 import React from "react";
 import "@css/Loader.scss";
 
-class SearchResultsLoading extends React.Component {
+class Loader extends React.Component {
     render() {
         return (
             <div id="LoaderContainer">
@@ -12,4 +12,4 @@ class SearchResultsLoading extends React.Component {
     }
 }
 
-export default SearchResultsLoading;
+export default Loader;
