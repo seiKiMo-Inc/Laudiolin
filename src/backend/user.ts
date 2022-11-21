@@ -1,6 +1,7 @@
 import emitter from "./events";
 import * as settings from "./settings";
 import type { Playlist, User, TrackData } from "./types";
+import { Pages } from "@app/constants";
 
 export let targetRoute = ``; // The base address for the backend.
 export let userData: User | null = undefined; // The loaded user data.
@@ -82,6 +83,9 @@ export async function logout() {
 
     // Emit the logout event.
     emitter.emit("logout");
+
+    // send the user to the login page.
+    window.location.href = Pages.login;
 }
 
 /**
