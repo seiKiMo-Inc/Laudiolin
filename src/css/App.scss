@@ -8,6 +8,11 @@
 }
 
 @font-face {
+    font-family: Poppins;
+    src: url(/Poppins-Regular.ttf);
+}
+
+@font-face {
     font-family: GAU_CUBE_R;
     src: url(/GAU_CUBE_R.TTF);
 }
@@ -17,7 +22,7 @@ body {
     @apply bg-gradient-to-t from-indigo-900/25 to-black;
     background-attachment: fixed;
     --nav-height: 13vh;
-    font-family: GAU_CUBE_R;
+    font-family: Poppins !important;
     padding-top: var(--nav-height);
     * {
         @apply transition-all;
@@ -29,7 +34,6 @@ body {
 h1 {
     @apply text-transparent bg-clip-text;
     @apply bg-gradient-to-t from-purple-900 to-cyan-600;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 #root {
