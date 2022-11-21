@@ -73,13 +73,8 @@ class Settings extends React.Component<any, IState> {
 
     setPort = (port: number) => {
         this.setState({
-            port: port
-        });
-    };
-
-    setGatewayPort = (gateway_port: number) => {
-        this.setState({
-            gateway_port: gateway_port
+            port: port,
+            gateway_port: port
         });
     };
 
@@ -175,7 +170,7 @@ class Settings extends React.Component<any, IState> {
                         <th scope="row">Engine:</th>
                         <td>
                             <button onClick={this.toggleDropdown} className="dropbtn">
-                                Search Engine
+                                {this.state.engine}
                             </button>
                             <div id="engineDropdown" className="dropdown-content">
                                 <p
@@ -266,17 +261,6 @@ class Settings extends React.Component<any, IState> {
                                 type="number"
                                 value={this.state.port}
                                 onInput={(e) => this.setPort(e.currentTarget.valueAsNumber)}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gateway Port:</th>
-                        <td>
-                            <input
-                                className="normalInputText"
-                                type="number"
-                                value={this.state.gateway_port}
-                                onInput={(e) => this.setGatewayPort(e.currentTarget.valueAsNumber)}
                             />
                         </td>
                     </tr>
