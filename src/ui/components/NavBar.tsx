@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 
 import { Pages } from "@app/constants";
 import { setQuery } from "@backend/search";
-import { getAvatar } from "@backend/user";
+import { getAvatar, logout } from "@backend/user";
 import emitter from "@backend/events";
 
-import Button from "./common/Button";
+import Button from "@components/common/Button";
 import { faMagnifyingGlass, faCog } from "@fortawesome/free-solid-svg-icons";
-
 import Navigator from "@components/common/Navigator";
+import Dropdown, { toggleDropdown } from "@components/common/Dropdown";
 
 import "@css/NavBar.scss";
 
@@ -132,9 +132,29 @@ class Navigation extends React.Component<IProps, IState> {
                                 <Button id="NavLoginButton">Log In</Button>
                             </Link>
                         ) : (
-                            <Link to={Pages.user}>
-                                <img src={this.state.userIcon} id="NavPfp" alt="Profile Picture" />
-                            </Link>
+                            <>
+                                <img
+                                    src={this.state.userIcon}
+                                    id="NavPfp"
+                                    alt="Profile Picture"
+                                    onClick={() => toggleDropdown('NavUserDropdown')}
+                                    onMouseOver={(e) => e.currentTarget.style.cursor = "pointer"}
+                                />
+                                <Dropdown id="NavUserDropdown" useButton={false} buttonText="User">
+                                    <Link to={Pages.user}>
+                                        <p>User Profile</p>
+                                    </Link>
+                                    <p
+                                        id="NavLogout"
+                                        onClick={ async () => {
+                                            toggleDropdown('NavUserDropdown')
+                                            await logout()
+                                        }
+                                    }>
+                                        Log Out
+                                    </p>
+                                </Dropdown>
+                            </>
                         )}
                     </div>
                 </Container>

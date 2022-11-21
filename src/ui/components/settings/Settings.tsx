@@ -167,7 +167,7 @@ class Settings extends React.Component<any, IState> {
                     <tr>
                         <th scope="row">Engine:</th>
                         <td>
-                            <Dropdown id="engineDropdown" buttonText={this.state.engine}>
+                            <Dropdown id="engineDropdown" buttonText={this.state.engine} useButton={true}>
                                 <p
                                     onClick={() => {
                                         this.setEngine("YouTube" as SearchEngine);

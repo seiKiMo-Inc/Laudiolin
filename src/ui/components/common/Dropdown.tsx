@@ -6,6 +6,7 @@ interface IProps {
     id: string;
     children?: React.ReactNode;
     style?: React.CSSProperties;
+    useButton: boolean;
     buttonText: string;
     buttonIcon?: string;
 }
@@ -18,9 +19,11 @@ class Dropdown extends React.Component<IProps> {
     render() {
         return (
             <>
-                <Button onClick={() => toggleDropdown(this.props.id)} className="dropbtn">
-                    {this.props.buttonText}
-                </Button>
+                {this.props.useButton ? (
+                        <Button onClick={() => toggleDropdown(this.props.id)} className="dropbtn">
+                            {this.props.buttonText}
+                        </Button>
+                    ) : null}
                 <div id={this.props.id} className={`dropdown-content ${this.props.className}`} style={this.props.style}>
                     {this.props.children}
                 </div>

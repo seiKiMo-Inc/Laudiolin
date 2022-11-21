@@ -95,3 +95,13 @@
         filter: brightness(0.8);
     }
 }
+
+#NavUserDropdown {
+    position: absolute;
+    right: 0;
+    margin-top: 50px;
+
+    #NavLogout:hover {
+        background-color: #992123;
+    }
+}
