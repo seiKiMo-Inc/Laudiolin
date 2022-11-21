@@ -25,7 +25,7 @@ class ButtonWrapper extends React.Component<IProps, IState> {
     render() {
         if (this.props.tooltip) {
             return (
-                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">{this.props.tooltip}</Tooltip>}>
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top" style={{ margin: 0 }}>{this.props.tooltip}</Tooltip>}>
                     <button
                         onClick={this.props.onClick}
                         style={this.props.style}
