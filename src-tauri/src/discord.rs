@@ -6,6 +6,7 @@ use serde::{Serialize, Deserialize};
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 use discord_rich_presence::{activity, DiscordIpc, DiscordIpcClient};
+use crate::wrap;
 
 lazy_static! {
     static ref CLIENT: Mutex<DiscordIpcClient> =
@@ -48,7 +49,7 @@ pub fn initialize() {
     // Create an instance of the Discord IPC client.
     let mut client = DiscordIpcClient::new("1020193478556266536").unwrap();
     // Connect to the Discord client.
-    client.connect().expect("Unable to connect to Discord client");
+    wrap(client.connect(), "discordconnect");
 
     // Set the client instance.
     *CLIENT.lock().unwrap() = client;
@@ -92,8 +93,7 @@ pub fn update_presence(presence: Presence) {
     payload = payload.secrets(secrets);
 
     // Update the presence.
-    client.set_activity(payload)
-        .expect("Unable to update presence");
+    wrap(client.set_activity(payload), "discordupdate");
 }
 
 /// Clears the Discord rich presence.
@@ -104,6 +104,5 @@ pub fn clear_presence() {
     let mut client = CLIENT.lock().unwrap();
 
     // Clear the presence.
-    client.clear_activity()
-        .expect("Unable to clear presence");
+    wrap(client.clear_activity(), "discordclear");
 }

@@ -51,6 +51,10 @@ struct TrackSyncPayload {
 struct HandoffCodePayload {
     code: String
 }
+#[derive(Clone, Serialize)]
+pub struct RustErrorPayload {
+    pub code: String
+}
 
 // Implementations for backend structures. \\
 
@@ -96,6 +100,7 @@ pub fn gateway() -> GatewaySettings {
     return get_settings().gateway;
 }
 
+/// Returns the active gateway protocol.
 pub fn protocol() -> String {
     return match gateway().encrypted {
         true => "https",
@@ -103,6 +108,7 @@ pub fn protocol() -> String {
     }.to_string();
 }
 
+/// Initializes the Tauri app.
 pub fn initialize() {
     // Create client instance.
     CLIENT_INSTANCE.set(Client {}).unwrap();

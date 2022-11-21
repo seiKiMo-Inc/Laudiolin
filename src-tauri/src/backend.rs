@@ -6,6 +6,7 @@ use std::io::Write;
 
 use reqwest::get;
 use crate::wrapper;
+use crate::wrap;
 
 #[derive(Debug)]
 pub struct Client {
@@ -150,7 +151,7 @@ pub struct SyncMessage {
 /// Uses serde_json::from_str.
 fn parse<'a, T>(data: &'a str) -> T
 where T: Deserialize<'a> {
-    serde_json::from_str(data).expect("Unable to parse data")
+    wrap(serde_json::from_str(data), "deserialize")
 }
 
 fn parse_volume(data: &str) -> u8 {
@@ -173,10 +174,10 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response = get(format!("{}://{}:{}/search/{}?query={}",
+    let response_result = get(format!("{}://{}:{}/search/{}?query={}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, query, options.engine))
-        .await.expect("Failed to perform search request");
+                               gateway.port, query, options.engine)).await;
+    let response = wrap(response_result, "search");
 
     // Check the response code.
     if response.status() != 301 {
@@ -185,8 +186,8 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 
     // Parse the response.
     // TODO: Catch errors from parsing.
-    let json = response.text().await.expect("Unable to get response body");
-    Ok(serde_json::from_str(&*json).expect("Unable to parse response body"))
+    let json = wrap(response.text().await, "searchfetch");
+    Ok(wrap(serde_json::from_str(&*json), "searchparse"))
 }
 
 /// Fetches track data from a URL.
@@ -196,10 +197,10 @@ pub async fn url_search(id: &str, options: SearchOptions) -> Result<SearchResult
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response = get(format!("{}://{}:{}/fetch/{}?query={}",
+    let response_result = get(format!("{}://{}:{}/fetch/{}?query={}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, id, options.engine))
-        .await.expect("Failed to perform search request");
+                               gateway.port, id, options.engine)).await;
+    let response = wrap(response_result, "urlsearch");
 
     // Check the response code.
     if response.status() != 301 {
@@ -207,8 +208,8 @@ pub async fn url_search(id: &str, options: SearchOptions) -> Result<SearchResult
     }
 
     // Parse the response.
-    let json = response.text().await.expect("Unable to get response body");
-    Ok(serde_json::from_str(&*json).expect("Unable to parse response body"))
+    let json = wrap(response.text().await, "urlsearchfetch");
+    Ok(wrap(serde_json::from_str(&*json), "urlsearchparse"))
 }
 
 /// Downloads the song using the given ID.
@@ -224,10 +225,10 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response = get(format!("{}://{}:{}/download?id={}&engine={}",
+    let response_result = get(format!("{}://{}:{}/download?id={}&engine={}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, id, options.engine))
-        .await.expect("Failed to perform download request");
+                               gateway.port, id, options.engine)).await;
+    let response = wrap(response_result, "download");
 
     // Check the status code.
     if response.status() != 200 || response.status() != 301 {
@@ -236,9 +237,9 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
 
     // Save the response to a file.
     let file_path = options.file_path;
-    let mut file = std::fs::File::create(file_path.clone()).expect("Unable to create file");
-    file.write_all(response.bytes().await.expect("Unable to get response body")
-        .as_ref()).expect("Unable to write to file");
+    let mut file = wrap(std::fs::File::create(file_path.clone()), "downloadcreate");
+    wrap(file.write_all(wrap(
+        response.bytes().await, "downloadwrite").as_ref()), "downloadwrite");
 
     // Return the path to the file.
     Ok(file_path)

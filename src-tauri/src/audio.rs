@@ -10,6 +10,7 @@ use crate::wrapper::TauriApp;
 use crate::file_exists;
 use crate::wrapper;
 use crate::settings::get_settings;
+use crate::wrap;
 
 #[derive(Clone, Serialize)]
 pub struct PlayAudioPayload {
@@ -80,8 +81,8 @@ pub fn play_audio(file_path: String, track_data: SearchResult) {
 #[tauri::command]
 pub fn play_playlist(playlist: String) {
     // Read the playlist from file.
-    let playlist_data = read_to_string(playlist).expect("Unable to read playlist file");
-    let playlist: Playlist = from_str(playlist_data.as_str()).expect("Unable to parse playlist file");
+    let playlist_data = wrap(read_to_string(playlist), "playlistread");
+    let playlist: Playlist = wrap(from_str(playlist_data.as_str()), "playlistparse");
 
     // Send the playlist to the frontend.
     TauriApp::emit("play_playlist", PlayPlaylistPayload { playlist });

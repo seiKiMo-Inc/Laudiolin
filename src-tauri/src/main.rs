@@ -8,12 +8,30 @@
 use tauri::{Manager, SystemTray, SystemTrayMenu, CustomMenuItem, App, Wry, SystemTrayEvent, AppHandle, WindowEvent, GlobalWindowEvent};
 use window_shadows::set_shadow;
 
+use crate::wrapper::{TauriApp, RustErrorPayload};
+
 mod audio;
 mod handoff;
 mod backend;
 mod wrapper;
 mod discord;
 mod settings;
+
+/// Wraps Result instances into an output.
+/// Any errors are passed to the frontend.
+/// obj: The object to wrap.
+pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
+    match obj {
+        Ok(output) => output,
+        Err(_) => {
+            TauriApp::emit("rusterr", RustErrorPayload {
+                code: code.to_string()
+            });
+
+            panic!("An error occurred in the backend.");
+        }
+    }
+}
 
 fn main() {
     tauri::Builder::default()
@@ -26,7 +44,7 @@ fn main() {
         ])
         .setup(|app| {
             // Bind app to once_cell.
-            wrapper::TauriApp::set(app.handle());
+            TauriApp::set(app.handle());
 
             // Initialize backend wrapper.
             wrapper::initialize();
@@ -37,7 +55,7 @@ fn main() {
 
             // Set the window shadow.
             let window = app.get_window("main").unwrap();
-            set_shadow(&window, true).expect("Unsupported platform!");
+            wrap(set_shadow(&window, true), "shadow");
 
             Ok(())
         })

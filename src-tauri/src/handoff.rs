@@ -6,6 +6,7 @@ use std::sync::Arc;
 use std::thread;
 use crate::wrapper;
 use tiny_http::{Server, Response};
+use crate::wrap;
 
 /// Opens the browser with the OAuth2 URL.
 #[tauri::command]
@@ -16,7 +17,7 @@ pub fn open_browser() {
     let url = format!("{}://{}:{}/discord", wrapper::protocol(),
                       gateway.address, gateway.port);
     // Open the browser.
-    open::that(url).expect("Unable to open browser");
+    wrap(open::that(url), "openbrowser");
 }
 
 /// Waits for an HTTP request on the specified port.
@@ -25,8 +26,7 @@ pub fn open_browser() {
 #[tauri::command]
 pub fn handoff() {
     // Create an HTTP server.
-    let server = Server::http("127.0.0.1:4956")
-        .expect("Unable to create the HTTP server.");
+    let server = wrap(Server::http("127.0.0.1:4956"), "handoff");
     // Spawn a thread to handle the server.
     thread::spawn(move || {
         let serv = Arc::new(server);
