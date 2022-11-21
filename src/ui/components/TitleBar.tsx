@@ -43,7 +43,7 @@ class TitleBar extends React.Component<IProps, IState> {
     };
 
     close = async () => {
-        await appWindow.close();
+        await appWindow.hide();
     };
 
     back = () => {
