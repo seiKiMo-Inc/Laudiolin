@@ -12,18 +12,19 @@ export type TrackPayload = {
 export type RichPresence = {
     details?: string;
     state?: string;
-    startTimestamp?: number;
-    endTimestamp?: number;
-    largeImageKey?: string;
-    largeImageText?: string;
-    smallImageKey?: string;
-    smallImageText?: string;
-    partyId?: string;
-    partySize?: number;
-    partyMax?: number;
-    matchSecret?: string;
-    joinSecret?: string;
-    spectateSecret?: string;
+    start_timestamp?: number;
+    end_timestamp?: number;
+    large_image_key?: string;
+    large_image_text?: string;
+    small_image_key?: string;
+    small_image_text?: string;
+    party_id?: string;
+    party_size?: number;
+    party_max?: number;
+    match_secret?: string;
+    join_secret?: string;
+    spectate_secret?: string;
+    instance?: boolean;
 };
 
 export type SearchEngine = "YouTube" | "Spotify" | "All";
