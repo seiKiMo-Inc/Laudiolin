@@ -7,6 +7,8 @@ import * as config from "@backend/settings";
 import * as gateway from "@backend/gateway";
 import type { SearchEngine, UserSettings } from "@backend/types";
 
+import Dropdown, { toggleDropdown } from "@components/common/Dropdown";
+
 import { open } from "@tauri-apps/api/dialog";
 import { appDataDir } from "@tauri-apps/api/path";
 
@@ -90,10 +92,6 @@ class Settings extends React.Component<any, IState> {
         });
     };
 
-    toggleDropdown = () => {
-        document.getElementById("engineDropdown").classList.toggle("show");
-    };
-
     selectDirectory = async () => {
         const result = await open({
             defaultPath: await appDataDir(),
@@ -169,14 +167,11 @@ class Settings extends React.Component<any, IState> {
                     <tr>
                         <th scope="row">Engine:</th>
                         <td>
-                            <button onClick={this.toggleDropdown} className="dropbtn">
-                                {this.state.engine}
-                            </button>
-                            <div id="engineDropdown" className="dropdown-content">
+                            <Dropdown id="engineDropdown" buttonText={this.state.engine}>
                                 <p
                                     onClick={() => {
                                         this.setEngine("YouTube" as SearchEngine);
-                                        this.toggleDropdown();
+                                        toggleDropdown("engineDropdown");
                                     }}
                                 >
                                     YouTube
@@ -184,7 +179,7 @@ class Settings extends React.Component<any, IState> {
                                 <p
                                     onClick={() => {
                                         this.setEngine("Spotify" as SearchEngine);
-                                        this.toggleDropdown();
+                                        toggleDropdown("engineDropdown");
                                     }}
                                 >
                                     Spotify
@@ -192,7 +187,7 @@ class Settings extends React.Component<any, IState> {
                                 <p
                                     onClick={() => {
                                         this.setEngine("SoundCloud" as SearchEngine);
-                                        this.toggleDropdown();
+                                        toggleDropdown("engineDropdown");
                                     }}
                                 >
                                     SoundCloud
@@ -200,12 +195,12 @@ class Settings extends React.Component<any, IState> {
                                 <p
                                     onClick={() => {
                                         this.setEngine("All" as SearchEngine);
-                                        this.toggleDropdown();
+                                        toggleDropdown("engineDropdown");
                                     }}
                                 >
                                     All
                                 </p>
-                            </div>
+                            </Dropdown>
                         </td>
                     </tr>
                 </tbody>
