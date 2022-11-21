@@ -27,8 +27,11 @@
     margin-right: 20px;
 }
 
-#image {
-    max-width: 150px;
+#SearchResultImage {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    overflow: hidden;
 
     &:hover {
         cursor: pointer;
@@ -52,8 +55,4 @@
 
 .TrackOptionsButtons {
     margin-right: 20px;
-
-    &:hover {
-        color: #3484fc !important;
-    }
 }
