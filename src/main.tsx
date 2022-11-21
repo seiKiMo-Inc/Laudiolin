@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import * as fs from "@backend/fs";
 import * as user from "@backend/user";
 import * as audio from "@backend/audio";
+import * as events from "@backend/events";
 import * as discord from "@backend/discord";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
@@ -17,6 +18,7 @@ import * as settings from "@backend/settings";
 
     // Setup listeners.
     await audio.setupListeners();
+    await events.setupListeners();
     await gateway.setupListeners();
     await settings.setupListeners();
 
