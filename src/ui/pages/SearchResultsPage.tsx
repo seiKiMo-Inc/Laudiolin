@@ -9,6 +9,8 @@ import { getQuery, doSearch } from "@backend/search";
 import type { SearchResults } from "@backend/types";
 import AnimatePages from "@components/common/AnimatePages";
 
+import * as settings from "@backend/settings";
+
 const blankResults: SearchResults = {
     top: {
         title: "",
@@ -57,9 +59,10 @@ class SearchResultsPage extends React.Component<IProps, IState> {
 
         // Perform a search.
         doSearch(query, {
-            engine: "YouTube",
+            engine: settings.search().engine,
             accuracy: true
-        }).then((results) => this.setState({ skip: false, searchResults: results }));
+        }).then((results) =>
+            this.setState({ skip: false, searchResults: results }));
     };
 
     componentDidMount() {

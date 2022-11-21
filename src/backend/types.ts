@@ -26,7 +26,7 @@ export type RichPresence = {
     spectateSecret?: string;
 };
 
-export type SearchEngine = "YouTube" | "Spotify" | "all";
+export type SearchEngine = "YouTube" | "Spotify" | "All";
 export type SearchResult = {
     title: string;
     artist: string;

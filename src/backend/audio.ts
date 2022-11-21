@@ -522,8 +522,7 @@ export class Track {
  */
 
 export const player: MusicPlayer = new MusicPlayer();
-// DEBUGGING SYMBOL:
-window["player"] = player;
+player.setMaxListeners(100); // Increase the max event listeners.
 
 type PlayAudioPayload = FilePayload &
     VolumePayload & {
