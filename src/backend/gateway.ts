@@ -1,6 +1,7 @@
 import { emit, listen } from "@tauri-apps/api/event";
 
 import { player } from "@backend/audio";
+import { token } from "@backend/user";
 
 import type { Event } from "@tauri-apps/api/event";
 import type { TrackData } from "@backend/types";
@@ -25,6 +26,7 @@ type BaseGatewayMessage = {
 // To server.
 type InitializeMessage = BaseGatewayMessage & {
     type: "initialize";
+    token?: string;
 };
 // To server.
 type LatencyMessage = BaseGatewayMessage & {
@@ -152,7 +154,8 @@ async function onMessage(event: MessageEvent) {
         case "initialize":
             gateway?.send(
                 JSON.stringify(<InitializeMessage>{
-                    type: "initialize"
+                    type: "initialize",
+                    token: token()
                 })
             );
 
