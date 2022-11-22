@@ -41,7 +41,7 @@ export async function login(code: string = "", loadData: boolean = true) {
 
     const route = `${targetRoute}/user`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: code }
+        method: "GET", headers: { Authorization: code }, cache: "no-cache"
     });
 
     // Check the response code.
@@ -97,7 +97,7 @@ export async function loadPlaylists() {
 
     const route = `${targetRoute}/playlist`;
     // Loop through the user's playlists.
-    for (const playlistId in userData.playlists) {
+    for (const playlistId of userData.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
             method: "GET", headers: { Authorization: token() }
         });
@@ -106,7 +106,6 @@ export async function loadPlaylists() {
         if (response.status != 301) {
             console.error(`Failed to get playlist data from the backend. Status code: ${response.status}`); return;
         }
-
         playlists.push(await response.json()); // Load the data into the playlist array.
     }
 
@@ -199,7 +198,10 @@ export async function getUserPlaylists(user: User): Promise<Playlist[]|null> {
 export async function createPlaylist(playlist: Playlist): Promise<Playlist|null> {
     const route = `${targetRoute}/playlist/create`;
     const response = await fetch(route, {
-        method: "POST", headers: { Authorization: token() },
+        method: "POST", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(playlist)
     });
 

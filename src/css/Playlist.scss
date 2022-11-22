@@ -48,12 +48,38 @@
     }
 }
 
+.playlistCheckBoxModal {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+
+    p {
+        font-size: 20px !important;
+    }
+}
+
 #NoPlaylistMessage {
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
     font-size: 20px;
     color: #fff;
     text-align: center;
     margin-top: 20px;
+
+    div {
+        text-align: left;
+    }
+}
+
+#AddPlaylistButton {
+    color: #000000;
+    background: linear-gradient(90deg, #d9d9d9 0%, #c5c5c5 100%);
+    padding: 10px 16px 10px 16px;
+    border-radius: 100%;
+    box-shadow: black 5px 5px 10px;
+
+    &:hover {
+        scale: 1.1;
+    }
 }
 
 .PlaylistContainer {

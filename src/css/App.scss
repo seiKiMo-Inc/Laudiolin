@@ -210,9 +210,11 @@ h1 {
         font-size: 20px;
         color: #fff;
         margin-bottom: 20px;
+        text-align: left;
     }
 
     p {
+        text-align: left;
         font-size: 16px;
         color: #dcdcdc;
         margin-bottom: 10px;
@@ -233,10 +235,36 @@ h1 {
         font-size: 16px;
         color: #fff;
         background: #181c3b;
+
+        &:focus {
+            outline: none;
+        }
     }
 
-    input:focus {
-        outline: none;
+    input[type="checkbox"] {
+        width: 30px;
+        height: 30px;
+        accent-color: #2980b9;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    textarea {
+        margin-top: 10px;
+        width: 100%;
+        height: 100px;
+        border-radius: 5px;
+        border: 1px solid #12326e;
+        padding: 10px;
+        font-size: 16px;
+        color: #fff;
+        background: #181c3b;
+
+        &:focus {
+            outline: none;
+        }
     }
 
     select {
@@ -251,9 +279,9 @@ h1 {
 .CloseModal {
     color: #aaa;
     position: absolute;
-    margin-top: -10px;
+    margin-top: -20px;
     margin-left: 440px;
-    font-size: 28px;
+    font-size: 40px;
     font-weight: bold;
 }
 
