@@ -12,6 +12,7 @@ import Button from "@components/common/Button";
 import Modal, { displayModal } from "@components/common/Modal";
 
 import "@css/Playlist.scss";
+import { loadPlaylists } from "@backend/user";
 
 interface IState {
     playlist: Playlist;
@@ -50,7 +51,8 @@ class PlaylistPage extends React.Component<any, IState> {
         modal.style.display = "none";
     };
 
-    componentDidMount() {
+    async componentDidMount() {
+        await loadPlaylists();
         this.setState({
             playlist: fetchPlaylist(this.props.match.params.id),
             banner: localStorage.getItem(`playlist-${fetchPlaylist(this.props.match.params.id).id}-banner` || null)
@@ -95,7 +97,11 @@ class PlaylistPage extends React.Component<any, IState> {
                         </Modal>
                     </div>
                     <div className="PlaylistContent">
-                        <PlaylistTracks tracks={this.state.playlist.tracks} />
+                        {this.state.playlist.tracks.length > 0 ? (
+                            <PlaylistTracks tracks={this.state.playlist.tracks} />
+                        ) : (
+                            <h2 id="NoTracksMessage">No tracks found.</h2>
+                        )}
                     </div>
                 </div>
             </AnimatePages>

@@ -20,6 +20,7 @@ interface IState {
     playing: boolean;
     hasPlayed: boolean;
     playlists: Playlist[];
+    result: SearchResult;
 }
 
 /* A track that appears when searching for it. */
@@ -30,8 +31,9 @@ class SearchTrack extends React.Component<IProps, IState> {
         this.state = {
             playing: false,
             hasPlayed: false,
-            playlists: []
-        };
+            playlists: [],
+            result: this.props.result
+        }
     }
 
     updateState = () => {
@@ -53,6 +55,8 @@ class SearchTrack extends React.Component<IProps, IState> {
                 this.hideModal();
             }
         };
+
+        this.setState({ result: this.props.result });
     }
 
     componentWillUnmount() {
@@ -106,9 +110,8 @@ class SearchTrack extends React.Component<IProps, IState> {
         await navigator.clipboard.writeText(this.props.result.url);
     };
 
-
     render() {
-        const result = this.props.result;
+        const result = this.state.result;
 
         return (
             <div className="SearchResult list-group-item dark:text-white dark:bg-slate-800" key={result.id}>
@@ -134,7 +137,7 @@ class SearchTrack extends React.Component<IProps, IState> {
 
                         <Figure.Caption className="TrackOptions">
                             <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => {
-                                displayModal("TrackModal")
+                                displayModal("SearchModal")
                                 this.setState({ playlists: fetchAllPlaylists() });
                             }}/>
                             <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
@@ -146,6 +149,7 @@ class SearchTrack extends React.Component<IProps, IState> {
 
                     <Modal id="SearchModal" onSubmit={this.addToPlaylist}>
                         <h2>Select Playlist</h2>
+                        <p>{this.state.result.id}</p>
                         <select>
                             {this.state.playlists.map(playlist => {
                                 return <option value={playlist.id}>{playlist.name}</option>

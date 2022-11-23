@@ -32,7 +32,7 @@ export function fetchTrack(playlist: Playlist, id: string): TrackData | null {
  */
 
 // This is the main route for managing playlists.
-const editRoute = `${targetRoute}/playlist/`;
+const editRoute = `${targetRoute}/playlist`;
 
 /**
  * Fetches the playlist with the ID from the backend.
@@ -102,7 +102,10 @@ export async function setPlaylistVisibility(playlistId: string, isPrivate: boole
  */
 export async function addTrackToPlaylist(playlistId: string, track: TrackData): Promise<boolean> {
     const response = await fetch(`${editRoute}/${playlistId}?type=add`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(track)
     });
 

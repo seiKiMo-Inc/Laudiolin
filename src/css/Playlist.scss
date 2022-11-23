@@ -70,6 +70,17 @@
     }
 }
 
+#NoTracksMessage {
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
+
+    &:hover {
+        background-color: transparent;
+    }
+}
+
 #AddPlaylistButton {
     color: #000000;
     background: linear-gradient(90deg, #d9d9d9 0%, #c5c5c5 100%);
@@ -116,7 +127,7 @@
         height: 150px;
         object-fit: cover;
         overflow: hidden;
-        z-index: 100000;
+        z-index: 1000;
     }
 
     .PlaylistHeaderInfo {
@@ -126,7 +137,7 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        z-index: 10000;
+        z-index: 1000;
         margin-left: 10px;
 
         h2 {
@@ -164,17 +175,17 @@
 .PlaylistContent {
     margin: 0 auto;
     width: 800px;
-
-    :hover {
-        background: #181c3b;
-    }
+    background: linear-gradient(90deg, #181c3b 0%, #333479 100%);
 
     .PlaylistTrack {
         display: flex;
         flex-direction: row;
-        margin-bottom: 10px;
-        padding: 10px;
+        padding: 30px 10px;
         width: 800px;
+
+        &:hover {
+            background: #181c3b;
+        }
 
         img {
             width: 100px;

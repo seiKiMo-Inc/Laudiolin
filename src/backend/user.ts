@@ -99,7 +99,7 @@ export async function loadPlaylists() {
     // Loop through the user's playlists.
     for (const playlistId of userData.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
-            method: "GET", headers: { Authorization: token() }
+            method: "GET", headers: { Authorization: token() }, cache: "no-cache"
         });
 
         // Check the response code.
