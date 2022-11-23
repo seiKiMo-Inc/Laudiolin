@@ -1,0 +1,34 @@
+.ErrorPage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: -webkit-center;
+    max-width: 700px;
+
+    h2 {
+        font-size: 40px;
+        color: #b9b9b9;
+        margin-bottom: 40px;
+        max-width: 400px;
+    }
+
+    .ErrorPageMessage {
+        font-size: 20px;
+        color: #ffffff;
+        margin-top: 40px;
+
+        p {
+            margin-top: 30px;
+        }
+
+        .GithubLink {
+            color: #5865F2;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+    }
+}

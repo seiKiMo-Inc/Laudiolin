@@ -35,7 +35,7 @@ import * as settings from "@backend/settings";
     // Load user data if the user is logged in.
     user.loadRoute(); // Load the gateway route.
     if (localStorage.getItem("isAuthenticated") == "true") {
-        await user.login(); // Login the user.
+        await user.login().catch(() => sessionStorage.setItem("loginError", "true")); // Login the user.
         discord.setupListeners(); // Set up Discord listeners.
     }
 

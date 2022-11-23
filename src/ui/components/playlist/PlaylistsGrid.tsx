@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import { Playlist } from "@backend/types";
@@ -65,7 +65,7 @@ class PlaylistsGrid extends React.Component<any, IState> {
         this.setState({ playlists: fetchAllPlaylists() });
     }
 
-    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<IState>, snapshot?: any) {
+    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<IState>) {
         if (prevState.playlists.length != this.state.playlists.length) {
             this.setState({ playlists: fetchAllPlaylists() });
         }

@@ -7,6 +7,7 @@ import SettingsPage from "@pages/SettingsPage";
 import PlaylistPage from "@pages/PlaylistPage";
 import TrackPage from "@pages/TrackPage";
 import LoginPage from "@pages/LoginPage";
+import ErrorPage from "@pages/ErrorPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
@@ -22,6 +23,7 @@ import "@css/App.scss";
 interface IState {
     background: string;
     backgroundBrightness: string;
+    errored: boolean;
 }
 
 class App extends React.Component<any, IState> {
@@ -33,7 +35,8 @@ class App extends React.Component<any, IState> {
 
         this.state = {
             background: config.ui().background_url,
-            backgroundBrightness: localStorage.getItem("background_brightness") || "100"
+            backgroundBrightness: localStorage.getItem("background_brightness") || "100",
+            errored: sessionStorage.getItem("loginError") === "true"
         }
     }
 
@@ -52,10 +55,20 @@ class App extends React.Component<any, IState> {
                     backgroundBrightness: localStorage.getItem("background_brightness")
                 });
             });
-        })
+        });
+        sessionStorage.clear();
     }
 
     render() {
+        if (this.state.errored) {
+            return (
+                <Router>
+                    <TitleBar />
+                    <ErrorPage />
+                </Router>
+            );
+        }
+
         return (
             <Router>
                 <>
@@ -71,6 +84,7 @@ class App extends React.Component<any, IState> {
                     <Navigation />
 
                     <Routes>
+                        <Route path={Pages.error} element={<ErrorPage />} />
                         <Route path={Pages.login} element={<LoginPage />} />
                         <Route path={Pages.home} element={<HomePage />} />
                         <Route path={Pages.searchResults} element={<SearchResultsPage />} />
