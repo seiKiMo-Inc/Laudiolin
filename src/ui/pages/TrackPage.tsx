@@ -2,7 +2,7 @@ import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
 import { player, playFromResult } from "@backend/audio";
-import { fetchAllPlaylists } from "@backend/playlist";
+import { fetchAllPlaylists, addTrackToPlaylist } from "@backend/playlist";
 import { fetchTrackByUrl } from "@backend/search";
 
 import Router from "@components/common/Router";
@@ -63,10 +63,10 @@ class TrackPage extends React.Component<any, IState> {
         alert("Download the song.");
     }
 
-    // TODO: make adding to playlists work.
     addToPlaylist = async () => {
         this.hideModal();
-        alert("This should add the track to the specified playlist.");
+        const playlistId = (document.getElementById("TrackModal-PlaylistSelect") as HTMLSelectElement).value;
+        await addTrackToPlaylist(playlistId, this.state.track);
     };
 
     openTrackSource = () => {
@@ -149,7 +149,7 @@ class TrackPage extends React.Component<any, IState> {
                 </div>
                 <Modal id="TrackModal" onSubmit={this.addToPlaylist}>
                     <h2>Select Playlist</h2>
-                    <select>
+                    <select id="TrackModal-PlaylistSelect">
                         {this.state.playlists.map(playlist => {
                             return <option value={playlist.id}>{playlist.name}</option>
                         })}

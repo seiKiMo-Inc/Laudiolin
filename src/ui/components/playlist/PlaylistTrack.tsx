@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 
 import { TrackData } from "@backend/types";
 import { player, playFromResult } from "@backend/audio";
-import { fetchAllPlaylists } from "@backend/playlist";
 
 import Button from "@components/common/Button";
+import { displayModal } from "@components/common/Modal";
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/Playlist.scss";
 
 interface IProps {
     track: TrackData;
+    onClick: () => void;
 }
 
 interface IState {
@@ -52,20 +53,6 @@ class PlaylistTrack extends React.Component<IProps, IState> {
         alert("Download the song.");
     }
 
-    // TODO: make adding to playlists work.
-    // TODO: make a better pop up menu for playlists.
-    addToPlaylist = () => {
-        const playlists =  fetchAllPlaylists();
-        const playlistNames = playlists.map(playlist => playlist.name);
-        const playlist = prompt("Which playlist would you like to add this track to?", playlistNames.join(", "));
-        if (!playlist) return;
-        if (!playlistNames.includes(playlist)) {
-            alert("That playlist doesn't exist!");
-            return;
-        }
-        alert("This should add the track to the specified playlist.");
-    };
-
     openTrackSource = () => {
         window.open(this.props.track.url, "_blank");
     };
@@ -77,7 +64,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
     render() {
         const track = this.props.track;
         return (
-            <div className="PlaylistTrack" key={track.id}>
+            <div className="PlaylistTrack" key={track.id} onClick={this.props.onClick}>
 
                 <Button
                     id="statusButton"
@@ -97,7 +84,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                     <p className="PlaylistTrackAuthor">{track.artist}</p>
 
                     <div className="PlaylistTrackButtons">
-                        <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={this.addToPlaylist} />
+                        <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("PlaylistTrackAddModal")} />
                         <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                         <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
                         <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.preview2} />
