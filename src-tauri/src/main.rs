@@ -39,8 +39,8 @@ fn main() {
             handoff::handoff, handoff::open_browser,
             discord::update_presence, discord::clear_presence,
             wrapper::search, wrapper::url_search, wrapper::download,
-            audio::make_track, audio::play_from, audio::play_playlist,
-            settings::read_from_file, settings::get_settings, settings::save_settings
+            settings::read_from_file, settings::get_settings, settings::save_settings,
+            audio::make_track, audio::play_from, audio::play_playlist, audio::track_exists
         ])
         .setup(|app| {
             // Bind app to once_cell.
