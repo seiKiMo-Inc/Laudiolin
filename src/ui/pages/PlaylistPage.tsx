@@ -1,13 +1,13 @@
 import React from "react";
 
 import { Playlist } from "@backend/types";
-import { fetchPlaylist } from "@backend/playlist";
+import { fetchPlaylist, renamePlaylist, describePlaylist, setPlaylistIcon, setPlaylistVisibility } from "@backend/playlist";
 import Router from "@components/common/Router";
 
 import AnimatePages from "@components/common/AnimatePages";
 import PlaylistTracks from "@components/playlist/PlaylistTracks";
 
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faCog } from "@fortawesome/free-solid-svg-icons";
 import Button from "@components/common/Button";
 import Modal, { displayModal } from "@components/common/Modal";
 
@@ -30,25 +30,57 @@ class PlaylistPage extends React.Component<any, IState> {
         };
     }
 
-    displayUploadButton = () => {
-        const button = document.getElementById("BannerUpload");
+    displaySettingsButton = () => {
+        const button = document.getElementById("PlaylistSettingsButton");
         button.style.display = "block";
     };
 
-    hideUploadButton = () => {
-        const button = document.getElementById("BannerUpload");
+    hideSettingsButton = () => {
+        const button = document.getElementById("PlaylistSettingsButton");
         button.style.display = "none";
     };
 
-    setBanner = async () => {
-        const url = document.getElementById("BannerURL") as HTMLInputElement;
-        await localStorage.setItem(`playlist-${this.state.playlist.id}-banner`, url.value);
-        this.setState({ banner: url.value });
+    editPlaylist = async () => {
+        const name = (document.getElementById("PlaylistNameInput") as HTMLInputElement).value;
+        const description = (document.getElementById("PlaylistDescriptionInput") as HTMLInputElement).value;
+        const icon = (document.getElementById("PlaylistIconURLInput") as HTMLInputElement).value;
+        const isPrivate = (document.getElementById("PlaylistPrivateInput") as HTMLInputElement).checked;
+        const banner = (document.getElementById("PlaylistBannerURLInput") as HTMLInputElement).value;
+
+        if (name !== this.state.playlist.name) {
+            await renamePlaylist(this.state.playlist.id, name);
+            console.log("Renamed playlist to " + name);
+        }
+        if (description !== this.state.playlist.description) {
+            await describePlaylist(this.state.playlist.id, description);
+            console.log("Changed playlist description to " + description);
+        }
+        if (icon !== this.state.playlist.icon) {
+            await setPlaylistIcon(this.state.playlist.id, icon);
+            console.log("Changed playlist icon to " + icon);
+        }
+        if (isPrivate !== this.state.playlist.isPrivate) {
+            await setPlaylistVisibility(this.state.playlist.id, isPrivate);
+            console.log("Changed playlist visibility to " + isPrivate);
+        }
+        localStorage.setItem(`playlist-${this.state.playlist.id}-banner`, banner);
+
+        this.setState({
+            banner: banner,
+            playlist: {
+                name: name,
+                description: description,
+                icon: icon,
+                isPrivate: isPrivate,
+                tracks: this.state.playlist.tracks,
+            }
+        });
+
         this.hideModal();
     };
 
     hideModal = () => {
-        const modal = document.getElementById("PlaylistModal");
+        const modal = document.getElementById("PlaylistSettingsModal");
         modal.style.display = "none";
     };
 
@@ -87,8 +119,8 @@ class PlaylistPage extends React.Component<any, IState> {
                 <div className="PlaylistContainer">
                     <div
                         className="PlaylistHeader"
-                        onMouseOver={this.displayUploadButton}
-                        onMouseLeave={this.hideUploadButton}
+                        onMouseOver={this.displaySettingsButton}
+                        onMouseLeave={this.hideSettingsButton}
                     >
                         <div
                             className="PlaylistHeaderBG"
@@ -99,11 +131,7 @@ class PlaylistPage extends React.Component<any, IState> {
                             <h2>{this.state.playlist.name}</h2>
                             <p>{this.state.playlist.description}</p>
                         </div>
-                        <Button id="BannerUpload" icon={faUpload} onClick={() => displayModal("PlaylistModal")} />
-                        <Modal id="PlaylistModal" onSubmit={this.setBanner}>
-                            <h2>Upload a banner</h2>
-                            <input type="text" id="BannerURL" placeholder="Image URL" />
-                        </Modal>
+                        <Button id="PlaylistSettingsButton" icon={faCog} onClick={() => displayModal("PlaylistSettingsModal")} />
                     </div>
                     <div className="PlaylistContent">
                         {this.state.playlist.tracks.length > 0 ? (
@@ -113,6 +141,19 @@ class PlaylistPage extends React.Component<any, IState> {
                         )}
                     </div>
                 </div>
+                <Modal id="PlaylistSettingsModal" onSubmit={this.editPlaylist}>
+                    <h2>Edit Playlist</h2>
+                    <p>Name</p>
+                    <input type="text" id="PlaylistNameInput" defaultValue={this.state.playlist.name} />
+                    <p>Description</p>
+                    <textarea id="PlaylistDescriptionInput" defaultValue={this.state.playlist.description} />
+                    <p>Icon image URL</p>
+                    <input type="text" id="PlaylistIconURLInput" defaultValue={this.state.playlist.icon} />
+                    <p>Set as Private</p>
+                    <input type="checkbox" id="PlaylistPrivateInput" defaultChecked={this.state.playlist.isPrivate} />
+                    <p>Banner image URL</p>
+                    <input type="text" id="PlaylistBannerURLInput" placeholder="Banner Url" />
+                </Modal>
             </AnimatePages>
         );
     }

@@ -57,7 +57,10 @@ export async function getPlaylistById(playlistId: string): Promise<Playlist|null
  */
 export async function renamePlaylist(playlistId: string, name: string): Promise<boolean> {
     const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=rename`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({ name })
     });
 
@@ -71,8 +74,28 @@ export async function renamePlaylist(playlistId: string, name: string): Promise<
  */
 export async function describePlaylist(playlistId: string, description: string): Promise<boolean> {
     const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=describe`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({ description })
+    });
+
+    return response.status != 200;
+}
+
+/**
+ * Changes the playlist's icon.
+ * @param playlistId The ID of the playlist.
+ * @param icon The new icon URl of the playlist.
+ */
+export async function setPlaylistIcon(playlistId: string, icon: string): Promise<boolean> {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=icon`, {
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ icon })
     });
 
     return response.status != 200;
@@ -85,7 +108,10 @@ export async function describePlaylist(playlistId: string, description: string):
  */
 export async function setPlaylistVisibility(playlistId: string, isPrivate: boolean): Promise<boolean> {
     const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=privacy`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({ isPrivate })
     });
 
