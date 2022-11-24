@@ -59,7 +59,7 @@
     },
     "windows": [
       {
-        "fullscreen": true,
+        "fullscreen": false,
         "height": 720,
         "resizable": true,
         "title": "Laudiolin",
