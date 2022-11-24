@@ -149,8 +149,10 @@ class PlaylistPage extends React.Component<any, IState> {
                     <textarea id="PlaylistDescriptionInput" defaultValue={this.state.playlist.description} />
                     <p>Icon image URL</p>
                     <input type="text" id="PlaylistIconURLInput" defaultValue={this.state.playlist.icon} />
-                    <p>Set as Private</p>
-                    <input type="checkbox" id="PlaylistPrivateInput" defaultChecked={this.state.playlist.isPrivate} />
+                    <div className="playlistCheckBoxModal">
+                        <p>Private Playlist?</p>
+                        <input id="PlaylistPrivateInput" type="checkbox" />
+                    </div>
                     <p>Banner image URL</p>
                     <input type="text" id="PlaylistBannerURLInput" placeholder="Banner Url" />
                 </Modal>
