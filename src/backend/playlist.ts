@@ -31,16 +31,13 @@ export function fetchTrack(playlist: Playlist, id: string): TrackData | null {
  * Playlist management.
  */
 
-// This is the main route for managing playlists.
-const editRoute = `${targetRoute}/playlist`;
-
 /**
  * Fetches the playlist with the ID from the backend.
  * @param playlistId The ID of the playlist.
  * @return The playlist, or null if it could not be found.
  */
 export async function getPlaylistById(playlistId: string): Promise<Playlist|null> {
-    const route = `${editRoute}/${playlistId}`;
+    const route = `${targetRoute}/playlist/${playlistId}`;
     const response = await fetch(route, {
         method: "GET", headers: { Authorization: token() }
     });
@@ -59,7 +56,7 @@ export async function getPlaylistById(playlistId: string): Promise<Playlist|null
  * @param name The new name of the playlist.
  */
 export async function renamePlaylist(playlistId: string, name: string): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlistId}?type=rename`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=rename`, {
         method: "PATCH", headers: { Authorization: token() },
         body: JSON.stringify({ name })
     });
@@ -73,7 +70,7 @@ export async function renamePlaylist(playlistId: string, name: string): Promise<
  * @param description The new description of the playlist.
  */
 export async function describePlaylist(playlistId: string, description: string): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlistId}?type=describe`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=describe`, {
         method: "PATCH", headers: { Authorization: token() },
         body: JSON.stringify({ description })
     });
@@ -87,7 +84,7 @@ export async function describePlaylist(playlistId: string, description: string):
  * @param isPrivate Whether the playlist should be private.
  */
 export async function setPlaylistVisibility(playlistId: string, isPrivate: boolean): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlistId}?type=privacy`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=privacy`, {
         method: "PATCH", headers: { Authorization: token() },
         body: JSON.stringify({ isPrivate })
     });
@@ -101,7 +98,7 @@ export async function setPlaylistVisibility(playlistId: string, isPrivate: boole
  * @param track The track to add.
  */
 export async function addTrackToPlaylist(playlistId: string, track: TrackData): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlistId}?type=add`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=add`, {
         method: "PATCH", headers: {
             Authorization: token(),
             "Content-Type": "application/json"
@@ -118,7 +115,7 @@ export async function addTrackToPlaylist(playlistId: string, track: TrackData): 
  * @param index The index of the track to remove.
  */
 export async function removeTrackFromPlaylist(playlistId: string, index: string): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlistId}?type=remove`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=remove`, {
         method: "PATCH", headers: { Authorization: token() },
         body: JSON.stringify({ index })
     });
@@ -131,7 +128,7 @@ export async function removeTrackFromPlaylist(playlistId: string, index: string)
  * @param playlist The playlist to edit.
  */
 export async function editPlaylist(playlist: Playlist): Promise<boolean> {
-    const response = await fetch(`${editRoute}/${playlist.id}?type=bulk`, {
+    const response = await fetch(`${targetRoute}/playlist/${playlist.id}?type=bulk`, {
         method: "PATCH", headers: { Authorization: token() },
         body: JSON.stringify(playlist)
     });
