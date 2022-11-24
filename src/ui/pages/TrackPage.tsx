@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
-import { player, playFromResult } from "@backend/audio";
+import { downloadTrack, player, playFromResult } from "@backend/audio";
 import { fetchAllPlaylists, addTrackToPlaylist } from "@backend/playlist";
 import { fetchTrackByUrl } from "@backend/search";
 
@@ -59,9 +59,11 @@ class TrackPage extends React.Component<any, IState> {
         });
     };
 
-    preview2 = () => {
-        alert("Download the song.");
-    }
+    download = () => {
+        downloadTrack(this.props.track.id)
+            .then(() => console.log(`Track ${this.props.track.id} was downloaded.`))
+            .catch(() => console.error("An error occurred while downloading the track."));
+    };
 
     addToPlaylist = async () => {
         this.hideModal();
@@ -145,7 +147,7 @@ class TrackPage extends React.Component<any, IState> {
                         this.setState({ playlists: fetchAllPlaylists() });
                     }}>Add To Playlist</Button>
                     <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy Track URL</Button>
-                    <Button icon={faDownload} className="TrackOptions" onClick={this.preview2}>Download Track</Button>
+                    <Button icon={faDownload} className="TrackOptions" onClick={this.download}>Download Track</Button>
                 </div>
                 <Modal id="TrackModal" onSubmit={this.addToPlaylist}>
                     <h2>Select Playlist</h2>

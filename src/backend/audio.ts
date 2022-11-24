@@ -8,6 +8,8 @@ import { file } from "@backend/fs";
 import type { Event } from "@tauri-apps/api/event";
 import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload, Playlist } from "@backend/types";
 
+import * as settings from "@backend/settings";
+
 /**
  * TODO: Move music player to the backend. (Rust)
  *
@@ -563,6 +565,18 @@ export async function makeTrack(trackData: TrackData): Promise<Track> {
     const payload = await invoke("make_track", { track: trackData });
     // Make a new track object.
     return new Track(payload as PlayAudioPayload);
+}
+
+/**
+ * Attempts to download the given track.
+ * @param id The ID of the track to download.
+ */
+export async function downloadTrack(id: string): Promise<string> {
+    try {
+        await invoke("download", { id, engine: settings.search().engine })
+    } catch {
+        console.error(`Unable to download track ${id}.`); return "";
+    }
 }
 
 /**
