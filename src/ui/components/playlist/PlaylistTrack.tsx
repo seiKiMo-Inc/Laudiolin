@@ -52,8 +52,8 @@ class PlaylistTrack extends React.Component<IProps, IState> {
 
     download = () => {
         downloadTrack(this.props.track.id)
-            .then(() => console.log(`Track ${this.props.track.id} was downloaded.`))
-            .catch(() => console.error("An error occurred while downloading the track."));
+            .then(() => alert("Track was downloaded successfully!"))
+            .catch(() => alert("An error occurred while downloading the track."));
     };
 
     openTrackSource = () => {
