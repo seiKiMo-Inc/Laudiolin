@@ -4,7 +4,7 @@ import { Figure } from "react-bootstrap";
 import Button from "@components/common/Button";
 
 import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
-import { player, playFromResult } from "@backend/audio";
+import { downloadTrack, player, playFromResult } from "@backend/audio";
 
 import type { Playlist, SearchResult } from "@backend/types";
 
@@ -75,9 +75,11 @@ class SearchTrack extends React.Component<IProps, IState> {
         }
     };
 
-    preview2 = () => {
-        alert("Download the song.");
-    }
+    download = () => {
+        downloadTrack(this.props.result.id)
+            .then(() => console.log(`Track ${this.props.result.id} was downloaded.`))
+            .catch(() => console.error("An error occurred while downloading the track."));
+    };
 
     openTrackSource = () => {
         window.open(this.props.result.url, "_blank");
@@ -116,7 +118,7 @@ class SearchTrack extends React.Component<IProps, IState> {
                             <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("SearchModal")} />
                             <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                             <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
-                            <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.preview2} />
+                            <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.download} />
                         </Figure.Caption>
                     </Figure.Caption>
                 </Figure>
