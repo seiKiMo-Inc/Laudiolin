@@ -66,7 +66,7 @@ class PlaylistTracks extends React.Component<IProps, IState> {
                 {this.props.tracks.map((track, index) => {
                     return (
                         <PlaylistTrack
-                            key={track.id}
+                            key={index}
                             track={track}
                             setTrack={() => this.setState({ track: track })}
                             removeTrack={() => this.deleteFromPlaylist(index)}
@@ -78,7 +78,7 @@ class PlaylistTracks extends React.Component<IProps, IState> {
                     <h2>Select Playlist</h2>
                     <select id="PlaylistTrackAddModal-PlaylistSelect">
                         {this.state.playlists.map(playlist => {
-                            return <option value={playlist.id}>{playlist.name}</option>
+                            return <option key={playlist.id} value={playlist.id}>{playlist.name}</option>
                         })}
                     </select>
                 </Modal>
