@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import { Playlist } from "@backend/types";
-import { fetchAllPlaylists } from "@backend/playlist";
 import { createPlaylist } from "@backend/user";
 
 import { Card } from "react-bootstrap";
@@ -11,18 +10,19 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Modal, { displayModal } from "@components/common/Modal";
 
 import "@css/Playlist.scss"
+import emitter from "@backend/events";
+
+interface IProps {
+    playlists: Playlist[];
+}
 
 interface IState {
     playlists: Playlist[];
 }
 
-class PlaylistsGrid extends React.Component<any, IState> {
+class PlaylistsGrid extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            playlists: []
-        }
     }
 
     hideModal = () => {
@@ -40,10 +40,8 @@ class PlaylistsGrid extends React.Component<any, IState> {
             tracks: []
         }
         await createPlaylist(playlist);
-        this.setState({
-            playlists: [...this.state.playlists, playlist]
-        });
-        console.log(playlist)
+
+        emitter.emit("playlist-grid-update");
     }
 
     createPlaylistModal = (): ReactNode => {
@@ -61,18 +59,8 @@ class PlaylistsGrid extends React.Component<any, IState> {
         )
     }
 
-    componentDidMount() {
-        this.setState({ playlists: fetchAllPlaylists() });
-    }
-
-    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<IState>) {
-        if (prevState.playlists.length != this.state.playlists.length) {
-            this.setState({ playlists: fetchAllPlaylists() });
-        }
-    }
-
     render() {
-        if (this.state.playlists.length == 0) {
+        if (this.props.playlists.length == 0) {
             return (
                 <div id="NoPlaylistMessage">
                     No playlists found.
@@ -84,9 +72,9 @@ class PlaylistsGrid extends React.Component<any, IState> {
         return (
             <>
                 <span className="PlaylistsGrid">
-                    {this.state.playlists.map((playlist) => {
+                    {this.props.playlists.map((playlist) => {
                         return (
-                            <Link to={`/playlist/${playlist.id}`} key={playlist.id}>
+                            <Link to={`/playlist/${playlist.id}`} key={`${playlist.id}_${Math.random()}`}>
                                 <Card className="PlaylistCards">
                                     <Card.Img variant="top" src={playlist.icon} />
                                     <Card.Body className="PlaylistCardText">
