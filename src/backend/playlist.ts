@@ -114,9 +114,12 @@ export async function addTrackToPlaylist(playlistId: string, track: TrackData): 
  * @param playlistId The ID of the playlist.
  * @param index The index of the track to remove.
  */
-export async function removeTrackFromPlaylist(playlistId: string, index: string): Promise<boolean> {
+export async function removeTrackFromPlaylist(playlistId: string, index: number): Promise<boolean> {
     const response = await fetch(`${targetRoute}/playlist/${playlistId}?type=remove`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({ index })
     });
 

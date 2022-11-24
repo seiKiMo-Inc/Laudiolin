@@ -6,13 +6,14 @@ import { player, playFromResult } from "@backend/audio";
 
 import Button from "@components/common/Button";
 import { displayModal } from "@components/common/Modal";
-import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faAdd, faShare, faCopy, faDownload, faDeleteLeft } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/Playlist.scss";
 
 interface IProps {
     track: TrackData;
-    onClick: () => void;
+    setTrack: () => void;
+    removeTrack: () => void;
 }
 
 interface IState {
@@ -64,7 +65,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
     render() {
         const track = this.props.track;
         return (
-            <div className="PlaylistTrack" key={track.id} onClick={this.props.onClick}>
+            <div className="PlaylistTrack" key={track.id} onClick={this.props.setTrack}>
 
                 <Button
                     id="statusButton"
@@ -85,6 +86,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
 
                     <div className="PlaylistTrackButtons">
                         <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("PlaylistTrackAddModal")} />
+                        <Button icon={faDeleteLeft} className="TrackOptionsButtons" tooltip="Remove track" onClick={this.props.removeTrack} />
                         <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                         <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
                         <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.preview2} />

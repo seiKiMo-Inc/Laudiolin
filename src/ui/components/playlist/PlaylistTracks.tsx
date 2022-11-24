@@ -1,13 +1,17 @@
 import React from "react";
+
 import { Playlist, TrackData } from "@backend/types";
+import { addTrackToPlaylist, removeTrackFromPlaylist, fetchAllPlaylists } from "@backend/playlist";
+import emitter from "@backend/events";
+
 import PlaylistTrack from "@components/playlist/PlaylistTrack";
+import Modal from "@components/common/Modal";
 
 import "@css/Playlist.scss";
-import Modal from "@components/common/Modal";
-import { addTrackToPlaylist, fetchAllPlaylists } from "@backend/playlist";
 
 interface IProps {
     tracks: TrackData[];
+    playlistId: string;
 }
 
 interface IState {
@@ -43,7 +47,13 @@ class PlaylistTracks extends React.Component<IProps, IState> {
         this.hideModal();
         const playlistId = (document.getElementById("PlaylistTrackAddModal-PlaylistSelect") as HTMLSelectElement).value;
         await addTrackToPlaylist(playlistId, this.state.track);
+        emitter.emit("playlist-update");
     };
+
+    deleteFromPlaylist = async (index) => {
+        await removeTrackFromPlaylist(this.props.playlistId, index);
+        emitter.emit("playlist-update");
+    }
 
     componentDidUpdate() {
         // Scroll to the top of the page when the results change.
@@ -53,9 +63,14 @@ class PlaylistTracks extends React.Component<IProps, IState> {
     render() {
         return (
             <>
-                {this.props.tracks.map((track) => {
+                {this.props.tracks.map((track, index) => {
                     return (
-                        <PlaylistTrack key={track.id} track={track} onClick={() => this.setState({ track: track })} />
+                        <PlaylistTrack
+                            key={track.id}
+                            track={track}
+                            setTrack={() => this.setState({ track: track })}
+                            removeTrack={() => this.deleteFromPlaylist(index)}
+                        />
                     );
                 })}
 

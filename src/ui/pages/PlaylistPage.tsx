@@ -13,6 +13,7 @@ import Modal, { displayModal } from "@components/common/Modal";
 
 import "@css/Playlist.scss";
 import { loadPlaylists } from "@backend/user";
+import emitter from "@backend/events";
 
 interface IState {
     playlist: Playlist;
@@ -63,7 +64,15 @@ class PlaylistPage extends React.Component<any, IState> {
                 this.hideModal();
             }
         };
+
+        emitter.on("playlist-update", async () => {
+            await loadPlaylists();
+            this.setState({
+                playlist: fetchPlaylist(this.props.match.params.id),
+            });
+        });
     }
+
 
     componentWillUnmount() {
         window.onclick = null;
@@ -98,7 +107,7 @@ class PlaylistPage extends React.Component<any, IState> {
                     </div>
                     <div className="PlaylistContent">
                         {this.state.playlist.tracks.length > 0 ? (
-                            <PlaylistTracks tracks={this.state.playlist.tracks} />
+                            <PlaylistTracks tracks={this.state.playlist.tracks} playlistId={this.state.playlist.id} />
                         ) : (
                             <h2 id="NoTracksMessage">No tracks found.</h2>
                         )}
