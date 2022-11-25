@@ -52,7 +52,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self' https://asset.localhost; style-src 'self' 'unsafe-inline'; media-src 'self' https://asset.localhost; connect-src wss://app.magix.lol/ ws://app.magix.lol/"
+      "csp": "default-src 'self' https://asset.localhost; style-src 'self' 'unsafe-inline'; media-src 'self' https://asset.localhost; connect-src 'self' app.magix.lol localhost:*"
     },
     "updater": {
       "active": false
