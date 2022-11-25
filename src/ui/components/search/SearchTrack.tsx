@@ -77,8 +77,8 @@ class SearchTrack extends React.Component<IProps, IState> {
 
     download = () => {
         downloadTrack(this.props.result.id)
-            .then(() => console.log(`Track ${this.props.result.id} was downloaded.`))
-            .catch(() => console.error("An error occurred while downloading the track."));
+            .then(() => alert("Track was downloaded successfully!"))
+            .catch(() => alert("An error occurred while downloading the track."));
     };
 
     openTrackSource = () => {

@@ -580,6 +580,14 @@ export async function downloadTrack(id: string): Promise<string> {
 }
 
 /**
+ * Check if the track exists on the file system.
+ * @param id The ID of the track to check.
+ */
+export async function trackExists(id: string): Promise<boolean> {
+    return await invoke("track_exists", { id });
+}
+
+/**
  * Plays an audio file.
  * @param event The event.
  */

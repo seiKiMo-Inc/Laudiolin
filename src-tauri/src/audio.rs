@@ -87,3 +87,11 @@ pub fn play_playlist(playlist: String) {
     // Send the playlist to the frontend.
     TauriApp::emit("play_playlist", PlayPlaylistPayload { playlist });
 }
+
+/// Check if the specified track audio exists on the file system.
+/// id: The ID of the track to check.
+#[tauri::command]
+pub fn track_exists(id: &str) -> bool {
+    let path = TauriApp::file(format!("downloads/{}.mp3", id));
+    return file_exists(path);
+}
