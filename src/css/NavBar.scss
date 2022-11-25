@@ -7,11 +7,14 @@
 
 #Title {
     @apply bg-gradient-to-r bg-clip-text text-transparent from-indigo-500 to-purple-500 ml-2;
-    font-family: GAU_CUBE_R;
+    font-family: GAU_CUBE_R, serif;
+    position: fixed;
+    margin-left: 50px;
 }
 
 #NavbarContainer {
-    display: inline-flex;
+    display: flex;
+    max-width: 100%;
 }
 
 #NavbarLeft {

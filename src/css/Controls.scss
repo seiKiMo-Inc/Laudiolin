@@ -23,7 +23,7 @@
 }
 
 #controls-components {
-    margin: 0px auto;
+    margin: 0 auto;
     padding: 10px;
     display: flex;
     width: fit-content;
@@ -32,6 +32,8 @@
 #VolumeControls {
     position: absolute;
     right: 30px;
+    display: flex;
+
     input {
         accent-color: #2980b9;
     }
@@ -73,5 +75,45 @@
         overflow: hidden;
         text-overflow: ellipsis;
         filter: brightness(0.5);
+    }
+}
+
+@function makelongshadow($color, $size) {
+    $val: 5px 0 0 $size $color;
+
+    @for $i from 6 through 150 {
+        $val: #{$val}, #{$i}px 0 0 $size #{$color};
+    }
+
+    @return $val;
+}
+
+#VolumeSlider {
+    background: transparent;
+    border: none;
+    width: 150px;
+    padding: 0;
+    overflow: hidden;
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &::-webkit-slider-runnable-track {
+        height: 2px;
+        background: #2980b9;
+        border-radius: 2px;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background: #2980b9;
+        cursor: pointer;
+        margin-top: -6.5px;
+        box-shadow: makelongshadow(#cbcbcb, -6.5px);
     }
 }

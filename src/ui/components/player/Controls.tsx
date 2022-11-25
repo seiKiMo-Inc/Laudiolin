@@ -75,15 +75,16 @@ class Controls extends React.Component<IProps, IState> {
                             ""
                         )}
 
-                        <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} />
+                        <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} tooltip="Previous" />
 
                         <Button
                             className={"control"}
                             icon={player.isPlaying() ? faPause : faPlay}
                             onClick={this.toggleTrackState}
+                            tooltip={player.isPlaying() ? "Pause" : "Play"}
                         />
 
-                        <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} />
+                        <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} tooltip="Next" />
 
                         <VolumeControl
                             volume={player.getVolume()}

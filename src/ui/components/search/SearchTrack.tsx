@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Figure } from "react-bootstrap";
-import Button from "@components/common/Button";
 
-import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { downloadTrack, player, playFromResult } from "@backend/audio";
-
 import type { Playlist, SearchResult } from "@backend/types";
 
-import "@css/SearchTrack.scss";
+import { Figure } from "react-bootstrap";
+import Button from "@components/common/Button";
+import { faPause, faPlay, faAdd, faShare, faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { displayModal } from "@components/common/Modal";
+
+import "@css/SearchTrack.scss";
 
 interface IProps {
     result: SearchResult;
@@ -107,18 +107,18 @@ class SearchTrack extends React.Component<IProps, IState> {
                         <Figure.Image src={result.icon} id="SearchResultImage" />
                     </Link>
 
-                    <Figure.Caption className="TrackInfo result-title">
+                    <Figure.Caption className="SearchTrackInfo result-title">
                         <Link to={`/track/${result.id}`}>
                             <span>{result.title}</span>
                         </Link>
 
                         <p className="text-gray-600">{result.artist}</p>
 
-                        <Figure.Caption className="TrackOptions">
-                            <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("SearchModal")} />
-                            <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
-                            <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
-                            <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.download} />
+                        <Figure.Caption className="SearchTrackOptions">
+                            <Button icon={faAdd} className="SearchTrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("SearchModal")} />
+                            <Button icon={faShare} className="SearchTrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
+                            <Button icon={faCopy} className="SearchTrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
+                            <Button icon={faDownload} className="SearchTrackOptionsButtons" tooltip="Download track" onClick={this.download} />
                         </Figure.Caption>
                     </Figure.Caption>
                 </Figure>

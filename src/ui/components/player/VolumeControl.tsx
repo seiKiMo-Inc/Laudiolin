@@ -21,10 +21,10 @@ class VolumeControl extends React.Component<IProps, never> {
     render() {
         return (
             <span id="VolumeControls">
-                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">Mute/Unmute</Tooltip>}>
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top" style={{ margin: 0 }}>Mute/Unmute</Tooltip>}>
                     <Button
                         className={"control"}
-                        tooltip={"mute/unmute"}
+                        tooltip={this.props.muted ? "Unmute" : "Mute"}
                         onClick={() => this.props.toggleMute()}
                         icon={
                             this.props.muted || this.props.volume == 0
@@ -36,7 +36,7 @@ class VolumeControl extends React.Component<IProps, never> {
                     ></Button>
                 </OverlayTrigger>
 
-                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top">{this.props.volume}%</Tooltip>}>
+                <OverlayTrigger placement="top" overlay={<Tooltip id="tooltip-top" style={{ margin: 0 }}>{this.props.volume}%</Tooltip>}>
                     <Form.Control
                         type="range"
                         min="0"
@@ -46,6 +46,7 @@ class VolumeControl extends React.Component<IProps, never> {
                             localStorage.setItem("volume", e.target.value);
                             this.props.setVolume(parseInt(e.target.value));
                         }}
+                        id="VolumeSlider"
                         className={"cursor-pointer"}
                         style={{ verticalAlign: "middle", marginLeft: 25 }}
                     />

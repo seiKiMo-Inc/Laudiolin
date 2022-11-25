@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.css';
 
 import HomePage from "@pages/Home";
 import SearchResultsPage from "@pages/SearchResultsPage";

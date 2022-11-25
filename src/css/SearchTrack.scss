@@ -8,9 +8,10 @@
     }
 }
 
-.TrackInfo {
+.SearchTrackInfo {
     align-self: center;
     margin-left: 20px;
+    color: white;
 
     p {
         font-size: 0.9rem;
@@ -25,6 +26,7 @@
 #statusButton {
     align-self: center;
     margin-right: 20px;
+    color: white;
 }
 
 #SearchResultImage {
@@ -48,11 +50,15 @@
     }
 }
 
-.TrackOptions {
+.SearchTrackOptions {
     margin-top: 7.5px;
     text-align: left !important;
 }
 
-.TrackOptionsButtons {
+.SearchTrackOptionsButtons {
     margin-right: 20px;
+
+    &:hover {
+        filter: brightness(2);
+    }
 }
