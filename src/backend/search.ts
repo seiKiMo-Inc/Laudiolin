@@ -1,6 +1,5 @@
+import { AccessDetails } from "@app/constants";
 import type { SearchEngine, SearchOptions, SearchResults, TrackData } from "@backend/types";
-
-import { invoke } from "@tauri-apps/api";
 
 let nextQuery: string = "";
 
@@ -30,7 +29,8 @@ export function getQuery(check: boolean = false): string {
  * @param options The options to use for the search.
  */
 export async function doSearch(query: string, options: SearchOptions): Promise<SearchResults> {
-    return await invoke("search", { query, engine: options.engine });
+    const response = await fetch(`${AccessDetails.route.formed}/search/${query}?query=${options.engine}`);
+    return (await response.json()) as SearchResults;
 }
 
 /**
@@ -38,8 +38,9 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
  * @param url The URL of the song.
  * @param engine The search engine to use.
  */
-export async function fetchTrackByUrl(url: string, engine: SearchEngine = 'YouTube'): Promise<TrackData> {
-    return await invoke("url_search", { url, engine });
+export async function fetchTrackByUrl(url: string, engine: SearchEngine = "YouTube"): Promise<TrackData> {
+    const response = await fetch(`${AccessDetails.route.formed}/fetch/${url}?query=${engine}`);
+    return (await response.json()) as TrackData;
 }
 
 /**

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { TrackData } from "@backend/types";
 import { parseArtist } from "@backend/search";
-import { player, playFromResult, downloadTrack } from "@backend/audio";
+import { player, playFromResult } from "@backend/audio";
 
 import Button from "@components/common/Button";
 import { displayModal } from "@components/common/Modal";
@@ -51,12 +51,6 @@ class PlaylistTrack extends React.Component<IProps, IState> {
         }
     };
 
-    download = () => {
-        downloadTrack(this.props.track.id)
-            .then(() => alert("Track was downloaded successfully!"))
-            .catch(() => alert("An error occurred while downloading the track."));
-    };
-
     openTrackSource = () => {
         window.open(this.props.track.url, "_blank");
     };
@@ -92,7 +86,6 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                         <Button icon={faDeleteLeft} className="TrackOptionsButtons" tooltip="Remove track" onClick={this.props.removeTrack} />
                         <Button icon={faShare} className="TrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                         <Button icon={faCopy} className="TrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
-                        <Button icon={faDownload} className="TrackOptionsButtons" tooltip="Download track" onClick={this.download} />
                     </div>
 
                 </div>

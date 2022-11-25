@@ -17,7 +17,6 @@ import * as config from "@backend/settings";
 
 import Controls from "@components/player/Controls";
 import Navigation from "@components/NavBar";
-import TitleBar from "@components/TitleBar";
 
 import "@css/App.scss";
 
@@ -55,11 +54,10 @@ class App extends React.Component<any, IState> {
         startBG.style.display = "none";
 
         emitter.on("settingsReload", () => {
-            config.reloadSettings().then(() => {
-                this.setState({
-                    background: config.ui().background_url,
-                    backgroundBrightness: localStorage.getItem("background_brightness")
-                });
+            config.reloadSettings();
+            this.setState({
+                background: config.ui().background_url,
+                backgroundBrightness: localStorage.getItem("background_brightness")
             });
         });
 
@@ -70,7 +68,6 @@ class App extends React.Component<any, IState> {
         if (this.state.errored) {
             return (
                 <Router>
-                    <TitleBar />
                     <ErrorPage />
                 </Router>
             );
@@ -84,7 +81,6 @@ class App extends React.Component<any, IState> {
                         style={{ backgroundImage: `url(${this.state.background})`, filter: `brightness(${this.state.backgroundBrightness}%)` }}
                     ></div>
 
-                    <TitleBar />
                     {/* empty div to keep content below title bar */}
                     <div className="clearTop"></div>
 

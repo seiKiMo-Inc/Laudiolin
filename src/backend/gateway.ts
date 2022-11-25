@@ -1,9 +1,6 @@
-import { emit, listen } from "@tauri-apps/api/event";
-
 import { player } from "@backend/audio";
 import { token } from "@backend/user";
 
-import type { Event } from "@tauri-apps/api/event";
 import type { TrackData } from "@backend/types";
 
 let connected: boolean = false;
@@ -55,7 +52,6 @@ type GatewayMessagePayload = {
  */
 export async function setupListeners() {
     console.log("Setting up gateway event listeners...");
-    await listen("send_message", sendMessage);
 
     // Setup audio listeners for gateway.
     player.on("volume", (volume) => {
@@ -125,17 +121,6 @@ function update(data: any) {
 }
 
 /**
- * Sends a message to the gateway.
- * @param event The event.
- */
-function sendMessage(event: Event<any>) {
-    // Parse the payload from the event.
-    const payload: GatewayMessagePayload = event.payload;
-    // Send the message to the gateway.
-    sendGatewayMessage(JSON.parse(payload.data));
-}
-
-/**
  * Invoked when the gateway is opened.
  */
 function onOpen() {
@@ -176,9 +161,6 @@ async function onMessage(event: MessageEvent) {
             );
             return;
     }
-
-    // Pass the message to the backend.
-    await emit("receive_message", event.data);
 }
 
 /**

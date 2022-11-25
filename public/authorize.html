@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>App Authorization</title>
+
+        <script>
+            // Get URL parameters.
+            const urlParams = new URLSearchParams(window.location.search);
+            // Get the accessToken.
+            const code = urlParams.get("code");
+
+            // Check if the code is valid.
+            if (code != null && code !== "") {
+                localStorage.setItem("isAuthenticated", "true");
+                localStorage.setItem("isGuest", "false");
+                localStorage.setItem("user_token", code);
+            }
+        </script>
+    </head>
+
+    <body>
+
+    </body>
+</html>

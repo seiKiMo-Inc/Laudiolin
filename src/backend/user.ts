@@ -1,7 +1,7 @@
 import emitter from "./events";
 import * as settings from "./settings";
 import type { Playlist, User, TrackData } from "./types";
-import { Pages } from "@app/constants";
+import { AccessDetails, Pages } from "@app/constants";
 
 export let targetRoute = ``; // The base address for the backend.
 export let userData: User | null = undefined; // The loaded user data.
@@ -23,8 +23,7 @@ export function token() {
  * Loads the target route from the config.
  */
 export function loadRoute() {
-    const config = settings.gateway();
-    targetRoute = `${config.encrypted ? "https" : "http"}://${config.address}:${config.port}`;
+    targetRoute = AccessDetails.route.formed;
 }
 
 /*
@@ -75,7 +74,7 @@ export async function logout() {
     // Remove the authorization code.
     const newSettings = settings.getSettings();
     newSettings.token = "";
-    await settings.saveSettings(newSettings);
+    settings.saveSettings(newSettings);
 
     // Set the user as logged out.
     localStorage.removeItem("isAuthenticated");

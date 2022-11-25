@@ -1,6 +1,3 @@
-export type FilePayload = {
-    file_path: string;
-};
 export type VolumePayload = {
     volume: number;
 };
@@ -11,24 +8,6 @@ export type TrackPayload = {
 export type RustErrorPayload = {
     error: string;
     code: string;
-};
-
-export type RichPresence = {
-    details?: string;
-    state?: string;
-    start_timestamp?: number;
-    end_timestamp?: number;
-    large_image_key?: string;
-    large_image_text?: string;
-    small_image_key?: string;
-    small_image_text?: string;
-    party_id?: string;
-    party_size?: number;
-    party_max?: number;
-    match_secret?: string;
-    join_secret?: string;
-    spectate_secret?: string;
-    instance?: boolean;
 };
 
 export type SearchEngine = "YouTube" | "Spotify" | "All";
@@ -81,7 +60,7 @@ export type SearchSettings = {
     engine: SearchEngine;
 };
 export type AudioSettings = {
-    download_path: string;
+
 };
 export type GatewaySettings = {
     encrypted: boolean;

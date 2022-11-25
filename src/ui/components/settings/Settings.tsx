@@ -10,15 +10,11 @@ import type { SearchEngine, UserSettings } from "@backend/types";
 
 import Dropdown, { toggleDropdown } from "@components/common/Dropdown";
 
-import { open } from "@tauri-apps/api/dialog";
-import { appDataDir } from "@tauri-apps/api/path";
-
 import "@css/Settings.scss";
 
 interface IState {
     accuracy: boolean;
     engine: SearchEngine;
-    download_path: string;
     encrypted: boolean;
     address: string;
     port: number;
@@ -35,7 +31,6 @@ class Settings extends React.Component<any, IState> {
         this.state = {
             accuracy: false,
             engine: "YouTube",
-            download_path: "downloads",
             encrypted: true,
             address: "app.magix.lol",
             port: 443,
@@ -55,12 +50,6 @@ class Settings extends React.Component<any, IState> {
     setEngine = (engine: SearchEngine) => {
         this.setState({
             engine: engine
-        });
-    };
-
-    setDownloadPath = (download_path: string) => {
-        this.setState({
-            download_path: download_path
         });
     };
 
@@ -95,24 +84,11 @@ class Settings extends React.Component<any, IState> {
         });
     }
 
-    selectDirectory = async () => {
-        const result = await open({
-            defaultPath: await appDataDir(),
-            multiple: false,
-            directory: true
-        });
-
-        if (result) {
-            this.setDownloadPath(result as string);
-        }
-    };
-
     async componentDidMount() {
         await config.reloadSettings()
         await this.setState({
             accuracy: config.search().accuracy,
             engine: config.search().engine,
-            download_path: config.audio().download_path,
             encrypted: config.gateway().encrypted,
             address: config.gateway().address,
             port: config.gateway().port,
@@ -124,13 +100,13 @@ class Settings extends React.Component<any, IState> {
     }
 
     async componentWillUnmount() {
-        await config.saveSettings({
+        config.saveSettings({
             search: {
                 accuracy: this.state.accuracy,
                 engine: this.state.engine
             },
             audio: {
-                download_path: this.state.download_path
+
             },
             gateway: {
                 encrypted: this.state.encrypted,
@@ -213,17 +189,6 @@ class Settings extends React.Component<any, IState> {
                 <tbody>
                     <tr className="SettingsHeadings">
                         <th>Audio Settings</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">Downloads Folder:</th>
-                        <td>
-                            <input className="dirInputText" type="text" value={this.state.download_path} readOnly />
-                            <Button
-                                className="dirSelector"
-                                icon={faFolder}
-                                onClick={() => this.selectDirectory()}
-                            />
-                        </td>
                     </tr>
                 </tbody>
                 <tbody>
