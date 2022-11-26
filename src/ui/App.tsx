@@ -12,8 +12,8 @@ import ErrorPage from "@pages/ErrorPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
-import * as config from "@backend/settings";
 import emitter from "@backend/events";
+import * as config from "@backend/settings";
 
 import Controls from "@components/player/Controls";
 import Navigation from "@components/NavBar";
