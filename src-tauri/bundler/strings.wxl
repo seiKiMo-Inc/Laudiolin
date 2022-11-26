@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+    <String Id="WelcomeDlg">
+        Proceeding with the installation will install Laudiolin on your computer.
+        Click Next to continue, or click Cancel to exit the Setup Wizard.
+    </String>
+
+    <!-- THIS SECTION IS INCOMPLETE -->
+</WixLocalization>
