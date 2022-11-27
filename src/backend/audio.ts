@@ -238,7 +238,7 @@ export class MusicPlayer extends EventEmitter {
 
         // Extract the playable tracks.
         for (const track of playlist.tracks) {
-            makeTrack(track).then(queue);
+            makeFastTrack(track).then(queue);
         }
     }
 
@@ -603,6 +603,18 @@ export async function playFromResult(track: SearchResult): Promise<void> {
 export async function makeTrack(trackData: TrackData): Promise<Track> {
     // Get the play audio payload.
     const payload = await invoke("make_track", { track: trackData });
+    // Make a new track object.
+    return new Track(payload as PlayAudioPayload);
+}
+
+/**
+ * Attempts to make a track object from track data.
+ * This method uses either HTML5 audio streaming or downloaded files.
+ * @param trackData The track data to make a track object from.
+ */
+export async function makeFastTrack(trackData: TrackData): Promise<Track> {
+    // Get the play audio payload.
+    const payload = await invoke("create_audio_payload", { track: trackData });
     // Make a new track object.
     return new Track(payload as PlayAudioPayload);
 }

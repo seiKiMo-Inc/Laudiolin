@@ -39,6 +39,32 @@ pub async fn make_track(track: SearchResult) -> PlayAudioPayload {
     }
 }
 
+/// Creates a play audio payload.
+/// Useful for needing to play audio with whatever is quickest.
+/// track: The track to play.
+#[tauri::command]
+pub async fn create_audio_payload(track: SearchResult) -> PlayAudioPayload {
+    let id = track.id.as_str();
+    // TODO: Check frontend for TODOs.
+
+    // Check if the file is already downloaded.
+    let mut source_path = TauriApp::file(format!("downloads/{}.mp3", id.clone()));
+    if !file_exists(source_path.clone()) {
+        // Stream the audio track.
+        let gateway = wrapper::gateway();
+        let engine = get_settings().search.engine.clone();
+        source_path = format!("{}://{}:{}/download?id={}&engine={}",
+                              wrapper::protocol(), gateway.address,
+                              gateway.port, id, engine);
+    }
+    
+    PlayAudioPayload {
+        file_path: source_path,
+        track_data: track,
+        volume: 1.0
+    }
+}
+
 /// Play an audio track from a search result.
 /// track: The search result of the track to play.
 #[tauri::command]
