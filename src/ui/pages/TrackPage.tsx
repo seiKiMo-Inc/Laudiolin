@@ -1,9 +1,9 @@
 import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
-import { downloadTrack, player, playFromResult } from "@backend/audio";
+import { fetchTrackByUrl, parseArtist } from "@backend/search";
+import { player, downloadTrack, playFromResult } from "@backend/audio";
 import { fetchAllPlaylists, addTrackToPlaylist } from "@backend/playlist";
-import { fetchTrackByUrl } from "@backend/search";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
@@ -127,18 +127,21 @@ class TrackPage extends React.Component<any, IState> {
     }
 
     render() {
-        if (this.state.track === null) {
+        const track = this.state.track;
+
+        if (track == null) {
             return <Loader />;
         }
+
         return (
-            <div className="TrackContainer" key={this.state.track.id}>
-                <div className="TrackBG" style={{ backgroundImage: `url(${this.state.track.icon})` }}></div>
-                <img className="TrackImage" src={this.state.track.icon} alt="Track Icon" />
-                <h2 className="TrackTitle">{this.state.track.title}</h2>
-                <h3 className="TrackArtist">{this.state.track.artist}</h3>
+            <div className="TrackContainer" key={track.id}>
+                <div className="TrackBG" style={{ backgroundImage: `url(${track.icon})` }}></div>
+                <img className="TrackImage" src={track.icon} alt="Track Icon" />
+                <h2 className="TrackTitle">{track.title}</h2>
+                <h3 className="TrackArtist">{parseArtist(track.artist)}</h3>
                 <div className="TrackControls">
                     <Button className="TrackPlay" onClick={this.playTrack} icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay} />
-                    <h3 className="TrackDuration">{this.msToMinutes(this.state.track.duration)}</h3>
+                    <h3 className="TrackDuration">{this.msToMinutes(track.duration)}</h3>
                 </div>
                 <div className="TrackButtons">
                     <Button className="TrackOptions" icon={faShare} onClick={this.openTrackSource}>Open Source</Button>

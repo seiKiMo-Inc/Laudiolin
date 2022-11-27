@@ -2,6 +2,7 @@ import type { RichPresence } from "@backend/types";
 import { player, Track } from "@backend/audio";
 
 import { invoke } from "@tauri-apps/api/tauri";
+import { parseArtist } from "@backend/search";
 
 const emptyPresence: RichPresence = {
     details: null,
@@ -62,18 +63,44 @@ export function fromTrack(track: Track): RichPresence {
 
     // Calculate the ends in.
     const endsIn = (data.duration - track.seek()) * 1000;
+    // Check the artist.
+    const artist = parseArtist(data.artist);
 
-    return {
+    // Create a rich presence.
+    const result = {
         ...emptyPresence,
 
         end_timestamp: Math.round(Date.now() + endsIn),
         details: `Listening to ${data.title}`,
-        state: `by ${data.artist}`,
         large_image_key: data.icon,
         large_image_text: data.title,
         small_image_key: "icon",
         small_image_text: "Laudiolin"
     };
+
+    // Add optional fields.
+    if (artist.length > 0)
+        result.state = `by ${artist}`;
+    else if (data.title.length > 30) {
+        // Optimally split the title.
+        const title = data.title.split(" ");
+
+        let add = true, length = 0, firstPart = "";
+        while (add) {
+            const word = title.shift();
+            if (word.length + length > 30)
+                add = false;
+            else {
+                firstPart += word + " ";
+                length += word.length + 1;
+            }
+        }
+
+        result.details = firstPart;
+        result.state = title.join(" ");
+    }
+
+    return result;
 }
 
 /*

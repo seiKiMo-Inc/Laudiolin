@@ -97,6 +97,19 @@ export class MusicPlayer extends EventEmitter {
             this.currentTrack.stop();
         }
 
+        // Check the loop state.
+        if (this.isLooped == 1) {
+            // Loop the current track.
+            current && this.playTrack(current.clone());
+            return;
+        }
+
+        // Check if the track should be added back to the queue.
+        if (this.isLooped == 2) {
+            // Add the current track to the backtrack queue.
+            current && this.trackQueue.push(current.clone());
+        }
+
         // Check if there are any tracks in the queue.
         if (this.trackQueue.length > 0) {
             // Play the next track in the queue.
