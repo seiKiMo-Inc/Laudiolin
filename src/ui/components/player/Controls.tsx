@@ -2,7 +2,7 @@ import React from "react";
 
 import { player, MusicPlayer } from "@backend/audio";
 import Button from "@components/common/Button";
-import { faPause, faPlay, faForward, faBackward } from "@fortawesome/free-solid-svg-icons";
+import { faPause, faPlay, faForward, faBackward, faShuffle, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import VolumeControl from "@components/player/VolumeControl";
 import ProgressBarComponent from "@components/player/ProgressBar";
 
@@ -75,6 +75,8 @@ class Controls extends React.Component<IProps, IState> {
                             ""
                         )}
 
+                        <Button className={"control"} icon={faRepeat} />
+
                         <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} tooltip="Previous" />
 
                         <Button
@@ -85,6 +87,8 @@ class Controls extends React.Component<IProps, IState> {
                         />
 
                         <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} tooltip="Next" />
+
+                        <Button className={"control"} icon={faShuffle} />
 
                         <VolumeControl
                             volume={player.getVolume()}
