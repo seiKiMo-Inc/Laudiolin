@@ -2,6 +2,7 @@ import type { RichPresence } from "@backend/types";
 import { player, Track } from "@backend/audio";
 
 import { invoke } from "@tauri-apps/api/tauri";
+import { parseArtist } from "@backend/search";
 
 const emptyPresence: RichPresence = {
     details: null,
@@ -63,7 +64,7 @@ export function fromTrack(track: Track): RichPresence {
     // Calculate the ends in.
     const endsIn = (data.duration - track.seek()) * 1000;
     // Check the artist.
-    const artist = data.artist.trim().length <= 0 ? "" : data.artist;
+    const artist = parseArtist(data.artist);
 
     // Create a rich presence.
     const result = {

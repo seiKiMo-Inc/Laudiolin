@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { TrackData } from "@backend/types";
+import { parseArtist } from "@backend/search";
 import { player, playFromResult, downloadTrack } from "@backend/audio";
 
 import Button from "@components/common/Button";
@@ -84,7 +85,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                     <Link to={`/track/${track.id}`} className="trackInfo">
                         <h2 className="PlaylistTrackTitle">{track.title}</h2>
                     </Link>
-                    <p className="PlaylistTrackAuthor">{track.artist}</p>
+                    <p className="PlaylistTrackAuthor">{parseArtist(track.artist)}</p>
 
                     <div className="PlaylistTrackButtons">
                         <Button icon={faAdd} className="TrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("PlaylistTrackAddModal")} />

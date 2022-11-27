@@ -41,3 +41,14 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
 export async function fetchTrackByUrl(url: string, engine: SearchEngine = 'YouTube'): Promise<TrackData> {
     return await invoke("url_search", { url, engine });
 }
+
+/**
+ * Parses a track's artist into a visually appealing string.
+ * @param artist The artist to parse.
+ */
+export function parseArtist(artist: string): string {
+    if (artist.trim().length == 0) return "";
+    if (artist.includes("- Topic")) artist = artist.replace("- Topic", "");
+
+    return artist; // Return the artist after parsing.
+}
