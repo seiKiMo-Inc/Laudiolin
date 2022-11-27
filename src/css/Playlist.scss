@@ -130,6 +130,13 @@
         z-index: 1100;
     }
 
+    #PlaylistPlay {
+        position: absolute;
+        z-index: 10000;
+        margin-left: 120px;
+        margin-top: 120px;
+    }
+
     .PlaylistHeaderInfo {
         display: flex;
         flex-direction: column;

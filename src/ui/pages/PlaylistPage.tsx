@@ -7,7 +7,7 @@ import Router from "@components/common/Router";
 import AnimatePages from "@components/common/AnimatePages";
 import PlaylistTracks from "@components/playlist/PlaylistTracks";
 
-import { faCog } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import Button from "@components/common/Button";
 import Modal, { displayModal } from "@components/common/Modal";
 
@@ -18,6 +18,8 @@ import emitter from "@backend/events";
 interface IState {
     playlist: Playlist;
     banner: string;
+    hasPlayed: boolean;
+    playing: boolean;
 }
 
 class PlaylistPage extends React.Component<any, IState> {
@@ -26,7 +28,9 @@ class PlaylistPage extends React.Component<any, IState> {
 
         this.state = {
             playlist: null,
-            banner: ""
+            banner: "",
+            hasPlayed: false,
+            playing: false
         };
     }
 
@@ -127,6 +131,7 @@ class PlaylistPage extends React.Component<any, IState> {
                             style={{ backgroundImage: `url(${this.state.banner || this.state.playlist.icon})` }}
                         ></div>
                         <img src={this.state.playlist.icon} className="PlaylistIcon" alt={this.state.playlist.name} />
+                        <Button className="TrackPlay" id="PlaylistPlay" icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay} />
                         <div className="PlaylistHeaderInfo">
                             <h2>{this.state.playlist.name}</h2>
                             <p>{this.state.playlist.description}</p>
