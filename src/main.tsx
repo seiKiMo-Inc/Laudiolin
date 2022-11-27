@@ -46,6 +46,11 @@ import * as settings from "@backend/settings";
 import App from "./ui/App";
 
 function continueSetup() {
+    // Force dark mode.
+    document.body.classList.add("dark");
+    settings.save("darkMode", "true");
+
+    // Render the application.
     const root = document.getElementById("root");
     ReactDOM.createRoot(root!).render(<App />);
 }

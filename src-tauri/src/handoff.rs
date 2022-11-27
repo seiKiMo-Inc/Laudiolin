@@ -4,8 +4,9 @@
 
 use std::sync::Arc;
 use std::thread;
-use crate::wrapper;
 use tiny_http::{Server, Response};
+use port_killer::kill;
+use crate::wrapper;
 use crate::wrap;
 
 /// Opens the browser with the OAuth2 URL.
@@ -26,7 +27,13 @@ pub fn open_browser() {
 #[tauri::command]
 pub fn handoff() {
     // Create an HTTP server.
-    let server = wrap(Server::http("127.0.0.1:4956"), "handoff");
+    let server = Server::http("127.0.0.1:4956")
+        .unwrap_or_else(|_| {
+            kill(4956).expect("Unable to kill port."); // Kill the process using the port.
+            Server::http("127.0.0.1:4956") // Return a new server instance.
+                .expect("Unable to create HTTP server")
+        });
+
     // Spawn a thread to handle the server.
     thread::spawn(move || {
         let serv = Arc::new(server);
