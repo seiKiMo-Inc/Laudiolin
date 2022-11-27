@@ -68,7 +68,12 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "dialog": true,
+      "endpoints": [
+        "https://raw.githubusercontent.com/Dumbfuckery-Inc/Laudiolin/tauri-react/src-tauri/updates.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk1OTQ0Q0Y0Q0NDQzAyRTQKUldUa0Fzek05RXlVbFZJV3l3VW5vRml0ekJHQW9ETkY4ekN6RTNGSUhXbVVjdkNuRm10dCtockMK"
     },
     "windows": [
       {

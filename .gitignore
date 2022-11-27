@@ -27,3 +27,6 @@ src-tauri/Cargo.lock
 # package manager generated files
 package-lock.json
 yarn.lock
+
+# tauri generation
+src-tauri/keys
