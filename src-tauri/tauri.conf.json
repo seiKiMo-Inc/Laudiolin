@@ -44,8 +44,8 @@
         "license": "../LICENSE.txt"
       },
       "resources": [],
-      "shortDescription": "",
-      "targets": ["msi", "appimage", "dmg"],
+      "shortDescription": "Play music!",
+      "targets": "all",
       "appimage": {
         "bundleMediaFramework": true
       },
