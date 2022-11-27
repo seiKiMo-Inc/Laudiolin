@@ -75,7 +75,7 @@ class PlaylistTrack extends React.Component<IProps, IState> {
                     onClick={this.playTrack}
                 />
 
-                <Link to={`/track/${track.id}`} className="trackInfo">
+                <Link to={`/track/${track.id}`} className="trackInfo" id="PlaylistTrackIconRedirect">
                     <img src={track.icon} className="PlaylistTrackIcon" alt={track.title} />
                 </Link>
 
