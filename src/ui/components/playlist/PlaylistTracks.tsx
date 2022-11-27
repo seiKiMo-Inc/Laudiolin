@@ -55,9 +55,11 @@ class PlaylistTracks extends React.Component<IProps, IState> {
         emitter.emit("playlist-update");
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps:Readonly<IProps>, prevState:Readonly<IState>) {
         // Scroll to the top of the page when the results change.
-        document.documentElement.scrollTop = 0;
+        if (prevProps.tracks !== this.props.tracks) {
+            document.documentElement.scrollTop = 0;
+        }
     }
 
     render() {
