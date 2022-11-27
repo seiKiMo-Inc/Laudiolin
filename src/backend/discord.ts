@@ -61,7 +61,7 @@ export function fromTrack(track: Track): RichPresence {
     const data = track.getData();
 
     // Calculate the ends in.
-    const endsIn = data.duration - (track.seek() * 1000);
+    const endsIn = (data.duration - track.seek()) * 1000;
 
     return {
         ...emptyPresence,
