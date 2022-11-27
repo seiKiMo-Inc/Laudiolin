@@ -227,19 +227,19 @@ export class MusicPlayer extends EventEmitter {
             this.clearPlayer();
         }
 
+        let first = true;
+        const queue = result => {
+            // Queue the track if it is playable.
+            if (result) {
+                this.playTrack(result, first);
+                if (first) first = false;
+            }
+        };
+
         // Extract the playable tracks.
-        const tracks = [];
         for (const track of playlist.tracks) {
-            tracks.push(await makeTrack(track));
+            makeTrack(track).then(queue);
         }
-
-        // Play the first track if specified.
-        if (autoPlay) {
-            this.playTrack(tracks.shift()!);
-        }
-
-        // Add the tracks to the queue.
-        this.trackQueue.push(...tracks);
     }
 
     /*
@@ -253,7 +253,7 @@ export class MusicPlayer extends EventEmitter {
      */
     playTrack(track: Track, stopCurrent = true) {
         // Check if the track should be added to the queue.
-        if (!stopCurrent && this.currentTrack.isPlaying()) {
+        if (!stopCurrent && this.currentTrack) {
             // Add track to the queue.
             this.trackQueue.push(track);
             // Emit queued event.
@@ -480,8 +480,13 @@ export class Track {
      * Sets the track's ID.
      */
     public play() {
+        let timeout = setTimeout(() => {
+            (this.id == 0) && (this.id = this.howl.play());
+        }, 500);
+
         this.howl.once("load", () => {
-            this.id = this.howl.play();
+            clearTimeout(timeout);
+            (this.id == 0) && (this.id = this.howl.play());
         });
     }
 

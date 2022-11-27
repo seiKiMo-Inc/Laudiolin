@@ -49,10 +49,10 @@ pub fn initialize() {
     // Create an instance of the Discord IPC client.
     let mut client = DiscordIpcClient::new("1020193478556266536").unwrap();
     // Connect to the Discord client.
-    wrap(client.connect(), "discordconnect");
-
-    // Set the client instance.
-    *CLIENT.lock().unwrap() = client;
+    if client.connect().is_ok() {
+        // Set the client instance.
+        *CLIENT.lock().unwrap() = client;
+    }
 }
 
 /// Updates the Discord rich presence.
@@ -93,7 +93,9 @@ pub fn update_presence(presence: Presence) {
     payload = payload.secrets(secrets);
 
     // Update the presence.
-    wrap(client.set_activity(payload), "discordupdate");
+    client.set_activity(payload).unwrap_or_else(|_| {
+        println!("Failed to update presence.");
+    });
 }
 
 /// Clears the Discord rich presence.
@@ -104,5 +106,7 @@ pub fn clear_presence() {
     let mut client = CLIENT.lock().unwrap();
 
     // Clear the presence.
-    wrap(client.clear_activity(), "discordclear");
+    client.clear_activity().unwrap_or_else(|_| {
+        println!("Failed to clear presence.");
+    });
 }
