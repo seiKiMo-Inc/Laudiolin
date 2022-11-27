@@ -36,7 +36,6 @@ export class MusicPlayer extends EventEmitter {
 
     private originalVolume: number = -1;
     private isPaused: boolean = true;
-    private isShuffled: boolean = false;
     private isLooped: number = 0; // 0 = no loop, 1 = loop track, 2 = loop queue
 
     constructor() {
@@ -128,6 +127,29 @@ export class MusicPlayer extends EventEmitter {
     /*
      * Player utilities.
      */
+
+    /**
+     * Shuffle the track queue.
+     */
+    shuffle(): void {
+        // Shuffle the track queue.
+        this.trackQueue.sort(() => Math.random() - 0.5);
+    }
+
+    /**
+     * Returns the state of the player being paused.
+     */
+    getLoopState(): number {
+        return this.isLooped;
+    }
+
+    /**
+     * Sets the player's loop state.
+     * @param state The loop state to set.
+     */
+    setLoopState(state: number) {
+        this.isLooped = state;
+    }
 
     /**
      * Clears the player's current status.

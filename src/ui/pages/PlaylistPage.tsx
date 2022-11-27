@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Playlist } from "@backend/types";
+import { player } from "@backend/audio";
 import { fetchPlaylist, renamePlaylist, describePlaylist, setPlaylistIcon, setPlaylistVisibility } from "@backend/playlist";
 import Router from "@components/common/Router";
 
@@ -67,6 +68,7 @@ class PlaylistPage extends React.Component<any, IState> {
             await setPlaylistVisibility(this.state.playlist.id, isPrivate);
             console.log("Changed playlist visibility to " + isPrivate);
         }
+
         localStorage.setItem(`playlist-${this.state.playlist.id}-banner`, banner);
 
         this.setState({
@@ -109,6 +111,9 @@ class PlaylistPage extends React.Component<any, IState> {
         });
     }
 
+    playPlaylist = async () => {
+        await player.queuePlaylist(this.state.playlist, true);
+    };
 
     componentWillUnmount() {
         window.onclick = null;
@@ -131,7 +136,7 @@ class PlaylistPage extends React.Component<any, IState> {
                             style={{ backgroundImage: `url(${this.state.banner || this.state.playlist.icon})` }}
                         ></div>
                         <img src={this.state.playlist.icon} className="PlaylistIcon" alt={this.state.playlist.name} />
-                        <Button className="TrackPlay" id="PlaylistPlay" icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay} />
+                        <Button className="TrackPlay" id="PlaylistPlay" onClick={this.playPlaylist} icon={this.state.hasPlayed ? (this.state.playing ? faPause : faPlay) : faPlay} />
                         <div className="PlaylistHeaderInfo">
                             <h2>{this.state.playlist.name}</h2>
                             <p>{this.state.playlist.description}</p>

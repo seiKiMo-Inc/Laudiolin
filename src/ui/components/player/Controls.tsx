@@ -14,6 +14,7 @@ interface IProps {
 interface IState {
     showControls: boolean;
     progress: number;
+    repeatTooltip: string;
 }
 
 class Controls extends React.Component<IProps, IState> {
@@ -22,7 +23,8 @@ class Controls extends React.Component<IProps, IState> {
 
         this.state = {
             showControls: true,
-            progress: 0
+            progress: 0,
+            repeatTooltip: "Enable Queue Loop",
         };
     }
 
@@ -47,6 +49,24 @@ class Controls extends React.Component<IProps, IState> {
         if (player.getCurrentTrack() == null) return;
         // Set the player progress.
         player.setProgress(progress);
+    };
+
+    toggleLoopState = () => {
+        // Switch to the current loop state.
+        switch (player.getLoopState()) {
+            case 0:
+                player.setLoopState(2);
+                this.setState({ repeatTooltip: "Enable Track Loop" });
+                break;
+            case 2:
+                player.setLoopState(1);
+                this.setState({ repeatTooltip: "Disable Loop" });
+                break;
+            case 1:
+                player.setLoopState(0);
+                this.setState({ repeatTooltip: "Enable Queue Loop" });
+                break;
+        }
     };
 
     componentDidMount() {
@@ -75,7 +95,7 @@ class Controls extends React.Component<IProps, IState> {
                             ""
                         )}
 
-                        <Button className={"control"} icon={faRepeat} tooltip="Shuffle Queue" />
+                        <Button className={"control"} icon={faShuffle} onClick={() => player.shuffle()} tooltip="Shuffle Queue" />
 
                         <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} tooltip="Previous" />
 
@@ -88,7 +108,7 @@ class Controls extends React.Component<IProps, IState> {
 
                         <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} tooltip="Next" />
 
-                        <Button className={"control"} icon={faShuffle} tooltip="Loop Track/Queue" />
+                        <Button className={"control"} icon={faRepeat} onClick={this.toggleLoopState} tooltip={this.state.repeatTooltip} />
 
                         <VolumeControl
                             volume={player.getVolume()}
