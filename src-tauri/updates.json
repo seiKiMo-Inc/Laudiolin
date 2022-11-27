@@ -1,11 +1,11 @@
 {
-  "version": "1.0.1",
-  "notes": "Patch for bugs and add small features.",
-  "pub_date": "2022-11-27T04:58:32Z",
+  "version": "1.0.2",
+  "notes": "Add more controls and fix more bugs!",
+  "pub_date": "2022-11-27T07:31:16Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbGFBOEl6eC9WZ3VPOW5QRFZFeVlqak91eUxlMUVqbHFOTW5VL2p0cVNONWd2S01qQk56bi9NeEZvR2tjNHdQVHR2UEJTR3F6T1RxVEVVSytJTDJka0FJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjY5NTI1MjAyCWZpbGU6TGF1ZGlvbGluXzEuMC4xX3g2NF9lbi1VUy5tc2kuemlwCmJlNUpLTXplL3YyZGc5S1l4bTV5YTNtS2FqeGM2U2hmMDdFVFBRblRNWW83U2JGbHg4akhuREl0TXZUa3RZbm4vMktiaUtJaVBLc003MzN6UWNkdENBPT0K",
-      "url": "https://github.com/Dumbfuckery-Inc/Laudiolin/releases/download/v1.0.1/Laudiolin_1.0.1_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFdmS09zMlFsc3RBMm93OWV0em5IUFhJVXl0eCtBVFB2NHBMd0hWV3g2bGdEdzJtTHIxQzk5aGpUa05vczJUMUxMRUZySWtQZE5OKzVXMERYbCt2blFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjY5NTM0MzM1CWZpbGU6TGF1ZGlvbGluXzEuMC4yX3g2NF9lbi1VUy5tc2kuemlwCkdlRWRoSFNLWFhhd3FmSlI4eGxMYUpRYnpMcFlweTdEZ2hVbC8yelZCc1pkeTJ3a09idEZYUWtZL1RrSkllYWljUzhNc3ltQXVFcVROclQ4bSszOUJ3PT0K",
+      "url": "https://github.com/Dumbfuckery-Inc/Laudiolin/releases/download/v1.0.2/Laudiolin_1.0.2_x64_en-US.msi.zip"
     }
   }
 }
