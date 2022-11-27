@@ -18,7 +18,7 @@ export async function reloadSettings(from?: UserSettings | null) {
         settings = await invoke("get_settings");
     } else settings = from;
 
-    applySystemDarkMode(); // Set dark mode to the system preference.
+    // applySystemDarkMode(); // Set dark mode to the system preference.
     save("user_token", settings.token); // Save the user's authentication token.
 }
 
@@ -102,12 +102,12 @@ export async function setupListeners() {
 /**
  * Applies dark-mode to the page.
  */
-function applySystemDarkMode() {
-    // Check if dark mode is present.
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.body.classList.add("dark"); // Set dark mode.
-    }
-}
+// function applySystemDarkMode() {
+//     // Check if dark mode is present.
+//     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+//         document.body.classList.add("dark"); // Set dark mode.
+//     }
+// }
 
 /**
  * Saves the specified key-value pair to local storage.
