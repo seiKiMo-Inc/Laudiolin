@@ -49,6 +49,11 @@ class App extends React.Component<any, IState> {
     }
 
     componentDidMount() {
+        const startLoader = document.getElementById("bars") as HTMLDivElement;
+        const startBG = document.getElementById("placeholderBG") as HTMLDivElement;
+        startLoader.style.display = "none";
+        startBG.style.display = "none";
+
         emitter.on("settingsReload", () => {
             config.reloadSettings().then(() => {
                 this.setState({
@@ -57,6 +62,7 @@ class App extends React.Component<any, IState> {
                 });
             });
         });
+
         sessionStorage.clear();
     }
 
