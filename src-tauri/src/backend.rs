@@ -231,8 +231,7 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
     let response = wrap(response_result, "download");
 
     // Check the status code.
-    if response.status() != StatusCode::OK || response.status() != StatusCode::MOVED_PERMANENTLY {
-        println!("{}", response.status());
+    if response.status() != StatusCode::MOVED_PERMANENTLY {
         return Err("Request failed.");
     }
 
