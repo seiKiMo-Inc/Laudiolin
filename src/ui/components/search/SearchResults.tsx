@@ -48,9 +48,11 @@ class SearchResultsList extends React.Component<IProps, IState> {
     };
 
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps:Readonly<IProps>, prevState:Readonly<IState>) {
         // Scroll to the top of the page when the results change.
-        document.documentElement.scrollTop = 0;
+        if (prevProps.results !== this.props.results) {
+            document.documentElement.scrollTop = 0;
+        }
     }
 
     render() {
