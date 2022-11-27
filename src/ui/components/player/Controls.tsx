@@ -75,7 +75,7 @@ class Controls extends React.Component<IProps, IState> {
                             ""
                         )}
 
-                        <Button className={"control"} icon={faRepeat} />
+                        <Button className={"control"} icon={faRepeat} tooltip="Shuffle Queue" />
 
                         <Button className={"control"} icon={faBackward} onClick={() => player.backTrack()} tooltip="Previous" />
 
@@ -88,7 +88,7 @@ class Controls extends React.Component<IProps, IState> {
 
                         <Button className={"control"} icon={faForward} onClick={() => player.skipTrack()} tooltip="Next" />
 
-                        <Button className={"control"} icon={faShuffle} />
+                        <Button className={"control"} icon={faShuffle} tooltip="Loop Track/Queue" />
 
                         <VolumeControl
                             volume={player.getVolume()}
