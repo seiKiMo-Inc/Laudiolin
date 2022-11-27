@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 use std::io::Write;
 
-use reqwest::get;
+use reqwest::{get, StatusCode};
 use crate::wrapper;
 use crate::wrap;
 
@@ -180,7 +180,7 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
     let response = wrap(response_result, "search");
 
     // Check the response code.
-    if response.status() != 301 {
+    if response.status() != StatusCode::MOVED_PERMANENTLY {
         return Err("Request failed.");
     }
 
@@ -203,7 +203,7 @@ pub async fn url_search(id: &str, options: SearchOptions) -> Result<SearchResult
     let response = wrap(response_result, "urlsearch");
 
     // Check the response code.
-    if response.status() != 301 {
+    if response.status() != StatusCode::MOVED_PERMANENTLY {
         return Err("Request failed.");
     }
 
@@ -231,7 +231,8 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
     let response = wrap(response_result, "download");
 
     // Check the status code.
-    if response.status() != 200 || response.status() != 301 {
+    if response.status() != StatusCode::OK || response.status() != StatusCode::MOVED_PERMANENTLY {
+        println!("{}", response.status());
         return Err("Request failed.");
     }
 
