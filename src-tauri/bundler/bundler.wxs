@@ -41,6 +41,10 @@
 
         <Media Id="1" Cabinet="app.cab" EmbedCab="yes" />
 
+        {{#if license}}
+            <WixVariable Id="WixUILicenseRtf" Value="{{{license}}}" />
+        {{/if}}
+
         <WixVariable Id="WixUIBannerBmp" Value="../../../../bundler/bitmaps/banner.bmp" />
         <WixVariable Id="WixUIDialogBmp" Value="../../../../bundler/bitmaps/dlg.bmp" />
         <WixVariable Id="WixUIExclamationIco" Value="../../../../bundler/bitmaps/exclamation.ico" />
@@ -59,16 +63,12 @@
         </Property>
 
         <UI>
-            <!-- launch app checkbox -->
-            <!-- <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish> -->
-
             <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
-            <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="Thank you for installing Laudiolin. Have fun streaming music directly from your favorite sources!" />
 
-            <!-- <TextStyle Id="FontWhite" Blue="255" Red="255" Green="255" /> -->
+            <TextStyle Id="White8" FaceName="Tahoma" Size="8" Red="255" Green="255" Blue="255"  />
+            <TextStyle Id="White12" FaceName="Tahoma" Size="12" Red="255" Green="255" Blue="255"  />
 
             {{#unless license}}
-            <!-- Skip license dialog -->
             <Publish Dialog="WelcomeDlg"
                      Control="Next"
                      Event="NewDialog"

@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Laudiolin",
-    "version": "0.0.0"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -40,22 +40,32 @@
         "exceptionDomain": "",
         "frameworks": [],
         "providerShortName": null,
-        "signingIdentity": null
+        "signingIdentity": null,
+        "license": "../LICENSE.txt"
       },
       "resources": [],
       "shortDescription": "",
-      "targets": "all",
+      "targets": ["msi", "appimage", "dmg"],
+      "appimage": {
+        "bundleMediaFramework": true
+      },
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": "",
         "wix": {
-          "template": "bundler/bundler.wxs"
+          "language": {
+            "en-US": {
+              "localePath": "bundler/strings.wxl"
+            }
+          },
+          "template": "bundler/bundler.wxs",
+          "license": "bundler/LICENSE.rtf"
         }
       }
     },
     "security": {
-      "csp": "default-src *  data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval' 'unsafe-dynamic'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob: 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * data: blob: ; style-src * data: blob: 'unsafe-inline';font-src * data: blob: 'unsafe-inline';frame-ancestors * data: blob: 'unsafe-inline';"
+      "csp": null
     },
     "updater": {
       "active": false

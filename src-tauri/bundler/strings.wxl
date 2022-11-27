@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="en-us" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
-    <String Id="WelcomeDlg">
-        Proceeding with the installation will install Laudiolin on your computer.
-        Click Next to continue, or click Cancel to exit the Setup Wizard.
-    </String>
+<WixLocalization Culture="en-US" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+    <String Id="WelcomeDlgTitle">{\White12}Welcome to the Laudiolin Setup Wizard</String>
+    <String Id="WelcomeDlgDescription">{\White8}Proceeding with the setup will install Laudiolin on your computer. Click Next to continue or Cancel to exit the Setup Wizard</String>
+    
+    <!-- I DO NOT WANT THESE, THERES ALREADY ENOUGH INFO ON THE SCREEN SO I PUT THE LOGO HERE INSTEAD -->
 
-    <!-- THIS SECTION IS INCOMPLETE -->
+    <String Id="LicenseAgreementDlgTitle">{\White12}</String>
+    <String Id="LicenseAgreementDlgDescription">{\White8}</String>
+
+    <String Id="InstallDirDlgTitle">{\White12}</String>
+    <String Id="InstallDirDlgDescription">{\White8}</String>
+
+    <String Id="VerifyReadyDlgInstallTitle">{\White12}</String>
+
+    <String Id="ProgressDlgTitleInstalling">{\White12}</String>
+
+    <String Id="BrowseDlgTitle">{\White12}</String>
+    <String Id="BrowseDlgDescription">{\White8}</String>
+
+    <!-- END OF UNWANTED DIALOGS -->
+
+    <String Id="ExitDialogTitle">{\White12}Laudiolin has been installed!</String>
+    <String Id="ExitDialogDescription">{\White8}Thank you for installing Laudiolin. Have fun streaming music directly from your favorite sources!</String>
+
+    <String Id="UserExitTitle">{\White12}Laudiolin Setup Wizard was interrupted</String>
+    <String Id="UserExitDescription1">{\White8}Laudiolin Setup Wizard was interrupted. Your system has not been modified. To install this program at a later time, please run the Setup Wizard again.</String>
+    <String Id="UserExitDescription2">{\White8}Click the Finish button to exit the Setup Wizard.</String>
 </WixLocalization>
