@@ -64,7 +64,7 @@ export function fromTrack(track: Track): RichPresence {
     // Calculate the ends in.
     const endsIn = (data.duration - track.seek()) * 1000;
     // Check the artist.
-    const artist = parseArtist(data.artist);
+    const artist = parseArtist(data.artist).trim();
 
     // Create a rich presence.
     const result = {
@@ -81,23 +81,32 @@ export function fromTrack(track: Track): RichPresence {
     // Add optional fields.
     if (artist.length > 0)
         result.state = `by ${artist}`;
-    else if (data.title.length > 30) {
+    else if (data.title.length > 16) {
         // Optimally split the title.
-        const title = data.title.split(" ");
+        let title = data.title.split(" ");
 
         let add = true, length = 0, firstPart = "";
+
         while (add) {
             const word = title.shift();
-            if (word.length + length > 30)
-                add = false;
-            else {
+            if (!word || !word.length) {
+                add = false; break;
+            }
+
+            if (word.length + length > 16) {
+                add = false; title = [word, ...title];
+            } else {
                 firstPart += word + " ";
-                length += word.length + 1;
+                length = length + word.length;
             }
         }
 
-        result.details = firstPart;
-        result.state = title.join(" ");
+        result.details = `Listening to ${firstPart}`.trim();
+        result.state = title.join(" ").trim();
+
+        if (result.state.length == 0) result.state = "Unknown";
+    } else {
+        result.state = "Unknown";
     }
 
     return result;
