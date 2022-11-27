@@ -103,7 +103,7 @@ class SearchTrack extends React.Component<IProps, IState> {
                         />
                     </Figure.Caption>
 
-                    <Link to={`/track/${result.id}`}>
+                    <Link to={`/track/${result.id}`} id="SearchTrackImageRedirect">
                         <Figure.Image src={result.icon} id="SearchResultImage" />
                     </Link>
 
