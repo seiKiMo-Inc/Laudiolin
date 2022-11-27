@@ -1,5 +1,4 @@
 import tailwind from "tailwindcss";
-import fontmagician from "postcss-font-magician";
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 
@@ -11,7 +10,6 @@ export default {
     plugins: [
         // Some plugins, like TailwindCSS/Nesting, need to run before Tailwind.
         tailwind(tailwindConfig),
-        fontmagician(),
 
         // But others, like autoprefixer, need to run after.
         autoprefixer(),
