@@ -60,6 +60,13 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
     }
 
     render() {
+        if (localStorage.getItem("isAuthenticated") !== "true") {
+            return (
+                <div id="NoPlaylistMessage">
+                    You must be logged in to view or create playlists.
+                </div>
+            )
+        }
         if (this.props.playlists.length == 0) {
             return (
                 <div id="NoPlaylistMessage">
