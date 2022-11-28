@@ -1,23 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import * as constants from "@app/constants";
-
 // Setup event listeners.
+import * as fs from "@backend/fs";
 import * as user from "@backend/user";
 import * as audio from "@backend/audio";
+import * as events from "@backend/events";
+import * as discord from "@backend/discord";
 import * as gateway from "@backend/gateway";
 import * as settings from "@backend/settings";
 
 (async () => {
-    // Load route data.
-    await constants.loadRoute();
+    // Initialize the file system.
+    await fs.initialize();
     // Fetch the application settings.
     await settings.reloadSettings();
 
     // Setup listeners.
     await audio.setupListeners();
+    await events.setupListeners();
     await gateway.setupListeners();
+    await settings.setupListeners();
 
     // Run gateway setup after.
     setTimeout(() => {
@@ -32,10 +35,8 @@ import * as settings from "@backend/settings";
     // Load user data if the user is logged in.
     user.loadRoute(); // Load the gateway route.
     if (localStorage.getItem("isAuthenticated") == "true") {
-        await user.login().catch(error => {
-            sessionStorage.setItem("loginError", "true");
-            console.log(error);
-        }); // Login the user.
+        await user.login().catch(() => sessionStorage.setItem("loginError", "true")); // Login the user.
+        discord.setupListeners(); // Set up Discord listeners.
     }
 
     // Continue setup.

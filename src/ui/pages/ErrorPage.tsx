@@ -1,4 +1,5 @@
 import React from "react";
+import { open } from '@tauri-apps/api/shell';
 
 import "@css/ErrorPage.scss";
 
@@ -13,7 +14,7 @@ class ErrorPage extends React.Component {
                     </p>
                     <p>
                         If this keeps happening, please report it on the{" "}
-                        <a className="GithubLink" onClick={() => window.open("https://github.com/Dumbfuckery-Inc/Laudiolin")}>
+                        <a className="GithubLink" onClick={async () => await open('https://github.com/Dumbfuckery-Inc/Laudiolin')}>
                             GitHub repository
                         </a>
                     </p>

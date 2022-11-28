@@ -1,10 +1,14 @@
+import { listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api";
 import { Howl, Howler } from "howler";
 import { EventEmitter } from "events";
 
-import type { SearchResult, TrackData, VolumePayload, TrackPayload, Playlist } from "@backend/types";
+import { file } from "@backend/fs";
+
+import type { Event } from "@tauri-apps/api/event";
+import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload, Playlist } from "@backend/types";
 
 import * as settings from "@backend/settings";
-import { AccessDetails } from "@app/constants";
 
 /**
  * TODO: Move music player to the backend. (Rust)
@@ -249,7 +253,7 @@ export class MusicPlayer extends EventEmitter {
 
         // Extract the playable tracks.
         for (const track of playlist.tracks) {
-            makeTrack(track).then(queue);
+            makeFastTrack(track).then(queue);
         }
     }
 
@@ -458,11 +462,14 @@ export class Track {
     private id: number = 0;
 
     constructor(private readonly payload: PlayAudioPayload) {
+        const isStreamed = payload.file_path.includes("http");
+        const filePath = isStreamed ? payload.file_path : file(payload);
+
         this.howl = new Howl({
-            html5: true,
+            html5: isStreamed,
             preload: "metadata",
             format: "mp3",
-            src: [payload.url],
+            src: [filePath],
             volume: payload.volume
         });
 
@@ -594,11 +601,15 @@ export class Track {
  */
 
 export const player: MusicPlayer = new MusicPlayer();
+window["player"] = player;
 player.setMaxListeners(100); // Increase the max event listeners.
 
-type PlayAudioPayload = VolumePayload & {
-    url: string;
-    track_data: TrackData;
+type PlayAudioPayload = FilePayload &
+    VolumePayload & {
+        track_data: TrackData;
+    };
+type PlayPlaylistPayload = {
+    playlist: Playlist;
 };
 type TrackSyncPayload = TrackPayload;
 
@@ -607,6 +618,10 @@ type TrackSyncPayload = TrackPayload;
  */
 export async function setupListeners() {
     console.log("Setting up audio event listeners...");
+    await listen("play_audio", playAudio);
+    await listen("set_volume", updateVolume);
+    await listen("track_sync", syncToTrack);
+    await listen("play_playlist", playPlaylist);
 }
 
 /**
@@ -614,8 +629,9 @@ export async function setupListeners() {
  * @param track The search result of the track to play.
  */
 export async function playFromResult(track: SearchResult): Promise<void> {
-    const audioTrack: Track = await makeTrack(track); // Make a track from the search result.
-    player.playTrack(audioTrack); // Play the track.
+    // Download the audio file.
+    // TODO: Check settings for the user's preferred search engine.
+    await invoke("play_from", { track });
 }
 
 /**
@@ -623,37 +639,94 @@ export async function playFromResult(track: SearchResult): Promise<void> {
  * @param trackData The track data to make a track object from.
  */
 export async function makeTrack(trackData: TrackData): Promise<Track> {
-    return new Track({
-        url: getPlaybackUrl(trackData.id),
-        volume: 0.7,
-        track_data: trackData
-    });
+    // Get the play audio payload.
+    const payload = await invoke("make_track", { track: trackData });
+    // Make a new track object.
+    return new Track(payload as PlayAudioPayload);
 }
 
 /**
- * Creates a playback URL from a track ID.
- * @param id The ID of the track to create a playback URL for.
+ * Attempts to make a track object from track data.
+ * This method uses either HTML5 audio streaming or downloaded files.
+ * @param trackData The track data to make a track object from.
  */
-function getPlaybackUrl(id: string): string {
-    return `${AccessDetails.route.formed}/download?id=${id}&engine=${settings.search().engine}`;
+export async function makeFastTrack(trackData: TrackData): Promise<Track> {
+    // Get the play audio payload.
+    const payload = await invoke("create_audio_payload", { track: trackData });
+    // Make a new track object.
+    return new Track(payload as PlayAudioPayload);
+}
+
+/**
+ * Attempts to download the given track.
+ * @param id The ID of the track to download.
+ */
+export async function downloadTrack(id: string): Promise<string> {
+    try {
+        await invoke("download", { id, engine: settings.search().engine })
+    } catch {
+        console.error(`Unable to download track ${id}.`); return "";
+    }
+}
+
+/**
+ * Check if the track exists on the file system.
+ * @param id The ID of the track to check.
+ */
+export async function trackExists(id: string): Promise<boolean> {
+    return await invoke("track_exists", { id });
+}
+
+/**
+ * Plays an audio file.
+ * @param event The event.
+ */
+function playAudio(event: Event<any>) {
+    // Create a new track.
+    const track = new Track(event.payload);
+    // Add the track to the player.
+    player.playTrack(track);
+}
+
+/**
+ * Plays a playlist.
+ * @param event The event.
+ */
+async function playPlaylist(event: Event<any>) {
+    // Get the playlist.
+    const playlist = event.payload.playlist;
+    // Play the playlist.
+    await player.queuePlaylist(playlist, true);
+}
+
+/**
+ * Sets the global player volume.
+ * @param event The event.
+ */
+function updateVolume(event: Event<any>) {
+    // Parse the payload from the event.
+    const payload: VolumePayload = event.payload;
+
+    // Set the volume.
+    Howler.volume(payload.volume);
 }
 
 /**
  * Syncs the player to a track.
- * TODO: Implement {@link syncToTrack}.
+ * @param event The event.
  */
-async function syncToTrack() {
+async function syncToTrack(event: Event<any>) {
     // Parse the payload from the event.
-    // const payload: TrackSyncPayload = event.payload;
+    const payload: TrackSyncPayload = event.payload;
 
     // Check if the track needs to be played.
-    // const track = payload.track;
-    // const playing = player.getCurrentTrack();
-    // if (!playing || track.id != playing.getData().id) {
-    //     // Play the track.
-    //     await invoke("play_from", { track });
-    // }
+    const track = payload.track;
+    const playing = player.getCurrentTrack();
+    if (!playing || track.id != playing.getData().id) {
+        // Play the track.
+        await invoke("play_from", { track });
+    }
 
     // Set the player's progress.
-    // player.setProgress(payload.progress);
+    player.setProgress(payload.progress);
 }

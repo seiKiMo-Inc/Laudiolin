@@ -1,33 +1,21 @@
+import { listen } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api";
+import { data } from "@backend/fs";
+
+import type { Event } from "@tauri-apps/api/event";
 import type { UserSettings, SearchSettings, AudioSettings, GatewaySettings, UISettings } from "@backend/types";
 
 let settings: UserSettings | null = null;
-const defaultSettings: UserSettings = {
-    search: {
-        accuracy: true,
-        engine: "All"
-    },
-    audio: {
-
-    },
-    gateway: {
-        encrypted: true,
-        address: "app.magix.lol",
-        port: 443,
-        gateway_port: 443
-    },
-    ui: {
-        background_color: "",
-        background_url: ""
-    },
-    token: ""
-};
 
 /**
  * Loads settings from the settings file.
  */
-export function reloadSettings(from?: UserSettings | null) {
+export async function reloadSettings(from?: UserSettings | null) {
     if (!from) {
-        settings = JSON.parse(get("settings", JSON.stringify(defaultSettings)));
+        // Load the settings from the settings file.
+        await invoke("read_from_file", { filePath: data("settings.json") });
+        // Set settings from backend.
+        settings = await invoke("get_settings");
     } else settings = from;
 
     // applySystemDarkMode(); // Set dark mode to the system preference.
@@ -50,9 +38,9 @@ export function getSettings(): UserSettings | null {
  * Saves the specified settings to the settings file.
  * @param newSettings The settings to save.
  */
-export function saveSettings(newSettings: UserSettings): void {
-    save("settings", JSON.stringify(newSettings));
-    reloadSettings(newSettings);
+export async function saveSettings(newSettings: UserSettings): Promise<void> {
+    await invoke("save_settings", { settings: newSettings });
+    await reloadSettings(newSettings);
 }
 
 /**
@@ -71,7 +59,11 @@ export function search(): SearchSettings {
  * Returns the cached user settings.
  */
 export function audio(): AudioSettings {
-    return settings?.audio || {};
+    return (
+        settings?.audio || {
+            download_path: "cache"
+        }
+    );
 }
 
 /**
@@ -98,6 +90,33 @@ export function ui(): UISettings {
 /*
  * Local storage utilities.
  */
+
+/**
+ * Sets up event listeners.
+ */
+export async function setupListeners() {
+    console.log("Setting up settings event listeners...");
+    await listen("save_storage", saveToStorage);
+}
+
+/**
+ * Applies dark-mode to the page.
+ */
+// function applySystemDarkMode() {
+//     // Check if dark mode is present.
+//     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+//         document.body.classList.add("dark"); // Set dark mode.
+//     }
+// }
+
+/**
+ * Saves the specified key-value pair to local storage.
+ * @param event The event.
+ */
+function saveToStorage(event: Event<any>) {
+    const { key, value } = event.payload;
+    localStorage.setItem(key, value);
+}
 
 /**
  * Returns the value of the specified key in local storage.

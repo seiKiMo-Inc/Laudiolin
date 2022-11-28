@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { player, playFromResult } from "@backend/audio";
+import { downloadTrack, player, playFromResult } from "@backend/audio";
 import type { Playlist, SearchResult } from "@backend/types";
 
 import { Figure } from "react-bootstrap";
@@ -75,6 +75,12 @@ class SearchTrack extends React.Component<IProps, IState> {
         }
     };
 
+    download = () => {
+        downloadTrack(this.props.result.id)
+            .then(() => alert("Track was downloaded successfully!"))
+            .catch(() => alert("An error occurred while downloading the track."));
+    };
+
     openTrackSource = () => {
         window.open(this.props.result.url, "_blank");
     };
@@ -112,6 +118,7 @@ class SearchTrack extends React.Component<IProps, IState> {
                             <Button icon={faAdd} className="SearchTrackOptionsButtons" tooltip="Add to playlist" onClick={() => displayModal("SearchModal")} />
                             <Button icon={faShare} className="SearchTrackOptionsButtons" tooltip="Open track source" onClick={this.openTrackSource} />
                             <Button icon={faCopy} className="SearchTrackOptionsButtons" tooltip="Copy track URL" onClick={this.copyTrackURL} />
+                            <Button icon={faDownload} className="SearchTrackOptionsButtons" tooltip="Download track" onClick={this.download} />
                         </Figure.Caption>
                     </Figure.Caption>
                 </Figure>

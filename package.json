@@ -5,9 +5,15 @@
 
   "type": "module",
   "scripts": {
-    "start:dev": "vite",
+    "postinstall": "rustup override set nightly",
+
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "package": "tauri build",
+    "tauri": "tauri",
+
+    "start:dev": "tauri dev",
     "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\""
   },
 
@@ -24,7 +30,9 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
 
     "howler": "^2.2.3",
-    "events": "^3.3.0"
+    "events": "^3.3.0",
+
+    "@tauri-apps/api": "^1.2.0"
   },
   "devDependencies": {
     "typescript": "^4.6.4",
@@ -46,6 +54,8 @@
     "postcss-load-config": "^4.0.1",
     "postcss-font-magician": "^3.0.0",
 
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+
+    "@tauri-apps/cli": "^1.2.0"
   }
 }

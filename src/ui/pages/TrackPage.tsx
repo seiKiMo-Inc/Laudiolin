@@ -2,14 +2,14 @@ import React from "react";
 
 import { TrackData, Playlist } from "@backend/types";
 import { fetchTrackByUrl, parseArtist } from "@backend/search";
-import { player, playFromResult } from "@backend/audio";
+import { player, downloadTrack, playFromResult } from "@backend/audio";
 import { fetchAllPlaylists, addTrackToPlaylist } from "@backend/playlist";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
 import Modal, { displayModal } from "@components/common/Modal";
 import Loader from "@components/common/Loader";
-import { faAdd, faCopy, faPause, faPlay, faShare } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faCopy, faDownload, faPause, faPlay, faShare } from "@fortawesome/free-solid-svg-icons";
 
 import "@css/TrackPage.scss";
 
@@ -57,6 +57,12 @@ class TrackPage extends React.Component<any, IState> {
             playing: !this.state.playing,
             hasPlayed: !this.state.hasPlayed
         });
+    };
+
+    download = () => {
+        downloadTrack(this.props.track.id)
+            .then(() => alert("Track was downloaded successfully!"))
+            .catch(() => alert("An error occurred while downloading the track."));
     };
 
     addToPlaylist = async () => {
@@ -144,6 +150,7 @@ class TrackPage extends React.Component<any, IState> {
                         this.setState({ playlists: fetchAllPlaylists() });
                     }}>Add To Playlist</Button>
                     <Button icon={faCopy} className="TrackOptions" onClick={this.copyTrackURL}>Copy Track URL</Button>
+                    <Button icon={faDownload} className="TrackOptions" onClick={this.download}>Download Track</Button>
                 </div>
                 <Modal id="TrackModal" onSubmit={this.addToPlaylist}>
                     <h2>Select Playlist</h2>

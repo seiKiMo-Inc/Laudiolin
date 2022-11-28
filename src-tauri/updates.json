@@ -1,0 +1,11 @@
+{
+  "version": "1.0.3",
+  "notes": "Even more damn bug fixes. (and other features!)",
+  "pub_date": "2022-11-28T01:44:44Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFh0R1hzQ1NCNFdZM1pITjZyaHdzZ3plNC9xWEhRbVRJcEY1WTVFa1VYMlFTZFgzTzFxTVlCenlnL1pFOSsrK3N4aHhRYXBRNHRNa3pWRzI0UVZOUEFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjY5NjAwMDg1CWZpbGU6TGF1ZGlvbGluXzEuMC4zX3g2NF9lbi1VUy5tc2kuemlwCjNZYk5uQ0NBQjJoY0ZQbGRvczVNa0dDUktMTEJud241TmczMDlvL2RQbHkrc1ErWjNOSDlYZUQzeUFlMlJpdFhJK0NVbHFXT09iZmR3NytETFljcURBPT0K",
+      "url": "https://github.com/Dumbfuckery-Inc/Laudiolin/releases/download/v1.0.3/Laudiolin_1.0.3_x64_en-US.msi.zip"
+    }
+  }
+}

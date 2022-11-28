@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 import { login } from "@backend/user";
 
-import { AccessDetails, Pages } from "@app/constants";
+import { Pages } from "@app/constants";
+import { invoke } from "@tauri-apps/api";
+import { listen } from "@tauri-apps/api/event";
 import { getSettings, saveSettings } from "@backend/settings";
 
 import Navigator from "@components/common/Navigator";
@@ -31,9 +33,6 @@ interface IState {
 }
 
 class LoginPage extends React.Component<IProps, IState> {
-    interval: any;
-    window: Window;
-
     constructor(props: any) {
         super(props);
 
@@ -42,37 +41,32 @@ class LoginPage extends React.Component<IProps, IState> {
         };
     }
 
-    listenToLogin = async () => {
-        // Check if the localstorage has been updated.
-        if (localStorage.getItem("isAuthenticated") == null)
-            return;
-
-        // Validate the code.
-        const code = localStorage.getItem("user_token");
-        if (code == null || code == "")
-            return;
-
-        // If it has, stop listening.
-        clearInterval(this.interval);
-        // Set the user's settings.
-        const settings = getSettings();
-        settings.token = localStorage.getItem("user_token");
-        saveSettings(settings);
-        // Close the window.
-        this.window.close();
-        // Redirect to the home page.
-        this.props.navigate(Pages.home);
-        this.setState({ waiting: false });
-    };
-
     loginToDiscord = async () => {
         if (this.state.waiting) return;
         this.setState({ waiting: true });
 
-        // Open the login page.
-        this.window = window.open(`${AccessDetails.route.formed}/discord`);
-        // Setup listener for login.
-        this.interval = setInterval(this.listenToLogin, 3000);
+        // Perform handoff process.
+        await invoke("handoff");
+        await invoke("open_browser");
+
+        // Wait for an authorization code.
+        await listen("set_code", event => {
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("isGuest", "false");
+
+            // Get the authorization code.
+            const {code} = event.payload as any;
+            // Save the authorization code.
+            const settings = getSettings();
+            settings.token = code;
+            saveSettings(settings);
+
+            // Redirect to the home page.
+            this.props.navigate(Pages.home);
+            this.setState({ waiting: false });
+
+            login(code); // Login to the backend.
+        });
     };
 
     loginAsGuest = () => {
