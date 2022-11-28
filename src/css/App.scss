@@ -68,7 +68,7 @@ h1 {
 .titlebar {
     @apply flex justify-end h-8 fixed inset-x-0 top-0 select-none;
     @apply bg-gradient-to-r from-slate-900 to-slate-800;
-    z-index: 10000;
+    z-index: 10000000;
 }
 
 .titlebar-button {
