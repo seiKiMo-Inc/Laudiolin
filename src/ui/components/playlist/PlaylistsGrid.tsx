@@ -33,9 +33,9 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
     makePlaylist = async () => {
         this.hideModal();
         const playlist: Playlist = {
-            name: (document.getElementById("createPlaylistNameInput") as HTMLInputElement).value,
-            description: (document.getElementById("createPlaylistDescriptionInput") as HTMLInputElement).value,
-            icon: (document.getElementById("createPlaylistIconInput") as HTMLInputElement).value,
+            name: (document.getElementById("createPlaylistNameInput") as HTMLInputElement).value || "New Playlist",
+            description: (document.getElementById("createPlaylistDescriptionInput") as HTMLInputElement).value || "Default description, you can change it in playlists settings.",
+            icon: (document.getElementById("createPlaylistIconInput") as HTMLInputElement).value || "https://i.pinimg.com/564x/e2/26/98/e22698a130ad38d08d3b3d650c2cb4b3.jpg",
             isPrivate: (document.getElementById("createPlaylistPrivateInput") as HTMLInputElement).checked,
             tracks: []
         }
