@@ -35,7 +35,7 @@ pub async fn make_track(track: SearchResult) -> PlayAudioPayload {
     PlayAudioPayload {
         file_path,
         track_data: track,
-        volume: 1.0
+        volume: 0.7
     }
 }
 
@@ -57,11 +57,11 @@ pub async fn create_audio_payload(track: SearchResult) -> PlayAudioPayload {
                               wrapper::protocol(), gateway.address,
                               gateway.port, id, engine);
     }
-    
+
     PlayAudioPayload {
         file_path: source_path,
         track_data: track,
-        volume: 1.0
+        volume: 0.7
     }
 }
 
@@ -95,7 +95,7 @@ pub fn play_audio(file_path: String, track_data: SearchResult) {
     let payload = PlayAudioPayload {
         file_path,
         track_data,
-        volume: 1.0
+        volume: 0.7
     };
 
     // Send the payload to the frontend.

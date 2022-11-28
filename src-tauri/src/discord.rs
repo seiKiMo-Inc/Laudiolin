@@ -6,7 +6,6 @@ use serde::{Serialize, Deserialize};
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 use discord_rich_presence::{activity, DiscordIpc, DiscordIpcClient};
-use crate::wrap;
 
 lazy_static! {
     static ref CLIENT: Mutex<DiscordIpcClient> =

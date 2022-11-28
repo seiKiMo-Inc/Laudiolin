@@ -34,6 +34,7 @@ export class MusicPlayer extends EventEmitter {
     private currentTrack: Track | null = null;
     private volume: number = 100;
 
+    private loading: boolean = false;
     private originalVolume: number = -1;
     private isPaused: boolean = true;
     private isLooped: number = 0; // 0 = no loop, 1 = loop track, 2 = loop queue
@@ -127,6 +128,20 @@ export class MusicPlayer extends EventEmitter {
     /*
      * Player utilities.
      */
+
+    /**
+     * Check if the player is loading.
+     */
+    isLoading(): boolean {
+        return this.loading;
+    }
+
+    /**
+     * Toggle the player's loading state.
+     */
+    toggleLoading(): boolean {
+        return (this.loading = !this.loading);
+    }
 
     /**
      * Shuffle the track queue.
@@ -282,6 +297,8 @@ export class MusicPlayer extends EventEmitter {
         this.currentTrack.play();
         // Set the player as unpaused.
         this.isPaused = false;
+        // Set the player as loading.
+        this.loading = true;
         // Emit start event.
         this.emit("start", track);
     }
@@ -308,6 +325,9 @@ export class MusicPlayer extends EventEmitter {
      * If in the middle of playing, return to the start of this track.
      */
     backTrack() {
+        // Check if there is a track loading.
+        if (this.loading) return;
+
         // Check if there is a track playing.
         // TODO: Check if #getProgress is in milliseconds.
         if (this.currentTrack && this.getProgress() > 3) {
@@ -336,6 +356,7 @@ export class MusicPlayer extends EventEmitter {
     skipTrack() {
         // Check if a track is loaded.
         if (!this.currentTrack) return;
+        if (this.loading) return;
         // Play the next track.
         this.playNext();
     }
@@ -352,6 +373,7 @@ export class MusicPlayer extends EventEmitter {
      */
     togglePlayback() {
         if (!this.currentTrack) return;
+        if (this.loading) return;
 
         if (this.isPlaying()) this.pause();
         else this.resume();
@@ -480,13 +502,28 @@ export class Track {
      * Sets the track's ID.
      */
     public play() {
+        let end = setTimeout(() => {
+            // If the track is still loading, stop it.
+            if (this.id == 0) {
+                this.stop();
+                clearTimeout(timeout);
+                clearTimeout(end);
+            }
+        }, 3000);
+
         let timeout = setTimeout(() => {
-            (this.id == 0) && (this.id = this.howl.play());
+            clearTimeout(end);
+
+            player.isLoading() && (this.id == 0) &&
+            (this.id = this.howl.play()) && player.toggleLoading();
         }, 500);
 
         this.howl.once("load", () => {
             clearTimeout(timeout);
-            (this.id == 0) && (this.id = this.howl.play());
+            clearTimeout(end);
+
+            player.isLoading() && (this.id == 0) &&
+            (this.id = this.howl.play()) && player.toggleLoading();
         });
     }
 
@@ -564,6 +601,7 @@ export class Track {
  */
 
 export const player: MusicPlayer = new MusicPlayer();
+window["player"] = player;
 player.setMaxListeners(100); // Increase the max event listeners.
 
 type PlayAudioPayload = FilePayload &
