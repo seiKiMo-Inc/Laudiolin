@@ -158,7 +158,10 @@ export async function removeTrackFromPlaylist(playlistId: string, index: number)
  */
 export async function editPlaylist(playlist: Playlist): Promise<boolean> {
     const response = await fetch(`${targetRoute}/playlist/${playlist.id}?type=bulk`, {
-        method: "PATCH", headers: { Authorization: token() },
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(playlist)
     });
 
