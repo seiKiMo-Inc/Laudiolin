@@ -145,7 +145,7 @@ class PlaylistPage extends React.Component<any, IState> {
                     </div>
                     <div className="PlaylistContent">
                         {this.state.playlist.tracks.length > 0 ? (
-                            <PlaylistTracks tracks={this.state.playlist.tracks} playlistId={this.state.playlist.id} />
+                            <PlaylistTracks playlist={this.state.playlist} />
                         ) : (
                             <h2 id="NoTracksMessage">No tracks found.</h2>
                         )}

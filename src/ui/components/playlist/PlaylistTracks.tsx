@@ -1,7 +1,8 @@
 import React from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import { Playlist, TrackData } from "@backend/types";
-import { addTrackToPlaylist, removeTrackFromPlaylist, fetchAllPlaylists } from "@backend/playlist";
+import { addTrackToPlaylist, removeTrackFromPlaylist, fetchAllPlaylists, editPlaylist } from "@backend/playlist";
 import emitter from "@backend/events";
 
 import PlaylistTrack from "@components/playlist/PlaylistTrack";
@@ -10,12 +11,12 @@ import Modal from "@components/common/Modal";
 import "@css/Playlist.scss";
 
 interface IProps {
-    tracks: TrackData[];
-    playlistId: string;
+    playlist: Playlist;
 }
 
 interface IState {
     track: TrackData;
+    tracks: TrackData[];
     playlists: Playlist[];
 }
 
@@ -34,6 +35,7 @@ class PlaylistTracks extends React.Component<IProps, IState> {
 
         this.state = {
             track: blankTrack,
+            tracks: this.props.playlist.tracks,
             playlists: fetchAllPlaylists()
         }
     }
@@ -51,13 +53,25 @@ class PlaylistTracks extends React.Component<IProps, IState> {
     };
 
     deleteFromPlaylist = async (index) => {
-        await removeTrackFromPlaylist(this.props.playlistId, index);
+        await removeTrackFromPlaylist(this.props.playlist.id, index);
         emitter.emit("playlist-update");
+    }
+
+    handleDragEnd = async (result) => {
+        if (!result.destination) return;
+        const tracks = this.state.tracks;
+        const [removed] = tracks.splice(result.source.index, 1);
+        tracks.splice(result.destination.index, 0, removed);
+        this.setState({ tracks });
+        await editPlaylist({
+            ...this.props.playlist,
+            tracks: tracks
+        });
     }
 
     componentDidUpdate(prevProps:Readonly<IProps>, prevState:Readonly<IState>) {
         // Scroll to the top of the page when the results change.
-        if (prevProps.tracks !== this.props.tracks) {
+        if (prevProps.playlist.tracks !== this.props.playlist.tracks) {
             document.documentElement.scrollTop = 0;
         }
     }
@@ -65,16 +79,31 @@ class PlaylistTracks extends React.Component<IProps, IState> {
     render() {
         return (
             <>
-                {this.props.tracks.map((track, index) => {
-                    return (
-                        <PlaylistTrack
-                            key={index}
-                            track={track}
-                            setTrack={() => this.setState({ track: track })}
-                            removeTrack={() => this.deleteFromPlaylist(index)}
-                        />
-                    );
-                })}
+                <DragDropContext onDragEnd={this.handleDragEnd}>
+                    <Droppable droppableId="PlaylistDroppableTracks">
+                        {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                {this.state.tracks.map((track, index) => {
+                                    return (
+                                        <Draggable key={`${track.id}_${index}`} draggableId={track.id} index={index}>
+                                            {(provided) => (
+                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                    <PlaylistTrack
+                                                        key={index}
+                                                        track={track}
+                                                        setTrack={() => this.setState({ track: track })}
+                                                        removeTrack={() => this.deleteFromPlaylist(index)}
+                                                    />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
 
                 <Modal id="PlaylistTrackAddModal" onSubmit={this.addToPlaylist}>
                     <h2>Select Playlist</h2>
