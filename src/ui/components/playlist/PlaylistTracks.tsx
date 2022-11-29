@@ -2,7 +2,7 @@ import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import { Playlist, TrackData } from "@backend/types";
-import { addTrackToPlaylist, removeTrackFromPlaylist, fetchAllPlaylists, editPlaylist } from "@backend/playlist";
+import { addTrackToPlaylist, removeTrackFromPlaylist, fetchAllPlaylists, editPlaylist, fetchPlaylist } from "@backend/playlist";
 import emitter from "@backend/events";
 
 import PlaylistTrack from "@components/playlist/PlaylistTrack";
@@ -48,6 +48,9 @@ class PlaylistTracks extends React.Component<IProps, IState> {
     addToPlaylist = async () => {
         this.hideModal();
         const playlistId = (document.getElementById("PlaylistTrackAddModal-PlaylistSelect") as HTMLSelectElement).value;
+        if (fetchPlaylist(playlistId).tracks.includes(this.state.track)) {
+            return alert("This track is already in this playlist!");
+        }
         await addTrackToPlaylist(playlistId, this.state.track);
         emitter.emit("playlist-update");
     };

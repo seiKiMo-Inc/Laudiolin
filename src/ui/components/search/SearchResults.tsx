@@ -6,7 +6,7 @@ import Loader from "@components/common/Loader";
 import Modal from "@components/common/Modal";
 
 import type { Playlist, SearchResult, SearchResults } from "@backend/types";
-import { addTrackToPlaylist, fetchAllPlaylists } from "@backend/playlist";
+import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist } from "@backend/playlist";
 
 interface IProps {
     results: SearchResults;
@@ -44,6 +44,9 @@ class SearchResultsList extends React.Component<IProps, IState> {
     addToPlaylist = async () => {
         this.hideModal();
         const playlistId = (document.getElementById("SearchModal-PlaylistSelect") as HTMLSelectElement).value;
+        if (fetchPlaylist(playlistId).tracks.includes(this.state.result)) {
+            return alert("This track is already in this playlist!");
+        }
         await addTrackToPlaylist(playlistId, this.state.result);
     };
 

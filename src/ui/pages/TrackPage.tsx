@@ -3,7 +3,7 @@ import React from "react";
 import { TrackData, Playlist } from "@backend/types";
 import { fetchTrackByUrl, parseArtist } from "@backend/search";
 import { player, downloadTrack, playFromResult } from "@backend/audio";
-import { fetchAllPlaylists, addTrackToPlaylist } from "@backend/playlist";
+import { fetchAllPlaylists, addTrackToPlaylist, fetchPlaylist } from "@backend/playlist";
 
 import Router from "@components/common/Router";
 import Button from "@components/common/Button";
@@ -68,6 +68,9 @@ class TrackPage extends React.Component<any, IState> {
     addToPlaylist = async () => {
         this.hideModal();
         const playlistId = (document.getElementById("TrackModal-PlaylistSelect") as HTMLSelectElement).value;
+        if (fetchPlaylist(playlistId).tracks.includes(this.state.track)) {
+            return alert("This track is already in this playlist!");
+        }
         await addTrackToPlaylist(playlistId, this.state.track);
     };
 
