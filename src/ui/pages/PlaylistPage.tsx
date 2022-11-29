@@ -103,10 +103,13 @@ class PlaylistPage extends React.Component<any, IState> {
             }
         };
 
-        emitter.on("playlist-update", async () => {
+        emitter.on("playlist-update", async (tracks) => {
             await loadPlaylists();
             this.setState({
-                playlist: fetchPlaylist(this.props.match.params.id),
+                playlist: {
+                    ...this.state.playlist,
+                    tracks: tracks
+                }
             });
         });
     }

@@ -54,7 +54,10 @@ class PlaylistTracks extends React.Component<IProps, IState> {
 
     deleteFromPlaylist = async (index) => {
         await removeTrackFromPlaylist(this.props.playlist.id, index);
-        emitter.emit("playlist-update");
+        const tracks = this.state.tracks;
+        tracks.splice(index, 1);
+        this.setState({ tracks: tracks });
+        emitter.emit("playlist-update", tracks);
     }
 
     handleDragEnd = async (result) => {
