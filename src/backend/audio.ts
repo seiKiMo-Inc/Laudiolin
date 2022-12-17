@@ -630,7 +630,6 @@ export async function setupListeners() {
  */
 export async function playFromResult(track: SearchResult): Promise<void> {
     // Download the audio file.
-    // TODO: Check settings for the user's preferred search engine.
     await invoke("play_from", { track });
 }
 

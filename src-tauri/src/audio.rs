@@ -70,7 +70,6 @@ pub async fn create_audio_payload(track: SearchResult) -> PlayAudioPayload {
 #[tauri::command]
 pub fn play_from(track: SearchResult) {
     let id = track.id.as_str();
-    // TODO: Check frontend for TODOs.
 
     // Check if the file is already downloaded.
     let mut source_path = TauriApp::file(format!("downloads/{}.mp3", id.clone()));

@@ -47,6 +47,7 @@ class SearchResultsList extends React.Component<IProps, IState> {
         if (fetchPlaylist(playlistId).tracks.includes(this.state.result)) {
             return alert("This track is already in this playlist!");
         }
+
         await addTrackToPlaylist(playlistId, this.state.result);
     };
 

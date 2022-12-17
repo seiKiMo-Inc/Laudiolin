@@ -38,7 +38,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             handoff::handoff, handoff::open_browser,
             discord::update_presence, discord::clear_presence,
-            wrapper::search, wrapper::url_search, wrapper::download,
+            wrapper::search, wrapper::id_search, wrapper::download,
             settings::read_from_file, settings::get_settings, settings::save_settings,
             audio::make_track, audio::create_audio_payload, audio::play_from, audio::play_playlist, audio::track_exists
         ])
