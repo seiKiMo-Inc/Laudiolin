@@ -167,3 +167,19 @@ export async function editPlaylist(playlist: Playlist): Promise<boolean> {
 
     return response.status != 200;
 }
+
+/**
+ * Imports a playlists from a URL.
+ * @param url The URL of the playlist.
+ */
+export async function importPlaylist(url: string): Promise<Playlist|null> {
+    const response = await fetch(`${targetRoute}/playlist/import`, {
+        method: "PATCH", headers: {
+            Authorization: token(),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url })
+    });
+
+    return await response.json();
+}

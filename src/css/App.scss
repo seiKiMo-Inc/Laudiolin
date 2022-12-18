@@ -254,6 +254,23 @@ h1 {
         padding: 10px;
         border-radius: 5px;
     }
+
+    button {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid #12326e;
+        padding: 10px;
+        font-size: 16px;
+        color: #fff;
+        background: #181c3b;
+        margin-bottom: 10px;
+
+        &:hover {
+            cursor: pointer;
+            background: #12326e;
+        }
+    }
 }
 
 .CloseModal {

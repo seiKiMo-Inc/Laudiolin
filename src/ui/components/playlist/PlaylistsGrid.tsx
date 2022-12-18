@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Playlist } from "@backend/types";
 import { createPlaylist } from "@backend/user";
+import { importPlaylist } from "@backend/playlist";
 
 import { Card } from "react-bootstrap";
 import Button from "@components/common/Button";
@@ -25,13 +26,18 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
         super(props);
     }
 
-    hideModal = () => {
+    hideCreatePlaylistModal = () => {
         const modal = document.getElementById("createPlaylistModal");
         modal.style.display = "none";
     }
 
+    hideImportPlaylistModal = () => {
+        const modal = document.getElementById("importPlaylistModal");
+        modal.style.display = "none";
+    }
+
     makePlaylist = async () => {
-        this.hideModal();
+        this.hideCreatePlaylistModal();
         const playlist: Playlist = {
             name: (document.getElementById("createPlaylistNameInput") as HTMLInputElement).value || "New Playlist",
             description: (document.getElementById("createPlaylistDescriptionInput") as HTMLInputElement).value || "Default description, you can change it in playlists settings.",
@@ -42,6 +48,23 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
         await createPlaylist(playlist);
 
         emitter.emit("playlist-grid-update");
+    }
+
+    importPlaylist = async () => {
+        this.hideImportPlaylistModal();
+        const url: string = (document.getElementById("importPlaylistUrlInput") as HTMLInputElement).value;
+        await importPlaylist(url);
+        emitter.emit("playlist-grid-update");
+    }
+
+    importPlaylistModal = (): ReactNode => {
+        return (
+            <Modal id="importPlaylistModal" onSubmit={this.importPlaylist}>
+                <h2>Import A Playlist</h2>
+                <p>You can import playlists from Youtube and Spotify.</p>
+                <input id="importPlaylistUrlInput" type="text" placeholder="Playlist URL" />
+            </Modal>
+        )
     }
 
     createPlaylistModal = (): ReactNode => {
@@ -55,6 +78,14 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
                     <p>Private Playlist?</p>
                     <input id="createPlaylistPrivateInput" type="checkbox" />
                 </div>
+                <br /><br />
+                <h2>Or Import A Playlist</h2>
+                <button onClick={() => {
+                    this.hideCreatePlaylistModal();
+                    displayModal("importPlaylistModal")
+                }}>
+                    Import Playlist
+                </button>
             </Modal>
         )
     }
@@ -94,6 +125,7 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
                     <Button id="AddPlaylistButton" icon={faPlus} style={{ marginLeft: 10, height: '50px', width: '50px', alignSelf: 'center' }} onClick={() => displayModal("createPlaylistModal")} />
                 </span>
                 {this.createPlaylistModal()}
+                {this.importPlaylistModal()}
             </>
         );
     }
