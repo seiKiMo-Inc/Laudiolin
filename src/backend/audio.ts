@@ -629,7 +629,10 @@ export async function makeTrack(trackData: TrackData): Promise<Track> {
  * @param id The ID of the track to create a playback URL for.
  */
 function getPlaybackUrl(id: string): string {
-    return `${AccessDetails.route.formed}/download?id=${id}&engine=${settings.search().engine}`;
+    let engine = settings.search().engine;
+    if (engine == "All") engine = "YouTube";
+
+    return `${AccessDetails.route.formed}/download?id=${id}&engine=${engine}`;
 }
 
 /**
