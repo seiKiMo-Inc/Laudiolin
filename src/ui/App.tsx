@@ -1,14 +1,14 @@
-import React, { lazy } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 
-const HomePage = lazy(() => import("@pages/Home"));
-const SearchResultsPage = lazy(() => import("@pages/SearchResultsPage"));
-const SettingsPage = lazy(() => import("@pages/SettingsPage"));
-const PlaylistPage = lazy(() => import("@pages/PlaylistPage"));
-const TrackPage = lazy(() => import("@pages/TrackPage"));
-const LoginPage = lazy(() => import("@pages/LoginPage"));
-const ErrorPage = lazy(() => import("@pages/ErrorPage"));
+import HomePage from "@pages/Home";
+import SearchResultsPage from "@pages/SearchResultsPage";
+import SettingsPage from "@pages/SettingsPage";
+import PlaylistPage from "@pages/PlaylistPage";
+import TrackPage from "@pages/TrackPage";
+import LoginPage from "@pages/LoginPage";
+import ErrorPage from "@pages/ErrorPage";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
