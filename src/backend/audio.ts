@@ -6,7 +6,15 @@ import { EventEmitter } from "events";
 import { file } from "@backend/fs";
 
 import type { Event } from "@tauri-apps/api/event";
-import type { SearchResult, TrackData, FilePayload, VolumePayload, TrackPayload, Playlist } from "@backend/types";
+import type {
+    SearchResult,
+    TrackData,
+    FilePayload,
+    VolumePayload,
+    TrackPayload,
+    Playlist,
+    SearchEngine
+} from "@backend/types";
 
 import * as settings from "@backend/settings";
 
@@ -617,6 +625,17 @@ export async function setupListeners() {
 }
 
 /**
+ * Identify the engine from a track ID.
+ * @param id The track ID.
+ */
+function identifyEngineFromId(id: string): SearchEngine {
+    if (id.length == 11) return "YouTube";
+    if (id.length == 12) return "Spotify";
+
+    return "All";
+}
+
+/**
  * Play an audio track from a search result.
  * @param track The search result of the track to play.
  */
@@ -654,7 +673,7 @@ export async function makeFastTrack(trackData: TrackData): Promise<Track> {
  */
 export async function downloadTrack(id: string): Promise<string> {
     try {
-        await invoke("download", { id, engine: settings.search().engine })
+        await invoke("download", { id, engine: identifyEngineFromId(id) })
     } catch {
         console.error(`Unable to download track ${id}.`); return "";
     }

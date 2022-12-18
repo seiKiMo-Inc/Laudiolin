@@ -23,13 +23,24 @@ pub struct PlayPlaylistPayload {
     playlist: Playlist
 }
 
+/// Identifies the search engine for a given ID.
+/// id: The ID of the track.
+fn identify_engine_from_id(id: &str) -> &str {
+    return match id.len() {
+        11 => "YouTube",
+        12 => "Spotify",
+        _ => "All"
+    }
+}
+
 /// Downloads the specified track and returns a play payload.
 /// track: The track to download.
 #[tauri::command]
 pub async fn make_track(track: SearchResult) -> PlayAudioPayload {
     // Download the track.
-    let file_path = wrapper::download(track.id.as_str(),
-                             get_settings().search.engine.as_str())
+    let track_id = track.id.as_str();
+    let file_path = wrapper::download(track_id.clone(),
+                                      identify_engine_from_id(track_id.clone()))
         .await.unwrap();
 
     PlayAudioPayload {
