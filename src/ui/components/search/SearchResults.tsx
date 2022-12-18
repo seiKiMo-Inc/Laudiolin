@@ -33,7 +33,7 @@ class SearchResultsList extends React.Component<IProps, IState> {
         this.state = {
             result: blankResult,
             playlists: fetchAllPlaylists()
-        }
+        };
     }
 
     hideModal = () => {

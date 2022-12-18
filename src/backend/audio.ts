@@ -7,8 +7,6 @@ import * as settings from "@backend/settings";
 import { AccessDetails } from "@app/constants";
 
 /**
- * TODO: Move music player to the backend. (Rust)
- *
  * Events:
  * - start: Emitted when a track starts playing.
  * - stop: Emitted when the player stops playing or when there are no more tracks.
@@ -67,6 +65,16 @@ export class MusicPlayer extends EventEmitter {
      */
     private setupTrackListeners(track: Track) {
         const handle = track.getHandle();
+
+        handle.on("play", () => {
+            const handleId = handle["id"] ?? "none";
+            const trackId = this.currentTrack.getHandle()["id"] ?? "none";
+
+            // Check if the track should be playing.
+            if (handleId != trackId) {
+                handle.stop();
+            }
+        });
 
         handle.on("end", () => {
             // Set the player as paused.
@@ -218,7 +226,7 @@ export class MusicPlayer extends EventEmitter {
      */
     getProgress(): number {
         if (!this.currentTrack) return -1;
-        return this.getCurrentTrack().seek();
+        return this.getCurrentTrack().seek(null);
     }
 
     /*
@@ -325,7 +333,6 @@ export class MusicPlayer extends EventEmitter {
         if (this.loading) return;
 
         // Check if there is a track playing.
-        // TODO: Check if #getProgress is in milliseconds.
         if (this.currentTrack && this.getProgress() > 3) {
             // Seek to the start of the track.
             this.setProgress(0);
@@ -361,7 +368,7 @@ export class MusicPlayer extends EventEmitter {
      * Returns the state of the player playing.
      */
     isPlaying(): boolean {
-        return !this.isPaused;
+        return this.currentTrack ? this.currentTrack.isPlaying() : !this.isPaused;
     }
 
     /**
@@ -508,7 +515,8 @@ export class Track {
             clearTimeout(end);
 
             player.isLoading() && (this.id == 0) &&
-            (this.id = this.howl.play()) && player.toggleLoading();
+            (this.howl["id"] = this.id =
+                this.howl.play()) && player.toggleLoading();
         }, 500);
 
         this.howl.once("load", () => {
@@ -516,7 +524,8 @@ export class Track {
             clearTimeout(end);
 
             player.isLoading() && (this.id == 0) &&
-            (this.id = this.howl.play()) && player.toggleLoading();
+            (this.howl["id"] = this.id =
+                this.howl.play()) && player.toggleLoading();
         });
     }
 
@@ -528,26 +537,12 @@ export class Track {
     }
 
     /**
-     * Mutes the track.
-     */
-    public mute() {
-        this.howl.mute(true);
-    }
-
-    /**
-     * Disables mute on the track.
-     */
-    public unmute() {
-        this.howl.mute(false);
-    }
-
-    /**
      * Sets the playback time of the track.
      * @param time The time to set.
      * @return The current (or new) track time.
      */
-    public seek(time?: number): number {
-        return time ? this.howl.seek(time) : this.howl.seek();
+    public seek(time: number | null): number {
+        return time != null ? this.howl.seek(time) : this.howl.seek();
     }
 
     /**
@@ -600,7 +595,6 @@ type PlayAudioPayload = VolumePayload & {
     url: string;
     track_data: TrackData;
 };
-type TrackSyncPayload = TrackPayload;
 
 /**
  * Sets up event listeners.

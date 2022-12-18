@@ -34,12 +34,12 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
 }
 
 /**
- * Fetches track data from a song URL.
- * @param url The URL of the song.
+ * Fetches track data from a song ID.
+ * @param id The ID of the song.
  * @param engine The search engine to use.
  */
-export async function fetchTrackByUrl(url: string, engine: SearchEngine = "YouTube"): Promise<TrackData> {
-    const response = await fetch(`${AccessDetails.route.formed}/fetch/${url}?query=${engine}`);
+export async function fetchTrackById(id: string, engine: SearchEngine = "YouTube"): Promise<TrackData> {
+    const response = await fetch(`${AccessDetails.route.formed}/fetch/${id}?query=${engine}`);
     return (await response.json()) as TrackData;
 }
 
