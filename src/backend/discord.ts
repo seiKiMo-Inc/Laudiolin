@@ -27,8 +27,12 @@ const updatePresence = async () => {
     const currentTrack = player.getCurrentTrack();
     if (!currentTrack) return;
 
-    // Update the rich presence.
-    await setPresence(fromTrack(currentTrack), false);
+    if (!player.isPlaying())
+        clearPresence().then(() => updateTask = null);
+    else {
+        // Update the rich presence.
+        await setPresence(fromTrack(currentTrack), false);
+    }
 };
 const start = () => {
     updatePresence().then(() =>
