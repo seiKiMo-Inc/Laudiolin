@@ -34,12 +34,15 @@ jobs:
                   toolchain: stable
 
             - name: Install deps and build
-              run: yarn && yarn package --debug
+              run: yarn && yarn package
+              with:
+                  TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+                  TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
 
             - name: Compress build
               uses: vimtor/action-zip@v1
               with:
-                  files: src-tauri/target/debug/Laudiolin.exe src-tauri/target/debug/bundle/msi/
+                  files: src-tauri/target/release/Laudiolin.exe src-tauri/target/release/bundle/msi/
                   recursive: true
                   dest: Laudiolin.zip
 
@@ -69,12 +72,15 @@ jobs:
               run: sudo apt install libwebkit2gtk-4.0-dev build-essential curl wget libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
 
             - name: Install deps and build
-              run: yarn && yarn package --debug
+              run: yarn && yarn package
+              with:
+                  TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+                  TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
 
             - name: Compress build
               uses: vimtor/action-zip@v1
               with:
-                  files: src-tauri/target/debug/laudiolin
+                  files: src-tauri/target/release/laudiolin
                   recursive: true
                   dest: Laudiolin.zip
 
