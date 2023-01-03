@@ -32,7 +32,7 @@ class Settings extends React.Component<any, IState> {
             accuracy: false,
             engine: "YouTube",
             encrypted: true,
-            address: "app.magix.lol",
+            address: "app.seikimo.moe",
             port: 443,
             gateway_port: 443,
             background_color: "",

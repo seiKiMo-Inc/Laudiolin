@@ -11,7 +11,7 @@ const defaultSettings: UserSettings = {
     },
     gateway: {
         encrypted: true,
-        address: "app.magix.lol",
+        address: "app.seikimo.moe",
         port: 443,
         gateway_port: 443
     },
@@ -81,7 +81,7 @@ export function gateway(): GatewaySettings {
     return (
         settings?.gateway || {
             encrypted: true,
-            address: "app.magix.lol",
+            address: "app.seikimo.moe",
             port: 443,
             gateway_port: 443
         }
