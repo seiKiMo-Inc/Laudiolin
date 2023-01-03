@@ -37,7 +37,7 @@ class Settings extends React.Component<any, IState> {
             engine: "YouTube",
             download_path: "downloads",
             encrypted: true,
-            address: "app.magix.lol",
+            address: "app.seikimo.moe",
             port: 443,
             gateway_port: 443,
             background_color: "",

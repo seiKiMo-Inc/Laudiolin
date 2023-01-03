@@ -70,7 +70,7 @@ pub fn read_from_file(file_path: &str) {
             },
             gateway: GatewaySettings {
                 encrypted: true,
-                address: "app.magix.lol".to_string(),
+                address: "app.seikimo.moe".to_string(),
                 port: 443,
                 gateway_port: 443
             },
