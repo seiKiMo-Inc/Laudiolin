@@ -1,11 +1,11 @@
 {
-  "version": "1.0.4",
-  "notes": "Audio player & Discord rich presence bug fixes!",
-  "pub_date": "2022-12-17T01:40:39Z",
+  "version": "1.0.5",
+  "notes": "Importing playlists from other sources!",
+  "pub_date": "2023-01-03T06:11:47Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbGJKOUR5dUF2aFF5dHZHNjBZZHdrSUZqR1Foc2orbDd0U2duMGVqY2JzbzRMaXluM3BLcHZGOVRNRTlQZVZjbklrRzA0RE82QS9wZ0ZJVmRZdGFDeEFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcxMzI4MjA4CWZpbGU6TGF1ZGlvbGluXzEuMC40X3g2NF9lbi1VUy5tc2kuemlwCllQeDF5akxJdlZWN1R2ak52cDZPWFFKMThPTTBFQnNCdENPN0IwMENqemxBM3ZJcVhiaWpRQ1oxdHZNQ3hWRjVldk5maWpqdDk0aENLYUFoR1V0dERRPT0K",
-      "url": "https://github.com/Dumbfuckery-Inc/Laudiolin/releases/download/v1.0.4/Laudiolin_1.0.4_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFU0R2JBWE1xNTBLcHljZVdpbTRSNCtXVGx0bklkZjM2cUNYbEF3VHE2a2M3R2lrV3IyR0VMbnRoTjNGRjJjVUk2UVlveWdZVmYvUTdjcmpVQ1NoSlFvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcyNzI2NTg4CWZpbGU6TGF1ZGlvbGluXzEuMC41X3g2NF9lbi1VUy5tc2kuemlwCk84ME5uV04zQnAvdWtXYVNOL3RzTU5tVUkveCtrNnVyYU5oQkJFd1RzdWhUWUgvVkRsazJ4cytVb3lRTGN4MGhYbDBWMU5OaTVuZnVQdml1S09oOUJBPT0K",
+      "url": "https://github.com/Dumbfuckery-Inc/Laudiolin/releases/download/v1.0.5/Laudiolin_1.0.5_x64_en-US.msi.zip"
     }
   }
 }
