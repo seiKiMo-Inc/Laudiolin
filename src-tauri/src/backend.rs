@@ -18,7 +18,6 @@ trait Backend {
      */
 
     fn volume(&self, volume: u8);
-    fn track_sync(&self, track: SearchResult, progress: u64);
 
     /*
      * Gateway functions.
@@ -35,10 +34,6 @@ trait Backend {
 impl Backend for Client {
     fn volume(&self, volume: u8) {
         wrapper::volume(volume);
-    }
-
-    fn track_sync(&self, track: SearchResult, progress: u64) {
-        wrapper::track_sync(track, progress);
     }
 
     fn send(&self, data: String) {
@@ -103,7 +98,6 @@ pub fn gateway_handle_message(client: &Client, data: &str) -> Result<(), &'stati
     match parsed_data._type.as_str() {
         "volume" => Ok(client.volume(parse_volume(data))),
         "listening" => Ok(()),
-        "sync" => Ok(client.track_sync(parse_track(data), parse_progress(data))),
 
         _ => Err("Invalid message type")
     }

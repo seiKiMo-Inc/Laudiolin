@@ -1,4 +1,5 @@
 import { emit, listen } from "@tauri-apps/api/event";
+import { syncToTrack } from "@backend/audio";
 
 import { player } from "@backend/audio";
 import { token } from "@backend/user";
@@ -38,6 +39,20 @@ type NowPlayingMessage = BaseGatewayMessage & {
     track: TrackData | null;
     seek: number;
 };
+/**
+ * From server.
+ * @param with The user ID of the person to listen along with. Can be null to stop.
+ */
+export type ListenMessage = BaseGatewayMessage & {
+    type: "listen";
+    with: string;
+}
+// To client.
+export type SyncMessage = BaseGatewayMessage & {
+    type: "sync";
+    track: TrackData | null;
+    progress: number;
+};
 
 // To & from server.
 type VolumeMessage = BaseGatewayMessage & {
@@ -69,8 +84,8 @@ export async function setupListeners() {
 
     player.on("start", update);
     player.on("stop", update);
-    // player.on("pause", update);
-    // player.on("resume", update);
+    player.on("pause", update);
+    player.on("resume", update);
     player.on("end", update);
     player.on("seek", update);
     player.on("update", update);
@@ -106,6 +121,17 @@ export function sendGatewayMessage(message: object) {
 
     // Send the message to the gateway.
     gateway?.send(JSON.stringify(message));
+}
+
+/**
+ * Tells the gateway to sync the audio between this client and the specified user.
+ * @param userId The user ID to sync with.
+ */
+export function listenAlongWith(userId: string): void {
+    sendGatewayMessage(<ListenMessage>{
+        type: "listen",
+        with: userId
+    });
 }
 
 /**
@@ -149,6 +175,7 @@ function onOpen() {
 async function onMessage(event: MessageEvent) {
     // Parse the message.
     const message: BaseGatewayMessage = JSON.parse(event.data);
+
     // Check if the message should be handled.
     switch (message.type) {
         case "initialize":
@@ -167,6 +194,14 @@ async function onMessage(event: MessageEvent) {
             // Send all queued messages.
             messageQueue.forEach((message) => sendGatewayMessage(message));
 
+            setTimeout(() => {
+                // Send player information to the gateway.
+                sendGatewayMessage(<ListenMessage>{
+                    type: "listen",
+                    with: "571725949058416651"
+                });
+            }, 3000);
+
             return;
         case "latency":
             gateway?.send(
@@ -174,6 +209,10 @@ async function onMessage(event: MessageEvent) {
                     type: "latency"
                 })
             );
+            return;
+        case "sync":
+            // Pass the message to the player.
+            await syncToTrack(message as SyncMessage);
             return;
     }
 

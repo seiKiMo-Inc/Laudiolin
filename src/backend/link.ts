@@ -1,6 +1,5 @@
-import ReactDOM from "react-dom";
 import { listen, Event } from "@tauri-apps/api/event";
-import { Navigate } from "react-router-dom";
+import { listenAlongWith } from "@backend/gateway";
 
 /*
  * Deep links:
@@ -48,6 +47,8 @@ async function onLinked(event: Event<string>) {
             window.location.href = `/track/${value}`;
             break;
         case "listen":
+            if (action != "id") break;
+            listenAlongWith(value);
             break;
         case "playlist":
             if (action != "id") break;

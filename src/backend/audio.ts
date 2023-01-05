@@ -16,7 +16,7 @@ import type {
     SearchEngine
 } from "@backend/types";
 
-import * as settings from "@backend/settings";
+import { SyncMessage } from "@backend/gateway";
 
 /**
  * Events:
@@ -611,7 +611,6 @@ type PlayAudioPayload = FilePayload &
     VolumePayload & {
         track_data: TrackData;
     };
-type TrackSyncPayload = TrackPayload;
 
 /**
  * Sets up event listeners.
@@ -620,7 +619,6 @@ export async function setupListeners() {
     console.log("Setting up audio event listeners...");
     await listen("play_audio", playAudio);
     await listen("set_volume", updateVolume);
-    await listen("track_sync", syncToTrack);
     await listen("play_playlist", playPlaylist);
 }
 
@@ -680,6 +678,23 @@ export async function downloadTrack(id: string): Promise<string> {
 }
 
 /**
+ * Syncs the player to a track.
+ * @param data The gateway payload.
+ */
+export async function syncToTrack(data: SyncMessage) {
+    // Check if the track needs to be played.
+    const track = data.track;
+    const playing = player.getCurrentTrack();
+    if (!playing || track.id != playing.getData().id) {
+        // Play the track.
+        player.playTrack(await makeFastTrack(track));
+    }
+
+    // Set the player's progress.
+    player.setProgress(data.progress);
+}
+
+/**
  * Plays an audio file.
  * @param event The event.
  */
@@ -711,24 +726,4 @@ function updateVolume(event: Event<any>) {
 
     // Set the volume.
     Howler.volume(payload.volume);
-}
-
-/**
- * Syncs the player to a track.
- * @param event The event.
- */
-async function syncToTrack(event: Event<any>) {
-    // Parse the payload from the event.
-    const payload: TrackSyncPayload = event.payload;
-
-    // Check if the track needs to be played.
-    const track = payload.track;
-    const playing = player.getCurrentTrack();
-    if (!playing || track.id != playing.getData().id) {
-        // Play the track.
-        await invoke("play_from", { track });
-    }
-
-    // Set the player's progress.
-    player.setProgress(payload.progress);
 }
