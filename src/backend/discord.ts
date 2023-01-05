@@ -1,5 +1,6 @@
 import type { RichPresence } from "@backend/types";
 import { player, Track } from "@backend/audio";
+import * as user from "@backend/user";
 
 import { invoke } from "@tauri-apps/api/tauri";
 import { parseArtist } from "@backend/search";
@@ -79,7 +80,12 @@ export function fromTrack(track: Track): RichPresence {
         large_image_key: data.icon,
         large_image_text: data.title,
         small_image_key: "icon",
-        small_image_text: "Laudiolin"
+        small_image_text: "Laudiolin",
+
+        button_one_label: "Play on Laudiolin",
+        button_one_url: `https://laudiolin.seikimo.moe/track/${data.id}`,
+        button_two_label: "Listen Along",
+        button_two_url: `laudiolin://listen?user=${user.userId()}`
     };
 
     // Add optional fields.

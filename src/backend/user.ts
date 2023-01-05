@@ -20,6 +20,13 @@ export function token() {
 }
 
 /**
+ * Gets the user ID from the local storage.
+ */
+export function userId() {
+    return userData.userId;
+}
+
+/**
  * Loads the target route from the config.
  */
 export function loadRoute() {
