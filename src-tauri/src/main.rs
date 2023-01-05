@@ -10,6 +10,7 @@ use window_shadows::set_shadow;
 
 use crate::wrapper::{TauriApp, RustErrorPayload};
 
+mod link;
 mod audio;
 mod handoff;
 mod backend;
@@ -34,6 +35,9 @@ pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
 }
 
 fn main() {
+    // Check for an existing deep link instance.
+    tauri_plugin_deep_link::prepare("laudiolin");
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             handoff::handoff, handoff::open_browser,
@@ -52,6 +56,8 @@ fn main() {
             create_data_dir(app);
             // Initialize Discord integration.
             discord::initialize();
+            // Initialize linking.
+            link::initialize(app);
 
             // Set the window shadow.
             let window = app.get_window("main").unwrap();

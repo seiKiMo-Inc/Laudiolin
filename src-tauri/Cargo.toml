@@ -35,6 +35,11 @@ discord-rich-presence = "0.2.3"
 lazy_static = "1.4.0"
 once_cell = "1.14.0"
 
+# Deep Linking
+[dependencies.tauri-plugin-deep-link]
+git = "https://github.com/FabianLars/tauri-plugin-deep-link"
+branch = "main"
+
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL

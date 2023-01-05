@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 
 // Setup event listeners.
 import * as fs from "@backend/fs";
+import * as link from "@backend/link";
 import * as user from "@backend/user";
 import * as audio from "@backend/audio";
 import * as events from "@backend/events";
@@ -17,6 +18,7 @@ import * as settings from "@backend/settings";
     await settings.reloadSettings();
 
     // Setup listeners.
+    await link.setupListeners();
     await audio.setupListeners();
     await events.setupListeners();
     await gateway.setupListeners();
