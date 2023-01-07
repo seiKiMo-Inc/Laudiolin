@@ -10,7 +10,8 @@ export default defineConfig({
     css: {postcss},
 
     optimizeDeps: {
-        include: ["@tauri-apps/api/tauri", "@tauri-apps/api/path"],
+        include: ["@tauri-apps/api/tauri", "@tauri-apps/api/path",
+            "react-router-dom"],
     },
 
     // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`

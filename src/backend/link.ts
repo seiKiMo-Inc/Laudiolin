@@ -55,6 +55,4 @@ async function onLinked(event: Event<string>) {
             window.location.href = `/playlist/${value}`;
             break;
     }
-
-    console.log(query, action, value);
 }

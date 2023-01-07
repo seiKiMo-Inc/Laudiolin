@@ -194,14 +194,6 @@ async function onMessage(event: MessageEvent) {
             // Send all queued messages.
             messageQueue.forEach((message) => sendGatewayMessage(message));
 
-            setTimeout(() => {
-                // Send player information to the gateway.
-                sendGatewayMessage(<ListenMessage>{
-                    type: "listen",
-                    with: "571725949058416651"
-                });
-            }, 3000);
-
             return;
         case "latency":
             gateway?.send(
