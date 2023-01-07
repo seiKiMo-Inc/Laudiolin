@@ -104,6 +104,7 @@ class PlaylistsGrid extends React.Component<IProps, IState> {
                     No playlists found.
                     <Button id="AddPlaylistButton" icon={faPlus} style={{ marginLeft: 10 }} onClick={() => displayModal("createPlaylistModal")} />
                     {this.createPlaylistModal()}
+                    {this.importPlaylistModal()}
                 </div>
             )
         }
