@@ -1,10 +1,10 @@
 import { Howl, Howler } from "howler";
 import { EventEmitter } from "events";
 
-import type { SearchResult, TrackData, VolumePayload, TrackPayload, Playlist, SearchEngine } from "@backend/types";
+import type { SearchResult, TrackData, VolumePayload, Playlist, SearchEngine } from "@backend/types";
 
-import * as settings from "@backend/settings";
 import { AccessDetails } from "@app/constants";
+import { SyncMessage } from "@backend/gateway";
 
 /**
  * Events:
@@ -648,20 +648,20 @@ function getPlaybackUrl(id: string): string {
 
 /**
  * Syncs the player to a track.
- * TODO: Implement {@link syncToTrack}.
+ * @param data The gateway payload.
  */
-async function syncToTrack() {
-    // Parse the payload from the event.
-    // const payload: TrackSyncPayload = event.payload;
+export async function syncToTrack(data: SyncMessage) {
+    // Validate the sync message.
+    const track = data.track;
+    if (!track) return;
 
     // Check if the track needs to be played.
-    // const track = payload.track;
-    // const playing = player.getCurrentTrack();
-    // if (!playing || track.id != playing.getData().id) {
-    //     // Play the track.
-    //     await invoke("play_from", { track });
-    // }
+    const playing = player.getCurrentTrack();
+    if (!playing || track.id != playing.getData().id) {
+        // Play the track.
+        player.playTrack(await makeTrack(track));
+    }
 
     // Set the player's progress.
-    // player.setProgress(payload.progress);
+    player.setProgress(data.progress);
 }

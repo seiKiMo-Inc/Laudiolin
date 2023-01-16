@@ -28,5 +28,5 @@ src-tauri/Cargo.lock
 package-lock.json
 yarn.lock
 
-# tauri generation
-src-tauri/keys
+# route
+route.json

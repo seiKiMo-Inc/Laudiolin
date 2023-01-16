@@ -9,6 +9,7 @@ import PlaylistPage from "@pages/PlaylistPage";
 import TrackPage from "@pages/TrackPage";
 import LoginPage from "@pages/LoginPage";
 import ErrorPage from "@pages/ErrorPage";
+import Listen from "@links/Listen";
 
 import { Pages } from "@app/constants";
 import { player } from "@backend/audio";
@@ -94,6 +95,8 @@ class App extends React.Component<any, IState> {
                         <Route path={Pages.settings} element={<SettingsPage />} />
                         <Route path={Pages.playlist} element={<PlaylistPage />} />
                         <Route path={Pages.track} element={<TrackPage />} />
+
+                        <Route path={"/listen/:userId"} element={<Listen />}/>
                     </Routes>
 
                     {/* empty div to keep content above player */}
