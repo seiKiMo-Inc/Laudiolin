@@ -85,7 +85,7 @@ export function fromTrack(track: Track): RichPresence {
         button_one_label: "Play on Laudiolin",
         button_one_url: `https://laudiolin.seikimo.moe/track/${data.id}`,
         button_two_label: "Listen Along",
-        button_two_url: `laudiolin://listen?user=${user.userId()}`
+        button_two_url: `https://laudiolin.seikimo.moe/listen/${user.getUserId()}`
     };
 
     // Add optional fields.

@@ -682,8 +682,11 @@ export async function downloadTrack(id: string): Promise<string> {
  * @param data The gateway payload.
  */
 export async function syncToTrack(data: SyncMessage) {
-    // Check if the track needs to be played.
+    // Validate the sync message.
     const track = data.track;
+    if (!track) return;
+
+    // Check if the track needs to be played.
     const playing = player.getCurrentTrack();
     if (!playing || track.id != playing.getData().id) {
         // Play the track.
