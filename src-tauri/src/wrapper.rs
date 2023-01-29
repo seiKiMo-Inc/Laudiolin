@@ -123,12 +123,8 @@ pub async fn search(query: &str, engine: &str) -> Result<SearchResults, ()> {
 /// Fetches track data from a song URL.
 /// url: The URL to fetch data from.
 #[tauri::command]
-pub async fn id_search(id: &str, engine: &str) -> Result<SearchResult, ()> {
-    let options = SearchOptions {
-        engine: engine.to_string()
-    };
-
-    Ok(backend::id_search(id, options).await.unwrap())
+pub async fn id_search(id: &str) -> Result<SearchResult, ()> {
+    Ok(backend::id_search(id).await.unwrap())
 }
 
 /// Downloads the song using the given ID.
