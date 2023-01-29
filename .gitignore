@@ -30,3 +30,5 @@ yarn.lock
 
 # tauri generation
 src-tauri/keys
+# vite config
+vite.config.ts.timestamp-*
