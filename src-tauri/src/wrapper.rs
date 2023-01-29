@@ -135,9 +135,8 @@ pub async fn id_search(id: &str, engine: &str) -> Result<SearchResult, ()> {
 /// id: The ID of the song to download. (YouTube video ID/ISRC)
 /// engine: The engine to use for the download.
 #[tauri::command]
-pub async fn download(id: &str, engine: &str) -> Result<String, ()> {
+pub async fn download(id: &str) -> Result<String, ()> {
     let options = DownloadOptions {
-        engine: engine.to_string(),
         file_path: TauriApp::file(format!("downloads/{}.mp3", id))
     };
 

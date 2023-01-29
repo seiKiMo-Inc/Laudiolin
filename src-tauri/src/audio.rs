@@ -23,24 +23,13 @@ pub struct PlayPlaylistPayload {
     playlist: Playlist
 }
 
-/// Identifies the search engine for a given ID.
-/// id: The ID of the track.
-fn identify_engine_from_id(id: &str) -> &str {
-    return match id.len() {
-        11 => "YouTube",
-        12 => "Spotify",
-        _ => "All"
-    }
-}
-
 /// Downloads the specified track and returns a play payload.
 /// track: The track to download.
 #[tauri::command]
 pub async fn make_track(track: SearchResult) -> PlayAudioPayload {
     // Download the track.
     let track_id = track.id.as_str();
-    let file_path = wrapper::download(track_id.clone(),
-                                      identify_engine_from_id(track_id.clone()))
+    let file_path = wrapper::download(track_id.clone())
         .await.unwrap();
 
     PlayAudioPayload {
@@ -63,10 +52,9 @@ pub async fn create_audio_payload(track: SearchResult) -> PlayAudioPayload {
     if !file_exists(source_path.clone()) {
         // Stream the audio track.
         let gateway = wrapper::gateway();
-        let engine = get_settings().search.engine.clone();
-        source_path = format!("{}://{}:{}/download?id={}&engine={}",
+        source_path = format!("{}://{}:{}/download?id={}",
                               wrapper::protocol(), gateway.address,
-                              gateway.port, id, engine);
+                              gateway.port, id);
     }
 
     PlayAudioPayload {
@@ -87,10 +75,9 @@ pub fn play_from(track: SearchResult) {
     if !file_exists(source_path.clone()) {
         // Stream the audio track.
         let gateway = wrapper::gateway();
-        let engine = get_settings().search.engine.clone();
-        source_path = format!("{}://{}:{}/download?id={}&engine={}",
+        source_path = format!("{}://{}:{}/download?id={}",
                               wrapper::protocol(), gateway.address,
-                              gateway.port, id, engine);
+                              gateway.port, id);
     }
 
     // Play audio from the source.

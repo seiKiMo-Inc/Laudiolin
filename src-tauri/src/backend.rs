@@ -49,7 +49,6 @@ pub struct SearchOptions {
     pub engine: String
 }
 pub struct DownloadOptions {
-    pub engine: String,
     pub file_path: String
 }
 
@@ -219,9 +218,9 @@ pub async fn download(id: &str, options: DownloadOptions) -> Result<String, &'st
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response_result = get(format!("{}://{}:{}/download?id={}&engine={}",
+    let response_result = get(format!("{}://{}:{}/download?id={}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, id, options.engine)).await;
+                               gateway.port, id)).await;
     let response = wrap(response_result, "download");
 
     // Check the status code.

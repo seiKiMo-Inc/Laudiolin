@@ -11,7 +11,6 @@ import type {
     TrackData,
     FilePayload,
     VolumePayload,
-    TrackPayload,
     Playlist,
     SearchEngine
 } from "@backend/types";
@@ -623,34 +622,12 @@ export async function setupListeners() {
 }
 
 /**
- * Identify the engine from a track ID.
- * @param id The track ID.
- */
-function identifyEngineFromId(id: string): SearchEngine {
-    if (id.length == 11) return "YouTube";
-    if (id.length == 12) return "Spotify";
-
-    return "All";
-}
-
-/**
  * Play an audio track from a search result.
  * @param track The search result of the track to play.
  */
 export async function playFromResult(track: SearchResult): Promise<void> {
     // Download the audio file.
     await invoke("play_from", { track });
-}
-
-/**
- * Makes a track object from track data.
- * @param trackData The track data to make a track object from.
- */
-export async function makeTrack(trackData: TrackData): Promise<Track> {
-    // Get the play audio payload.
-    const payload = await invoke("make_track", { track: trackData });
-    // Make a new track object.
-    return new Track(payload as PlayAudioPayload);
 }
 
 /**
@@ -671,7 +648,7 @@ export async function makeFastTrack(trackData: TrackData): Promise<Track> {
  */
 export async function downloadTrack(id: string): Promise<string> {
     try {
-        await invoke("download", { id, engine: identifyEngineFromId(id) })
+        await invoke("download", { id })
     } catch {
         console.error(`Unable to download track ${id}.`); return "";
     }

@@ -36,10 +36,9 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
 /**
  * Fetches track data from a song URL.
  * @param id The URL of the song.
- * @param engine The search engine to use.
  */
-export async function fetchTrackById(id: string, engine: SearchEngine = "YouTube"): Promise<TrackData> {
-    return await invoke("id_search", { id, engine });
+export async function fetchTrackById(id: string): Promise<TrackData> {
+    return await invoke("id_search", { id });
 }
 
 /**

@@ -100,8 +100,7 @@ class TrackPage extends React.Component<any, IState> {
     async componentDidMount() {
         document.documentElement.scrollTop = 0;
         this.setState({
-            track: await fetchTrackById(this.props.match.params.id,
-                settings.search().engine),
+            track: await fetchTrackById(this.props.match.params.id),
         });
 
         const root = document.getElementsByTagName("body")[0];
