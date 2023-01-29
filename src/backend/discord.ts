@@ -23,10 +23,17 @@ const emptyPresence: RichPresence = {
     instance: true
 };
 
+let nextConnect: number = Date.now();
 let updateTask: any = null;
 const updatePresence = async () => {
     const currentTrack = player.getCurrentTrack();
     if (!currentTrack) return;
+
+    // Check if the client needs to reconnect.
+    if (Date.now() > nextConnect) {
+        nextConnect = Date.now() + 3600e3;
+        await invoke("initialize_presence");
+    }
 
     if (!player.isPlaying())
         clearPresence().then(() => updateTask = null);

@@ -41,9 +41,9 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             handoff::handoff, handoff::open_browser,
-            discord::update_presence, discord::clear_presence,
             wrapper::search, wrapper::id_search, wrapper::download,
             settings::read_from_file, settings::get_settings, settings::save_settings,
+            discord::update_presence, discord::clear_presence, discord::initialize_presence,
             audio::make_track, audio::create_audio_payload, audio::play_from, audio::play_playlist, audio::track_exists
         ])
         .setup(|app| {
@@ -54,10 +54,11 @@ fn main() {
             wrapper::initialize();
             // Create app data directory.
             create_data_dir(app);
-            // Initialize Discord integration.
-            discord::initialize();
             // Initialize linking.
             link::initialize(app);
+
+            // Initialize Discord integration.
+            discord::initialize_presence();
 
             // Set the window shadow.
             let window = app.get_window("main").unwrap();
@@ -90,6 +91,8 @@ fn tray_handler(app: &AppHandle<Wry>, event: SystemTrayEvent) {
         SystemTrayEvent::DoubleClick { .. } => {
             app.get_window("main").unwrap().show()
                 .expect("Unable to show main window.");
+            app.get_window("main").unwrap().set_focus()
+                .expect("Unable to focus main window.");
         }
         _ => {}
     }

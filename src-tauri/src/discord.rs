@@ -51,8 +51,9 @@ pub struct Presence<'a> {
 }
 
 /// Creates a Discord IPC client.
-/// The client ID is fetched from the settings file.
-pub fn initialize() {
+/// Connects to the client.
+#[tauri::command]
+pub fn initialize_presence() {
     // Create an instance of the Discord IPC client.
     let mut client = DiscordIpcClient::new("1020193478556266536").unwrap();
     // Connect to the Discord client.
