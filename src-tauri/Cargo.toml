@@ -4,7 +4,7 @@ version = "1.0.5"
 description = "A Tauri-based music player."
 authors = ["KingRainbow44", "Arikatsu", "Shichiha"]
 license = "MIT"
-repository = "https://github.com/Dumbfuckery-Inc/Laudiolin"
+repository = "https://github.com/seiKiMo-Inc/Laudiolin"
 edition = "2021"
 rust-version = "1.57"
 
