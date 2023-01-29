@@ -1,7 +1,7 @@
 import { Howl, Howler } from "howler";
 import { EventEmitter } from "events";
 
-import type { SearchResult, TrackData, VolumePayload, Playlist, SearchEngine } from "@backend/types";
+import type { SearchResult, TrackData, VolumePayload, Playlist } from "@backend/types";
 
 import { AccessDetails } from "@app/constants";
 import { SyncMessage } from "@backend/gateway";
@@ -604,17 +604,6 @@ export async function setupListeners() {
 }
 
 /**
- * Identify the engine from a track ID.
- * @param id The track ID.
- */
-function identifyEngineFromId(id: string): SearchEngine {
-    if (id.length == 11) return "YouTube";
-    if (id.length == 12) return "Spotify";
-
-    return "All";
-}
-
-/**
  * Play an audio track from a search result.
  * @param track The search result of the track to play.
  */
@@ -640,10 +629,7 @@ export async function makeTrack(trackData: TrackData): Promise<Track> {
  * @param id The ID of the track to create a playback URL for.
  */
 function getPlaybackUrl(id: string): string {
-    let engine = identifyEngineFromId(id);
-    if (engine == "All") engine = "YouTube";
-
-    return `${AccessDetails.route.formed}/download?id=${id}&engine=${engine}`;
+    return `${AccessDetails.route.formed}/download?id=${id}`;
 }
 
 /**

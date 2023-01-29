@@ -1,6 +1,5 @@
 import React from "react";
 
-import * as settings from "@backend/settings";
 import { TrackData, Playlist } from "@backend/types";
 import { fetchTrackById, parseArtist } from "@backend/search";
 import { player, playFromResult } from "@backend/audio";
@@ -91,8 +90,7 @@ class TrackPage extends React.Component<any, IState> {
     async componentDidMount() {
         document.documentElement.scrollTop = 0;
         this.setState({
-            track: await fetchTrackById(this.props.match.params.id,
-                settings.search().engine)
+            track: await fetchTrackById(this.props.match.params.id)
         });
 
         const root = document.getElementsByTagName("body")[0];

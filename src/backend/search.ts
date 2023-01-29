@@ -1,5 +1,5 @@
 import { AccessDetails } from "@app/constants";
-import type { SearchEngine, SearchOptions, SearchResults, TrackData } from "@backend/types";
+import type { SearchOptions, SearchResults, TrackData } from "@backend/types";
 
 let nextQuery: string = "";
 
@@ -36,10 +36,9 @@ export async function doSearch(query: string, options: SearchOptions): Promise<S
 /**
  * Fetches track data from a song ID.
  * @param id The ID of the song.
- * @param engine The search engine to use.
  */
-export async function fetchTrackById(id: string, engine: SearchEngine = "YouTube"): Promise<TrackData> {
-    const response = await fetch(`${AccessDetails.route.formed}/fetch/${id}?query=${engine}`);
+export async function fetchTrackById(id: string): Promise<TrackData> {
+    const response = await fetch(`${AccessDetails.route.formed}/fetch/${id}`);
     return (await response.json()) as TrackData;
 }
 
