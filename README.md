@@ -24,7 +24,9 @@ A "high quality" music player written in TypeScript using Tauri and React.
 
 ## Installation
 
-If you do not wish to build the app from source you can download the latest release from the [releases page](https://github.com/seiKiMo-Inc/Laudiolin/releases).
+If you do not wish to build the app from source you can download the latest release from: 
+- The [releases page](https://github.com/seiKiMo-Inc/Laudiolin/releases).
+- The latest [GitHub Actions run](https://nightly.link/seiKiMo-Inc/Laudiolin/workflows/build/tauri-react). (dev builds only)
 
 ## Screenshots
 
