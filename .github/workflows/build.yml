@@ -6,6 +6,8 @@ on:
             - '.github/workflows/build.yml'
             - 'src-tauri/**/*'
             - 'src/**/*'
+        branches:
+            - 'tauri-react'
     pull_request:
         paths:
             - '.github/workflows/build.yml'
