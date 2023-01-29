@@ -1,5 +1,5 @@
 // Backend Rust bindings for the Laudiolin API.
-// Use with https://github.com/Dumbfuckery-Inc/Laudiolin-Backend
+// Use with https://github.com/seiKiMo-Inc/Laudiolin-Backend
 
 use serde::{Deserialize, Serialize};
 use std::io::Write;
@@ -185,14 +185,14 @@ pub async fn search(query: &str, options: SearchOptions) -> Result<SearchResults
 
 /// Fetches track data from a URL.
 /// url: The URL to fetch track data from.
-pub async fn id_search(id: &str, options: SearchOptions) -> Result<SearchResult, &'static str> {
+pub async fn id_search(id: &str) -> Result<SearchResult, &'static str> {
     // Get the user settings.
     let gateway = wrapper::gateway();
 
     // Perform the request.
-    let response_result = get(format!("{}://{}:{}/fetch/{}?query={}",
+    let response_result = get(format!("{}://{}:{}/fetch/{}",
                                wrapper::protocol(), gateway.address,
-                               gateway.port, id, options.engine)).await;
+                               gateway.port, id)).await;
     let response = wrap(response_result, "urlsearch");
 
     // Check the response code.
