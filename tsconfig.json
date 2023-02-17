@@ -21,7 +21,8 @@
       "@components/*": ["src/ui/components/*"],
       "@pages/*": ["src/ui/pages/*"],
       "@css/*": ["src/css/*"],
-      "@backend/*": ["src/backend/*"]
+      "@backend/*": ["src/backend/*"],
+      "@mod/*": ["src/backend/modules/*"]
     }
   },
   "include": ["src"],
