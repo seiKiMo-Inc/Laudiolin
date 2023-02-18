@@ -40,7 +40,7 @@ body {
     width: 100%;
     grid-template-areas:
         "nav top top"
-        "nav content content"
+        "nav main main"
         "control control control";
 
     grid-template-columns: auto 1fr;
@@ -49,8 +49,8 @@ body {
     overflow: hidden;
 }
 
-.ContentPanel {
-    grid-area: content;
+.MainView {
+    grid-area: main;
     background-color: var(--background-secondary-color);
     overflow: auto;
 }

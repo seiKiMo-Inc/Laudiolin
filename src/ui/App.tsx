@@ -25,7 +25,7 @@ class App extends React.Component<IProps, IState> {
                 <div className={"AppContainer"}>
                     <NavPanel />
                     <TopBar />
-                    <ContentPanel />
+                    <MainView />
                     <ControlPanel />
                 </div>
             </Router>
