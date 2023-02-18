@@ -21,7 +21,6 @@ class App extends React.Component<IProps, IState> {
         return (
             <Router>
                 <TopButtons />
-                <div className={"DragBar"} data-tauri-drag-region={true} />
                 <div className={"AppContainer"}>
                     <NavPanel />
                     <TopBar />

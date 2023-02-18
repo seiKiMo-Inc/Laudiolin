@@ -24,7 +24,7 @@ class TopButtons extends React.Component {
 
     render() {
         return (
-            <div className={"TopButtonsContainer"}>
+            <div className={"TopButtonsContainer"} data-tauri-drag-region={true}>
                 <VscClose className={"TopButtons"} onClick={this.closeWindow} />
                 <VscChromeMaximize className={"TopButtons"} onClick={this.maximizeWindow} />
                 <VscChromeMinimize className={"TopButtons"} onClick={this.minimizeWindow} />
