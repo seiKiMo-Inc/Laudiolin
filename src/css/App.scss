@@ -1,0 +1,56 @@
+/*
+ Dark (default) theme colors
+ */
+html {
+    --background-primary-color: #1A1A1A;
+    --background-secondary-color: #262626;
+
+    --icon-primary-color: #FFFFFF;
+}
+
+/*
+ Light theme colors
+ */
+html[data-theme="light"] {
+    --background-primary-color: #EEEEEE;
+    --background-secondary-color: #FAFAFA;
+
+    --icon-primary-color: #656565;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    background-color: var(--background-secondary-color);
+    height: 100%;
+    width: 100%;
+}
+
+.DragBar {
+    height: 17px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
+
+.AppContainer {
+    display: grid;
+    height: 100vh;
+    width: 100%;
+    grid-template-areas:
+        "nav top top"
+        "nav content content"
+        "control control control";
+
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+
+    overflow: hidden;
+}
+
+.ContentPanel {
+    grid-area: content;
+    background-color: var(--background-secondary-color);
+    overflow: auto;
+}
