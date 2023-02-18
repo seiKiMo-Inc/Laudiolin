@@ -4,3 +4,8 @@ export let Gateway = {
 
     getUrl: () => Gateway.url
 };
+
+export const ContentRoutes = {
+    home: "/",
+    search: "/search",
+}
