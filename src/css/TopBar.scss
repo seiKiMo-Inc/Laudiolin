@@ -1,6 +1,76 @@
 .TopBar {
     background-color: var(--background-secondary-color);
-    height: 57px;
     width: 100%;
     grid-area: top;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.TopBar_Nav {
+    display: flex;
+    align-items: center;
+}
+
+.TopBar_NavButtons {
+    color: var(--icon-secondary-color);
+    border-radius: 100%;
+    padding: 5px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        color: var(--accent-color);
+        background-color: var(--background-primary-color);
+        cursor: pointer;
+    }
+
+    &:nth-child(2) {
+        padding: 10px;
+    }
+}
+
+.SearchInput {
+    background-color: var(--background-primary-color);
+    color: var(--text-primary-color);
+    border: transparent solid 2px;
+    border-radius: 30px;
+    padding: 10px 7px;
+    margin-left: 10px;
+    min-width: 300px;
+    width: 50%;
+    display: flex;
+    transition: all 0.2s ease-in-out;
+
+    &:focus-within {
+        border: var(--accent-color) solid 2px;
+    }
+}
+
+.SearchInput_Icon {
+    color: var(--icon-secondary-color);
+}
+
+.SearchInput_Input {
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary-color);
+    width: 100%;
+    padding: 0 10px;
+
+    &:focus, &:active {
+        outline: none;
+    }
+}
+
+.TopBar_ListenAlongButton {
+    transition: all 0.2s ease-in-out;
+    margin-left: 40px;
+    color: var(--icon-secondary-color) !important;
+    padding: 7px 10px !important;
+
+    &:hover {
+        background-color: var(--accent-color);
+        color: white !important;
+        cursor: pointer;
+    }
 }
