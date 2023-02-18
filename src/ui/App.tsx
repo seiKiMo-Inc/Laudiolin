@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import TopButtons from "@components/TopButtons";
-import ControlPanel from "@components/ControlPanel";
-import NavPanel from "@components/NavPanel";
-import MainView from "@components/MainView";
-import TopBar from "@components/TopBar";
+import TopButtons from "@components/layout/TopButtons";
+import ControlPanel from "@components/layout/ControlPanel";
+import NavPanel from "@components/layout/NavPanel";
+import MainView from "@components/layout/MainView";
+import TopBar from "@components/layout/TopBar";
 
 import "@css/App.scss";
 
