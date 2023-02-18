@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "laudiolin",
-    "version": "0.0.0"
+    "productName": "Laudiolin",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -20,7 +20,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Music",
       "copyright": "",
       "deb": {
         "depends": []
@@ -33,7 +33,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "moe.seikimo.laudiolin",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
