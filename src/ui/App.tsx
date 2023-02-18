@@ -1,9 +1,10 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import TopButtons from "@components/TopButtons";
 import ControlPanel from "@components/ControlPanel";
 import NavPanel from "@components/NavPanel";
-import ContentPanel from "@components/ContentPanel";
+import MainView from "@components/MainView";
 import TopBar from "@components/TopBar";
 
 import "@css/App.scss";
@@ -18,7 +19,7 @@ class App extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <>
+            <Router>
                 <TopButtons />
                 <div className={"DragBar"} data-tauri-drag-region={true} />
                 <div className={"AppContainer"}>
@@ -27,7 +28,7 @@ class App extends React.Component<IProps, IState> {
                     <ContentPanel />
                     <ControlPanel />
                 </div>
-            </>
+            </Router>
         );
     }
 }
