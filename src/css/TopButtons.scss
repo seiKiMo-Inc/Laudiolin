@@ -1,0 +1,26 @@
+.TopButtonsContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.TopButtons {
+    color: var(--icon-primary-color);
+    padding: 5px 12px;
+    font-size: 20px;
+
+    &:nth-child(2) {
+        font-size: 17px;
+        padding: 6.5px 13.5px;
+    }
+
+    &:first-child:hover {
+        background-color: #ec2323;
+    }
+
+    &:hover {
+        background-color: var(--background-primary-color);
+    }
+}
