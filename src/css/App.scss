@@ -55,3 +55,15 @@ body {
     background-color: var(--background-secondary-color);
     overflow: auto;
 }
+
+.BasicButton {
+    background-color: var(--background-primary-color);
+    color: var(--text-primary-color);
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
