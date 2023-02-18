@@ -6,6 +6,12 @@ html {
     --background-secondary-color: #262626;
 
     --icon-primary-color: #FFFFFF;
+    --icon-secondary-color: #999999;
+
+    --text-primary-color: #FFFFFF;
+    --text-secondary-color: #A6A6A6;
+
+    --accent-color: #3484FC;
 }
 
 /*
@@ -16,13 +22,17 @@ html[data-theme="light"] {
     --background-secondary-color: #FAFAFA;
 
     --icon-primary-color: #656565;
+    --icon-secondary-color: #838383;
+
+    --text-primary-color: #656565;
+    --text-secondary-color: #A6A6A6;
+
+    --accent-color: #ED7D64;
 }
 
 body {
     margin: 0;
     padding: 0;
-
-    background-color: var(--background-secondary-color);
     height: 100%;
     width: 100%;
 }
