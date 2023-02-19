@@ -43,7 +43,7 @@ class Navigate extends React.Component<any, IState> {
         return (
             <>
                 { this.state.page == "Home" && <Home /> }
-                { this.state.page == "Search" && <SearchResults /> }
+                { this.state.page == "Search" && <SearchResults pageArgs={this.state.args} /> }
                 { this.state.page == "Recents" && <p>Recents</p> }
                 { this.state.page == "Profile" && <p>Profile</p> }
                 { this.state.page == "Favorites" && <p>Favorites</p> }

@@ -3,6 +3,7 @@ import React, { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import { doSearch } from "@backend/search";
+import { navigate } from "@backend/navigation";
 
 import "@css/layout/TopBar.scss";
 
@@ -27,7 +28,7 @@ class SearchInput extends React.Component<IProps, IState> {
 
         this.searchTimeout = setTimeout(() => {
             doSearch(text)
-                .then(results => console.log(results))
+                .then(results => navigate("Search", { results }))
                 .catch(err => console.error(err));
             this.searchTimeout = null;
         }, 500);

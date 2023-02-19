@@ -2,24 +2,49 @@ import React from "react";
 
 import Track from "@components/Track";
 
+import * as types from "@backend/types";
+
 import "@css/pages/SearchResults.scss";
 
-const result = {
-    "title": "hikarunara",
-    "artist": "Goose House",
-    "icon": "http://192.168.1.2:3000/proxy/LfH3rPgnSPUEU7M7zEN4o4G8Db21Q8r66HxNAZYOjzo1iJtEZnNmFzgivsR9mVTE3GcXoc4-8dI1KC-d=w544-h544-l90-rj?from=cart",
-    "url": "https://youtu.be/IeJTNN8_jLI",
-    "id": "IeJTNN8_jLI",
-    "duration": 255
-};
+interface IProps {
+    pageArgs: any;
+}
 
-class SearchResults extends React.Component {
+class SearchResults extends React.Component<IProps, never> {
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    /**
+     * Fetches an array of search results.
+     * @param pageArgs The arguments passed to the page.
+     */
+    getResults(pageArgs: any): types.TrackData[] {
+        // Check if the page arguments are valid.
+        let results: types.SearchResults = null;
+        if (pageArgs && pageArgs.results) {
+            results = pageArgs.results;
+        } else return null;
+
+        // Sort the results.
+        const sorted = [];
+        sorted.push(results.top);
+        results.results.forEach(result =>
+            sorted.includes(results) ? null : sorted.push(result));
+
+        return sorted;
+    }
+
     render() {
+        const { pageArgs } = this.props;
+        const results = this.getResults(pageArgs);
+
         return (
             <div className={"SearchResults"}>
-                <h1>SearchResults</h1>
-                <br />
-                <Track track={result} />
+                {
+                    results && results.map((result: types.TrackData, index: number) =>
+                        <Track track={result} key={index} />)
+                }
             </div>
         );
     }
