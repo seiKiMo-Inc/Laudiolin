@@ -161,6 +161,17 @@ export function getStreamingUrl(track: TrackData): string {
     return `${Gateway.url}/download?id=${track.id}`;
 }
 
+/**
+ * Tells the gateway to sync the audio between this client and the specified user.
+ * @param userId The user ID to sync with.
+ */
+export function listenAlongWith(userId: string | null): void {
+    sendGatewayMessage(<ListenMessage>{
+        type: "listen",
+        with: userId
+    });
+}
+
 type BaseGatewayMessage = {
     type: string;
     timestamp: number;

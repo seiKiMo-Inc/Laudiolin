@@ -9,6 +9,7 @@ export interface TrackPlayer {
     getQueue(): TrackData[];
 
     /* Player state. */
+    reset(): void;
     setRepeatMode(mode: Loop): void;
 
     /* Player manipulation. */

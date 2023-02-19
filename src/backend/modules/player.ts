@@ -17,7 +17,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     /* Queue */
     private current: Track | null = null;
     private queue: TrackData[] = [];
-    private readonly history: TrackData[] = [];
+    private history: TrackData[] = [];
 
     /* State */
     public state: PlayerState = {
@@ -69,6 +69,21 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public getQueue(): TrackData[] {
         return this.queue;
+    }
+
+    /**
+     * Resets the track player.
+     */
+    public reset(): void {
+        // Reset the state.
+        this.state.paused = true;
+        this.state.loop = "none";
+        // Reset the queues.
+        this.queue = [];
+        this.history = [];
+        // Reset the current track.
+        this.current && this.stop();
+        this.current = null;
     }
 
     /**
