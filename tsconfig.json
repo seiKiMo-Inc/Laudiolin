@@ -20,6 +20,7 @@
       "@app/*": ["src/*"],
       "@components/*": ["src/ui/components/*"],
       "@pages/*": ["src/ui/pages/*"],
+      "@layout/*": ["src/ui/layout/*"],
       "@css/*": ["src/css/*"],
       "@backend/*": ["src/backend/*"],
       "@mod/*": ["src/backend/modules/*"]
