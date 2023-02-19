@@ -7,6 +7,7 @@ import { system } from "@backend/settings";
 
 import { Gateway } from "@app/constants";
 import emitter from "@backend/events";
+import TrackPlayer from "@mod/player";
 
 export let connected: boolean = false;
 export let gateway: WebSocket | null = null;
@@ -17,7 +18,60 @@ const messageQueue: BaseGatewayMessage[] = [];
  * (for listeners)
  */
 export async function setup(): Promise<void> {
+    const playerSync = (time?: number) => {
+        update() // Update the player progress.
+            .catch(err => console.warn(err));
+        playerUpdate(time) // Update the player status.
+            .catch(err => console.warn(err));
+    };
 
+    // Add playback event listeners.
+    TrackPlayer.on("play", playerSync);
+    TrackPlayer.on("pause", playerSync);
+    TrackPlayer.on("stop", playerSync);
+    TrackPlayer.on("seek", playerSync);
+    TrackPlayer.on("end", playerSync);
+    TrackPlayer.on("track", playerSync);
+
+    // Add the update listener.
+    TrackPlayer.on("update", update);
+}
+
+/**
+ * Updates the current track info.
+ */
+async function update(): Promise<void> {
+    // Check if the track is playing.
+    const currentTrack = TrackPlayer.getCurrentTrack();
+    // Check if the track is a local track.
+    const url = currentTrack?.url as string;
+    if (url && url.startsWith("file://")) return;
+
+    // Send player information to the gateway.
+    sendGatewayMessage(<SeekMessage> {
+        type: "seek",
+        timestamp: Date.now(),
+        seek: TrackPlayer.getProgress()
+    });
+}
+
+/**
+ * Updates the player details on the backend.
+ */
+async function playerUpdate(seek?: number): Promise<void> {
+    // Check if the track is playing.
+    const currentTrack = TrackPlayer.getCurrentTrack();
+    // Check if the track is a local track.
+    const url = currentTrack?.url as string;
+    if (url && url.startsWith("file://")) return;
+
+    // Send player information to the gateway.
+    sendGatewayMessage(<PlayerMessage> {
+        type: "player",
+        seek: seek ?? TrackPlayer.getProgress(),
+        track: currentTrack ? currentTrack.data : null,
+        paused: TrackPlayer.paused,
+    });
 }
 
 /**
