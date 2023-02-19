@@ -1,12 +1,18 @@
 import { TrackData } from "@backend/types";
 
+export type Loop = "none" | "track" | "queue";
 export interface TrackPlayer {
     /* Player info. */
     getCurrentTrack(): Track | null;
     getProgress(): number;
     getDuration(): number;
+    getQueue(): TrackData[];
+
+    /* Player state. */
+    setRepeatMode(mode: Loop): void;
 
     /* Player manipulation. */
+    shuffle(): void;
     add(track: TrackData): void;
     next(): void;
     back(): void;

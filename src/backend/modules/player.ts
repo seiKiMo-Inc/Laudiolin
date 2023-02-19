@@ -16,7 +16,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
     /* Queue */
     private current: Track | null = null;
-    private readonly queue: TrackData[] = [];
+    private queue: TrackData[] = [];
     private readonly history: TrackData[] = [];
 
     /* State */
@@ -62,6 +62,28 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public getDuration(): number {
         return this.current ? this.current.duration() : 0;
+    }
+
+    /**
+     * Returns a queue of tracks.
+     */
+    public getQueue(): TrackData[] {
+        return this.queue;
+    }
+
+    /**
+     * Sets the repeat mode.
+     * @param mode The repeat mode.
+     */
+    public setRepeatMode(mode: Loop): void {
+        this.state.loop = mode;
+    }
+
+    /**
+     * Shuffles the queue.
+     */
+    public shuffle(): void {
+        this.queue = this.queue.sort(() => Math.random() - 0.5);
     }
 
     /**

@@ -1,5 +1,6 @@
 import type { TrackData } from "@backend/types";
 
+import { setCurrentPlaylist } from "@backend/playlist";
 import { getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
 import emitter from "@backend/events";
@@ -101,5 +102,15 @@ export async function playTrack(
     play && await TrackPlayer.play(null, force);
 
     // Reset the current playlist.
-    // !fromPlaylist && setCurrentPlaylist(null);
+    !fromPlaylist && setCurrentPlaylist(null);
+}
+
+/**
+ * Shuffles the player queue.
+ */
+export async function shuffleQueue(): Promise<void> {
+    // Shuffle the queue.
+    TrackPlayer.shuffle();
+    // Skip to the next track.
+    await TrackPlayer.next();
 }
