@@ -16,7 +16,6 @@ interface IState {
 }
 
 class App extends React.Component<IProps, IState> {
-
     render() {
         return (
             <Router>
