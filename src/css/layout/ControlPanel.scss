@@ -1,5 +1,49 @@
 .ControlPanel {
+    width: 100%;
     height: 60px;
+
+    display: flex;
+    flex-direction: row;
+
     grid-area: control;
     background-color: var(--background-primary-color);
+}
+
+.ControlPanel_Track {
+    display: flex;
+    flex-direction: row;
+
+    gap: 14px;
+}
+
+.ControlPanel_TrackInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    p {
+        margin: 0;
+
+        font-size: 14px;
+        line-height: 21px;
+        color: var(--text-primary-color);
+    }
+
+    p:nth-child(2) {
+        font-size: 12px;
+        line-height: 18px;
+        color: var(--text-secondary-color);
+    }
+}
+
+.ControlPanel_Icon {
+    max-width: 60px;
+    max-height: 60px;
+}
+
+.ControlPanel_Controls {
+    display: flex;
+    align-items: center;
+
+    font-size: 18px;
 }
