@@ -1,5 +1,7 @@
-import type { TrackData } from "@backend/types";
+import type { Playlist, TrackData } from "@backend/types";
 
+import { isListeningWith, listenWith } from "@backend/social";
+import { setCurrentPlaylist } from "@backend/playlist";
 import { getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
 import emitter from "@backend/events";
@@ -90,10 +92,9 @@ export async function playTrack(
     fromHost = false
 ): Promise<void> {
     // Reset the listening state.
-    // if (isListeningWith() && !fromHost) {
-    //     await listenWith(null);
-    //     setForcePause(false);
-    // }
+    if (isListeningWith() && !fromHost) {
+        await listenWith(null);
+    }
 
     // Add the track to the player.
     TrackPlayer.add(track);
@@ -101,5 +102,100 @@ export async function playTrack(
     play && await TrackPlayer.play(null, force);
 
     // Reset the current playlist.
-    // !fromPlaylist && setCurrentPlaylist(null);
+    !fromPlaylist && setCurrentPlaylist(null);
+}
+
+/**
+ * Shuffles the player queue.
+ */
+export async function shuffleQueue(): Promise<void> {
+    // Shuffle the queue.
+    TrackPlayer.shuffle();
+    // Skip to the next track.
+    await TrackPlayer.next();
+}
+
+/**
+ * Toggles the repeat state of the player.
+ */
+export async function toggleRepeatState(): Promise<void> {
+    // Get the current repeat state.
+    const state = TrackPlayer.getRepeatMode();
+
+    // Set the repeat state.
+    switch (state) {
+        case "none":
+            await TrackPlayer.setRepeatMode("queue");
+            break;
+        case "queue":
+            await TrackPlayer.setRepeatMode("track");
+            break;
+        case "track":
+            await TrackPlayer.setRepeatMode("none");
+            break;
+    }
+}
+
+/**
+ * Syncs the current player to the specified track.
+ * @param track The track to sync to.
+ * @param progress The progress to sync to.
+ * @param paused Is the player paused?
+ * @param seek Should the player seek?
+ */
+export async function syncToTrack(
+    track: TrackData|null,
+    progress: number,
+    paused: boolean,
+    seek: boolean
+): Promise<void> {
+    // Reset the player if the track is null.
+    if (track == null) {
+        await TrackPlayer.reset(); return;
+    }
+
+    // Check if the track needs to be played.
+    const playing = TrackPlayer.getCurrentTrack();
+    if (playing?.id != track.id) {
+        // Play the track.
+        await playTrack(track, true, true, false, false, true);
+    }
+
+    // Set the progress.
+    seek && TrackPlayer.seek(progress);
+
+    // Set the player's state.
+    if (paused) {
+        TrackPlayer.pause();
+    } else {
+        await TrackPlayer.play();
+    }
+}
+
+/**
+ * Plays the tracks in the playlist.
+ * @param playlist The playlist to play.
+ * @param shuffle Should the playlist be shuffled?
+ */
+export async function playPlaylist(playlist: Playlist, shuffle: boolean): Promise<void> {
+    // Reset the queue.
+    TrackPlayer.reset();
+
+    // Fetch the tracks.
+    let tracks = playlist.tracks
+        // Remove duplicate tracks.
+        .filter((track, index, self) => {
+            return self.findIndex(t => t.id == track.id) == index;
+        });
+    // Shuffle the tracks.
+    shuffle && (tracks = tracks.sort(() => Math.random() - 0.5));
+    // Add all tracks in the playlist to the queue.
+    for (const track of tracks) {
+        await playTrack(track, false, false, false, true);
+    }
+
+    // Play the player.
+    await TrackPlayer.play();
+    // Set the current playlist.
+    setCurrentPlaylist(playlist);
 }

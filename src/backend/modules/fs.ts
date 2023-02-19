@@ -3,7 +3,7 @@ import type { TrackData } from "@backend/types";
 import * as fs from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 
-let DocumentDirectoryPath: string | null = null;
+export let DocumentDirectoryPath: string | null = null;
 
 /**
  * Sets up the file system.

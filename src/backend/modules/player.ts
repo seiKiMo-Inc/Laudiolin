@@ -16,8 +16,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
     /* Queue */
     private current: Track | null = null;
-    private readonly queue: TrackData[] = [];
-    private readonly history: TrackData[] = [];
+    private queue: TrackData[] = [];
+    private history: TrackData[] = [];
 
     /* State */
     public state: PlayerState = {
@@ -62,6 +62,50 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public getDuration(): number {
         return this.current ? this.current.duration() : 0;
+    }
+
+    /**
+     * Returns a queue of tracks.
+     */
+    public getQueue(): TrackData[] {
+        return this.queue;
+    }
+
+    /**
+     * Resets the track player.
+     */
+    public reset(): void {
+        // Reset the state.
+        this.state.paused = true;
+        this.state.loop = "none";
+        // Reset the queues.
+        this.queue = [];
+        this.history = [];
+        // Reset the current track.
+        this.current && this.stop();
+        this.current = null;
+    }
+
+    /**
+     * Gets the repeat mode.
+     */
+    public getRepeatMode(): Loop {
+        return this.state.loop;
+    }
+
+    /**
+     * Sets the repeat mode.
+     * @param mode The repeat mode.
+     */
+    public setRepeatMode(mode: Loop): void {
+        this.state.loop = mode;
+    }
+
+    /**
+     * Shuffles the queue.
+     */
+    public shuffle(): void {
+        this.queue = this.queue.sort(() => Math.random() - 0.5);
     }
 
     /**
@@ -175,6 +219,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     public pause(): void {
         this.state.paused = !this.state.paused;
         this.update();
+    }
+
+    /**
+     * Seeks to a position in the track.
+     * @param progress The progress to seek to.
+     */
+    public seek(progress: number): void {
+        this.current?.seek(progress);
     }
 }
 

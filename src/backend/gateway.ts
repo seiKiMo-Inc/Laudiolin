@@ -1,8 +1,12 @@
 import type { TrackData } from "@backend/types";
 
-import { Gateway } from "@app/constants";
-import { token } from "@backend/user";
+import { loadRecents, token } from "@backend/user";
+import { syncToTrack } from "@backend/audio";
+import { listenWith } from "@backend/social";
 import { system } from "@backend/settings";
+
+import { Gateway } from "@app/constants";
+import emitter from "@backend/events";
 
 export let connected: boolean = false;
 export let gateway: WebSocket | null = null;
@@ -90,18 +94,18 @@ async function onMessage(event: MessageEvent): Promise<void> {
             const { track, progress, paused, seek } = message as SyncMessage;
 
             // Validate the track.
-            // if (track == null && progress == -1) {
-            //     await listenWith(null); // Stop listening along.
-            // }
+            if (track == null && progress == -1) {
+                await listenWith(null); // Stop listening along.
+            }
 
             // Pass the message to the player.
-            // await syncToTrack(track, progress, paused, seek);
+            await syncToTrack(track, progress, paused, seek);
             return;
         case "recents":
             const { recents } = message as RecentsMessage;
 
-            // await loadRecents(recents); // Load the recents.
-            // emitter.emit("recent"); // Emit the recents event.
+            await loadRecents(recents); // Load the recents.
+            emitter.emit("recent"); // Emit the recents event.
             return;
         default:
             console.warn(message);
@@ -159,6 +163,17 @@ export function sendGatewayMessage(message: BaseGatewayMessage) {
  */
 export function getStreamingUrl(track: TrackData): string {
     return `${Gateway.url}/download?id=${track.id}`;
+}
+
+/**
+ * Tells the gateway to sync the audio between this client and the specified user.
+ * @param userId The user ID to sync with.
+ */
+export function listenAlongWith(userId: string | null): void {
+    sendGatewayMessage(<ListenMessage>{
+        type: "listen",
+        with: userId
+    });
 }
 
 type BaseGatewayMessage = {
