@@ -87,6 +87,13 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     }
 
     /**
+     * Gets the repeat mode.
+     */
+    public getRepeatMode(): Loop {
+        return this.state.loop;
+    }
+
+    /**
      * Sets the repeat mode.
      * @param mode The repeat mode.
      */

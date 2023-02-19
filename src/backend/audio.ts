@@ -1,4 +1,4 @@
-import type { TrackData } from "@backend/types";
+import type { Playlist, TrackData } from "@backend/types";
 
 import { isListeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
@@ -116,6 +116,27 @@ export async function shuffleQueue(): Promise<void> {
 }
 
 /**
+ * Toggles the repeat state of the player.
+ */
+export async function toggleRepeatState(): Promise<void> {
+    // Get the current repeat state.
+    const state = TrackPlayer.getRepeatMode();
+
+    // Set the repeat state.
+    switch (state) {
+        case "none":
+            await TrackPlayer.setRepeatMode("queue");
+            break;
+        case "queue":
+            await TrackPlayer.setRepeatMode("track");
+            break;
+        case "track":
+            await TrackPlayer.setRepeatMode("none");
+            break;
+    }
+}
+
+/**
  * Syncs the current player to the specified track.
  * @param track The track to sync to.
  * @param progress The progress to sync to.
@@ -149,4 +170,32 @@ export async function syncToTrack(
     } else {
         await TrackPlayer.play();
     }
+}
+
+/**
+ * Plays the tracks in the playlist.
+ * @param playlist The playlist to play.
+ * @param shuffle Should the playlist be shuffled?
+ */
+export async function playPlaylist(playlist: Playlist, shuffle: boolean): Promise<void> {
+    // Reset the queue.
+    TrackPlayer.reset();
+
+    // Fetch the tracks.
+    let tracks = playlist.tracks
+        // Remove duplicate tracks.
+        .filter((track, index, self) => {
+            return self.findIndex(t => t.id == track.id) == index;
+        });
+    // Shuffle the tracks.
+    shuffle && (tracks = tracks.sort(() => Math.random() - 0.5));
+    // Add all tracks in the playlist to the queue.
+    for (const track of tracks) {
+        await playTrack(track, false, false, false, true);
+    }
+
+    // Play the player.
+    await TrackPlayer.play();
+    // Set the current playlist.
+    setCurrentPlaylist(playlist);
 }

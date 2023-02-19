@@ -10,6 +10,7 @@ export interface TrackPlayer {
 
     /* Player state. */
     reset(): void;
+    getRepeatMode(): Loop;
     setRepeatMode(mode: Loop): void;
 
     /* Player manipulation. */
