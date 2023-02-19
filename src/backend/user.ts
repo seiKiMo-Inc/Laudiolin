@@ -64,7 +64,7 @@ export function userId(): string {
  * @returns The generated code.
  */
 export async function getCode(): Promise<string | null> {
-    const code = await token(); // Get the token.
+    const code = token(); // Get the token.
     if (code == "") return null; // Check if the user is authenticated.
 
     const route = `${targetRoute}/user/auth`;
@@ -116,7 +116,7 @@ export async function getToken(code: string): Promise<boolean> {
  * @param loadData Whether to load the user data.
  */
 export async function login(code: string = "", loadData: boolean = true): Promise<void> {
-    if (code == "") code = await token(); // If no code is provided, use the token.
+    if (code == "") code = token(); // If no code is provided, use the token.
     if (!code || code == "") return; // If no code is provided, exit.
 
     const route = `${targetRoute}/user`;
@@ -185,7 +185,7 @@ export async function loadPlaylists() {
     // Loop through the user's playlists.
     for (const playlistId of userData.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
-            method: "GET", headers: { Authorization: await token() }
+            method: "GET", headers: { Authorization: token() }
         });
 
         // Check the response code.
@@ -303,7 +303,7 @@ export async function getPlaylistAuthor(playlist: Playlist): Promise<string> {
 export async function getUserById(userId: string): Promise<User|null> {
     const route = `${targetRoute}/user/${userId}`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: await token() }
+        method: "GET", headers: { Authorization: token() }
     });
 
     // Check the response code.
@@ -325,7 +325,7 @@ export async function getUserPlaylists(user: User): Promise<Playlist[]|null> {
     // Loop through the user's playlists.
     for (const playlistId in user.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
-            method: "GET", headers: { Authorization: await token() }
+            method: "GET", headers: { Authorization: token() }
         });
 
         // Check the response code.
@@ -353,7 +353,7 @@ export async function favoriteTrack(track: TrackData, add: boolean = true): Prom
     const response = await fetch(route, {
         method: "POST", headers: {
             Operation: add ? "add" : "remove",
-            Authorization: await token(),
+            Authorization: token(),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(track)
@@ -379,7 +379,7 @@ export async function createPlaylist(playlist: Playlist): Promise<Playlist|null>
     const route = `${targetRoute}/playlist/create`;
     const response = await fetch(route, {
         method: "POST", headers: {
-            Authorization: await token(),
+            Authorization: token(),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(playlist)
@@ -400,7 +400,7 @@ export async function deletePlaylist(playlistId: string): Promise<boolean> {
     playlists = playlists.filter(playlist => playlist.id != playlistId); // Remove the playlist from the array.
     const route = `${targetRoute}/playlist/${playlistId}`;
     const response = await fetch(route, {
-        method: "DELETE", headers: { Authorization: await token() }
+        method: "DELETE", headers: { Authorization: token() }
     });
 
     return response.status == 200;
