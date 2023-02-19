@@ -7,7 +7,10 @@
 
   "type": "module",
   "scripts": {
+    "postinstall": "rustup override set nightly",
+
     "start:dev": "tauri dev",
+    "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
 
     "dev": "vite",
     "build": "tsc && vite build",
