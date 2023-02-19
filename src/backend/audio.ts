@@ -13,8 +13,16 @@ import TrackPlayer from "@mod/player";
 export async function setup(): Promise<void> {
     // Add an alternate track loader.
     // Used for loading cached tracks.
-    TrackPlayer.alternate = async (track: TrackData) =>
-        await fs.trackExists(track) ? fs.loadLocalTrackData(track.id) : null;
+    TrackPlayer.alternate = async (track: TrackData) => {
+        if (await fs.trackExists(track))
+            // Use the local URLs.
+            return await fs.loadLocalTrackData(track.id);
+
+        // Set the remote URLs.
+        track.url = getStreamingUrl(track);
+        track.icon = getIconUrl(track);
+        return track;
+    };
 }
 
 /**
