@@ -1,5 +1,6 @@
 import type { TrackData } from "@backend/types";
 
+import { isListeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
@@ -91,10 +92,9 @@ export async function playTrack(
     fromHost = false
 ): Promise<void> {
     // Reset the listening state.
-    // if (isListeningWith() && !fromHost) {
-    //     await listenWith(null);
-    //     setForcePause(false);
-    // }
+    if (isListeningWith() && !fromHost) {
+        await listenWith(null);
+    }
 
     // Add the track to the player.
     TrackPlayer.add(track);
