@@ -77,10 +77,12 @@ body {
     opacity: 1;
     height: 0;
     overflow: hidden;
-    margin: 0 10px;
     transform: translateY(20%);
     transition: all 0.1s ease-in-out;
     box-shadow: #00000070 0 0 10px 0;
+    position: absolute;
+    z-index: 1;
+    min-width: 200px;
 
     * {
         color: var(--text-primary-color);
