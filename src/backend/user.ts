@@ -44,8 +44,8 @@ export function getLoginUrl(): string {
 /**
  * Gets the authorization token from the local storage.
  */
-export async function token(): Promise<string> {
-    return await settings.get("user_token") ?? "";
+export function token(): string {
+    return settings.get("user_token") ?? "";
 }
 
 /**
