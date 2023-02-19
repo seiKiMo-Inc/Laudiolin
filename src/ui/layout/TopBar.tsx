@@ -6,7 +6,7 @@ import { FiHeadphones } from "react-icons/fi";
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
 
-import { ContentRoutes } from "@app/constants";
+import { navigate } from "@backend/navigation";
 
 import "@css/layout/TopBar.scss";
 
@@ -20,7 +20,7 @@ class TopBar extends React.Component<{}, never> {
     }
 
     goToHome() {
-        window.location.href = ContentRoutes.home;
+        navigate("Home");
     }
 
     goForward() {

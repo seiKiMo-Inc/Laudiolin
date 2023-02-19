@@ -8,16 +8,17 @@ const navigationEmitter = new EventEmitter();
 /**
  * Lets the app know the page should update.
  * @param page The page to navigate to.
+ * @param args The arguments to pass to the page.
  */
-export function navigate(page: Page) {
-    navigationEmitter.emit("navigate", page);
+export function navigate(page: Page, args?: any) {
+    navigationEmitter.emit("navigate", { page, args });
 }
 
 /**
  * Registers the specified listener for navigation events.
  * @param listener The listener to register.
  */
-export function registerListener(listener: (page: Page) => void) {
+export function registerListener(listener: (navigate: { page: Page, args?: any }) => void) {
     navigationEmitter.on("navigate", listener);
 }
 

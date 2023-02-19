@@ -1,10 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+
+import NavLink from "@components/NavLink";
 
 import { RxTimer } from "react-icons/rx";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
-
-import { ContentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
 
@@ -17,7 +16,7 @@ class NavPageList extends React.Component<{}, never> {
         return (
             <div className={"NavPanel_PageList"}>
                 <NavLink
-                    to={ContentRoutes.recents}
+                    to={"Recents"}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
@@ -33,7 +32,7 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={ContentRoutes.favorites}
+                    to={"Favorites"}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
@@ -49,7 +48,7 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={ContentRoutes.downloads}
+                    to={"Downloads"}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
@@ -65,7 +64,7 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={ContentRoutes.settings}
+                    to={"Settings"}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >

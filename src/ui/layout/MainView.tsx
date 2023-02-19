@@ -1,12 +1,9 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
 
-import Home from "@pages/Home";
-import SearchResults from "@pages/SearchResults";
-
-import { ContentRoutes } from "@app/constants";
+import Navigate from "@components/Navigate";
 
 import * as audio from "@backend/audio";
+import { navigate } from "@backend/navigation";
 
 interface IState {
     lightTheme: boolean;
@@ -43,16 +40,13 @@ class MainView extends React.Component<any, IState> {
     };
 
     search = () => {
-        window.location.href = ContentRoutes.search;
+        navigate("Search");
     };
 
     render() {
         return (
             <div className={"MainView"}>
-                <Routes>
-                    <Route path={ContentRoutes.home} element={<Home />} />
-                    <Route path={ContentRoutes.search} element={<SearchResults />} />
-                </Routes>
+                <Navigate />
 
                 <button onClick={this.toggleTheme}>Toggle Theme</button>
                 <button onClick={this.playAudio}>play audio</button>

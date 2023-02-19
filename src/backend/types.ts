@@ -1,4 +1,8 @@
-export type Page = "Home" | "Search" | "Login" | "Playing" | "Playlist" | "Playlists" | "Profile" | "Downloads";
+export type Page =
+    "Home" | "Recents" | "Search" |
+    "Login" | "Playing" | "Playlist" |
+    "Playlists" | "Profile" | "Favorites" |
+    "Downloads" | "Settings";
 
 export type SearchEngine = "YouTube" | "Spotify" | "All";
 export type TrackData = {

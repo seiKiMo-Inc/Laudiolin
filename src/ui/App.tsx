@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 
 import TopButtons from "@layout/TopButtons";
 import ControlPanel from "@layout/ControlPanel";
@@ -10,15 +9,25 @@ import TopBar from "@layout/TopBar";
 import "@css/App.scss";
 
 interface IProps {
+
 }
 
 interface IState {
+
 }
 
 class App extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+
     render() {
         return (
-            <Router>
+            <>
                 <TopButtons />
                 <div className={"AppContainer"}>
                     <NavPanel isLoggedIn={true} />
@@ -26,7 +35,7 @@ class App extends React.Component<IProps, IState> {
                     <MainView />
                     <ControlPanel />
                 </div>
-            </Router>
+            </>
         );
     }
 }
