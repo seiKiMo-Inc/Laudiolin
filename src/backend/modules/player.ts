@@ -65,6 +65,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     }
 
     /**
+     * Adds a track to the queue.
+     * @param track The track to add.
+     */
+    public add(track: TrackData): void {
+        this.queue.push(track);
+    }
+
+    /**
      * Continues to the next queued track.
      */
     public next(): void {
@@ -110,10 +118,19 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * @param history Should the track be added to the history?
      */
     public async play(
-        track: TrackData,
+        track?: TrackData,
         force = true,
         history = true,
     ): Promise<void> {
+        // Check if a track was specified.
+        if (!track) {
+            // Resume the player or queue the next track.
+            if (this.queue.length < 1) return;
+
+            // Play the next track.
+            return this.play(this.queue.shift()!, force, history);
+        }
+
         // Check if something is playing.
         if (this.current && !force) {
             // Add the track to the queue.
