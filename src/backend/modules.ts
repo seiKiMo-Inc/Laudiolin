@@ -20,6 +20,7 @@ export interface TrackPlayer {
     play(track: TrackData, force: boolean): Promise<void>;
     stop(emit: boolean): void;
     pause(): void;
+    seek(progress: number): void;
 }
 
 export interface Track {

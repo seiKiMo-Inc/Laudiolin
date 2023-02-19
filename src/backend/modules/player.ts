@@ -213,6 +213,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         this.state.paused = !this.state.paused;
         this.update();
     }
+
+    /**
+     * Seeks to a position in the track.
+     * @param progress The progress to seek to.
+     */
+    public seek(progress: number): void {
+        this.current?.seek(progress);
+    }
 }
 
 export class Track extends Howl implements mod.Track {

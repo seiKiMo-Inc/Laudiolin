@@ -114,3 +114,39 @@ export async function shuffleQueue(): Promise<void> {
     // Skip to the next track.
     await TrackPlayer.next();
 }
+
+/**
+ * Syncs the current player to the specified track.
+ * @param track The track to sync to.
+ * @param progress The progress to sync to.
+ * @param paused Is the player paused?
+ * @param seek Should the player seek?
+ */
+export async function syncToTrack(
+    track: TrackData|null,
+    progress: number,
+    paused: boolean,
+    seek: boolean
+): Promise<void> {
+    // Reset the player if the track is null.
+    if (track == null) {
+        await TrackPlayer.reset(); return;
+    }
+
+    // Check if the track needs to be played.
+    const playing = TrackPlayer.getCurrentTrack();
+    if (playing?.id != track.id) {
+        // Play the track.
+        await playTrack(track, true, true, false, false, true);
+    }
+
+    // Set the progress.
+    seek && TrackPlayer.seek(progress);
+
+    // Set the player's state.
+    if (paused) {
+        TrackPlayer.pause();
+    } else {
+        await TrackPlayer.play();
+    }
+}
