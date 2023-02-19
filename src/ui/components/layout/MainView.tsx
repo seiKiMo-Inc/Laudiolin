@@ -32,11 +32,11 @@ class MainView extends React.Component<any, IState> {
     render() {
         return (
             <div className={"MainView"}>
-                <button onClick={this.toggleTheme}>Toggle Theme</button>
                 <Routes>
                     <Route path={ContentRoutes.home} element={<Home />} />
                     <Route path={ContentRoutes.search} element={<SearchResults />} />
                 </Routes>
+                <button onClick={this.toggleTheme}>Toggle Theme</button>
             </div>
         );
     }
