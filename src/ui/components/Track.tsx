@@ -5,6 +5,7 @@ import { VscEllipsis } from "react-icons/vsc";
 
 import type { TrackData } from "@backend/types";
 import { formatDuration } from "@app/utils";
+import { playTrack } from "@backend/audio";
 
 import "@css/components/Track.scss";
 
@@ -17,11 +18,22 @@ class Track extends React.PureComponent<IProps, never> {
         super(props);
     }
 
+    /**
+     * Plays this track.
+     */
+    play(): void {
+        const track = this.props.track;
+        track && playTrack(track, true, true);
+    }
+
     render() {
         const { track } = this.props;
 
         return (
-            <div className={"Track"}>
+            <div
+                className={"Track"}
+                onClick={() => this.play()}
+            >
                 <img
                     className={"Track_Icon"}
                     alt={track.title}
