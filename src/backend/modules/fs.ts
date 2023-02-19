@@ -1,17 +1,27 @@
 import type { TrackData } from "@backend/types";
-import type { Track } from "@backend/modules";
 
 import * as fs from "@tauri-apps/api/fs";
-import { Dir } from "@tauri-apps/api/fs";
+import { appDataDir } from "@tauri-apps/api/path";
 
-const DocumentDirectoryPath = Dir.Document;
+let DocumentDirectoryPath: string | null = null;
+
+/**
+ * Sets up the file system.
+ */
+export async function setup(): Promise<void> {
+    DocumentDirectoryPath = (await appDataDir()).slice(0, -1);
+}
 
 /**
  * Creates the folders needed for Laudiolin.
  */
 export async function createFolders(): Promise<void> {
-    await fs.createDir(`${DocumentDirectoryPath}/tracks`);
-    await fs.createDir(`${DocumentDirectoryPath}/playlists`);
+    if (!await fs.exists(DocumentDirectoryPath))
+        await fs.createDir(DocumentDirectoryPath);
+    if (!await fs.exists(`${DocumentDirectoryPath}/tracks`))
+        await fs.createDir(`${DocumentDirectoryPath}/tracks`);
+   if (!await fs.exists(`${DocumentDirectoryPath}/playlists`))
+        await fs.createDir(`${DocumentDirectoryPath}/playlists`);
 }
 
 /**
@@ -70,24 +80,6 @@ export async function loadLocalTrackData(trackId: string): Promise<TrackData> {
     return JSON.parse(
         await fs.readTextFile(`${DocumentDirectoryPath}/tracks/${trackId}/data.json`)
     );
-}
-
-/**
- * Loads a track from the file system.
- * @param trackId The ID of the track to load.
- */
-export async function loadLocalTrack(trackId: string): Promise<Track> {
-    const trackData = await loadLocalTrackData(trackId);
-
-    return {
-        id: trackData.id,
-        url: trackData.url,
-        artwork: trackData.icon,
-        contentType: "audio/mpeg",
-        title: trackData.title,
-        artist: trackData.artist,
-        duration: trackData.duration
-    };
 }
 
 /**
