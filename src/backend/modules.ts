@@ -3,6 +3,8 @@ import { TrackData } from "@backend/types";
 export type Loop = "none" | "track" | "queue";
 export interface TrackPlayer {
     /* Player info. */
+    paused: boolean;
+
     getCurrentTrack(): Track | null;
     getProgress(): number;
     getDuration(): number;

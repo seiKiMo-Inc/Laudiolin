@@ -33,6 +33,10 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }, 500);
     }
 
+    get paused(): boolean {
+        return this.state.paused;
+    }
+
     /**
      * Emits the update event.
      */
