@@ -17,7 +17,7 @@ class NavPanel extends React.Component<IProps, never> {
     render() {
         return (
             <div className={"NavPanel"}>
-                <CurrentUser isLoggedIn={true} />
+                <CurrentUser isLoggedIn={this.props.isLoggedIn} />
                 <NavPageList />
             </div>
         );

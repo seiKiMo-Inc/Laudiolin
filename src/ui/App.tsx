@@ -22,7 +22,7 @@ class App extends React.Component<IProps, IState> {
             <Router>
                 <TopButtons />
                 <div className={"AppContainer"}>
-                    <NavPanel />
+                    <NavPanel isLoggedIn={true} />
                     <TopBar />
                     <MainView />
                     <ControlPanel />
