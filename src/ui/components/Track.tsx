@@ -33,6 +33,7 @@ class Track extends React.PureComponent<IProps, never> {
             <div
                 className={"Track"}
                 onClick={() => this.play()}
+                onContextMenu={() => console.log("Open context menu.")}
             >
                 <img
                     className={"Track_Icon"}
