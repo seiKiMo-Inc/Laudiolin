@@ -27,6 +27,10 @@
     &:nth-child(2) {
         padding: 10px;
     }
+
+    &:active {
+        scale: 0.9;
+    }
 }
 
 .SearchInput {

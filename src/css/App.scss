@@ -12,6 +12,7 @@ html {
 
     --text-primary-color: #FFFFFF;
     --text-secondary-color: #A6A6A6;
+    --text-tertiary-color: #999999;
 
     --accent-color: #3484FC;
 }
@@ -28,6 +29,7 @@ html[data-theme="light"] {
 
     --text-primary-color: #656565;
     --text-secondary-color: #A6A6A6;
+    --text-tertiary-color: #838383;
 
     --accent-color: #ED7D64;
 }
@@ -37,7 +39,10 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
-    font-family: 'Poppins', sans-serif;
+
+    * {
+        font-family: 'Poppins', sans-serif;
+    }
 }
 
 .AppContainer {
@@ -67,18 +72,23 @@ body {
     padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 5px;
+
+    &:active {
+        scale: 0.9;
+    }
 }
 
 .DropdownContent {
     opacity: 1;
     height: 0;
     overflow: hidden;
-    margin: 0 10px;
     transform: translateY(20%);
     transition: all 0.1s ease-in-out;
     box-shadow: #00000070 0 0 10px 0;
+    position: absolute;
+    z-index: 1;
+    min-width: 200px;
 
     * {
         color: var(--text-primary-color);
