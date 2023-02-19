@@ -8,4 +8,9 @@ export let Gateway = {
 export const ContentRoutes = {
     home: "/",
     search: "/search",
+    recents: "/recents",
+    user: "/user",
+    favorites: "/user/favorite",
+    downloads: "/downloads",
+    settings: "/settings",
 }
