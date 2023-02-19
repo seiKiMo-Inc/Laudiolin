@@ -4,7 +4,7 @@ import { BiSearch } from "react-icons/bi";
 
 import { doSearch } from "@backend/search";
 
-import "@css/TopBar.scss";
+import "@css/layout/TopBar.scss";
 
 interface IProps {}
 

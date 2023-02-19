@@ -8,7 +8,7 @@ import { toggleDropdown } from "@components/common/BasicDropdown";
 
 import { BasicUser } from "@backend/types";
 
-import "@css/NavPanel.scss";
+import "@css/layout/NavPanel.scss";
 
 const placeholderUser: BasicUser = {
     userId: "1",

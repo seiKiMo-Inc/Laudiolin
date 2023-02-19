@@ -1,6 +1,6 @@
 import React from "react";
 
-import "@css/ControlPanel.scss";
+import "@css/layout/ControlPanel.scss";
 
 class ControlPanel extends React.Component {
     render() {

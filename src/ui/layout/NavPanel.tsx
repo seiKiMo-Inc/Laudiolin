@@ -3,7 +3,7 @@ import React from "react";
 import CurrentUser from "@components/nav/CurrentUser";
 import NavPageList from "@components/nav/NavPageList";
 
-import "@css/NavPanel.scss";
+import "@css/layout/NavPanel.scss";
 
 interface IProps {
     isLoggedIn: boolean;

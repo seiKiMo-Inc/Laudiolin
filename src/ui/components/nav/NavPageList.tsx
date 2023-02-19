@@ -6,7 +6,7 @@ import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
 
 import { ContentRoutes } from "@app/constants";
 
-import "@css/NavPanel.scss";
+import "@css/layout/NavPanel.scss";
 
 class NavPageList extends React.Component<{}, never> {
     constructor(props: {}) {

@@ -3,7 +3,7 @@ import React from "react";
 import { appWindow } from "@tauri-apps/api/window";
 import { VscClose, VscChromeMinimize, VscChromeMaximize } from "react-icons/vsc";
 
-import "@css/TopButtons.scss";
+import "@css/layout/TopButtons.scss";
 
 class TopButtons extends React.Component {
     closeWindow = async () => {

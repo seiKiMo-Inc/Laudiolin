@@ -8,7 +8,7 @@ import BasicButton from "@components/common/BasicButton";
 
 import { ContentRoutes } from "@app/constants";
 
-import "@css/TopBar.scss";
+import "@css/layout/TopBar.scss";
 
 class TopBar extends React.Component<{}, never> {
     constructor(props: {}) {
