@@ -1,0 +1,49 @@
+.Track {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    user-select: none;
+
+    max-height: 67.5px;
+    padding-bottom: 10px;
+}
+
+.Track_Icon {
+    max-width: 67.5px;
+    max-height: 67.5px;
+
+    padding-right: 20px;
+    border-radius: 10px;
+}
+
+.Track_Info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    p {
+        margin: 0;
+
+        font-size: 16px;
+        line-height: 24px;
+        color: var(--text-primary-color);
+    }
+
+    p:nth-child(2) {
+        font-size: 14px;
+        line-height: 21px;
+        color: var(--text-secondary-color);
+    }
+}
+
+.Track_Interact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding-left: 20px;
+}
