@@ -295,4 +295,5 @@ export class Track extends Howl implements mod.Track {
 }
 
 const TrackPlayer = new Player();
+window["player"] = TrackPlayer;
 export default TrackPlayer;
