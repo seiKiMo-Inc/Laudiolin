@@ -4,6 +4,7 @@
 
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 
     grid-area: control;
     background-color: var(--background-primary-color);
@@ -12,38 +13,118 @@
 .ControlPanel_Track {
     display: flex;
     flex-direction: row;
-
     gap: 14px;
+    width: 10%;
 }
 
 .ControlPanel_TrackInfo {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
 
     p {
         margin: 0;
-
         font-size: 14px;
         line-height: 21px;
         color: var(--text-primary-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     p:nth-child(2) {
         font-size: 12px;
         line-height: 18px;
         color: var(--text-secondary-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
 .ControlPanel_Icon {
-    max-width: 60px;
-    max-height: 60px;
+    height: 100%;
+    width: auto;
+}
+
+.ControlPanel_MainControls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 100px;
+    justify-content: center;
+    width: 100%;
 }
 
 .ControlPanel_Controls {
     display: flex;
-    align-items: center;
+    gap: 20px;
+    font-size: 20px;
+    color: var(--icon-secondary-color);
 
-    font-size: 18px;
+    svg {
+        transition: all 0.1s ease-in-out;
+
+        &:nth-child(4) {
+            color: var(--icon-primary-color);
+        }
+
+        &:hover {
+            filter: brightness(1.5);
+
+            &:nth-child(4) {
+                scale: 1.2;
+            }
+        }
+    }
+}
+
+.ControlPanel_ProgressBar {
+    width: 50%;
+}
+
+.ControlPanel_Right {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        color: var(--icon-secondary-color);
+        font-size: 22px;
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+            filter: brightness(1.5);
+        }
+    }
+
+    :last-child {
+        color: var(--icon-secondary-color);
+        font-size: 22px;
+        margin-top: -5px;
+        margin-right: 20px;
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+            filter: brightness(1.5);
+        }
+    }
+}
+
+.ControlPanel_Volume {
+    width: 150px;
+}
+
+@media (max-width: 1440px) {
+    .ControlPanel {
+        height: 80px;
+    }
+
+    .ControlPanel_MainControls {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
