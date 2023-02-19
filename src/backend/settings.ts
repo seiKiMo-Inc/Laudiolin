@@ -1,5 +1,4 @@
 import type { UserSettings, SearchSettings, AudioSettings, UISettings, SystemSettings } from "@backend/types";
-import secureLocalStorage from "react-secure-storage";
 
 let settings: UserSettings | null = null;
 export const defaultSettings: UserSettings = {
@@ -175,7 +174,7 @@ export async function saveFromPath(path: string, value: any = ""): Promise<void>
  * @param fallback The fallback value to return if the key does not exist.
  */
 export function get(key: string, fallback: string | null = null): string | null {
-    return secureLocalStorage.getItem(key) as string | null ?? fallback;
+    return localStorage.getItem(key) as string | null ?? fallback;
 }
 
 /**
@@ -184,7 +183,7 @@ export function get(key: string, fallback: string | null = null): string | null 
  * @param value The value to set.
  */
 export function save(key: string, value: string = ""): void {
-    secureLocalStorage.setItem(key, value)
+    localStorage.setItem(key, value)
 }
 
 /**
@@ -192,7 +191,7 @@ export function save(key: string, value: string = ""): void {
  * @param key The key to remove.
  */
 export function remove(key: string): void {
-    secureLocalStorage.removeItem(key);
+    localStorage.removeItem(key);
 }
 
 /**
@@ -200,5 +199,5 @@ export function remove(key: string): void {
  * @param key The key to check.
  */
 export function exists(key: string): boolean {
-    return secureLocalStorage.getItem(key) !== null;
+    return localStorage.getItem(key) !== null;
 }
