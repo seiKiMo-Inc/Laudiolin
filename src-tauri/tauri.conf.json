@@ -13,9 +13,16 @@
   "tauri": {
     "allowlist": {
       "all": true,
+      "fs": {
+        "scope": ["**"]
+      },
       "shell": {
         "all": false,
         "open": true
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["$DATA", "$DATA/*"]
       }
     },
     "bundle": {
@@ -60,7 +67,7 @@
     "windows": [
       {
         "title": "Laudiolin",
-        "maximized": true,
+        "maximized": false,
         "center": true,
         "width": 1224,
         "height": 768,

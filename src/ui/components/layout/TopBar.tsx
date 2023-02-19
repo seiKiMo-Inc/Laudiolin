@@ -10,7 +10,7 @@ import { ContentRoutes } from "@app/constants";
 
 import "@css/TopBar.scss";
 
-class TopBar extends React.Component<never, never> {
+class TopBar extends React.Component<any, never> {
     goBack() {
         window.history.back();
     }

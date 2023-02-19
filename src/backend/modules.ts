@@ -7,6 +7,7 @@ export interface TrackPlayer {
     getDuration(): number;
 
     /* Player manipulation. */
+    add(track: TrackData): void;
     next(): void;
     back(): void;
     play(track: TrackData, force: boolean): Promise<void>;
