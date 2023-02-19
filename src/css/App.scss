@@ -37,7 +37,10 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
-    font-family: 'Poppins', sans-serif;
+
+    * {
+        font-family: 'Poppins', sans-serif;
+    }
 }
 
 .AppContainer {
