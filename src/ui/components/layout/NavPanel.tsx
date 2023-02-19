@@ -1,12 +1,18 @@
 import React from "react";
 
+import CurrentUser from "@components/nav/CurrentUser";
+
 import "@css/NavPanel.scss";
 
-class NavPanel extends React.Component {
+interface IProps {
+    isLoggedIn: boolean;
+}
+
+class NavPanel extends React.Component<IProps, never> {
     render() {
         return (
             <div className={"NavPanel"}>
-                <h1>NavPanel</h1>
+                <CurrentUser isLoggedIn={false} />
             </div>
         );
     }
