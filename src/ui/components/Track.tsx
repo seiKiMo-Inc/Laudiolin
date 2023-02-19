@@ -1,29 +1,42 @@
 import React from "react";
 
 import { BiHeart } from "react-icons/bi";
+import { VscEllipsis } from "react-icons/vsc";
+
+import type { TrackData } from "@backend/types";
+import { formatDuration } from "@app/utils";
 
 import "@css/components/Track.scss";
 
-class Track extends React.Component<any, any> {
-    constructor(props) {
+interface IProps {
+    track: TrackData;
+}
+
+class Track extends React.PureComponent<IProps, never> {
+    constructor(props: IProps) {
         super(props);
     }
 
     render() {
+        const { track } = this.props;
+
         return (
             <div className={"Track"}>
                 <img
                     className={"Track_Icon"}
-                    src={"https://app.seikimo.moe/proxy/UTSE1F-N2H4bljnWAg0uwtD4l1JV4jQQyXE6hukkuV3CjnO4dWDhGAEvQ-3WAu5miiDk5gKV9FZDvywH=w544-h544-l90-rj?from=cart"}
+                    alt={track.title}
+                    src={track.icon}
                 />
 
                 <div className={"Track_Info"}>
-                    <p>Hikaru Nara</p>
-                    <p>Artist Name</p>
+                    <p>{track.title}</p>
+                    <p>{track.artist}</p>
                 </div>
 
                 <div className={"Track_Interact"}>
-                    <BiHeart />
+                    <BiHeart style={{ width: 20, height: 18.18 }} />
+                    <p>{formatDuration(track.duration)}</p>
+                    <VscEllipsis />
                 </div>
             </div>
         );

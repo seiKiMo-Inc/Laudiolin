@@ -40,3 +40,20 @@ export function getIconUrl(track: TrackData): string {
 
     return url;
 }
+
+/**
+ * Formats the duration into hh:mm:ss.
+ * @param seconds The duration in seconds.
+ */
+export function formatDuration(seconds: number): string {
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getSeconds().toString().padStart(2, "0");
+
+    if (hh) {
+        return `${hh}:${mm.toString().padStart(2, "0")}:${ss}`;
+    } else {
+        return `${mm}:${ss}`;
+    }
+}
