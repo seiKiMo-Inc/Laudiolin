@@ -22,6 +22,13 @@ interface IProps {
 }
 
 class CurrentUser extends React.Component<IProps, never> {
+    onDropdownClick() {
+        toggleDropdown("currentUserDropdown");
+
+        const dropBtn = document.getElementsByClassName("CurrentUser_Chevron")[0] as HTMLElement;
+        dropBtn.style.transform = dropBtn.style.transform === "rotate(180deg)" ? "rotate(0deg)" : "rotate(180deg)";
+    }
+
     render() {
         return this.props.isLoggedIn ? (
             <>
@@ -35,7 +42,7 @@ class CurrentUser extends React.Component<IProps, never> {
                     </div>
 
                     <BasicButton
-                        onClick={() => toggleDropdown("currentUserDropdown")}
+                        onClick={this.onDropdownClick}
                         icon={<BiChevronDown className={"CurrentUser_Chevron"} />}
                         className={"CurrentUser_DropdownButton"}
                     />
