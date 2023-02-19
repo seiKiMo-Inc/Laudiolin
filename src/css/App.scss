@@ -70,3 +70,37 @@ body {
     justify-content: center;
     gap: 5px;
 }
+
+.DropdownContent {
+    opacity: 1;
+    height: 0;
+    overflow: hidden;
+    margin: 0 10px;
+    transform: translateY(20%);
+    transition: all 0.1s ease-in-out;
+    box-shadow: #00000070 0 0 10px 0;
+
+    * {
+        color: var(--text-primary-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        background-color: var(--background-secondary-color);
+        font-size: 15px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    *:hover {
+        cursor: pointer;
+        color: #fff;
+        background-color: var(--accent-color);
+    }
+}
+
+.show {
+    opacity: 1;
+    height: auto;
+    transition: all 0.1s ease-in-out;
+    transform: translateY(0);
+    border: var(--accent-color) 1px solid;
+}
