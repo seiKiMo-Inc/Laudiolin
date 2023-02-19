@@ -86,3 +86,45 @@
         background-color: #cb0101;
     }
 }
+
+.NavPanel_PageList {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.NavPanel_PageItem {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease-in-out;
+    color: var(--text-tertiary-color);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--text-primary-color) !important;
+        cursor: pointer;
+    }
+
+    * {
+        font-size: 15px;
+        font-weight: 500;
+        margin-left: 10px;
+    }
+}
+
+.NavPanel_PageItem_Icon {
+    margin-bottom: -1px;
+    font-size: 20px;
+}
+
+.NavPanel_PageItem_Active {
+    position: absolute;
+    left: -10px;
+    width: 5px;
+    height: 20px;
+    background-color: var(--accent-color);
+    border-radius: 5px;
+}
