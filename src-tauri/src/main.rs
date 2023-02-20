@@ -24,7 +24,7 @@ fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            open
+            open, online
         ])
         .setup(|app| {
             // Initialize deep linking.
@@ -45,6 +45,12 @@ fn main() {
 #[tauri::command]
 fn open(url: String) {
     wrap(open::that(url), "open");
+}
+
+/// Check if the device is online.
+#[tauri::command]
+async fn online() -> bool {
+    return online::check(None).is_ok();
 }
 
 /// Registers the deep link handler.
