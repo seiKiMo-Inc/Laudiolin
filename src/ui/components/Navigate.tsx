@@ -2,7 +2,8 @@ import React from "react";
 
 import Home from "@pages/Home";
 import Login from "@pages/Login";
-import SearchResults from "@pages/SearchResults";
+import Search from "@pages/Search";
+import Settings from "@pages/Settings";
 
 import type { Page } from "@backend/types";
 import { registerListener, removeListeners } from "@backend/navigation";
@@ -45,13 +46,13 @@ class Navigate extends React.Component<any, IState> {
             <>
                 { this.state.page == "Home" && <Home /> }
                 { this.state.page == "Login" && <Login /> }
-                { this.state.page == "Search" && <SearchResults pageArgs={this.state.args} /> }
+                { this.state.page == "Search" && <Search pageArgs={this.state.args} /> }
                 { this.state.page == "Recents" && <p>Recents</p> }
                 { this.state.page == "Profile" && <p>Profile</p> }
                 { this.state.page == "Favorites" && <p>Favorites</p> }
                 { this.state.page == "Downloads" && <p>Downloads</p> }
                 { this.state.page == "Playlist" && <p>Playlist</p> }
-                { this.state.page == "Settings" && <p>Settings</p> }
+                { this.state.page == "Settings" && <Settings /> }
             </>
         );
     }

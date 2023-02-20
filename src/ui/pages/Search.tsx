@@ -10,7 +10,7 @@ interface IProps {
     pageArgs: any;
 }
 
-class SearchResults extends React.Component<IProps, never> {
+class Search extends React.Component<IProps, never> {
     constructor(props: IProps) {
         super(props);
     }
@@ -50,4 +50,4 @@ class SearchResults extends React.Component<IProps, never> {
     }
 }
 
-export default SearchResults;
+export default Search;
