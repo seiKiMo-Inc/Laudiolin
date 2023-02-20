@@ -3,8 +3,6 @@ import React from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
 
-import BasicButton from "@components/common/BasicButton";
-
 import type { TrackData } from "@backend/types";
 import { formatDuration, isFavorite } from "@app/utils";
 import { favoriteTrack } from "@backend/user";
@@ -48,15 +46,10 @@ class Track extends React.PureComponent<IProps, never> {
         return (
             <div
                 className={"Track"}
+                onClick={() => this.play()}
                 onContextMenu={() => console.log("Open context menu.")}
             >
-                <div
-                    style={{
-                        display: "flex", flexDirection: "row",
-                        maxHeight: 67.5, width: "60%",
-                    }}
-                    onClick={() => this.play()}
-                >
+                <div className={"Track_Info"} onClick={() => this.play()}>
                     <img
                         className={"Track_Icon"}
                         alt={track.title}
@@ -70,15 +63,11 @@ class Track extends React.PureComponent<IProps, never> {
                 </div>
 
                 <div className={"Track_Interact"}>
-                    <BasicButton
-                        icon={favorite ?
-                            <AiFillHeart style={{ width: 20, height: 18.18,
-                                color: "var(--accent-color)" }} /> :
-                            <AiOutlineHeart style={{ width: 20, height: 18.18 }} />}
-                        style={{ backgroundColor: "transparent" }}
-                        onClick={() => this.favorite()}
-                    />
                     <p>{formatDuration(track.duration)}</p>
+                    {favorite ?
+                        <AiFillHeart style={{ width: 20, height: 18.18, color: "var(--accent-color)" }} onClick={() => this.favorite()} /> :
+                        <AiOutlineHeart style={{ width: 20, height: 18.18 }} onClick={() => this.favorite()} />
+                    }
                     <VscEllipsis />
                 </div>
             </div>
