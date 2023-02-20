@@ -1,0 +1,73 @@
+.Login {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--background-primary-color);
+
+    width: 500px;
+    height: 460px;
+    border: #3484FC 2px solid;
+}
+
+.Login_Title {
+    color: var(--text-primary-color);
+
+    padding-top: 68px;
+    font-size: 28px;
+    line-height: 45px;
+    text-align: center;
+}
+
+.Login_Code {
+    width: 360px;
+    height: 30px;
+    color: white;
+    background-color: var(--background-secondary-color);
+    border: none;
+}
+
+.Login_Button {
+    width: 360px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 27px;
+    justify-content: center;
+
+    color: white !important;
+    border-radius: 64px !important;
+    background-color: var(--accent-color) !important;
+}
+
+.Login_Guest {
+    width: 360px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 27px;
+    justify-content: center;
+
+    color: white !important;
+    border: 1px solid white !important;
+    border-radius: 64px !important;
+    background-color: var(--background-primary-color) !important;
+}
+
+.Login_Remember {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-top: 24px;
+    width: 360px;
+    height: 20px;
+
+    p {
+        margin: 0;
+        color: white;
+        text-align: left;
+    }
+}
+
+.Login_Reason {
+    color: white;
+    text-align: center;
+}

@@ -2,12 +2,16 @@ import React from "react";
 
 import { invoke } from "@tauri-apps/api";
 
+import BasicButton from "@components/common/BasicButton";
+
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
 import { navigate } from "@backend/navigation";
 import * as settings from "@backend/settings";
 
 import "@css/pages/Login.scss";
+
+import { ImConfused } from "react-icons/all";
 
 interface IState {
     waiting: boolean;
@@ -68,19 +72,45 @@ class Home extends React.Component<{}, IState> {
     }
 
     render() {
-        return (
-            <div>
-                <button
-                    onClick={() => this.login()}
-                >
-                    Login with Discord
-                </button>
+        const loginText = this.state.withCode ? "Submit Code" : "Log In with Discord";
 
-                <button
-                    onClick={() => this.guest()}
-                >
-                    Continue as Guest
-                </button>
+        return (
+            <div className={"Login"}>
+                <a className={"Login_Title"}>Log In to Continue</a>
+
+                <div style={{ paddingTop: 35 }}>
+                    <input
+                        className={"Login_Code"}
+                        type={"text"} maxLength={6}
+                        placeholder={"6-Digit Code"}
+                        onChange={e => this.setState({ withCode: true })}
+                    />
+                </div>
+
+                <div style={{ paddingTop: 16 }}>
+                    <BasicButton
+                        className={"Login_Button"}
+                        text={loginText}
+                    />
+                </div>
+
+                <div style={{ paddingTop: 24 }}>
+                    <BasicButton
+                        className={"Login_Guest"}
+                        text={"Continue as Guest"}
+                    />
+                </div>
+
+                <div className={"Login_Remember"}>
+                    <p>Remember me</p>
+                    <ImConfused />
+                </div>
+
+                <div style={{ paddingTop: 24 }}>
+                    <p className={"Login_Reason"}>
+                        Logging in with Discord lets you create playlists, like songs, connect with your friends and more!
+                    </p>
+                </div>
             </div>
         );
     }
