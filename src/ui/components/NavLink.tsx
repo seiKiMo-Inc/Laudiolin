@@ -5,6 +5,8 @@ import { navigate, registerListener } from "@backend/navigation";
 
 interface IProps {
     to: Page;
+    with?: any;
+
     children: ((props: {
         isActive: boolean;
     }) => React.ReactNode);
@@ -32,7 +34,7 @@ class NavLink extends React.PureComponent<IProps, IState> {
      */
     goTo(): void {
         this.setState({ isActive: true });
-        navigate(this.props.to);
+        navigate(this.props.to, this.props.with);
     }
 
     componentDidMount() {
