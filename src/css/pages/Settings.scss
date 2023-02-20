@@ -1,0 +1,26 @@
+.Setting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 80%;
+    max-height: 48px;
+}
+
+.Setting_Description {
+    margin-top: 10px;
+}
+
+.Setting_Box {
+    height: 22px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    border-radius: 5px !important;
+}
+
+.Setting_Input {
+    border: none;
+    color: var(--text-primary-color);
+    background-color: var(--background-primary-color);
+}
