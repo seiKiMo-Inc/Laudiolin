@@ -14,22 +14,28 @@ import type { TrackData } from "@backend/types";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
+import { favorites, favoriteTrack } from "@backend/user";
 
 interface IState {
     queue: boolean;
     playing: boolean;
     track: TrackData | null;
+    favorite: boolean;
 }
 
 class ControlPanel extends React.Component<any, IState> {
     /**
      * Player update callback.
      */
-    update = () => this.setState({
-        track: TrackPlayer.getCurrentTrack()?.data,
-        queue: TrackPlayer.getQueue().length > 0,
-        playing: !TrackPlayer.paused,
-    });
+    update = () => {
+        const track = TrackPlayer.getCurrentTrack()?.data;
+        this.setState({ track,
+            queue: TrackPlayer.getQueue().length > 0,
+            playing: !TrackPlayer.paused,
+            favorite: track ? favorites.find(
+                t => t.id == track.id) != null : false
+        })
+    };
 
     constructor(props: any) {
         super(props);
@@ -37,7 +43,8 @@ class ControlPanel extends React.Component<any, IState> {
         this.state = {
             queue: false,
             playing: false,
-            track: null
+            track: null,
+            favorite: false
         };
     }
 
@@ -47,6 +54,18 @@ class ControlPanel extends React.Component<any, IState> {
 
     componentWillUnmount() {
         TrackPlayer.off("update", this.update);
+    }
+
+    /**
+     * Adds the current track to the favorites.
+     */
+    async favorite(): Promise<void> {
+        const { track } = this.state;
+        if (!track) return;
+
+        // Toggle the favorite state.
+        await favoriteTrack(track, !this.state.favorite);
+        this.setState({ favorite: !this.state.favorite });
     }
 
     /**
@@ -72,8 +91,7 @@ class ControlPanel extends React.Component<any, IState> {
     }
 
     render() {
-        const { queue, playing, track } = this.state;
-        const isFavorite = true;
+        const { queue, playing, track, favorite } = this.state;
 
         return (
             <div className={"ControlPanel"}>
@@ -97,11 +115,11 @@ class ControlPanel extends React.Component<any, IState> {
                 <div className={"ControlPanel_MainControls"}>
                     <div className={"ControlPanel_Controls"}>
                         <BasicButton
-                            icon={isFavorite ?
+                            icon={favorite ?
                                 <AiFillHeart style={{ color: "var(--accent-color)" }} /> :
                                 <AiOutlineHeart />}
                             className={"ControlPanel_Control"}
-                            onClick={() => console.log("Favorite")}
+                            onClick={() => this.favorite()}
                         />
 
                         <BasicButton
