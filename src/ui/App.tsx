@@ -6,7 +6,7 @@ import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
 import TopBar from "@layout/TopBar";
 
-import { userData } from "@backend/user";
+import { login, userData } from "@backend/user";
 
 import "@css/App.scss";
 import emitter from "@backend/events";
@@ -38,6 +38,9 @@ class App extends React.Component<IProps, IState> {
     componentDidMount() {
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
+
+        // Attempt to log in.
+        login().catch(err => console.warn(err))
     }
 
     componentWillUnmount() {
