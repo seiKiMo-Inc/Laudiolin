@@ -50,6 +50,11 @@ fn open(url: String) {
 /// Check if the device is online.
 #[tauri::command]
 async fn online() -> bool {
+    // Check if the app is offline.
+    if std::env::var("TAURI_OFFLINE").is_ok() {
+        return false;
+    }
+
     return online::check(None).is_ok();
 }
 
