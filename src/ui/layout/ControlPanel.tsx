@@ -134,11 +134,11 @@ class ControlPanel extends React.Component<any, IState> {
                             onClick={() => this.toggleRepeatMode()}
                         />
 
-                        <BasicButton
-                            icon={queue ? <ImStack /> : null}
+                        { queue && <BasicButton
+                            icon={<ImStack />}
                             className={"ControlPanel_Control"}
                             onClick={() => console.log("See Queue")}
-                        />
+                        /> }
                     </div>
 
                     <input type={"range"} className={"ControlPanel_ProgressBar"} />
