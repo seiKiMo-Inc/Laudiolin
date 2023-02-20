@@ -54,9 +54,9 @@ class ControlPanel extends React.Component<any, IState> {
      */
     toggleRepeatMode(): void {
         switch (TrackPlayer.getRepeatMode()) {
-            case "none": TrackPlayer.setRepeatMode("track"); break;
-            case "track": TrackPlayer.setRepeatMode("queue"); break;
-            case "queue": TrackPlayer.setRepeatMode("none"); break;
+            case "none": TrackPlayer.setRepeatMode("queue"); break;
+            case "queue": TrackPlayer.setRepeatMode("track"); break;
+            case "track": TrackPlayer.setRepeatMode("none"); break;
         }
     }
 
@@ -66,8 +66,8 @@ class ControlPanel extends React.Component<any, IState> {
     getRepeatIcon(): React.ReactNode {
         switch (TrackPlayer.getRepeatMode()) {
             case "none": return <MdRepeat />;
-            case "track": return <MdRepeat className={"ControlPanel_Repeat"} />;
-            case "queue": return <MdRepeatOne className={"ControlPanel_Repeat"} />;
+            case "queue": return <MdRepeat className={"ControlPanel_Repeat"} />;
+            case "track": return <MdRepeatOne className={"ControlPanel_Repeat"} />;
         }
     }
 
