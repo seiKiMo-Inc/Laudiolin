@@ -1,0 +1,94 @@
+.Playlist_Details {
+    display: flex;
+    flex-direction: row;
+
+    p {
+        margin: 0;
+    }
+
+    h1 {
+        line-height: 82px;
+    }
+
+    .icon {
+        width: 230px;
+        height: 230px;
+        border-radius: 15px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 20px;
+    }
+}
+
+.Playlist_Author {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-left: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    .profile {
+        width: 24px;
+        height: 24px;
+        border-radius: 20px;
+    }
+
+    .username {
+        color: var(--text-secondary-color);
+    }
+}
+
+.Playlist_Actions {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    margin-top: 10px;
+
+    .action {
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
+        justify-content: center;
+        background-color: var(--accent-color);
+    }
+}
+
+.Playlist_Interact {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 24px;
+    width: 230px;
+
+    .edit {
+        height: 26px;
+        border-radius: 5px;
+        font-size: 12px;
+        line-height: 18px;
+        background-color: var(--accent-color);
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        width: 100px;
+
+        button {
+            height: 22px;
+            font-size: 22px;
+            background-color: transparent;
+        }
+    }
+}
+
+.Playlist_Tracks {
+    margin-top: 24px;
+}
