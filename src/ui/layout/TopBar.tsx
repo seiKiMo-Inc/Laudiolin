@@ -6,7 +6,7 @@ import { FiHeadphones } from "react-icons/fi";
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
 
-import { navigate } from "@backend/navigation";
+import { goBack, navigate, goForward } from "@backend/navigation";
 
 import "@css/layout/TopBar.scss";
 
@@ -15,25 +15,13 @@ class TopBar extends React.Component<{}, never> {
         super(props);
     }
 
-    goBack() {
-        window.history.back();
-    }
-
-    goToHome() {
-        navigate("Home");
-    }
-
-    goForward() {
-        window.history.forward();
-    }
-
     render() {
         return (
             <div className={"TopBar"}>
                 <div className={"TopBar_Nav"}>
-                    <BiChevronLeft className={"TopBar_NavButtons"} size={30} onClick={this.goBack} />
-                    <BiHomeAlt className={"TopBar_NavButtons"} size={20} onClick={this.goToHome} />
-                    <BiChevronRight className={"TopBar_NavButtons"} size={30} onClick={this.goForward} />
+                    <BiChevronLeft className={"TopBar_NavButtons"} size={30} onClick={() => goBack()} />
+                    <BiHomeAlt className={"TopBar_NavButtons"} size={20} onClick={() => navigate("Home")} />
+                    <BiChevronRight className={"TopBar_NavButtons"} size={30} onClick={() => goForward()} />
                 </div>
 
                 <SearchInput />
