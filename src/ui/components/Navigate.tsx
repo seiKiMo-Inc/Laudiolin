@@ -6,7 +6,10 @@ import Search from "@pages/Search";
 import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
 
+import TrackList from "@components/TrackList";
+
 import type { Page } from "@backend/types";
+import { recents, favorites } from "@backend/user";
 import { registerListener, removeListeners } from "@backend/navigation";
 
 interface IState {
@@ -48,9 +51,13 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Home" && <Home /> }
                 { this.state.page == "Login" && <Login /> }
                 { this.state.page == "Search" && <Search pageArgs={this.state.args} /> }
-                { this.state.page == "Recents" && <p>Recents</p> }
+                { this.state.page == "Recents" && <TrackList
+                    title={"Recents"} events={["login", "recent"]}
+                    collection={() => recents} /> }
                 { this.state.page == "Profile" && <p>Profile</p> }
-                { this.state.page == "Favorites" && <p>Favorites</p> }
+                { this.state.page == "Favorites" && <TrackList
+                    title={"Favorites"} events={["login", "favorites"]}
+                    collection={() => favorites} /> }
                 { this.state.page == "Downloads" && <p>Downloads</p> }
                 { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
