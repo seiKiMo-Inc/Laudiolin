@@ -128,3 +128,42 @@
     background-color: var(--accent-color);
     border-radius: 5px;
 }
+
+.Playlists_Divider {
+    width: auto;
+    height: 1px;
+    background-color: var(--text-tertiary-color);
+    margin: 15px 10px;
+    border-radius: 50%;
+}
+
+.Playlists_Header {
+    color: var(--text-tertiary-color);
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.Playlists_Container {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--text-tertiary-color);
+    font-size: 15px;
+
+    * {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.2s ease-in-out;
+        margin: 0;
+    }
+
+    *:hover {
+        color: var(--text-primary-color);
+        cursor: pointer;
+    }
+}
