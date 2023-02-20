@@ -1,5 +1,6 @@
 import type { TrackData } from "@backend/types";
 
+import { favorites } from "@backend/user";
 import { Gateway } from "@app/constants";
 
 import * as fs from "@mod/fs";
@@ -56,4 +57,12 @@ export function formatDuration(seconds: number): string {
     } else {
         return `${mm}:${ss}`;
     }
+}
+
+/**
+ * Checks if the track is a favorite.
+ * @param track The track to check.
+ */
+export function isFavorite(track: TrackData|null): boolean {
+    return track ? favorites.find(t => t.id == track?.id) != null : false;
 }

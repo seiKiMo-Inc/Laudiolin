@@ -1,10 +1,13 @@
 import React from "react";
 
-import { BiHeart } from "react-icons/bi";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
 
+import BasicButton from "@components/common/BasicButton";
+
 import type { TrackData } from "@backend/types";
-import { formatDuration } from "@app/utils";
+import { formatDuration, isFavorite } from "@app/utils";
+import { favoriteTrack } from "@backend/user";
 import { playTrack } from "@backend/audio";
 
 import "@css/components/Track.scss";
@@ -26,19 +29,34 @@ class Track extends React.PureComponent<IProps, never> {
         track && playTrack(track, true, true);
     }
 
+    /**
+     * Adds the current track to the favorites.
+     */
+    async favorite(): Promise<void> {
+        const track = this.props.track;
+        if (!track) return;
+
+        // Toggle the favorite state.
+        await favoriteTrack(track, !isFavorite(track));
+        this.forceUpdate();
+    }
+
     render() {
         const { track } = this.props;
+        const favorite = isFavorite(track);
 
         return (
             <div
                 className={"Track"}
-                onClick={() => this.play()}
                 onContextMenu={() => console.log("Open context menu.")}
             >
-                <div style={{
-                    display: "flex", flexDirection: "row",
-                    maxHeight: 67.5, width: "80%",
-                }}>
+                <div
+                    style={{
+                        display: "flex", flexDirection: "row",
+                        maxHeight: 67.5, width: "80%",
+                    }}
+                    onClick={() => this.play()}
+                >
                     <img
                         className={"Track_Icon"}
                         alt={track.title}
@@ -52,7 +70,14 @@ class Track extends React.PureComponent<IProps, never> {
                 </div>
 
                 <div className={"Track_Interact"}>
-                    <BiHeart style={{ width: 20, height: 18.18 }} />
+                    <BasicButton
+                        icon={favorite ?
+                            <AiFillHeart style={{ width: 20, height: 18.18,
+                                color: "var(--accent-color)" }} /> :
+                            <AiOutlineHeart style={{ width: 20, height: 18.18 }} />}
+                        style={{ backgroundColor: "transparent" }}
+                        onClick={() => this.favorite()}
+                    />
                     <p>{formatDuration(track.duration)}</p>
                     <VscEllipsis />
                 </div>
