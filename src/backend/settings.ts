@@ -11,8 +11,7 @@ export const defaultSettings: UserSettings = {
     },
     ui: {
         background_color: "",
-        background_url: "",
-        progress_fill: "Solid"
+        background_url: ""
     },
     system: {
         offline: false,
@@ -27,7 +26,6 @@ export const settingsKeys: {[key: string]: string} = {
     "search.engine": "Preferred Search Engine",
     "ui.background_color": "Background Color",
     "ui.background_url": "Background URL",
-    "ui.progress_fill": "Progress Fill Style",
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
     "system.presence": "Discord Rich Presence Style"
@@ -155,7 +153,7 @@ export function getFromPath(path: string, fallback: string | null = null): strin
  * @param path The path to save the value to. (ex. settings.search.accuracy)
  * @param value The value to save.
  */
-export async function saveFromPath(path: string, value: any = ""): Promise<void> {
+export function saveFromPath(path: string, value: any = ""): void {
     // Get the correct object.
     const parts = path.split(".");
     const key = parts.pop() as string;
@@ -164,7 +162,7 @@ export async function saveFromPath(path: string, value: any = ""): Promise<void>
     // Set the value.
     if (obj) {
         obj[key] = value;
-        await saveSettings(settings as UserSettings);
+        saveSettings(settings as UserSettings);
     }
 }
 

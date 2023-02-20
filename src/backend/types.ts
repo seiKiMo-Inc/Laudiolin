@@ -75,7 +75,6 @@ export type AudioSettings = {
 export type UISettings = {
     background_color: string;
     background_url: string;
-    progress_fill: "Solid" | "Gradient";
 };
 export type SystemSettings = {
     offline: boolean;
