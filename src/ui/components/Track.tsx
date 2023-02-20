@@ -35,15 +35,20 @@ class Track extends React.PureComponent<IProps, never> {
                 onClick={() => this.play()}
                 onContextMenu={() => console.log("Open context menu.")}
             >
-                <img
-                    className={"Track_Icon"}
-                    alt={track.title}
-                    src={track.icon}
-                />
+                <div style={{
+                    display: "flex", flexDirection: "row",
+                    maxHeight: 67.5, width: "80%",
+                }}>
+                    <img
+                        className={"Track_Icon"}
+                        alt={track.title}
+                        src={track.icon}
+                    />
 
-                <div className={"Track_Info"}>
-                    <p>{track.title}</p>
-                    <p>{track.artist}</p>
+                    <div className={"Track_Info"}>
+                        <p>{track.title}</p>
+                        <p>{track.artist}</p>
+                    </div>
                 </div>
 
                 <div className={"Track_Interact"}>

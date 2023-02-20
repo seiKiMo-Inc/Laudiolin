@@ -3,8 +3,11 @@
     flex-wrap: wrap;
     flex-direction: row;
 
+    width: 100%;
     max-height: 67.5px;
     padding-bottom: 10px;
+
+    justify-content: space-between;
 }
 
 .Track_Icon {
@@ -44,6 +47,6 @@
 
     gap: 36px;
 
-    padding-left: 20px;
+    padding-right: 24px;
     color: var(--text-secondary-color);
 }
