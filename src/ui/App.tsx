@@ -6,8 +6,11 @@ import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
 import TopBar from "@layout/TopBar";
 
+import { invoke } from "@tauri-apps/api";
+
 import emitter from "@backend/events";
-import { login, userData } from "@backend/user";
+import { login, userData, loaders } from "@backend/user";
+import { loadState } from "@backend/offline";
 
 import "@css/App.scss";
 import "@css/Text.scss";
@@ -36,15 +39,39 @@ class App extends React.Component<IProps, IState> {
         };
     }
 
+    /**
+     * Checks if the user is online.
+     */
+    checkIfOnline(): void {
+        invoke("online")
+            .then((online: boolean) => {
+                if (online) {
+                    // Attempt to log in.
+                    login().catch(err => console.warn(err))
+                } else {
+                    // Attempt to load offline user data.
+                    // Load the offline state.
+                    setTimeout(() => loadState(
+                        loaders.userData,
+                        loaders.playlists,
+                        loaders.favorites,
+                    ).catch(err => console.warn(err)), 1e3);
+                }
+            })
+            .catch(err => console.warn(err));
+    }
+
     componentDidMount() {
+        // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
 
-        // Attempt to log in.
-        login().catch(err => console.warn(err))
+        // Check if the user is online.
+        this.checkIfOnline();
     }
 
     componentWillUnmount() {
+        // Unregister event listeners.
         emitter.off("login", this.reloadUser);
         emitter.off("logout", this.reloadUser);
     }
