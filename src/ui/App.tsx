@@ -6,10 +6,11 @@ import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
 import TopBar from "@layout/TopBar";
 
+import emitter from "@backend/events";
 import { login, userData } from "@backend/user";
 
 import "@css/App.scss";
-import emitter from "@backend/events";
+import "@css/Text.scss";
 
 interface IProps {
 

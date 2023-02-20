@@ -8,7 +8,7 @@ class Settings extends React.Component<{}, never> {
     render() {
         return (
             <div className={"Settings"}>
-                <h1>Settings</h1>
+                <h2>Settings</h2>
             </div>
         );
     }

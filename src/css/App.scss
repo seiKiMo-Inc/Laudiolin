@@ -63,6 +63,8 @@ body {
     grid-area: main;
     background-color: var(--background-secondary-color);
     overflow: auto;
+
+    padding-left: 32px;
 }
 
 .BasicButton {
