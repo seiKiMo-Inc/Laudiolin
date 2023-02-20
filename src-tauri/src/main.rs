@@ -23,7 +23,9 @@ fn main() {
     tauri_plugin_deep_link::prepare("laudiolin");
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![])
+        .invoke_handler(tauri::generate_handler![
+            open
+        ])
         .setup(|app| {
             // Initialize deep linking.
             register_deep_link(app);
@@ -38,11 +40,19 @@ fn main() {
         .expect("error while running tauri application");
 }
 
+/// Opens the specified URL in the default browser.
+/// url: The URL to open.
+#[tauri::command]
+fn open(url: String) {
+    wrap(open::that(url), "open");
+}
+
 /// Registers the deep link handler.
 fn register_deep_link(app: &mut App<Wry>) {
     let handle = app.handle();
     tauri_plugin_deep_link::register(
         "laudiolin", move |request| {
+            wrap(handle.get_window("main").unwrap().set_focus(), "focus");
             handle.emit_all("deeplink", request).unwrap();
         },
     ).unwrap();
