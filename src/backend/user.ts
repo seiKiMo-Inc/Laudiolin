@@ -155,19 +155,19 @@ export async function login(code: string = "", loadData: boolean = true): Promis
 /**
  * Clears the user data.
  */
-export async function logout() {
+export function logout() {
     userData = null; // Clear the user data.
     playlists = []; // Clear the playlist data.
     favorites = []; // Clear the favorite tracks.
 
     // Remove the authorization code.
-    const newSettings = await settings.getSettings() ?? settings.defaultSettings;
+    const newSettings = settings.getSettings() ?? settings.defaultSettings;
     newSettings.token = "";
-    await settings.saveSettings(newSettings);
+    settings.saveSettings(newSettings);
 
     // Set the user as logged out.
-    await settings.remove("user_token");
-    await settings.remove("authenticated");
+    settings.remove("user_token");
+    settings.remove("authenticated");
 
     // Emit the logout event.
     emitter.emit("logout");

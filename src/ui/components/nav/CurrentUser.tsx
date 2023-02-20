@@ -6,19 +6,14 @@ import BasicButton from "@components/common/BasicButton";
 import BasicDropdown from "@components/common/BasicDropdown";
 import { toggleDropdown } from "@components/common/BasicDropdown";
 
-import { BasicUser } from "@backend/types";
+import type { User } from "@backend/types";
+import { logout } from "@backend/user";
 
 import "@css/layout/NavPanel.scss";
-
-const placeholderUser: BasicUser = {
-    userId: "1",
-    avatar: "https://cdn.discordapp.com/avatars/593787701409611776/9582cd249fff25619d95454eae25cd55.png",
-    username: "Scald",
-    discriminator: "7763",
-}
+import { navigate } from "@backend/navigation";
 
 interface IProps {
-    isLoggedIn: boolean;
+    user?: User;
 }
 
 class CurrentUser extends React.Component<IProps, never> {
@@ -29,15 +24,24 @@ class CurrentUser extends React.Component<IProps, never> {
         dropBtn.style.transform = dropBtn.style.transform === "rotate(180deg)" ? "rotate(0deg)" : "rotate(180deg)";
     }
 
+    /**
+     * Logs the user out of the application.
+     */
+    logOut(): void {
+        logout();
+    }
+
     render() {
-        return this.props.isLoggedIn ? (
+        const { user } = this.props;
+
+        return user != null ? (
             <>
                 <div className={"CurrentUser"}>
                     <div className={"CurrentUser_Info"}>
-                        <img src={placeholderUser.avatar} className={"CurrentUser_Img"} alt={placeholderUser.username} />
+                        <img src={user.avatar} className={"CurrentUser_Img"} alt={user.username} />
                         <span className={"CurrentUser_Text"}>
-                            <p>{placeholderUser.username}</p>
-                            <p>#{placeholderUser.discriminator}</p>
+                            <p>{user.username}</p>
+                            <p>#{user.discriminator}</p>
                         </span>
                     </div>
 
@@ -50,11 +54,14 @@ class CurrentUser extends React.Component<IProps, never> {
 
                 <BasicDropdown id={"currentUserDropdown"}>
                     <a href="#">Profile</a>
-                    <a href="#">Logout</a>
+                    <a onClick={() => this.logOut()}>Log Out</a>
                 </BasicDropdown>
             </>
         ) : (
-            <BasicButton className={"CurrentUser_LoginBtn"} text={"Login"} />
+            <BasicButton
+                className={"CurrentUser_LoginBtn"} text={"Login"}
+                onClick={() => navigate("Login")}
+            />
         );
     }
 }
