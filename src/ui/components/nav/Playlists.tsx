@@ -45,7 +45,10 @@ class Playlists extends React.Component<any, IState> {
 
                 <div className={"Playlists_Container"}>
                     { playlists.map(playlist => (
-                        <NavLink to={"Playlist"} with={{ id: "1" }} className={"Playlists_Item"}>
+                        <NavLink
+                            to={"Playlist"} with={playlist}
+                            className={"Playlists_Item"} key={playlist.id}
+                        >
                             {({ isActive }) => <p style={{ color: isActive && "var(--text=primary-color)" }}>
                                 {playlist.name}
                             </p>}

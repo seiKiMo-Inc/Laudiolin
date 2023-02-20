@@ -1,5 +1,7 @@
 import React from "react";
 
+import * as types from "@backend/types";
+
 interface IProps {
     pageArgs: any;
 }
@@ -10,10 +12,14 @@ class Playlist extends React.Component<IProps> {
     }
 
     render() {
+        const args = this.props.pageArgs;
+        if (!args) return undefined;
+        const playlist = args as types.Playlist;
+
         return (
             <div>
                 <p>Playlist</p>
-                { this.props.pageArgs && this.props.pageArgs.id }
+                { this.props.pageArgs && playlist.id }
             </div>
         );
     }
