@@ -19,6 +19,11 @@ class Playlists extends React.Component<any, IState> {
     update = (playlists: Playlist[]) =>
         this.setState({ playlists });
 
+    /**
+     * Clears all playlists.
+     */
+    clear = () => this.setState({ playlists: [] });
+
     constructor(props: {}) {
         super(props);
 
@@ -29,10 +34,12 @@ class Playlists extends React.Component<any, IState> {
 
     componentDidMount() {
         emitter.on("playlist", this.update);
+        emitter.on("logout", this.clear);
     }
 
     componentWillUnmount() {
         emitter.off("playlist", this.update);
+        emitter.off("logout", this.clear);
     }
 
     render() {
