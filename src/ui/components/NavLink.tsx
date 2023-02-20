@@ -9,6 +9,7 @@ interface IProps {
 
     children: ((props: {
         isActive: boolean;
+        hover: boolean;
     }) => React.ReactNode);
     className?: string;
     style?: ((props: {
@@ -18,6 +19,7 @@ interface IProps {
 
 interface IState {
     isActive: boolean;
+    hover: boolean;
 }
 
 class NavLink extends React.PureComponent<IProps, IState> {
@@ -25,7 +27,8 @@ class NavLink extends React.PureComponent<IProps, IState> {
         super(props);
 
         this.state = {
-            isActive: false
+            isActive: false,
+            hover: false
         };
     }
 
@@ -43,15 +46,17 @@ class NavLink extends React.PureComponent<IProps, IState> {
     }
 
     render() {
-        const { isActive } = this.state;
+        const { isActive, hover } = this.state;
 
         return (
             <div
                 className={this.props.className}
                 style={this.props.style?.({ isActive })}
                 onClick={() => this.goTo()}
+                onMouseOver={() => this.setState({ hover: true })}
+                onMouseLeave={() => this.setState({ hover: false })}
             >
-                { this.props.children({ isActive }) }
+                { this.props.children({ isActive, hover }) }
             </div>
         );
     }
