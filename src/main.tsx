@@ -6,10 +6,14 @@ import * as fs from "@mod/fs";
 import * as link from "@backend/link";
 import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
+import * as settings from "@backend/settings";
 
 import App from "./ui/App";
 
 (async () => {
+    // Load settings.
+    settings.reloadSettings();
+
     // Run initial setup.
     fs.setup()
         .then(() => fs.createFolders())
