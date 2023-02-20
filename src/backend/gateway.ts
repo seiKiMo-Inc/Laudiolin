@@ -26,12 +26,12 @@ export async function setup(): Promise<void> {
     };
 
     // Add playback event listeners.
-    TrackPlayer.on("play", () => playerSync);
-    TrackPlayer.on("pause", () => playerSync);
-    TrackPlayer.on("stop", () => playerSync);
+    TrackPlayer.on("play", () => playerSync());
+    TrackPlayer.on("pause", () => playerSync());
+    TrackPlayer.on("stop", () => playerSync());
     TrackPlayer.on("seek", playerSync);
-    TrackPlayer.on("end", () => playerSync);
-    TrackPlayer.on("track", () => playerSync);
+    TrackPlayer.on("end", () => playerSync());
+    TrackPlayer.on("track", () => playerSync());
 
     // Add the update listener.
     TrackPlayer.on("update", update);
