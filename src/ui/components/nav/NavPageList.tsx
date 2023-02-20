@@ -12,6 +12,17 @@ class NavPageList extends React.Component<{}, never> {
         super(props);
     }
 
+    /**
+     * Gets the text color for the page item.
+     * @param isActive
+     * @param hover
+     */
+    getTextColor(isActive: boolean, hover: boolean): React.CSSProperties {
+        return { color: isActive || hover ?
+                "var(--text-primary-color)" :
+                "var(--text-secondary-color)" };
+    }
+
     render() {
         return (
             <div className={"NavPanel_PageList"}>
@@ -20,12 +31,12 @@ class NavPageList extends React.Component<{}, never> {
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
-                    {({ isActive }) => {
+                    {({ isActive, hover }) => {
                         return (
                             <>
                                 {isActive && <div className={"NavPanel_PageItem_Active"} />}
                                 <RxTimer className={"NavPanel_PageItem_Icon"} />
-                                <p>Recents</p>
+                                <p style={this.getTextColor(isActive, hover)}>Recents</p>
                             </>
                         )
                     }}
@@ -36,12 +47,12 @@ class NavPageList extends React.Component<{}, never> {
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
-                    {({ isActive }) => {
+                    {({ isActive, hover }) => {
                         return (
                             <>
                                 {isActive && <div className={"NavPanel_PageItem_Active"} />}
                                 <BiHeart className={"NavPanel_PageItem_Icon"} />
-                                <p>Favorites</p>
+                                <p style={this.getTextColor(isActive, hover)}>Favorites</p>
                             </>
                         )
                     }}
@@ -52,12 +63,12 @@ class NavPageList extends React.Component<{}, never> {
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
-                    {({ isActive }) => {
+                    {({ isActive, hover }) => {
                         return (
                             <>
                                 {isActive && <div className={"NavPanel_PageItem_Active"} />}
                                 <BiDownload className={"NavPanel_PageItem_Icon"} />
-                                <p>Downloads</p>
+                                <p style={this.getTextColor(isActive, hover)}>Downloads</p>
                             </>
                         )
                     }}
@@ -68,12 +79,12 @@ class NavPageList extends React.Component<{}, never> {
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
                 >
-                    {({ isActive }) => {
+                    {({ isActive, hover }) => {
                         return (
                             <>
                                 {isActive && <div className={"NavPanel_PageItem_Active"} />}
                                 <BiWrench className={"NavPanel_PageItem_Icon"} />
-                                <p>Settings</p>
+                                <p style={this.getTextColor(isActive, hover)}>Settings</p>
                             </>
                         )
                     }}
