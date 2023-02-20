@@ -221,7 +221,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * Toggles the pause state of the player.
      */
     public pause(): void {
-        this.state.paused = !this.state.paused;
+        if (this.state.paused) {
+            this.current?.play();
+            this.state.paused = false;
+        } else {
+            this.current?.pause();
+            this.state.paused = true;
+        }
+
         this.update();
     }
 
