@@ -75,8 +75,6 @@ class ControlPanel extends React.Component<any, IState> {
         const { queue, playing, track } = this.state;
         const isFavorite = true;
 
-        console.log(playing);
-
         return (
             <div className={"ControlPanel"}>
                 <div className={"ControlPanel_Track"}>
