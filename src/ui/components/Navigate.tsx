@@ -4,6 +4,7 @@ import Home from "@pages/Home";
 import Login from "@pages/Login";
 import Search from "@pages/Search";
 import Settings from "@pages/Settings";
+import Playlist from "@pages/Playlist";
 
 import type { Page } from "@backend/types";
 import { registerListener, removeListeners } from "@backend/navigation";
@@ -51,7 +52,7 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Profile" && <p>Profile</p> }
                 { this.state.page == "Favorites" && <p>Favorites</p> }
                 { this.state.page == "Downloads" && <p>Downloads</p> }
-                { this.state.page == "Playlist" && <p>Playlist</p> }
+                { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
             </>
         );
