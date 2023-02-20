@@ -20,6 +20,7 @@ class SearchInput extends React.Component<IProps, IState> {
 
     onChange(event: ChangeEvent<HTMLInputElement>): void {
         const text = event.target.value;
+        if (text.length <= 0) return;
 
         // Clear the timeout if it exists.
         if (this.searchTimeout) {
