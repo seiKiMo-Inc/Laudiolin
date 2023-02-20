@@ -91,6 +91,7 @@ class Home extends React.Component<{}, IState> {
                     <BasicButton
                         className={"Login_Button"}
                         text={loginText}
+                        onClick={() => this.login()}
                     />
                 </div>
 
