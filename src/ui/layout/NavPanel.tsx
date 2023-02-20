@@ -3,10 +3,12 @@ import React from "react";
 import CurrentUser from "@components/nav/CurrentUser";
 import NavPageList from "@components/nav/NavPageList";
 
+import type { User } from "@backend/types";
+
 import "@css/layout/NavPanel.scss";
 
 interface IProps {
-    isLoggedIn: boolean;
+    user?: User;
 }
 
 class NavPanel extends React.Component<IProps, never> {
@@ -17,7 +19,7 @@ class NavPanel extends React.Component<IProps, never> {
     render() {
         return (
             <div className={"NavPanel"}>
-                <CurrentUser isLoggedIn={this.props.isLoggedIn} />
+                <CurrentUser user={this.props.user} />
                 <NavPageList />
             </div>
         );

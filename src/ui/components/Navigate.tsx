@@ -1,6 +1,7 @@
 import React from "react";
 
 import Home from "@pages/Home";
+import Login from "@pages/Login";
 import SearchResults from "@pages/SearchResults";
 
 import type { Page } from "@backend/types";
@@ -43,6 +44,7 @@ class Navigate extends React.Component<any, IState> {
         return (
             <>
                 { this.state.page == "Home" && <Home /> }
+                { this.state.page == "Login" && <Login /> }
                 { this.state.page == "Search" && <SearchResults pageArgs={this.state.args} /> }
                 { this.state.page == "Recents" && <p>Recents</p> }
                 { this.state.page == "Profile" && <p>Profile</p> }

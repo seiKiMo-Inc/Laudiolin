@@ -43,6 +43,10 @@ class MainView extends React.Component<any, IState> {
         navigate("Search");
     };
 
+    login = () => {
+        navigate("Login");
+    };
+
     render() {
         return (
             <div className={"MainView"}>
@@ -51,6 +55,7 @@ class MainView extends React.Component<any, IState> {
                 <button onClick={this.toggleTheme}>Toggle Theme</button>
                 <button onClick={this.playAudio}>play audio</button>
                 <button onClick={this.search}>search</button>
+                <button onClick={this.login}>login</button>
             </div>
         );
     }

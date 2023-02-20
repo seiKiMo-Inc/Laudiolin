@@ -36,7 +36,7 @@ export const settingsKeys: {[key: string]: string} = {
 /**
  * Loads settings from the settings file.
  */
-export async function reloadSettings(from?: UserSettings | null) {
+export function reloadSettings(from?: UserSettings | null):void {
     if (!from) {
         // Check if settings exists in the storage.
         const data = exists("settings");
@@ -68,7 +68,7 @@ export function getSettings(): UserSettings | null {
  * Sets the user's token.
  * @param token The token.
  */
-export async function setToken(token: string): Promise<void> {
+export function setToken(token: string): void {
     let settings = getSettings();
     if (settings == undefined) {
         settings = defaultSettings;
@@ -76,17 +76,17 @@ export async function setToken(token: string): Promise<void> {
 
     // Set the token in the settings.
     settings.token = token;
-    await saveSettings(settings);
-    await reloadSettings(settings);
+    saveSettings(settings);
+    reloadSettings(settings);
 }
 
 /**
  * Saves the specified settings to the settings file.
  * @param newSettings The settings to save.
  */
-export async function saveSettings(newSettings: UserSettings): Promise<void> {
-    await save("settings", JSON.stringify(newSettings));
-    await reloadSettings(newSettings);
+export function saveSettings(newSettings: UserSettings): void {
+    save("settings", JSON.stringify(newSettings));
+    reloadSettings(newSettings);
 }
 
 /**
