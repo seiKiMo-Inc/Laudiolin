@@ -114,10 +114,11 @@ export async function getToken(code: string): Promise<boolean> {
  * Attempts to get user data from the backend.
  * @param code The user's authentication token.
  * @param loadData Whether to load the user data.
+ * @returns True if the user data was successfully loaded.
  */
-export async function login(code: string = "", loadData: boolean = true): Promise<void> {
+export async function login(code: string = "", loadData: boolean = true): Promise<boolean> {
     if (code == "") code = token(); // If no code is provided, use the token.
-    if (!code || code == "") return; // If no code is provided, exit.
+    if (!code || code == "") return false; // If no code is provided, exit.
 
     const route = `${targetRoute}/user`;
     const response = await fetch(route, {
@@ -130,7 +131,7 @@ export async function login(code: string = "", loadData: boolean = true): Promis
         await logout(); // Log the user out.
         navigate("Login"); // Redirect to the login page.
 
-        return;
+        return false;
     }
 
     userData = await response.json(); // Load the data into the user data variable.
@@ -147,6 +148,8 @@ export async function login(code: string = "", loadData: boolean = true): Promis
         loadFavorites() // Load favorite tracks.
             .catch(err => console.error(err));
     }
+
+    return true;
 }
 
 /**
