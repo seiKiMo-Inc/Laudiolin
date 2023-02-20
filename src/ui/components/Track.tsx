@@ -53,7 +53,7 @@ class Track extends React.PureComponent<IProps, never> {
                 <div
                     style={{
                         display: "flex", flexDirection: "row",
-                        maxHeight: 67.5, width: "80%",
+                        maxHeight: 67.5, width: "60%",
                     }}
                     onClick={() => this.play()}
                 >
