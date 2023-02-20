@@ -8,6 +8,7 @@ import Track from "@components/Track";
 import BasicButton from "@components/common/BasicButton";
 
 import * as types from "@backend/types";
+import { playPlaylist } from "@backend/audio";
 
 import "@css/pages/Playlist.scss";
 
@@ -20,10 +21,26 @@ class Playlist extends React.Component<IProps> {
         super(props);
     }
 
-    render() {
+    /**
+     * Fetches the playlist from the page arguments.
+     */
+    getPlaylist(): types.Playlist {
         const args = this.props.pageArgs;
         if (!args) return undefined;
-        const playlist = args as types.Playlist;
+        return args as types.Playlist;
+    }
+
+    /**
+     * Plays the playlist.
+     * @param shuffle Whether to shuffle the playlist.
+     */
+    play(shuffle = false): void {
+        playPlaylist(this.getPlaylist(), shuffle);
+    }
+
+    render() {
+        const playlist = this.getPlaylist();
+        if (!playlist) return undefined;
 
         return (
             <div>
@@ -55,11 +72,13 @@ class Playlist extends React.Component<IProps> {
                             <BasicButton
                                 className={"action"}
                                 icon={<IoMdPlay />}
+                                onClick={() => this.play()}
                             />
 
                             <BasicButton
                                 className={"action"}
                                 icon={<MdShuffle />}
+                                onClick={() => this.play(true)}
                             />
                         </div>
                     </div>
