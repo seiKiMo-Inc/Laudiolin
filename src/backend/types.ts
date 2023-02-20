@@ -33,6 +33,10 @@ export type Playlist = {
     isPrivate: boolean;
     tracks: TrackData[];
 };
+export type PlaylistAuthor = {
+    name: string;
+    icon: string;
+};
 
 export type BasicUser = {
     username?: string;

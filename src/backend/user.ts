@@ -1,4 +1,4 @@
-import type { User, Playlist, TrackData } from "@backend/types";
+import type { User, Playlist, TrackData, PlaylistAuthor } from "@backend/types";
 
 import emitter from "@backend/events";
 import { navigate } from "@backend/navigation";
@@ -281,18 +281,24 @@ export function makePlaylist(
  * Returns the author of a playlist.
  * @param playlist The playlist to get the author of.
  */
-export async function getPlaylistAuthor(playlist: Playlist): Promise<string> {
+export async function getPlaylistAuthor(playlist: Playlist): Promise<PlaylistAuthor> {
     const owner = playlist.owner ?? ""; // Get the owner's ID.
-    if (owner == "") return "Unknown"; // If no owner is provided, return "Unknown".
+    if (owner == "") return { name: "Unknown", icon: "" }; // If no owner is provided, return "Unknown".
 
-    // If the owner is the current user, return the user's username.
-    if (owner == getUserId()) return `${userData?.username}#${userData?.discriminator}`;
+    // If the owner is the current user, return the user's username & icon.
+    if (owner == getUserId()) return {
+        name: `${userData?.username}#${userData?.discriminator}`,
+        icon: userData?.avatar ?? ""
+    };
 
     // Otherwise, load the owner's data.
     const user = await getUserById(owner);
-    if (!user) return "Unknown"; // If the user data could not be loaded, return "Unknown".
+    if (!user) return { name: "Unknown", icon: "" }; // If the user data could not be loaded, return "Unknown".
 
-    return `${user.username}#${user.discriminator}`; // Return the user's username.
+    return { // Return the user's username & icon.
+        name: `${user.username}#${user.discriminator}`,
+        icon: user.avatar ?? ""
+    };
 }
 
 /*
