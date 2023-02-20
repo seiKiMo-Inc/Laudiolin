@@ -84,14 +84,27 @@ class ControlPanel extends React.Component<any, IState> {
      */
     getRepeatIcon(): React.ReactNode {
         switch (TrackPlayer.getRepeatMode()) {
-            case "none": return <MdRepeat />;
-            case "queue": return <MdRepeat className={"ControlPanel_Repeat"} />;
-            case "track": return <MdRepeatOne className={"ControlPanel_Repeat"} />;
+            case "none": return <MdRepeat
+                className={"ControlPanel_Control"}
+                onClick={this.toggleRepeatMode}
+            />;
+
+            case "track": return <MdRepeat
+                className={"ControlPanel_Control ControlPanel_Repeat"}
+                onClick={this.toggleRepeatMode}
+                style={{ color: "var(--accent-color)" }}
+            />;
+
+            case "queue": return <MdRepeatOne
+                className={"ControlPanel_Control ControlPanel_Repeat"}
+                onClick={this.toggleRepeatMode}
+                style={{ color: "var(--accent-color)" }}
+            />;
         }
     }
 
     render() {
-        const { queue, playing, track, favorite } = this.state;
+        const { playing, track, favorite } = this.state;
 
         return (
             <div className={"ControlPanel"}>
@@ -114,49 +127,50 @@ class ControlPanel extends React.Component<any, IState> {
 
                 <div className={"ControlPanel_MainControls"}>
                     <div className={"ControlPanel_Controls"}>
-                        <BasicButton
-                            icon={favorite ?
-                                <AiFillHeart style={{ color: "var(--accent-color)" }} /> :
-                                <AiOutlineHeart />}
-                            className={"ControlPanel_Control"}
-                            onClick={() => this.favorite()}
-                        />
+                        {favorite ?
+                            <AiFillHeart
+                                className={"ControlPanel_Control"}
+                                style={{ color: "var(--accent-color)" }}
+                                onClick={() => this.favorite()}
+                            /> :
+                            <AiOutlineHeart
+                                className={"ControlPanel_Control"}
+                                onClick={() => this.favorite()}
+                            />
+                        }
 
-                        <BasicButton
-                            icon={<MdShuffle />}
+                        <MdShuffle
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.shuffle()}
                         />
 
-                        <BasicButton
-                            icon={<IoMdSkipBackward />}
+                        <IoMdSkipBackward
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.back()}
                         />
 
-                        <BasicButton
-                            icon={playing ? <IoMdPause /> : <IoMdPlay />}
-                            className={"ControlPanel_Control"}
-                            onClick={() => TrackPlayer.pause()}
-                        />
+                        {playing ?
+                            <IoMdPause
+                                className={"ControlPanel_Control"}
+                                onClick={() => TrackPlayer.pause()}
+                            /> :
+                            <IoMdPlay
+                                className={"ControlPanel_Control"}
+                                onClick={() => TrackPlayer.pause()}
+                            />
+                        }
 
-                        <BasicButton
-                            icon={<IoMdSkipForward />}
-                            className={"ControlPanel_Control"}
-                            onClick={() => TrackPlayer.next()}
-                        />
-
-                        <BasicButton
-                            icon={this.getRepeatIcon()}
+                        <IoMdSkipForward
                             className={"ControlPanel_Control"}
                             onClick={() => this.toggleRepeatMode()}
                         />
 
-                        { queue && <BasicButton
-                            icon={<ImStack />}
+                        {this.getRepeatIcon()}
+
+                        <ImStack
                             className={"ControlPanel_Control"}
                             onClick={() => console.log("See Queue")}
-                        /> }
+                        />
                     </div>
 
                     <input type={"range"} className={"ControlPanel_ProgressBar"} />
