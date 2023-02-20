@@ -8,7 +8,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
 import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
 
-import BasicButton from "@components/common/BasicButton";
+import ProgressBar from "@components/control/ProgressBar";
 
 import type { TrackData } from "@backend/types";
 import TrackPlayer from "@mod/player";
@@ -20,6 +20,7 @@ interface IState {
     queue: boolean;
     playing: boolean;
     track: TrackData | null;
+    progress: number;
     favorite: boolean;
 }
 
@@ -44,6 +45,7 @@ class ControlPanel extends React.Component<any, IState> {
             queue: false,
             playing: false,
             track: null,
+            progress: 0,
             favorite: false
         };
     }
@@ -173,7 +175,7 @@ class ControlPanel extends React.Component<any, IState> {
                         />
                     </div>
 
-                    <input type={"range"} className={"ControlPanel_ProgressBar"} />
+                    <ProgressBar progress={60} duration={100} onSeek={() => null} />
                 </div>
 
                 <div className={"ControlPanel_Right"}>
