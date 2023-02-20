@@ -1,14 +1,17 @@
 import React from "react";
 
 import { ImStack } from "react-icons/im";
-import { GiPauseButton, GiPlayButton } from "react-icons/gi";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
 import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
 
+import BasicButton from "@components/common/BasicButton";
+
 import type { TrackData } from "@backend/types";
+import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
 
@@ -19,55 +22,132 @@ interface IState {
 }
 
 class ControlPanel extends React.Component<any, IState> {
+    /**
+     * Player update callback.
+     */
+    update = () => this.setState({
+        track: TrackPlayer.getCurrentTrack()?.data,
+        queue: TrackPlayer.getQueue().length > 0,
+        playing: !TrackPlayer.paused,
+    });
+
     constructor(props: any) {
         super(props);
 
         this.state = {
-            queue: true,
-            playing: true,
-            track: {
-                "title": "hikarunara",
-                "artist": "Goose House",
-                "icon": "https://i.scdn.co/image/ab67616d00001e020735b9b1d06b65bbd8814825",
-                "url": "https://youtu.be/IeJTNN8_jLI",
-                "id": "IeJTNN8_jLI",
-                "duration": 255
-            }
+            queue: false,
+            playing: false,
+            track: null
         };
     }
 
+    componentDidMount() {
+        TrackPlayer.on("update", this.update);
+    }
+
+    componentWillUnmount() {
+        TrackPlayer.off("update", this.update);
+    }
+
+    /**
+     * Toggles the repeat mode.
+     */
+    toggleRepeatMode(): void {
+        switch (TrackPlayer.getRepeatMode()) {
+            case "none": TrackPlayer.setRepeatMode("track"); break;
+            case "track": TrackPlayer.setRepeatMode("queue"); break;
+            case "queue": TrackPlayer.setRepeatMode("none"); break;
+        }
+    }
+
+    /**
+     * Gets the icon for the appropriate repeat mode.
+     */
     getRepeatIcon(): React.ReactNode {
-        return <MdRepeat />;
+        switch (TrackPlayer.getRepeatMode()) {
+            case "none": return <MdRepeat />;
+            case "track": return <MdRepeat className={"ControlPanel_Repeat"} />;
+            case "queue": return <MdRepeatOne className={"ControlPanel_Repeat"} />;
+        }
     }
 
     render() {
         const { queue, playing, track } = this.state;
         const isFavorite = true;
 
+        console.log(playing);
+
         return (
             <div className={"ControlPanel"}>
                 <div className={"ControlPanel_Track"}>
-                    <img
-                        className={"ControlPanel_Icon"}
-                        alt={track.title ?? "No track"}
-                        src={track.icon ?? "https://i.imgur.com/0Q9QZ9A.png"}
-                    />
+                    {
+                        track && <>
+                            <img
+                                className={"ControlPanel_Icon"}
+                                alt={track.title ?? "No track"}
+                                src={track.icon ?? "https://i.imgur.com/0Q9QZ9A.png"}
+                            />
 
-                    <div className={"ControlPanel_TrackInfo"}>
-                        <p>{track.title}</p>
-                        <p>{track.artist} aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                    </div>
+                            <div className={"ControlPanel_TrackInfo"}>
+                                <p>{track.title}</p>
+                                <p>{track.artist}</p>
+                            </div>
+                        </>
+                    }
                 </div>
 
                 <div className={"ControlPanel_MainControls"}>
                     <div className={"ControlPanel_Controls"}>
-                        { isFavorite ? <AiFillHeart style={{ color: "var(--accent-color)" }} /> : <AiOutlineHeart /> }
-                        <MdShuffle />
-                        <IoMdSkipBackward />
-                        { playing ? <GiPauseButton /> : <GiPlayButton /> }
-                        <IoMdSkipForward />
-                        { this.getRepeatIcon() }
-                        { queue ? <ImStack /> : null }
+                        <BasicButton
+                            default={false}
+                            icon={isFavorite ?
+                                <AiFillHeart style={{ color: "var(--accent-color)" }} /> :
+                                <AiOutlineHeart />}
+                            className={"ControlPanel_Control"}
+                            onClick={() => console.log("Favorite")}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={<MdShuffle />}
+                            className={"ControlPanel_Control"}
+                            onClick={() => TrackPlayer.shuffle()}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={<IoMdSkipBackward />}
+                            className={"ControlPanel_Control"}
+                            onClick={() => TrackPlayer.back()}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={playing ? <IoMdPause /> : <IoMdPlay />}
+                            className={"ControlPanel_Control"}
+                            onClick={() => TrackPlayer.pause()}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={<IoMdSkipForward />}
+                            className={"ControlPanel_Control"}
+                            onClick={() => TrackPlayer.next()}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={this.getRepeatIcon()}
+                            className={"ControlPanel_Control"}
+                            onClick={() => this.toggleRepeatMode()}
+                        />
+
+                        <BasicButton
+                            default={false}
+                            icon={queue ? <ImStack /> : null}
+                            className={"ControlPanel_Control"}
+                            onClick={() => console.log("See Queue")}
+                        />
                     </div>
 
                     <input type={"range"} className={"ControlPanel_ProgressBar"} />
