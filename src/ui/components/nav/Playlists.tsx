@@ -12,28 +12,39 @@ interface IState {
 }
 
 class Playlists extends React.Component<any, IState> {
+    /**
+     * Playlist update callback.
+     * @param playlists The new playlists.
+     */
+    update = (playlists: Playlist[]) =>
+        this.setState({ playlists });
+
     constructor(props: {}) {
         super(props);
 
         this.state = {
             playlists: []
-        }
+        };
     }
 
     componentDidMount() {
-        emitter.on("playlist", (playlists) => {
-           this.setState({ playlists })
-        });
+        emitter.on("playlist", this.update);
+    }
+
+    componentWillUnmount() {
+        emitter.off("playlist", this.update);
     }
 
     render() {
-        return this.state.playlists.length > 0 ? (
+        const { playlists } = this.state;
+
+        return playlists.length > 0 ? (
             <>
                 <div className={"Playlists_Divider"} />
                 <h3 className={"Playlists_Header"}>Your Playlists</h3>
 
                 <div className={"Playlists_Container"}>
-                    { this.state.playlists.map((playlist) => (
+                    { playlists.map(playlist => (
                         <NavLink to={"Playlist"} with={{ id: "1" }} className={"Playlists_Item"}>
                             {({ isActive }) => <p style={{ color: isActive && "var(--text=primary-color)" }}>
                                 {playlist.name}
