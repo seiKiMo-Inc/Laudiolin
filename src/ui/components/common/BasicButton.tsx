@@ -9,6 +9,8 @@ interface IProps {
     className?: string;
     customChildren?: boolean;
     children?: React.ReactNode;
+
+    default?: boolean;
 }
 
 class BasicButton extends React.Component<IProps> {
@@ -17,7 +19,12 @@ class BasicButton extends React.Component<IProps> {
             <button
                 className={`BasicButton ${this.props.className}`}
                 id={this.props.id}
-                style={this.props.style}
+                style={{
+                    borderRadius: 30,
+                    padding: 10,
+                    gap: 5,
+                    ...this.props.style,
+                }}
                 onClick={this.props.onClick}
             >
                 {this.props.customChildren ? this.props.children : (
