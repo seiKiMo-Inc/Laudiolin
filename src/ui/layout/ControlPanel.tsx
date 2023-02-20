@@ -4,6 +4,9 @@ import { ImStack } from "react-icons/im";
 import { GiPauseButton, GiPlayButton } from "react-icons/gi";
 import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { FiExternalLink } from "react-icons/fi";
+import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
 
 import type { TrackData } from "@backend/types";
 
@@ -25,7 +28,7 @@ class ControlPanel extends React.Component<any, IState> {
             track: {
                 "title": "hikarunara",
                 "artist": "Goose House",
-                "icon": "http://192.168.1.2:3000/proxy/LfH3rPgnSPUEU7M7zEN4o4G8Db21Q8r66HxNAZYOjzo1iJtEZnNmFzgivsR9mVTE3GcXoc4-8dI1KC-d=w544-h544-l90-rj?from=cart",
+                "icon": "https://i.scdn.co/image/ab67616d00001e020735b9b1d06b65bbd8814825",
                 "url": "https://youtu.be/IeJTNN8_jLI",
                 "id": "IeJTNN8_jLI",
                 "duration": 255
@@ -39,6 +42,7 @@ class ControlPanel extends React.Component<any, IState> {
 
     render() {
         const { queue, playing, track } = this.state;
+        const isFavorite = true;
 
         return (
             <div className={"ControlPanel"}>
@@ -51,17 +55,28 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <div className={"ControlPanel_TrackInfo"}>
                         <p>{track.title}</p>
-                        <p>{track.artist}</p>
+                        <p>{track.artist} aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
                     </div>
                 </div>
 
-                <div className={"ControlPanel_Controls"}>
-                    <MdShuffle />
-                    <IoMdSkipBackward />
-                    { playing ? <GiPauseButton /> : <GiPlayButton /> }
-                    <IoMdSkipForward />
-                    { this.getRepeatIcon() }
-                    { queue ? <ImStack /> : null }
+                <div className={"ControlPanel_MainControls"}>
+                    <div className={"ControlPanel_Controls"}>
+                        { isFavorite ? <AiFillHeart style={{ color: "var(--accent-color)" }} /> : <AiOutlineHeart /> }
+                        <MdShuffle />
+                        <IoMdSkipBackward />
+                        { playing ? <GiPauseButton /> : <GiPlayButton /> }
+                        <IoMdSkipForward />
+                        { this.getRepeatIcon() }
+                        { queue ? <ImStack /> : null }
+                    </div>
+
+                    <input type={"range"} className={"ControlPanel_ProgressBar"} />
+                </div>
+
+                <div className={"ControlPanel_Right"}>
+                    <FiVolume2 />
+                    <input type={"range"} className={"ControlPanel_Volume"} />
+                    <FiExternalLink />
                 </div>
             </div>
         );
