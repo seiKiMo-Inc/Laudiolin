@@ -97,7 +97,6 @@ class ControlPanel extends React.Component<any, IState> {
                 <div className={"ControlPanel_MainControls"}>
                     <div className={"ControlPanel_Controls"}>
                         <BasicButton
-                            default={false}
                             icon={isFavorite ?
                                 <AiFillHeart style={{ color: "var(--accent-color)" }} /> :
                                 <AiOutlineHeart />}
@@ -106,42 +105,36 @@ class ControlPanel extends React.Component<any, IState> {
                         />
 
                         <BasicButton
-                            default={false}
                             icon={<MdShuffle />}
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.shuffle()}
                         />
 
                         <BasicButton
-                            default={false}
                             icon={<IoMdSkipBackward />}
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.back()}
                         />
 
                         <BasicButton
-                            default={false}
                             icon={playing ? <IoMdPause /> : <IoMdPlay />}
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.pause()}
                         />
 
                         <BasicButton
-                            default={false}
                             icon={<IoMdSkipForward />}
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.next()}
                         />
 
                         <BasicButton
-                            default={false}
                             icon={this.getRepeatIcon()}
                             className={"ControlPanel_Control"}
                             onClick={() => this.toggleRepeatMode()}
                         />
 
                         <BasicButton
-                            default={false}
                             icon={queue ? <ImStack /> : null}
                             className={"ControlPanel_Control"}
                             onClick={() => console.log("See Queue")}
