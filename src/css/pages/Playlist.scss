@@ -56,6 +56,19 @@
         font-size: 28px;
         justify-content: center;
         background-color: var(--accent-color);
+        color: #fff;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            filter: brightness(0.9);
+            cursor: pointer;
+        }
+    }
+
+    .action:first-child {
+        svg {
+            margin-left: 4px;
+        }
     }
 }
 
@@ -71,7 +84,14 @@
         border-radius: 5px;
         font-size: 12px;
         line-height: 18px;
+        color: #fff;
         background-color: var(--accent-color);
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            filter: brightness(0.9);
+            cursor: pointer;
+        }
     }
 
     .buttons {
@@ -85,6 +105,12 @@
             height: 22px;
             font-size: 22px;
             background-color: transparent;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                filter: brightness(0.9);
+                cursor: pointer;
+            }
         }
     }
 }
