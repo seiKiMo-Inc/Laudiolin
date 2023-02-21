@@ -44,8 +44,8 @@ export async function downloadTrack(track: TrackData, emit = true): Promise<void
     await fs.downloadUrl(getStreamingUrl(track), fs.getTrackPath(track));
     await fs.downloadUrl(getIconUrl(track), fs.getIconPath(track));
     // Save the track's data.
-    track.icon = `file://${fs.getIconPath(track)}`;
-    track.url = `file://${fs.getTrackPath(track)}`;
+    track.icon = fs.toAsset(fs.getIconPath(track));
+    track.url = fs.toAsset(fs.getTrackPath(track));
     await fs.saveData(track, fs.getDataPath(track));
 
     if (emit) {

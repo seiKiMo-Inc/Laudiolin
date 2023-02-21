@@ -2,6 +2,7 @@ import type { TrackData } from "@backend/types";
 
 import * as fs from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
+import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export let DocumentDirectoryPath: string | null = null;
 export const AppData = () => DocumentDirectoryPath;
@@ -126,4 +127,12 @@ export async function readData(path: string): Promise<any|null> {
  */
 export async function saveData(data: any, path: string): Promise<void> {
     return fs.writeTextFile(path, JSON.stringify(data));
+}
+
+/**
+ * Converts a file path to a URL.
+ * @param path The path to convert.
+ */
+export function toAsset(path: string): string {
+    return convertFileSrc(path);
 }
