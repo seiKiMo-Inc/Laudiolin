@@ -6,16 +6,34 @@ import { dismiss, notify, notifyEmitter } from "@backend/notifications";
 import type { OfflineUserData, Playlist, TrackData, User } from "@backend/types";
 
 import * as fs from "@mod/fs";
-import { DocumentDirectoryPath } from "@mod/fs";
+import { DocumentDirectoryPath, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
 import { readDir, removeFile, createDir } from "@tauri-apps/api/fs";
+import emitter from "@backend/events";
 
 const userDataPath = `${DocumentDirectoryPath}/userData.json`;
 const playlistsPath = `${DocumentDirectoryPath}/playlists`;
 
 let downloadedObjects = 0; // The number of objects downloaded.
 export let isOffline = false; // Whether the app is in offline mode.
+export const downloads: TrackData[] = []; // The loaded downloads.
 
 const getDownloadedObjects = () => downloadedObjects; // Get the number of downloaded objects.
+
+/**
+ * Loads all downloaded tracks on the system.
+ */
+export async function loadDownloads(): Promise<void> {
+    // Load system downloads.
+    const tracks = await getDownloadedTracks();
+    for (const track of tracks)
+        downloads.push(await loadLocalTrackData(track));
+    emitter.emit("downloads");
+
+    emitter.on("download", track => {
+        downloads.push(track);
+        emitter.emit("downloads");
+    });
+}
 
 /**
  * Loads the user data from the file system.

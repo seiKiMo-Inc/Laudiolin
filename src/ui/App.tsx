@@ -10,7 +10,7 @@ import { invoke } from "@tauri-apps/api";
 
 import emitter from "@backend/events";
 import { login, userData, loaders } from "@backend/user";
-import { loadState } from "@backend/offline";
+import { loadDownloads, loadState } from "@backend/offline";
 
 import "@css/App.scss";
 import "@css/Text.scss";
@@ -65,6 +65,10 @@ class App extends React.Component<IProps, IState> {
         // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
+
+        // Load async data.
+        loadDownloads()
+            .catch(err => console.warn(err));
 
         // Check if the user is online.
         this.checkIfOnline();
