@@ -56,7 +56,7 @@ class Track extends React.PureComponent<IProps, never> {
                         src={track.icon}
                     />
 
-                    <div className={"Track_Info"}>
+                    <div className={"Track_Text"}>
                         <p>{track.title}</p>
                         <p>{track.artist}</p>
                     </div>
