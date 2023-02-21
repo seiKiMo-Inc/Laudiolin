@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 
 import { IoMdPlay } from "react-icons/io";
+import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
-import { MdFavorite, MdShuffle } from "react-icons/md";
 
 import Track from "@components/Track";
 import BasicButton from "@components/common/BasicButton";
+import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 
 import * as types from "@backend/types";
-import { playPlaylist } from "@backend/audio";
+import { downloadTrack, playPlaylist } from "@backend/audio";
 import { getPlaylistAuthor } from "@backend/user";
 
 import "@css/pages/Playlist.scss";
+import { dismiss, notify } from "@backend/notifications";
 
 interface IProps {
     pageArgs: any;
@@ -46,6 +48,20 @@ class Playlist extends React.Component<IProps> {
     }
 
     /**
+     * Returns the tracks in the playlist.
+     */
+    getPlaylistTracks(): types.TrackData[] {
+        const playlist = this.getPlaylist();
+        if (!playlist) return [];
+
+        return playlist.tracks
+            // Remove duplicate tracks.
+            .filter((track, index, self) => {
+                return self.findIndex(t => t.id == track.id) == index;
+            });
+    }
+
+    /**
      * Fetches the playlist from the page arguments.
      */
     getPlaylist(): types.Playlist {
@@ -60,6 +76,26 @@ class Playlist extends React.Component<IProps> {
      */
     play(shuffle = false): void {
         playPlaylist(this.getPlaylist(), shuffle);
+    }
+
+    /**
+     * Downloads the playlist for offline use.
+     */
+    download(): void {
+        const playlist = this.getPlaylist();
+
+        // Download each track.
+        this.getPlaylistTracks().forEach(track =>
+            downloadTrack(track, false));
+
+        // Send a notification.
+        notify({
+            type: "info",
+            message: `Started download of playlist ${playlist?.name ?? "Unknown"}.`,
+            date: new Date(),
+            icon: "file-download",
+            onPress: dismiss
+        });
     }
 
     render() {
@@ -109,9 +145,14 @@ class Playlist extends React.Component<IProps> {
                    <div className={"buttons"}>
                        <BasicButton
                            icon={<VscEllipsis />}
+                           onClick={() => toggleDropdown("Playlist_Actions")}
                        />
                    </div>
                </div>
+
+               <BasicDropdown id={"Playlist_Actions"}>
+                   <a onClick={() => this.download()}>Download Playlist</a>
+               </BasicDropdown>
 
                <div className={"Playlist_Tracks"}>
                    {
