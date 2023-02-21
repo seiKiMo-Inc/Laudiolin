@@ -102,7 +102,11 @@ class ControlPanel extends React.Component<any, IState> {
         const { playing, track, favorite } = this.state;
 
         return (
-            <div className={"ControlPanel"}>
+            <div className={"ControlPanel"} style={{ pointerEvents: !track ? "none" : "all" }}>
+                {
+                    !track && <div className={"ControlPanel_DisabledOverlay"} />
+                }
+
                 <div className={"ControlPanel_Track"}>
                     {
                         track && <>
