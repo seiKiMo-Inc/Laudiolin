@@ -4,6 +4,7 @@ import * as fs from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 
 export let DocumentDirectoryPath: string | null = null;
+export const AppData = () => DocumentDirectoryPath;
 
 /**
  * Sets up the file system.

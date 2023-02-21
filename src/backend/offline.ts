@@ -6,12 +6,12 @@ import { dismiss, notify, notifyEmitter } from "@backend/notifications";
 import type { OfflineUserData, Playlist, TrackData, User } from "@backend/types";
 
 import * as fs from "@mod/fs";
-import { DocumentDirectoryPath, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
+import { AppData, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
 import { readDir, removeFile, createDir } from "@tauri-apps/api/fs";
 import emitter from "@backend/events";
 
-const userDataPath = `${DocumentDirectoryPath}/userData.json`;
-const playlistsPath = `${DocumentDirectoryPath}/playlists`;
+const userDataPath = `${AppData()}/userData.json`;
+const playlistsPath = `${AppData()}/playlists`;
 
 let downloadedObjects = 0; // The number of objects downloaded.
 export let isOffline = false; // Whether the app is in offline mode.
