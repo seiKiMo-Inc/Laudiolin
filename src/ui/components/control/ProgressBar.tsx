@@ -7,6 +7,7 @@ import { formatDuration } from "@app/utils";
 interface IProps {
     progress: number;
     duration: number;
+
     onSeek: (progress: number) => void;
 }
 
@@ -22,11 +23,17 @@ class ProgressBar extends React.Component<IProps, IState> {
         this.state = {
             activeThumb: false,
             progress: props.progress
-        }
+        };
     }
 
     setProgress(progress: number): void {
         this.setState({ progress });
+    }
+
+    componentDidUpdate(prevProps: IProps) {
+        if (prevProps.progress != this.props.progress) {
+            this.setState({ progress: this.props.progress });
+        }
     }
 
     render() {

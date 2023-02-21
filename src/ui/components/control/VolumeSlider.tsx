@@ -20,7 +20,7 @@ class VolumeSlider extends React.Component<IProps, IState> {
 
         this.state = {
             activeThumb: false
-        }
+        };
     }
 
     render() {
