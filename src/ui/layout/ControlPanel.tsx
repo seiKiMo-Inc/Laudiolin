@@ -6,9 +6,10 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
-import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
+import 'rc-slider/assets/index.css';
 
 import ProgressBar from "@components/control/ProgressBar";
+import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
 import { favoriteTrack, favorites } from "@backend/user";
@@ -22,6 +23,7 @@ interface IState {
     playing: boolean;
     track: TrackData | null;
     progress: number;
+    volume: number;
     favorite: boolean;
 }
 
@@ -47,6 +49,7 @@ class ControlPanel extends React.Component<any, IState> {
             playing: false,
             track: null,
             progress: 0,
+            volume: 0,
             favorite: false
         };
     }
@@ -99,7 +102,11 @@ class ControlPanel extends React.Component<any, IState> {
         const { playing, track, favorite } = this.state;
 
         return (
-            <div className={"ControlPanel"}>
+            <div className={"ControlPanel"} style={{ pointerEvents: !track ? "none" : "all" }}>
+                {
+                    !track && <div className={"ControlPanel_DisabledOverlay"} />
+                }
+
                 <div className={"ControlPanel_Track"}>
                     {
                         track && <>
@@ -165,13 +172,21 @@ class ControlPanel extends React.Component<any, IState> {
                         />
                     </div>
 
-                    <ProgressBar progress={60} duration={100} onSeek={() => null} />
+                    <ProgressBar
+                        progress={this.state.progress}
+                        duration={60}
+                        onSeek={(progress) => this.setState({ progress })}
+                    />
                 </div>
 
                 <div className={"ControlPanel_Right"}>
-                    <FiVolume2 />
-                    <input type={"range"} className={"ControlPanel_Volume"} />
-                    <FiExternalLink />
+                    <VolumeSlider
+                        volume={this.state.volume}
+                        muted={false}
+                        setVolume={(volume) => this.setState({ volume })}
+                        toggleMute={() => null}
+                    />
+                    <FiExternalLink className={"ControlPanel_Popout"} />
                 </div>
             </div>
         );

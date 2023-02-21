@@ -39,6 +39,7 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 
     * {
         font-family: 'Poppins', sans-serif;
@@ -68,7 +69,6 @@ body {
         "control control control";
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
-    overflow: hidden;
     user-select: none;
 }
 
@@ -102,7 +102,7 @@ body {
     transition: all 0.1s ease-in-out;
     box-shadow: #00000070 0 0 10px 0;
     position: absolute;
-    z-index: 1;
+    z-index: 100;
     min-width: 200px;
 
     * {
