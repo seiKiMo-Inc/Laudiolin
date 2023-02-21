@@ -13,7 +13,7 @@ import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
 import { favoriteTrack, favorites } from "@backend/user";
-import { toggleRepeatState } from "@backend/audio";
+import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
@@ -25,6 +25,8 @@ interface IState {
     progress: number;
     volume: number;
     favorite: boolean;
+
+    lastVolume: number;
 }
 
 class ControlPanel extends React.Component<any, IState> {
@@ -37,8 +39,10 @@ class ControlPanel extends React.Component<any, IState> {
             queue: TrackPlayer.getQueue().length > 0,
             playing: !TrackPlayer.paused,
             favorite: track ? favorites.find(
-                t => t.id == track.id) != null : false
-        })
+                t => t.id == track.id) != null : false,
+            progress: TrackPlayer.getProgress(),
+            volume: Howler.volume() * 100
+        });
     };
 
     constructor(props: any) {
@@ -49,8 +53,9 @@ class ControlPanel extends React.Component<any, IState> {
             playing: false,
             track: null,
             progress: 0,
-            volume: 0,
-            favorite: false
+            volume: 100,
+            favorite: false,
+            lastVolume: 100
         };
     }
 
@@ -174,17 +179,30 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <ProgressBar
                         progress={this.state.progress}
-                        duration={60}
-                        onSeek={(progress) => this.setState({ progress })}
+                        duration={TrackPlayer.getDuration()}
+                        onSeek={(progress) => {
+                            this.setState({ progress });
+                            TrackPlayer.seek(progress);
+                        }}
                     />
                 </div>
 
                 <div className={"ControlPanel_Right"}>
                     <VolumeSlider
                         volume={this.state.volume}
-                        muted={false}
-                        setVolume={(volume) => this.setState({ volume })}
-                        toggleMute={() => null}
+                        muted={Howler.volume() == 0}
+                        setVolume={(volume) => {
+                            this.setState({ volume });
+                            setVolume(volume / 100);
+                        }}
+                        toggleMute={() => {
+                            if (Howler.volume() > 0) {
+                                this.setState({ lastVolume: Howler.volume() * 100 });
+                                setVolume(0);
+                            } else {
+                                setVolume(this.state.lastVolume / 100)
+                            }
+                        }}
                     />
                     <FiExternalLink className={"ControlPanel_Popout"} />
                 </div>
