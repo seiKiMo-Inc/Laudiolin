@@ -52,7 +52,7 @@ class Track extends React.PureComponent<IProps, never> {
                     event.preventDefault();
                 }}
             >
-                <div className={"Track_Info"} onClick={() => this.play()}>
+                <div className={"Track_Info"}>
                     <img
                         className={"Track_Icon"}
                         alt={track.title}
