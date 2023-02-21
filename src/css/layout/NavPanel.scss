@@ -152,7 +152,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    color: var(--text-tertiary-color);
     font-size: 15px;
 
     * {
@@ -161,6 +160,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         transition: all 0.2s ease-in-out;
+        color: var(--text-tertiary-color);
         margin: 0;
     }
 

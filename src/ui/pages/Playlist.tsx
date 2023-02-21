@@ -67,7 +67,7 @@ class Playlist extends React.Component<IProps> {
        if (!playlist) return undefined;
 
        return (
-           <div>
+           <div className={"Playlist"}>
                <div className={"Playlist_Details"}>
                    <img
                        className={"icon"}
