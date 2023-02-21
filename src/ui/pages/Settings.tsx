@@ -1,6 +1,7 @@
 import React from "react";
 
 import Switch from "react-switch";
+import { BiChevronDown } from "react-icons/bi";
 
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
@@ -19,6 +20,7 @@ interface ISetting {
     placeholder?: string | number | boolean;
     options?: string[];
     update?: (value: any) => void;
+    color?: string;
 }
 
 function Setting(props: ISetting) {
@@ -34,11 +36,10 @@ function Setting(props: ISetting) {
     return (
         <div
             className={"Setting"}
-            style={{ marginBottom: props.description ? 40 : 20 }}
         >
-            <div>
-                <h3>{settings.settingsKeys[props.setting] ?? "Unknown"}</h3>
-                { props.description && <p className={"Setting_Description"}>{props.description}</p> }
+            <div className={"Setting_Text"}>
+                <p>{settings.settingsKeys[props.setting] ?? "Unknown"}</p>
+                { props.description && <p>{props.description}</p> }
             </div>
 
             <div>
@@ -78,10 +79,11 @@ function SelectField({ props }) {
             <BasicButton
                 className={"Setting_Box"}
                 text={value}
+                icon={<BiChevronDown />}
                 onClick={() => toggleDropdown(props.setting)}
             />
 
-            <BasicDropdown id={props.setting}>
+            <BasicDropdown id={props.setting} className={"Settings_Dropdown"}>
                 { props.options.map((option, index) =>
                     <a
                         key={index}
@@ -103,7 +105,7 @@ function ToggleField({ props }) {
                 props.update?.(state);
             }}
             checked={enabled}
-            onColor={"#3484FC"}
+            onColor={props.color}
             checkedIcon={false}
             uncheckedIcon={false}
             width={40} height={20}
@@ -111,25 +113,30 @@ function ToggleField({ props }) {
     );
 }
 
-class Settings extends React.Component<{}, never> {
+class Settings extends React.Component<{}, { color: string }> {
     constructor(props: {}) {
         super(props);
+
+        this.state = {
+            color: settings.getFromPath("ui.color_theme", "Dark") == "Light" ? "#ED7D64" : "#3484FC"
+        }
     }
 
     render() {
         return (
             <div className={"Settings"}>
-                <h2 style={{ marginBottom: 30 }}>Settings</h2>
+                <h2 style={{ marginBottom: 20 }}>Settings</h2>
 
                 <Setting setting={"search.engine"} type={"select"}
                          description={"The engine to query track searching."}
                          options={["YouTube", "Spotify", "All"]} />
 
-                <h2 style={{ marginTop: 30, marginBottom: 30 }}>System</h2>
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 
                 <Setting setting={"system.offline"} type={"boolean"}
                          description={"This will make Laudiolin available while you're offline."}
-                         update={state => offlineSupport(state)} />
+                         update={state => offlineSupport(state)}
+                         color={this.state.color} />
                 <Setting setting={"system.broadcast_listening"} type={"select"}
                          description={"Who should see what you're listening to?"}
                          options={["Everyone", "Friends", "Nobody"]} />
@@ -137,14 +144,15 @@ class Settings extends React.Component<{}, never> {
                          description={"What should your Discord presence look like?"}
                          options={["Generic", "Simple", "None"]} />
 
-                <h2 style={{ marginTop: 30, marginBottom: 30 }}>Interface</h2>
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
 
                 <Setting setting={"ui.color_theme"} type={"select"}
                          description={"The color palette to use."}
                          options={["Dark", "Light"]}
-                         update={state => settings.setTheme(state)} />
-                <Setting setting={"ui.background_color"} type={"input"} />
-                <Setting setting={"ui.background_url"} type={"input"} />
+                         update={state => {
+                             settings.setTheme(state);
+                             this.setState({ color: state == "Light" ? "#ED7D64" : "#3484FC" });
+                         }} />
             </div>
         );
     }
