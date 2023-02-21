@@ -40,6 +40,11 @@
     line-height: 18px;
     border-radius: 5px !important;
     padding: 7px !important;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+    }
 
     svg {
         font-size: 20px;
@@ -55,6 +60,7 @@
 .Setting_Button {
     justify-content: center;
     background-color: var(--accent-color) !important;
+    transition: all 0.1s ease-in-out;
 }
 
 .Settings_Dropdown {
