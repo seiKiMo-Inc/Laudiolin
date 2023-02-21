@@ -9,6 +9,7 @@ import Playlist from "@pages/Playlist";
 import TrackList from "@components/TrackList";
 
 import type { Page } from "@backend/types";
+import { downloads } from "@backend/offline";
 import { recents, favorites } from "@backend/user";
 import { registerListener, removeListeners } from "@backend/navigation";
 
@@ -58,7 +59,9 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Favorites" && <TrackList
                     title={"Favorites"} events={["login", "favorites"]}
                     collection={() => favorites} /> }
-                { this.state.page == "Downloads" && <p>Downloads</p> }
+                { this.state.page == "Downloads" &&  <TrackList
+                    title={"Downloads"} events={["login", "downloads"]}
+                    collection={() => downloads} /> }
                 { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
             </>

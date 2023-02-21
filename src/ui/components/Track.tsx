@@ -4,7 +4,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
 
 import type { TrackData } from "@backend/types";
-import { formatDuration, isFavorite } from "@app/utils";
+import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { favoriteTrack } from "@backend/user";
 import { playTrack } from "@backend/audio";
 
@@ -47,13 +47,16 @@ class Track extends React.PureComponent<IProps, never> {
             <div
                 className={"Track"}
                 onClick={() => this.play()}
-                onContextMenu={() => console.log("Open context menu.")}
+                onContextMenu={event => {
+                    console.log("Open context menu.");
+                    event.preventDefault();
+                }}
             >
                 <div className={"Track_Info"} onClick={() => this.play()}>
                     <img
                         className={"Track_Icon"}
                         alt={track.title}
-                        src={track.icon}
+                        src={getIconUrl(track)}
                     />
 
                     <div className={"Track_Text"}>
