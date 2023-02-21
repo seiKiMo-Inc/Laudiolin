@@ -1,5 +1,6 @@
 import type { Playlist, TrackData } from "@backend/types";
 
+import * as settings from "@backend/settings";
 import { isListeningWith, listenWith } from "@backend/social";
 import { dismiss, notify } from "@backend/notifications";
 import { setCurrentPlaylist } from "@backend/playlist";
@@ -26,6 +27,9 @@ export async function setup(): Promise<void> {
         track.icon = getIconUrl(track);
         return track;
     };
+
+    // Load the volume from the local storage.
+    Howler.volume(parseFloat(settings.get("volume", "1")));
 }
 
 /**
@@ -201,4 +205,13 @@ export async function playPlaylist(playlist: Playlist, shuffle: boolean): Promis
     await TrackPlayer.play();
     // Set the current playlist.
     setCurrentPlaylist(playlist);
+}
+
+/**
+ * Sets the volume.
+ * @param volume The volume to set.
+ */
+export function setVolume(volume: number): void {
+    Howler.volume(volume); // Set the volume of the Howler player.
+    settings.save("volume", volume.toString()); // Set the volume in the settings.
 }
