@@ -108,10 +108,6 @@ class Playlist extends React.Component<IProps> {
 
                    <div className={"buttons"}>
                        <BasicButton
-                           icon={<MdFavorite />}
-                       />
-
-                       <BasicButton
                            icon={<VscEllipsis />}
                        />
                    </div>
