@@ -97,10 +97,12 @@ export async function playTrack(
         await listenWith(null);
     }
 
-    // Add the track to the player.
-    TrackPlayer.add(track);
     // Play the track if specified.
-    play && await TrackPlayer.play(null, force);
+    if (play) {
+        await TrackPlayer.play(track, force);
+    } else {
+        await TrackPlayer.add(track);
+    }
 
     // Reset the current playlist.
     !fromPlaylist && setCurrentPlaylist(null);
