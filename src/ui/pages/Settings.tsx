@@ -75,13 +75,38 @@ function SelectField({ props }) {
 
     const [value, setValue] = React.useState<string>(props.placeholder);
 
+    function setDropdownPosition() {
+        const button = document.getElementById(props.setting + "_button");
+        const dropdown = document.getElementById(props.setting);
+
+        if (!button || !dropdown) return;
+
+        const buttonRect = button.getBoundingClientRect();
+        const dropdownRect = dropdown.getBoundingClientRect();
+
+        const top = buttonRect.top + buttonRect.height;
+        const left = buttonRect.left;
+
+        if (top + dropdownRect.height > window.innerHeight) {
+            dropdown.style.top = (buttonRect.top - dropdownRect.height) + "px";
+        } else {
+            dropdown.style.top = top + "px";
+        }
+
+        dropdown.style.left = left + "px";
+    }
+
     return (
         <>
             <BasicButton
                 className={"Setting_Box"}
+                id={props.setting + "_button"}
                 text={value}
                 icon={<BiChevronDown />}
-                onClick={() => toggleDropdown(props.setting)}
+                onClick={() => {
+                    setDropdownPosition();
+                    toggleDropdown(props.setting);
+                }}
             />
 
             <BasicDropdown id={props.setting} className={"Settings_Dropdown"}>
