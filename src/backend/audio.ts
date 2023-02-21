@@ -1,6 +1,7 @@
 import type { Playlist, TrackData } from "@backend/types";
 
 import { isListeningWith, listenWith } from "@backend/social";
+import { dismiss, notify } from "@backend/notifications";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
@@ -49,15 +50,15 @@ export async function downloadTrack(track: TrackData, emit = true): Promise<void
 
     if (emit) {
         // Emit the track downloaded event.
-        emitter.emit("download");
+        emitter.emit("download", track);
         // TODO: Send a notification.
-        // await notify({
-        //     type: "info",
-        //     message: `Finished downloading ${track.title}`,
-        //     date: new Date(),
-        //     icon: "file-download",
-        //     onPress: dismiss
-        // });
+        await notify({
+            type: "info",
+            message: `Finished downloading ${track.title}`,
+            date: new Date(),
+            icon: "file-download",
+            onPress: dismiss
+        });
     }
 }
 
