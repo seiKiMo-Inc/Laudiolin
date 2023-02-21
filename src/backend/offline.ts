@@ -36,6 +36,18 @@ export async function loadDownloads(): Promise<void> {
 }
 
 /**
+ * Saves a playlist to the file system.
+ * @param playlist The playlist to save.
+ */
+export async function savePlaylist(playlist: Playlist): Promise<void> {
+    // Save the playlist to the file system.
+    fs.saveData(playlist, `${playlistsPath}/${playlist.id}.json`)
+        .then(() => downloadedObjects++);
+    // Download the tracks in the playlist.
+    saveTracks(playlist.tracks);
+}
+
+/**
  * Loads the user data from the file system.
  */
 export async function loadState(

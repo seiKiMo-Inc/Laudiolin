@@ -9,11 +9,12 @@ import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 
 import * as types from "@backend/types";
-import { downloadTrack, playPlaylist } from "@backend/audio";
+import { playPlaylist } from "@backend/audio";
 import { getPlaylistAuthor } from "@backend/user";
+import { dismiss, notify } from "@backend/notifications";
+import { savePlaylist } from "@backend/offline";
 
 import "@css/pages/Playlist.scss";
-import { dismiss, notify } from "@backend/notifications";
 
 interface IProps {
     pageArgs: any;
@@ -84,9 +85,8 @@ class Playlist extends React.Component<IProps> {
     download(): void {
         const playlist = this.getPlaylist();
 
-        // Download each track.
-        this.getPlaylistTracks().forEach(track =>
-            downloadTrack(track, false));
+        // Save the playlist.
+        playlist && savePlaylist(playlist);
 
         // Send a notification.
         notify({
@@ -156,7 +156,7 @@ class Playlist extends React.Component<IProps> {
 
                <div className={"Playlist_Tracks"}>
                    {
-                       playlist.tracks.map((track, index) =>
+                       this.getPlaylistTracks().map((track, index) =>
                            <Track track={track} key={index} />)
                    }
                </div>
