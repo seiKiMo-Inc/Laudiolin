@@ -1,48 +1,44 @@
 import React from "react";
 
-import Slider from "rc-slider";
-
-import { formatDuration } from "@app/utils";
+import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
+import Slider from "rc-slider/es";
 
 interface IProps {
-    progress: number;
-    duration: number;
-    onSeek: (progress: number) => void;
+    volume: number;
+    muted: boolean;
+    setVolume: (value: number) => void;
+    toggleMute: () => void;
 }
 
 interface IState {
     activeThumb: boolean;
-    progress: number;
 }
 
-class ProgressBar extends React.Component<IProps, IState> {
+class VolumeSlider extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            activeThumb: false,
-            progress: props.progress
+            activeThumb: false
         }
-    }
-
-    setProgress(progress: number): void {
-        this.setState({ progress });
     }
 
     render() {
         return (
             <div
-                className={"ControlPanel_ProgressBar"}
+                className={"ControlPanel_Volume"}
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
             >
-                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.progress)}</p>
+                <div className={"ControlPanel_Volume_Icon"} onClick={this.props.toggleMute}>
+                    {this.props.muted || this.props.volume === 0 ? <FiVolumeX /> : this.props.volume > 50 ? <FiVolume2 /> : <FiVolume1 />}
+                </div>
                 <Slider
+                    className={"ControlPanel_Volume_Slider"}
                     min={0}
-                    max={this.props.duration}
-                    value={this.state.progress}
-                    onChange={(progress: number) => this.setProgress(progress)}
-                    onAfterChange={(progress: number) => this.props.onSeek(progress)}
+                    max={100}
+                    value={this.props.muted ? 0 : this.props.volume}
+                    onChange={this.props.setVolume}
                     trackStyle={{ backgroundColor: "var(--accent-color)" }}
                     handleStyle={{
                         display: this.state.activeThumb ? "block" : "none",
@@ -52,10 +48,9 @@ class ProgressBar extends React.Component<IProps, IState> {
                     railStyle={{ backgroundColor: "var(--background-secondary-color)" }}
                     draggableTrack={true}
                 />
-                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.duration)}</p>
             </div>
         );
     }
 }
 
-export default ProgressBar;
+export default VolumeSlider;

@@ -117,22 +117,37 @@
             filter: brightness(1.5);
         }
     }
-
-    :last-child {
-        color: var(--icon-secondary-color);
-        font-size: 22px;
-        margin-top: -5px;
-        margin-right: 20px;
-        transition: all 0.1s ease-in-out;
-
-        &:hover {
-            filter: brightness(1.5);
-        }
-    }
 }
 
 .ControlPanel_Volume {
-    width: 150px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+
+    .ControlPanel_Volume_Icon {
+        margin-top: 6px;
+
+        svg {
+            font-size: 22px;
+        }
+    }
+
+    .ControlPanel_Volume_Slider {
+        width: 100px;
+    }
+}
+
+.ControlPanel_Popout {
+    color: var(--icon-secondary-color);
+    font-size: 22px;
+    margin-top: -5px;
+    margin-right: 20px;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+        filter: brightness(1.5);
+    }
 }
 
 @media (max-width: 1440px) {
