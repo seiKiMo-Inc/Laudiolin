@@ -12,8 +12,13 @@ interface IProps {
     buttonIcon?: string;
 }
 
-export function toggleDropdown(id: string) {
-    document.getElementById(id).classList.toggle("show");
+export function toggleDropdown(id: string, x?: number, y?: number) {
+    const element = document.getElementById(id);
+    element.classList.toggle("show");
+    if (x && y) {
+        element.style.left = x + "px";
+        element.style.top = y + "px";
+    }
 }
 
 class BasicDropdown extends React.Component<IProps> {

@@ -20,6 +20,17 @@ export const downloads: TrackData[] = []; // The loaded downloads.
 const getDownloadedObjects = () => downloadedObjects; // Get the number of downloaded objects.
 
 /**
+ * Checks if a track is downloaded.
+ * The track must be loaded as a download.
+ * @param track The track to check.
+ */
+export function isDownloaded(track: TrackData|string): boolean {
+    // Check if the track is downloaded.
+    const id = typeof track == "string" ? track : track.id;
+    return downloads.some(track => track.id == id);
+}
+
+/**
  * Loads all downloaded tracks on the system.
  */
 export async function loadDownloads(): Promise<void> {

@@ -157,7 +157,7 @@ class Playlist extends React.Component<IProps> {
                <div className={"Playlist_Tracks"}>
                    {
                        this.getPlaylistTracks().map((track, index) =>
-                           <Track track={track} key={index} />)
+                           <Track track={track} playlist={playlist.id} key={index} />)
                    }
                </div>
            </div>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 
 interface IProps {
     icon?: React.ReactNode;
-    onClick?: () => void;
+    onClick?: (event: MouseEvent) => void;
     text?: string;
     style?: React.CSSProperties;
     id?: string;
