@@ -1,26 +1,57 @@
+.Settings {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    min-width: 800px;
+    margin: auto;
+    gap: 20px;
+}
+
 .Setting {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-    width: 80%;
-    max-height: 48px;
+    align-items: center;
+    border-radius: 20px;
 }
 
-.Setting_Description {
-    margin-top: 10px;
+.Setting_Text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    * {
+        font-size: 15px;
+        margin: 0;
+
+        &:nth-child(2) {
+            font-size: 13px;
+            color: var(--text-secondary-color);
+        }
+    }
 }
 
 .Setting_Box {
-    height: 22px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 150px;
     font-weight: 500;
-    font-size: 12px;
     line-height: 18px;
     border-radius: 5px !important;
+    padding: 7px !important;
+
+    svg {
+        font-size: 20px;
+    }
 }
 
 .Setting_Input {
     border: none;
     color: var(--text-primary-color);
     background-color: var(--background-primary-color);
+}
+
+.Settings_Dropdown {
+    margin-top: 10px;
 }
