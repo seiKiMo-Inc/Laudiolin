@@ -139,6 +139,10 @@ class Settings extends React.Component<{}, never> {
 
                 <h2 style={{ marginTop: 30, marginBottom: 30 }}>Interface</h2>
 
+                <Setting setting={"ui.color_theme"} type={"select"}
+                         description={"The color palette to use."}
+                         options={["Dark", "Light"]}
+                         update={state => settings.setTheme(state)} />
                 <Setting setting={"ui.background_color"} type={"input"} />
                 <Setting setting={"ui.background_url"} type={"input"} />
             </div>

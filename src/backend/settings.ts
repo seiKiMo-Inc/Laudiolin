@@ -10,6 +10,7 @@ export const defaultSettings: UserSettings = {
 
     },
     ui: {
+        color_theme: "Dark",
         background_color: "",
         background_url: ""
     },
@@ -24,6 +25,7 @@ export const defaultSettings: UserSettings = {
 export const settingsKeys: {[key: string]: string} = {
     "search.accuracy": "Search Accuracy",
     "search.engine": "Preferred Search Engine",
+    "ui.color_theme": "Color Theme",
     "ui.background_color": "Background Color",
     "ui.background_url": "Background URL",
     "system.offline": "Full Offline Support",
@@ -48,6 +50,21 @@ export function reloadSettings(from?: UserSettings | null):void {
 
     // Save the user's authentication token.
     save("user_token", settings?.token ?? "");
+    // Set the user's theme.
+    setTheme();
+}
+
+/**
+ * Updates the theme.
+ * @param theme The theme to set.
+ */
+export function setTheme(theme: "Light" | "Dark" = null): void {
+    if (theme == null) theme = settings?.ui?.color_theme ?? "Light";
+
+    // Set the theme.
+    document.getElementsByTagName("html")[0]
+        .setAttribute("data-theme",
+            theme.toString().toLowerCase());
 }
 
 /*
@@ -111,9 +128,9 @@ export function audio(): AudioSettings {
  */
 export function ui(): UISettings {
     return settings?.ui || <UISettings> {
+        color_theme: "Dark",
         background_color: "",
-        background_url: "",
-        progress_fill: "Solid"
+        background_url: ""
     };
 }
 

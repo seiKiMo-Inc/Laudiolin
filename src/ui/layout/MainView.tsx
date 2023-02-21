@@ -15,22 +15,10 @@ class MainView extends React.Component<any, IState> {
         }
     }
 
-    toggleTheme = () => {
-        if (!this.state.lightTheme) {
-            document.getElementsByTagName("html")[0].setAttribute("data-theme", "light");
-            this.setState({ lightTheme: true });
-        } else {
-            document.getElementsByTagName("html")[0].setAttribute("data-theme", "dark");
-            this.setState({ lightTheme: false });
-        }
-    };
-
     render() {
         return (
             <div className={"MainView"}>
                 <Navigate />
-
-                <button onClick={this.toggleTheme}>Toggle Theme</button>
             </div>
         );
     }

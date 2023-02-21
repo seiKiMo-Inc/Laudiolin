@@ -73,6 +73,7 @@ export type AudioSettings = {
 
 };
 export type UISettings = {
+    color_theme: "Light" | "Dark";
     background_color: string;
     background_url: string;
 };
