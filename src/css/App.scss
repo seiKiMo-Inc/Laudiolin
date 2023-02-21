@@ -73,6 +73,7 @@ body {
 }
 
 .MainView {
+    padding-left: 32px;
     grid-area: main;
     background-color: var(--background-secondary-color);
     overflow: auto;
