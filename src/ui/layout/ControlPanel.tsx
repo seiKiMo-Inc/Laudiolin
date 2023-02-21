@@ -165,7 +165,11 @@ class ControlPanel extends React.Component<any, IState> {
                         />
                     </div>
 
-                    <ProgressBar progress={60} duration={100} onSeek={() => null} />
+                    <ProgressBar
+                        progress={this.state.progress}
+                        duration={60}
+                        onSeek={(progress) => this.setState({ progress })}
+                    />
                 </div>
 
                 <div className={"ControlPanel_Right"}>

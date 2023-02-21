@@ -1,5 +1,8 @@
 import React from "react";
 
+import Slider from "rc-slider";
+import 'rc-slider/assets/index.css';
+
 import { formatDuration } from "@app/utils";
 
 interface IProps {
@@ -9,7 +12,8 @@ interface IProps {
 }
 
 interface IState {
-    dragProgress: number;
+    activeThumb: boolean;
+    progress: number;
 }
 
 class ProgressBar extends React.Component<IProps, IState> {
@@ -17,50 +21,39 @@ class ProgressBar extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            dragProgress: props.progress ?? 0
+            activeThumb: false,
+            progress: props.progress
         }
     }
 
-    getProgressPercentage(): number {
-        return this.state.dragProgress / this.props.duration * 100;
-    }
-
-    seek(e: React.MouseEvent<HTMLDivElement>): void {
-        this.props.onSeek((e.nativeEvent.offsetX / e.currentTarget.offsetWidth) * this.props.duration);
-        console.log("seeking");
-    }
-
-    progressDrag(e: React.MouseEvent<HTMLDivElement>): void {
-        this.setState({ dragProgress: (e.nativeEvent.offsetX / e.currentTarget.offsetWidth) * this.props.duration });
-    }
-
-    componentDidUpdate(prevProps: Readonly<IProps>) {
-        if (this.props.progress !== prevProps.progress) {
-            this.setState({ dragProgress: this.props.progress });
-        }
+    setProgress(progress: number) {
+        this.setState({ progress });
     }
 
     render() {
         return (
-            <div className={"ControlPanel_ProgressBar"}>
-                <p className={"ControlPanel_ProgressBar_Time"}>
-                    {formatDuration(this.props.progress)}
-                </p>
-
-                <div
-                    className={"ControlPanel_ProgressBar_Track"}
-                    draggable={true}
-                    onClick={(e) => this.seek(e)}
-                    onDragStart={(e) => this.progressDrag(e)}
-                    onDragOver={(e) => this.progressDrag(e)}
-                    onDragEnd={(e) => this.seek(e)}
-                >
-                    <div className={"ControlPanel_ProgressBar_Fill"} style={{ width: this.getProgressPercentage() + "%" }} />
-                </div>
-
-                <p className={"ControlPanel_ProgressBar_Time"}>
-                    {formatDuration(this.props.duration)}
-                </p>
+            <div
+                className={"ControlPanel_ProgressBar"}
+                onMouseEnter={() => this.setState({ activeThumb: true })}
+                onMouseLeave={() => this.setState({ activeThumb: false })}
+            >
+                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.progress)}</p>
+                <Slider
+                    min={0}
+                    max={this.props.duration}
+                    value={this.state.progress}
+                    onChange={(progress: number) => this.setProgress(progress)}
+                    onAfterChange={(progress: number) => this.props.onSeek(progress)}
+                    trackStyle={{ backgroundColor: "var(--accent-color)" }}
+                    handleStyle={{
+                        display: this.state.activeThumb ? "block" : "none",
+                        borderColor: "var(--accent-color)",
+                        backgroundColor: "white"
+                    }}
+                    railStyle={{ backgroundColor: "var(--background-secondary-color)" }}
+                    draggableTrack={true}
+                />
+                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.duration)}</p>
             </div>
         );
     }
