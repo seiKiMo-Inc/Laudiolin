@@ -52,6 +52,11 @@
     background-color: var(--background-primary-color);
 }
 
+.Setting_Button {
+    justify-content: center;
+    background-color: var(--accent-color) !important;
+}
+
 .Settings_Dropdown {
     margin-top: 10px;
 }

@@ -8,6 +8,7 @@ import BasicButton from "@components/common/BasicButton";
 
 import type { SettingType } from "@backend/types";
 import { offlineSupport } from "@backend/offline";
+import { connect } from "@backend/gateway";
 import * as settings from "@backend/settings";
 
 import "@css/pages/Settings.scss";
@@ -113,13 +114,37 @@ function ToggleField({ props }) {
     );
 }
 
+interface IDisplayProps {
+    text: string;
+    description?: string;
+
+    children: React.ReactNode;
+}
+
+function DisplayField(props: IDisplayProps) {
+    return (
+        <div
+            className={"Setting"}
+        >
+            <div className={"Setting_Text"}>
+                <p>{props.text}</p>
+                { props.description && <p>{props.description}</p> }
+            </div>
+
+            <div>
+                {props.children}
+            </div>
+        </div>
+    );
+}
+
 class Settings extends React.Component<{}, { color: string }> {
     constructor(props: {}) {
         super(props);
 
         this.state = {
             color: settings.getFromPath("ui.color_theme", "Dark") == "Light" ? "#ED7D64" : "#3484FC"
-        }
+        };
     }
 
     render() {
@@ -132,6 +157,14 @@ class Settings extends React.Component<{}, { color: string }> {
                          options={["YouTube", "Spotify", "All"]} />
 
                 <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
+
+                <DisplayField
+                    text={"Get Login Code"}
+                    description={"Generates a 6-digit code to login on other devices simultaneously."}
+                >
+                    <BasicButton text={"Reveal"} className={"Setting_Box Setting_Button"}
+                                 onClick={() => console.log("Reveal Login Code")} />
+                </DisplayField>
 
                 <Setting setting={"system.offline"} type={"boolean"}
                          description={"This will make Laudiolin available while you're offline."}
@@ -153,6 +186,13 @@ class Settings extends React.Component<{}, { color: string }> {
                              settings.setTheme(state);
                              this.setState({ color: state == "Light" ? "#ED7D64" : "#3484FC" });
                          }} />
+
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
+
+                <DisplayField text={"Reconnect to Gateway"}>
+                    <BasicButton text={"Reconnect"} className={"Setting_Box Setting_Button"}
+                                 onClick={() => connect()} />
+                </DisplayField>
             </div>
         );
     }
