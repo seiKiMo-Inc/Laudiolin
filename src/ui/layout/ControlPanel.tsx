@@ -11,10 +11,11 @@ import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
 import ProgressBar from "@components/control/ProgressBar";
 
 import type { TrackData } from "@backend/types";
+import { favoriteTrack, favorites } from "@backend/user";
+import { toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
-import { favorites, favoriteTrack } from "@backend/user";
 
 interface IState {
     queue: boolean;
@@ -71,35 +72,24 @@ class ControlPanel extends React.Component<any, IState> {
     }
 
     /**
-     * Toggles the repeat mode.
-     */
-    toggleRepeatMode(): void {
-        switch (TrackPlayer.getRepeatMode()) {
-            case "none": TrackPlayer.setRepeatMode("queue"); break;
-            case "queue": TrackPlayer.setRepeatMode("track"); break;
-            case "track": TrackPlayer.setRepeatMode("none"); break;
-        }
-    }
-
-    /**
      * Gets the icon for the appropriate repeat mode.
      */
     getRepeatIcon(): React.ReactNode {
         switch (TrackPlayer.getRepeatMode()) {
             case "none": return <MdRepeat
                 className={"ControlPanel_Control"}
-                onClick={this.toggleRepeatMode}
+                onClick={toggleRepeatState}
             />;
 
-            case "track": return <MdRepeat
+            case "track": return <MdRepeatOne
                 className={"ControlPanel_Control ControlPanel_Repeat"}
-                onClick={this.toggleRepeatMode}
+                onClick={toggleRepeatState}
                 style={{ color: "var(--accent-color)" }}
             />;
 
-            case "queue": return <MdRepeatOne
+            case "queue": return <MdRepeat
                 className={"ControlPanel_Control ControlPanel_Repeat"}
-                onClick={this.toggleRepeatMode}
+                onClick={toggleRepeatState}
                 style={{ color: "var(--accent-color)" }}
             />;
         }
@@ -164,7 +154,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                         <IoMdSkipForward
                             className={"ControlPanel_Control"}
-                            onClick={() => this.toggleRepeatMode()}
+                            onClick={() => TrackPlayer.next()}
                         />
 
                         {this.getRepeatIcon()}
