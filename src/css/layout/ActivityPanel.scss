@@ -2,4 +2,17 @@
     background-color: var(--background-primary-color);
     grid-area: activity;
     transition: width 0.2s ease-in-out;
+
+    padding-left: 24px;
+}
+
+.ActivityPanel_Info {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.ActivityPanel_Content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }

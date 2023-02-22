@@ -33,7 +33,7 @@ class TopBar extends React.Component<{}, IState> {
     componentDidMount() {
         if (this.state.isActivityPanelOpen) {
             const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
-            activityPanel.style.width = "400px";
+            activityPanel.style.width = "320px";
         } else {
             const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
             activityPanel.style.width = "0";

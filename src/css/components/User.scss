@@ -1,0 +1,51 @@
+.User {
+    display: flex;
+    flex-direction: row;
+
+    width: 90%;
+    height: 58px;
+    justify-content: space-between;
+}
+
+.User_Image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.User_Info {
+    display: flex;
+    flex-direction: column;
+
+    p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 18px;
+        color: var(--text-secondary-color);
+
+        &:nth-child(1) {
+            font-size: 14px;
+            line-height: 21px;
+            color: var(--text-primary-color);
+        }
+    }
+}
+
+.User_Name {
+    &:nth-child(1) {
+        color: var(--text-primary-color);
+    }
+
+    &:nth-child(2) {
+        color: var(--text-secondary-color);
+    }
+}
+
+.User_Listen {
+    width: 33px;
+    height: 33px;
+    color: #262626;
+    align-self: center;
+    background-color: var(--background-secondary-color) !important;
+}
