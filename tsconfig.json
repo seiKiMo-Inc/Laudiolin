@@ -23,7 +23,8 @@
       "@layout/*": ["src/ui/layout/*"],
       "@css/*": ["src/css/*"],
       "@backend/*": ["src/backend/*"],
-      "@mod/*": ["src/backend/modules/*"]
+      "@mod/*": ["src/backend/modules/*"],
+      "@widget/*": ["src/ui/components/widgets/*"]
     }
   },
   "include": ["src"],

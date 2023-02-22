@@ -4,7 +4,7 @@ import { IoMdPlay } from "react-icons/io";
 import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
 
-import Track from "@components/Track";
+import Track from "@widget/Track";
 import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 

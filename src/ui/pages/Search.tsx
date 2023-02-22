@@ -1,6 +1,6 @@
 import React from "react";
 
-import Track from "@components/Track";
+import Track from "@widget/Track";
 
 import * as types from "@backend/types";
 
