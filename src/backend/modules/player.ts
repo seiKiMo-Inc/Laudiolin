@@ -130,9 +130,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         current && this.stop();
 
         // Check if there is a next track.
-        if (this.queue.length > 0) {
-            const { loop } = this.state;
-
+        const { loop } = this.state;
+        if (this.queue.length > 0 || loop == "track") {
             // Play the next track.
             if (loop != "track") {
                 this.play(this.queue.shift()!);
