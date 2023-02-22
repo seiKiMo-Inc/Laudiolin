@@ -6,12 +6,12 @@ import { dismiss, notify, notifyEmitter } from "@backend/notifications";
 import type { OfflineUserData, Playlist, TrackData, User } from "@backend/types";
 
 import * as fs from "@mod/fs";
-import { AppData, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
+import { AppData, deleteTrackFolder, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
 import { readDir, removeFile, createDir } from "@tauri-apps/api/fs";
 import emitter from "@backend/events";
 
-const userDataPath = `${AppData()}/userData.json`;
-const playlistsPath = `${AppData()}/playlists`;
+const userDataPath = () => `${AppData()}/userData.json`;
+const playlistsPath = () => `${AppData()}/playlists`;
 
 let downloadedObjects = 0; // The number of objects downloaded.
 export let isOffline = false; // Whether the app is in offline mode.
@@ -36,8 +36,14 @@ export function isDownloaded(track: TrackData|string): boolean {
 export async function loadDownloads(): Promise<void> {
     // Load system downloads.
     const tracks = await getDownloadedTracks();
-    for (const track of tracks)
-        downloads.push(await loadLocalTrackData(track));
+    for (const track of tracks) {
+        if (await fs.trackExists({ id: track })) {
+            downloads.push(await loadLocalTrackData(track));
+        } else {
+            deleteTrackFolder({ id: track })
+                .catch(err => console.warn(err));
+        }
+    }
     emitter.emit("downloads");
 
     emitter.on("download", track => {
@@ -70,7 +76,7 @@ export async function loadState(
     if (!isOffline) return; // Return if offline support is disabled.
 
     // Load the offline data from the filesystem.
-    const data = await fs.readData(userDataPath);
+    const data = await fs.readData(userDataPath());
     if (!data) {
         console.error("Unable to load offline user data."); return;
     }
@@ -79,7 +85,7 @@ export async function loadState(
     const offlineData = data as OfflineUserData;
     console.info("Loaded offline user data.");
     // Read the playlists from the file system.
-    const playlistFiles = (await readDir(playlistsPath))
+    const playlistFiles = (await readDir(playlistsPath()))
         .map(file => file.name);
     console.info("Loaded offline playlists.");
     const playlistData = await Promise.all(playlistFiles.map(async file =>
@@ -172,18 +178,18 @@ export async function offlineSupport(enabled: boolean): Promise<void> {
             // Save the playlist ID to the user data.
             playlist.id && data.playlists.push(playlist.id);
             // Save the playlist to the file system.
-            fs.saveData(playlist, `${playlistsPath}/${playlist.id}.json`)
+            fs.saveData(playlist, `${playlistsPath()}/${playlist.id}.json`)
                 .then(() => downloadedObjects++);
             // Download the tracks in the playlist.
             saveTracks(playlist.tracks);
         });
 
         saveTracks(favorites); // Download every favorite track.
-        fs.saveData(data, userDataPath)
+        fs.saveData(data, userDataPath())
             .then(() => downloadedObjects++); // Save the user data.
     } else {
-        await removeFile(userDataPath); // Delete the saved user data.
-        await removeFile(playlistsPath); // Delete the saved playlists.
-        await createDir(playlistsPath); // Create the playlists directory.
+        await removeFile(userDataPath()); // Delete the saved user data.
+        await removeFile(playlistsPath()); // Delete the saved playlists.
+        await createDir(playlistsPath()); // Create the playlists directory.
     }
 }
