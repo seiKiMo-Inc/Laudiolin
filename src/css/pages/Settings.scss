@@ -1,8 +1,8 @@
 .Settings {
     display: flex;
     flex-direction: column;
-    width: 50%;
-    min-width: 800px;
+    width: 70%;
+    max-width: 1000px;
     margin: auto;
     gap: 20px;
 }
@@ -66,3 +66,10 @@
 .Settings_Dropdown {
     margin-top: 10px;
 }
+
+@media screen and (max-width: 1800px) {
+    .Settings {
+        width: 90%;
+    }
+}
+
