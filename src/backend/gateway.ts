@@ -48,7 +48,7 @@ async function update(): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    sendGatewayMessage(<SeekMessage> {
+    connected && sendGatewayMessage(<SeekMessage> {
         type: "seek",
         timestamp: Date.now(),
         seek: TrackPlayer.getProgress()
@@ -66,7 +66,7 @@ async function playerUpdate(seek?: number): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    sendGatewayMessage(<PlayerMessage> {
+    connected && sendGatewayMessage(<PlayerMessage> {
         type: "player",
         seek: seek ?? TrackPlayer.getProgress(),
         track: currentTrack ? currentTrack.data : null,
