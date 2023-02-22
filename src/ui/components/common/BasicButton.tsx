@@ -15,7 +15,7 @@ class BasicButton extends React.Component<IProps> {
     render() {
         return (
             <button
-                className={`BasicButton ${this.props.className}`}
+                className={`${this.props.className} BasicButton`}
                 id={this.props.id}
                 style={{
                     ...this.props.style,

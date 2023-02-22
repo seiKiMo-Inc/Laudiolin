@@ -14,14 +14,14 @@ interface IProps {
     user: OnlineUser;
 }
 
-class User extends React.PureComponent<IProps, never> {
+class User extends React.Component<IProps, never> {
     constructor(props: IProps) {
         super(props);
     }
 
     render() {
         const { user } = this.props;
-        if (user.userId == userData.userId) return undefined;
+        if (user.userId == userData?.userId) return undefined;
         const listening = user.listeningTo;
         if (listening == null) return undefined;
 
@@ -47,10 +47,16 @@ class User extends React.PureComponent<IProps, never> {
                 <BasicButton
                     className={"User_Listen"}
                     icon={<FiHeadphones />}
-                    onClick={() => listeningWith != user.userId && listenWith(user.userId)}
+                    onClick={() => {
+                        if (listeningWith?.userId != user.userId) {
+                            listenWith(user.userId)
+                        } else {
+                            listenWith(null);
+                        }
+                    }}
                     style={{
-                        backgroundColor: listeningWith == user.userId ?
-                            "var(--accent-color)" : "var(--secondary-background-color)"
+                        backgroundColor: listeningWith?.userId == user.userId ?
+                            "var(--accent-color)" : "var(--background-secondary-color)"
                     }}
                 />
             </div>

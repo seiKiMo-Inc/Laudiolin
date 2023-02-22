@@ -6,6 +6,7 @@ import type { BasicUser } from "@backend/types";
 
 import "@css/layout/ActivityPanel.scss";
 import { getAvailableUsers } from "@backend/social";
+import emitter from "@backend/events";
 
 interface IState {
     users: BasicUser[];
@@ -20,6 +21,11 @@ class ActivityPanel extends React.Component<{}, IState> {
         this.setState({ users });
     };
 
+    /**
+     * Reloads the component.
+     */
+    reload = () => this.forceUpdate();
+
     interval: NodeJS.Timer|number;
 
     constructor(props: {}) {
@@ -31,11 +37,15 @@ class ActivityPanel extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
+        this.update();
+
         this.interval = setInterval(this.update, 10e3);
+        emitter.on("listen", this.reload);
     }
 
     componentWillUnmount() {
         this.interval && clearInterval(this.interval);
+        emitter.off("listen", this.reload);
     }
 
     render() {
