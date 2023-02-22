@@ -11,6 +11,7 @@ import { invoke } from "@tauri-apps/api";
 
 import emitter from "@backend/events";
 import { loadState } from "@backend/offline";
+import { openFromUrl } from "@backend/link";
 import { login, userData, loaders } from "@backend/user";
 
 import "@css/App.scss";
@@ -48,7 +49,9 @@ class App extends React.Component<IProps, IState> {
             .then((online: boolean) => {
                 if (online) {
                     // Attempt to log in.
-                    login().catch(err => console.warn(err))
+                    login()
+                        .then(() => openFromUrl())
+                        .catch(err => console.warn(err))
                 } else {
                     // Attempt to load offline user data.
                     // Load the offline state.
