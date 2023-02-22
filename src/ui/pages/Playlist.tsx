@@ -116,7 +116,8 @@ class Playlist extends React.Component<IProps> {
                            {playlist.isPrivate ? "Private Playlist" : "Public Playlist"}
                        </p>
 
-                       <h1>{playlist.name}</h1>
+                       <h1 className={"info_title"}>{playlist.name}</h1>
+                       <p className={"info_description"}>{playlist.description}</p>
 
                        <PlaylistAuthor playlist={playlist} />
 
