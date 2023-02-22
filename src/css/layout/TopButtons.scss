@@ -13,6 +13,7 @@
     color: var(--icon-primary-color);
     padding: 5px 12px;
     font-size: 20px;
+    background-color: var(--background-primary-color);
 
     &:nth-child(2) {
         font-size: 17px;
@@ -24,6 +25,6 @@
     }
 
     &:hover {
-        background-color: var(--background-primary-color);
+        background-color: var(--background-secondary-color);
     }
 }

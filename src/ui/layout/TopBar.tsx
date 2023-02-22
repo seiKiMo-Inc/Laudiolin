@@ -1,18 +1,43 @@
 import React from "react";
 
-import { BiHomeAlt, BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { FiHeadphones } from "react-icons/fi";
+import { BiHomeAlt, BiChevronLeft, BiChevronRight, BiGroup } from "react-icons/bi";
 
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
 
 import { goBack, navigate, goForward } from "@backend/navigation";
+import { get, save } from "@backend/settings";
 
 import "@css/layout/TopBar.scss";
 
-class TopBar extends React.Component<{}, never> {
+interface IState {
+    isActivityPanelOpen: boolean;
+}
+
+class TopBar extends React.Component<{}, IState> {
     constructor(props: {}) {
         super(props);
+
+        this.state = {
+            isActivityPanelOpen: get("isActivityPanelOpen", "false") === "true"
+        }
+    }
+
+    toggleActivityPanel = () => {
+        this.setState({ isActivityPanelOpen: !this.state.isActivityPanelOpen });
+        const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
+        activityPanel.style.width = this.state.isActivityPanelOpen ? "0" : "400px";
+        save("isActivityPanelOpen", `${!this.state.isActivityPanelOpen}`);
+    }
+
+    componentDidMount() {
+        if (this.state.isActivityPanelOpen) {
+            const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
+            activityPanel.style.width = "400px";
+        } else {
+            const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
+            activityPanel.style.width = "0";
+        }
     }
 
     render() {
@@ -27,9 +52,9 @@ class TopBar extends React.Component<{}, never> {
                 <SearchInput />
 
                 <BasicButton
-                    className={"TopBar_ListenAlongButton"}
-                    text={"Listen Along"}
-                    icon={<FiHeadphones size={17} />}
+                    className={"TopBar_ActivityButton"}
+                    icon={<BiGroup size={22} style={{ color: this.state.isActivityPanelOpen && "var(--accent-color)" }} />}
+                    onClick={this.toggleActivityPanel}
                 />
             </div>
         );

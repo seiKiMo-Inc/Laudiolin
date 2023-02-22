@@ -66,14 +66,14 @@
     }
 }
 
-.TopBar_ListenAlongButton {
+.TopBar_ActivityButton {
     transition: all 0.2s ease-in-out;
-    margin-left: 40px;
     color: var(--icon-secondary-color) !important;
     padding: 7px 10px !important;
+    margin-left: 20px;
 
     &:hover {
-        background-color: var(--accent-color);
+        scale: 1.1;
         color: white !important;
         cursor: pointer;
     }
