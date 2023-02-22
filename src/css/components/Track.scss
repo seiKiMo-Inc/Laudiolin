@@ -32,7 +32,10 @@
 
     p {
         margin: 0;
-
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
         font-size: 16px;
         line-height: 24px;
         color: var(--text-primary-color);
@@ -50,6 +53,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    padding-left: 20px ;
 
     gap: 36px;
 

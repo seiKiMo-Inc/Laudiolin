@@ -1,26 +1,47 @@
+.Playlist {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 .Playlist_Details {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    width: 100%;
 
     p {
         margin: 0;
     }
 
-    h1 {
-        line-height: 82px;
-    }
-
     .icon {
         width: 230px;
         height: 230px;
+        aspect-ratio: 1;
         border-radius: 15px;
     }
 
     .info {
+        width: calc(100% - 250px);
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-left: 20px;
+
+        .info_title {
+            font-size: max(20px, 3.2vw);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            line-height: normal;
+        }
+
+        .info_description {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: var(--text-secondary-color);
+            margin-bottom: 10px;
+        }
     }
 }
 
