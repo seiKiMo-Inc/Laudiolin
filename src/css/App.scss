@@ -64,9 +64,9 @@ body {
     height: 100vh;
     width: 100%;
     grid-template-areas:
-        "nav top top"
-        "nav main main"
-        "control control control";
+        "nav top top activity"
+        "nav main main activity"
+        "control control control control";
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
     user-select: none;

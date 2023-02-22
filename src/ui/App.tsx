@@ -4,6 +4,7 @@ import TopButtons from "@layout/TopButtons";
 import ControlPanel from "@layout/ControlPanel";
 import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
+import ActivityPanel from "@layout/ActivityPanel";
 import TopBar from "@layout/TopBar";
 
 import { invoke } from "@tauri-apps/api";
@@ -84,6 +85,7 @@ class App extends React.Component<IProps, IState> {
                     <NavPanel user={userData} />
                     <TopBar />
                     <MainView />
+                    <ActivityPanel />
                     <ControlPanel />
                 </div>
             </>

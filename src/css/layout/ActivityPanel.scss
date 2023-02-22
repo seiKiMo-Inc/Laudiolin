@@ -1,0 +1,5 @@
+.ActivityPanel {
+    background-color: var(--background-primary-color);
+    grid-area: activity;
+    transition: width 0.2s ease-in-out;
+}
