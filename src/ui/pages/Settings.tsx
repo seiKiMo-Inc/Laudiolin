@@ -123,13 +123,15 @@ function SelectField({ props }) {
 
 function ToggleField({ props }) {
     const [enabled, setEnabled] = React.useState<boolean>(
-        typeof props.placeholder == "boolean" ? props.placeholder : false);
+        typeof props.placeholder == "string" ?
+            props.placeholder == "true" : props.placeholder
+    );
 
     return (
         <Switch
-            onChange={state => {
+            onChange={(state) => {
                 setEnabled(state);
-                props.update?.(state);
+                props.set(state.toString());
             }}
             checked={enabled}
             onColor={props.color}

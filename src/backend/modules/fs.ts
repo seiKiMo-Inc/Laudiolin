@@ -1,11 +1,28 @@
 import type { TrackData } from "@backend/types";
 
-import * as fs from "@tauri-apps/api/fs";
+import * as nfs from "@tauri-apps/api/fs";
+import { invoke } from "@tauri-apps/api";
 import { appDataDir } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
+import { Base64 } from "js-base64";
+
 export let DocumentDirectoryPath: string | null = null;
 export const AppData = () => DocumentDirectoryPath;
+
+/*
+ * Async wrappers for the filesystem.
+ */
+const fs = {
+    exists: async (path: string): Promise<boolean> => await invoke("exists", { path }),
+    createDir: async (path: string): Promise<void> => await invoke("create_dir", { path }),
+    removeDir: async (path: string): Promise<void> => await invoke("delete", { path }),
+    readTextFile: async (path: string): Promise<string> => atob(await invoke("get_file", { path })),
+    writeTextFile: async (path: string, data: string): Promise<void> =>
+        await invoke("save_file", { path, data: Base64.encode(data) }),
+    writeBinaryFile: async (path: string, data: ArrayBuffer): Promise<void> =>
+        await invoke("save_file", { path, data: Base64.fromUint8Array(new Uint8Array(data)) }),
+};
 
 /**
  * Sets up the file system.
@@ -38,7 +55,7 @@ export async function createTrackFolder(track: TrackData): Promise<void> {
  * Deletes the folder for a track.
  * @param track A track data object.
  */
-export async function deleteTrackFolder(track: TrackData): Promise<void> {
+export async function deleteTrackFolder(track: TrackData|{ id: string; }): Promise<void> {
     await fs.removeDir(`${DocumentDirectoryPath}/tracks/${track.id}`);
 }
 
@@ -46,7 +63,7 @@ export async function deleteTrackFolder(track: TrackData): Promise<void> {
  * Standardized way to get the file path for a track.
  * @param track A track data object.
  */
-export function getTrackPath(track: TrackData): string {
+export function getTrackPath(track: TrackData|{ id: string; }): string {
     return `${DocumentDirectoryPath}/tracks/${track.id}/audio.mp3`;
 }
 
@@ -54,7 +71,7 @@ export function getTrackPath(track: TrackData): string {
  * Standardized way to get the file path for a track's icon.
  * @param track A track data object.
  */
-export function getIconPath(track: TrackData): string {
+export function getIconPath(track: TrackData|{ id: string; }): string {
     return `${DocumentDirectoryPath}/tracks/${track.id}/icon.png`;
 }
 
@@ -70,7 +87,7 @@ export function getDataPath(track: TrackData|{ id: string }): string {
  * Gets the IDs of all downloaded tracks.
  */
 export async function getDownloadedTracks(): Promise<string[]> {
-    const files = await fs.readDir(`${DocumentDirectoryPath}/tracks`);
+    const files = await nfs.readDir(`${DocumentDirectoryPath}/tracks`);
     return files.map(file => file.name);
 }
 
@@ -88,7 +105,7 @@ export async function loadLocalTrackData(trackId: string): Promise<TrackData> {
  * Checks if the files needed for a track to load exist.
  * @param track A track data object.
  */
-export async function trackExists(track: TrackData): Promise<boolean> {
+export async function trackExists(track: TrackData|{ id: string; }): Promise<boolean> {
     return (await fs.exists(getTrackPath(track))) &&
         (await fs.exists(getIconPath(track))) &&
         (await fs.exists(getDataPath(track)))
