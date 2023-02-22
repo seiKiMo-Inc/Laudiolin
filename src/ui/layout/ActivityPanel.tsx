@@ -2,15 +2,13 @@ import React from "react";
 
 import User from "@widget/User";
 
-import type { BasicUser, TrackData } from "@backend/types";
+import type { BasicUser } from "@backend/types";
 
 import "@css/layout/ActivityPanel.scss";
 import { getAvailableUsers } from "@backend/social";
 
 interface IState {
     users: BasicUser[];
-    tracks: TrackData[];
-    name: string;
 }
 
 class ActivityPanel extends React.Component<{}, IState> {
@@ -28,9 +26,7 @@ class ActivityPanel extends React.Component<{}, IState> {
         super(props);
 
         this.state = {
-            users: [],
-            tracks: [],
-            name: "Activity"
+            users: []
         };
     }
 
@@ -46,13 +42,11 @@ class ActivityPanel extends React.Component<{}, IState> {
         return (
             <div className={"ActivityPanel"}>
                 <div className={"ActivityPanel_Info"}>
-                    <h3>{this.state.name}</h3>
+                    <h3>Now Active</h3>
                 </div>
 
                 <div className={"ActivityPanel_Content"}>
-                    { this.state.tracks && this.state.tracks.map((track, index) =>
-                        <p>{track.title}</p>) }
-                    { this.state.users && this.state.users.map((user, index) =>
+                    { this.state.users.map((user, index) =>
                         <User user={user} key={index} />) }
                 </div>
             </div>
