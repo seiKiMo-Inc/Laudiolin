@@ -14,7 +14,7 @@ export function getIconUrl(track: TrackData): string {
     // Check if the icon is already a proxy.
     if (icon.includes("/proxy/")) return icon;
     // Check if the icon is a local image.
-    if (icon.includes("file://"))
+    if (icon.includes("asset.localhost"))
         return fs.toAsset(fs.getIconPath(track));
     // Check if the icon is blank.
     if (icon == "") return fs.toAsset(fs.getIconPath(track));
@@ -40,7 +40,7 @@ export function getIconUrl(track: TrackData): string {
             .replace("{src}", "cart");
     }
 
-    return url;
+    console.warn(`Encountered a weird icon URL! ${icon}`); return url;
 }
 
 /**
