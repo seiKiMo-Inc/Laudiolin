@@ -26,16 +26,19 @@ class TopBar extends React.Component<{}, IState> {
     toggleActivityPanel = () => {
         this.setState({ isActivityPanelOpen: !this.state.isActivityPanelOpen });
         const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
-        activityPanel.style.width = this.state.isActivityPanelOpen ? "0" : "400px";
+        activityPanel.style.paddingLeft = this.state.isActivityPanelOpen ? "0" : "24px";
+        activityPanel.style.width = this.state.isActivityPanelOpen ? "0" : "320px";
         save("isActivityPanelOpen", `${!this.state.isActivityPanelOpen}`);
     }
 
     componentDidMount() {
         if (this.state.isActivityPanelOpen) {
             const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
+            activityPanel.style.paddingLeft = "24px";
             activityPanel.style.width = "320px";
         } else {
             const activityPanel = document.getElementsByClassName("ActivityPanel")[0] as HTMLElement;
+            activityPanel.style.paddingLeft = "0";
             activityPanel.style.width = "0";
         }
     }
