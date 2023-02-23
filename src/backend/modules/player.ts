@@ -240,6 +240,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public seek(progress: number): void {
         this.current?.seek(progress);
+        this.emit("seek", progress);
     }
 }
 
