@@ -212,11 +212,19 @@ export function sendGatewayMessage(message: BaseGatewayMessage) {
 }
 
 /**
- * Returns the URL for audio playback.
+ * Returns the URL for audio download.
+ * @param track The track to get the URL for.
+ */
+export function getDownloadUrl(track: TrackData): string {
+    return `${Gateway.url}/download?id=${track.id}`;
+}
+
+/**
+ * Returns the URL for audio streaming.
  * @param track The track to get the URL for.
  */
 export function getStreamingUrl(track: TrackData): string {
-    return `${Gateway.url}/download?id=${track.id}`;
+    return `${Gateway.url}/stream?id=${track.id}`;
 }
 
 /**

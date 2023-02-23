@@ -3,7 +3,7 @@ import type { Playlist, TrackData } from "@backend/types";
 import * as settings from "@backend/settings";
 import { isListeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
-import { getStreamingUrl } from "@backend/gateway";
+import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
 import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
@@ -45,7 +45,7 @@ export async function downloadTrack(track: TrackData, emit = true): Promise<void
     // Create the track's folder.
     await fs.createTrackFolder(track);
     // Download the track data as necessary.
-    await fs.downloadUrl(getStreamingUrl(track), fs.getTrackPath(track));
+    await fs.downloadUrl(getDownloadUrl(track), fs.getTrackPath(track));
     await fs.downloadUrl(getIconUrl(track), fs.getIconPath(track));
     // Save the track's data.
     track.icon = fs.toAsset(fs.getIconPath(track));
