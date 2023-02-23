@@ -40,8 +40,13 @@
 .User_Listen {
     width: 33px;
     height: 33px;
-    color: #262626;
     align-self: center;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+        scale: 1.2;
+        cursor: pointer;
+    }
 }
 
 .User_RecentTime {
