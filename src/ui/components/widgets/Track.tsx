@@ -1,9 +1,12 @@
 import React from "react";
+import { open } from '@tauri-apps/api/shell';
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
+import { BiCopy } from "react-icons/bi"
 
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
+import Alert from "@components/Alert";
 
 import type { TrackData } from "@backend/types";
 import { deleteTrack, downloadTrack, playTrack } from "@backend/audio";
@@ -69,6 +72,27 @@ class Track extends React.PureComponent<IProps, never> {
         dropdown.style.left = left + "px";
     }
 
+    /**
+     * Opens the track source in a browser.
+     */
+    async openSource(): Promise<void> {
+        const track = this.props.track;
+        if (!track) return;
+
+        await open(track.url);
+    }
+
+    /**
+     * Copies the track URL to the clipboard.
+     */
+    async copyUrl(): Promise<void> {
+        const track = this.props.track;
+        if (!track) return;
+
+        await navigator.clipboard.writeText(track.url);
+        Alert.showAlert("Copied URL to clipboard.", <BiCopy />);
+    }
+
     render() {
         const { track } = this.props;
         const favorite = isFavorite(track);
@@ -126,6 +150,8 @@ class Track extends React.PureComponent<IProps, never> {
                             <a>Remove Track from Playlist</a> :
                             <a>Add Track to Playlist</a>
                     }
+                    <a onClick={async () => await this.openSource()}>Open Track Source</a>
+                    <a onClick={async () => await this.copyUrl()}>Copy Track URL</a>
                 </BasicDropdown>
             </div>
         );

@@ -55,7 +55,10 @@ class App extends React.Component<any> {
             .catch(err => console.warn(err));
     }
 
-    // Add event listener to close all active dropdowns when clicking outside of them.
+    /**
+     * Close all dropdowns when the user clicks outside them.
+     * @param e - The mouse event.
+     */
     closeDropdowns = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         const dropdowns = document.getElementsByClassName("DropdownContent");
@@ -97,7 +100,7 @@ class App extends React.Component<any> {
         loadPlayerState()
             .catch(err => console.warn(err));
 
-        // Add event listener to close all active dropdowns when clicking outside of them.
+        // Add event listener to close all active dropdowns when clicking outside them.
         document.onclick = this.closeDropdowns;
     }
 
