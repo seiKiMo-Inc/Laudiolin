@@ -84,8 +84,8 @@ export type NotificationType = "info" | "progress";
 export type InAppNotificationData = {
     type: NotificationType;
     message: string;
-    date: Date;
-    icon: string;
+    date?: Date;
+    icon?: string;
 
     event?: string;
     index?: number;

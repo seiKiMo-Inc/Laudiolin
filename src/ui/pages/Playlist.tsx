@@ -11,8 +11,8 @@ import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown"
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { getPlaylistAuthor } from "@backend/user";
-import { dismiss, notify } from "@backend/notifications";
 import { savePlaylist } from "@backend/offline";
+import { notify } from "@backend/notifications";
 
 import "@css/pages/Playlist.scss";
 
@@ -91,10 +91,7 @@ class Playlist extends React.Component<IProps> {
         // Send a notification.
         notify({
             type: "info",
-            message: `Started download of playlist ${playlist?.name ?? "Unknown"}.`,
-            date: new Date(),
-            icon: "file-download",
-            onPress: dismiss
+            message: `Started download of playlist ${playlist?.name ?? "Unknown"}.`
         });
     }
 

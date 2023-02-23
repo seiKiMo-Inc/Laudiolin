@@ -1,13 +1,13 @@
 import * as audio from "@backend/audio";
 import { system } from "@backend/settings";
 
+import { notify } from "@backend/notifications";
 import { userData, playlists, favorites } from "@backend/user";
-import { dismiss, notify, notifyEmitter } from "@backend/notifications";
 import type { OfflineUserData, Playlist, TrackData, User } from "@backend/types";
 
 import * as fs from "@mod/fs";
 import { AppData, deleteTrackFolder, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
-import { readDir, removeFile, createDir } from "@tauri-apps/api/fs";
+import { readDir, removeFile, createDir, removeDir } from "@tauri-apps/api/fs";
 import emitter from "@backend/events";
 
 const userDataPath = () => `${AppData()}/userData.json`;
@@ -16,8 +16,6 @@ const playlistsPath = () => `${AppData()}/playlists`;
 let downloadedObjects = 0; // The number of objects downloaded.
 export let isOffline = false; // Whether the app is in offline mode.
 export const downloads: TrackData[] = []; // The loaded downloads.
-
-const getDownloadedObjects = () => downloadedObjects; // Get the number of downloaded objects.
 
 /**
  * Checks if a track is downloaded.
@@ -142,35 +140,15 @@ export async function offlineSupport(enabled: boolean): Promise<void> {
                 clearInterval(interval);
                 notify({
                     type: "info",
-                    message: "Offline data downloaded.",
-                    date: new Date(),
-                    icon: "file-download",
-                    onPress: dismiss
+                    message: "Offline data downloaded."
                 });
-
-                notifyEmitter.emit("offlineDownload");
-                notifyEmitter.removeAllListeners("offlineDownload");
             }
         }, 1e3);
 
         // Send a notification for the download progress.
         await notify({
             type: "progress",
-            message: "Downloading offline data...",
-            date: new Date(),
-            icon: "file-download",
-            event: "offlineDownload",
-            totalProgress: objects,
-            onPress: index => {
-                getDownloadedObjects() == objects && dismiss(index);
-            },
-            update: data => {
-                if (getDownloadedObjects() == objects) {
-                    dismiss(data.index ?? 0); // Dismiss the notification.
-                    downloadedObjects = 0; // Reset the downloaded objects.
-                }
-            },
-            getProgress: () => getDownloadedObjects()
+            message: "Downloading offline data..."
         });
 
         // Save the playlists to the file system.
@@ -189,7 +167,8 @@ export async function offlineSupport(enabled: boolean): Promise<void> {
             .then(() => downloadedObjects++); // Save the user data.
     } else {
         await removeFile(userDataPath()); // Delete the saved user data.
-        await removeFile(playlistsPath()); // Delete the saved playlists.
+        await removeDir(playlistsPath(), // Delete the saved playlists.
+            { recursive: true });
         await createDir(playlistsPath()); // Create the playlists directory.
     }
 }

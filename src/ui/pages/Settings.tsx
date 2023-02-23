@@ -206,7 +206,7 @@ class Settings extends React.Component<{}, { color: string }> {
 
                 <Setting setting={"system.offline"} type={"boolean"}
                          description={"This will make Laudiolin available while you're offline."}
-                         update={state => offlineSupport(state)}
+                         update={state => offlineSupport(state == "true")}
                          color={this.state.color} />
                 <Setting setting={"system.broadcast_listening"} type={"select"}
                          description={"Who should see what you're listening to?"}
