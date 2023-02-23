@@ -98,46 +98,47 @@ class Track extends React.PureComponent<IProps, never> {
         const favorite = isFavorite(track);
 
         return (
-            <div
-                className={"Track"}
-                onClick={() => this.play()}
-                onContextMenu={event => {
-                    toggleDropdown(`Track_${track.id}`, event.clientX, event.clientY);
-                    event.preventDefault();
-                }}
-            >
-                <div className={"Track_Info"}>
-                    <img
-                        className={"Track_Icon"}
-                        alt={track.title}
-                        src={getIconUrl(track)}
-                    />
+            <>
+                <div
+                    className={"Track"}
+                    onClick={() => this.play()}
+                    onContextMenu={event => {
+                        toggleDropdown(`Track_${track.id}`, event.clientX, event.clientY);
+                        event.preventDefault();
+                    }}
+                >
+                    <div className={"Track_Info"}>
+                        <img
+                            className={"Track_Icon"}
+                            alt={track.title}
+                            src={getIconUrl(track)}
+                        />
 
-                    <div className={"Track_Text"}>
-                        <p>{track.title}</p>
-                        <p>{track.artist}</p>
+                        <div className={"Track_Text"}>
+                            <p>{track.title}</p>
+                            <p>{track.artist}</p>
+                        </div>
+                    </div>
+
+                    <div className={"Track_Interact"}>
+                        <p>{formatDuration(track.duration)}</p>
+                        {favorite ?
+                            <AiFillHeart style={{ width: 20, height: 18.18, color: "var(--accent-color)" }} onClick={() => this.favorite()} /> :
+                            <AiOutlineHeart style={{ width: 20, height: 18.18 }} onClick={() => this.favorite()} />
+                        }
+                        <BasicButton
+                            id={`Track_${track.id}_Button`}
+                            icon={<VscEllipsis />}
+                            onClick={() => {
+                                this.setDropdownPosition();
+                                toggleDropdown(`Track_${track.id}`);
+                                event.preventDefault();
+                            }}
+                            className={"dropbtn"}
+                            style={{ backgroundColor: "transparent" }}
+                        />
                     </div>
                 </div>
-
-                <div className={"Track_Interact"}>
-                    <p>{formatDuration(track.duration)}</p>
-                    {favorite ?
-                        <AiFillHeart style={{ width: 20, height: 18.18, color: "var(--accent-color)" }} onClick={() => this.favorite()} /> :
-                        <AiOutlineHeart style={{ width: 20, height: 18.18 }} onClick={() => this.favorite()} />
-                    }
-                    <BasicButton
-                        id={`Track_${track.id}_Button`}
-                        icon={<VscEllipsis />}
-                        onClick={() => {
-                            this.setDropdownPosition();
-                            toggleDropdown(`Track_${track.id}`);
-                            event.preventDefault();
-                        }}
-                        className={"dropbtn"}
-                        style={{ backgroundColor: "transparent" }}
-                    />
-                </div>
-
                 <BasicDropdown id={`Track_${track.id}`}>
                     {
                         isDownloaded(track) ?
@@ -153,7 +154,7 @@ class Track extends React.PureComponent<IProps, never> {
                     <a onClick={async () => await this.openSource()}>Open Track Source</a>
                     <a onClick={async () => await this.copyUrl()}>Copy Track URL</a>
                 </BasicDropdown>
-            </div>
+            </>
         );
     }
 }
