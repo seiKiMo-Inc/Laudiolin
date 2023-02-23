@@ -109,6 +109,7 @@ class Track extends React.PureComponent<IProps, never> {
                             toggleDropdown(`Track_${track.id}`);
                             event.preventDefault();
                         }}
+                        className={"dropbtn"}
                         style={{ backgroundColor: "transparent" }}
                     />
                 </div>

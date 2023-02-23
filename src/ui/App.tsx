@@ -65,6 +65,37 @@ class App extends React.Component<IProps, IState> {
             .catch(err => console.warn(err));
     }
 
+    // Add event listener to close all active dropdowns when clicking outside of them.
+    closeDropdowns = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const dropdowns = document.getElementsByClassName("DropdownContent");
+
+        let isSVG = false;
+
+        // check if target's children are svg or path elements.
+        if (target.children.length > 0) {
+            for (let i = 0; i < target.children.length; i++) {
+                const child = target.children[i] as HTMLElement;
+                if (child.tagName === "svg" || child.tagName === "path") {
+                    return isSVG = true;
+                }
+            }
+        }
+
+        if (!target.classList.contains("dropbtn") || isSVG) {
+            const currentUserChevron = document.getElementsByClassName("CurrentUser_Chevron")[0] as HTMLElement;
+            currentUserChevron.style.transform === "rotate(180deg)" ?
+                currentUserChevron.style.transform = "rotate(0deg)" :
+                null;
+            for (let i = 0; i < dropdowns.length; i++) {
+                const openDropdown = dropdowns[i] as HTMLElement;
+                if (openDropdown.classList.contains("show")) {
+                    openDropdown.classList.remove("show");
+                }
+            }
+        }
+    }
+
     componentDidMount() {
         // Register event listeners.
         emitter.on("login", this.reloadUser);
@@ -72,12 +103,16 @@ class App extends React.Component<IProps, IState> {
 
         // Check if the user is online.
         this.checkIfOnline();
+
+        // Add event listener to close all active dropdowns when clicking outside of them.
+        document.onclick = this.closeDropdowns;
     }
 
     componentWillUnmount() {
         // Unregister event listeners.
         emitter.off("login", this.reloadUser);
         emitter.off("logout", this.reloadUser);
+        document.onclick = null;
     }
 
     render() {

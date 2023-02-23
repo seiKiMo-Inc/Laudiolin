@@ -100,7 +100,7 @@ function SelectField({ props }) {
     return (
         <>
             <BasicButton
-                className={"Setting_Box"}
+                className={"Setting_Box dropbtn"}
                 id={props.setting + "_button"}
                 text={value}
                 icon={<BiChevronDown />}
