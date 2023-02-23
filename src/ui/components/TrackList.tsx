@@ -1,4 +1,5 @@
 import React from "react";
+import { EventEmitter } from "events";
 
 import Track from "@widget/Track";
 
@@ -9,6 +10,8 @@ interface IProps {
     title: string;
     events: string[];
     collection: () => TrackData[];
+
+    emitter?: EventEmitter;
 }
 
 class TrackList extends React.Component<IProps, never> {
@@ -22,14 +25,16 @@ class TrackList extends React.Component<IProps, never> {
     }
 
     componentDidMount() {
+        const emit = (this.props.emitter ?? emitter);
         for (const event of this.props.events) {
-            emitter.on(event, this.update);
+            emit.on(event, this.update);
         }
     }
 
     componentWillUnmount() {
+        const emit = (this.props.emitter ?? emitter);
         for (const event of this.props.events) {
-            emitter.off(event, this.update);
+            emit.off(event, this.update);
         }
     }
 

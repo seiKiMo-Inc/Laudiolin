@@ -12,6 +12,7 @@ import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
+import { navigate } from "@backend/navigation";
 import { favoriteTrack, favorites } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
@@ -173,7 +174,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                         <ImStack
                             className={"ControlPanel_Control"}
-                            onClick={() => console.log("See Queue")}
+                            onClick={() => navigate("Queue")}
                         />
                     </div>
 

@@ -13,6 +13,8 @@ import { downloads } from "@backend/offline";
 import { recents, favorites } from "@backend/user";
 import { registerListener, removeListeners } from "@backend/navigation";
 
+import TrackPlayer from "@mod/player";
+
 interface IState {
     page: Page;
     args: any;
@@ -59,11 +61,14 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Favorites" && <TrackList
                     title={"Favorites"} events={["login", "favorites"]}
                     collection={() => favorites} /> }
-                { this.state.page == "Downloads" &&  <TrackList
+                { this.state.page == "Downloads" && <TrackList
                     title={"Downloads"} events={["login", "downloads"]}
                     collection={() => downloads} /> }
                 { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
+                { this.state.page == "Queue" && <TrackList
+                    title={"Queue"} events={["play", "stop", "destroy", "end"]}
+                    collection={() => TrackPlayer.getQueue()} emitter={TrackPlayer} /> }
             </>
         );
     }

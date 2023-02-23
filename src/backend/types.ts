@@ -2,7 +2,7 @@ export type Page =
     "Home" | "Recents" | "Search" |
     "Login" | "Playing" | "Playlist" |
     "Playlists" | "Profile" | "Favorites" |
-    "Downloads" | "Settings";
+    "Downloads" | "Queue" | "Settings";
 
 export type SearchEngine = "YouTube" | "Spotify" | "All";
 export type TrackData = {
@@ -16,10 +16,6 @@ export type TrackData = {
 export type SearchResults = {
     top: SearchResult;
     results: SearchResult[];
-};
-export type SearchOptions = {
-    engine: string;
-    accuracy: boolean;
 };
 
 export type SearchResult = TrackData;
@@ -98,11 +94,6 @@ export type InAppNotificationData = {
     getProgress?: () => number;
     onPress?: (index: number) => void;
     update?: (data: InAppNotificationData) => void;
-};
-
-export type PlaylistSelectInfo = {
-    title: string;
-    callback: (playlist?: Playlist) => void;
 };
 
 export type OfflineUserData = {
