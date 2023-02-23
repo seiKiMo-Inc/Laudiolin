@@ -18,15 +18,7 @@ import { login, userData, loaders } from "@backend/user";
 import "@css/App.scss";
 import "@css/Text.scss";
 
-interface IProps {
-
-}
-
-interface IState {
-
-}
-
-class App extends React.Component<IProps, IState> {
+class App extends React.Component<any> {
     /**
      * Login/Logout callback method.
      */
@@ -34,12 +26,8 @@ class App extends React.Component<IProps, IState> {
         this.forceUpdate();
     };
 
-    constructor(props: IProps) {
+    constructor(props: any) {
         super(props);
-
-        this.state = {
-
-        };
     }
 
     /**
