@@ -25,3 +25,6 @@ dist-ssr
 
 # Private files
 src-tauri/keys/*
+
+# Misc
+vite.config.ts.timestamp-*
