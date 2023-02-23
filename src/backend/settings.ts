@@ -7,12 +7,12 @@ export const defaultSettings: UserSettings = {
         engine: "All"
     },
     audio: {
-
+        playback_mode: "Stream",
+        audio_quality: "High",
+        stream_sync: true
     },
     ui: {
-        color_theme: "Dark",
-        background_color: "",
-        background_url: ""
+        color_theme: "Dark"
     },
     system: {
         offline: false,
@@ -25,9 +25,10 @@ export const defaultSettings: UserSettings = {
 export const settingsKeys: {[key: string]: string} = {
     "search.accuracy": "Search Accuracy",
     "search.engine": "Preferred Search Engine",
+    "audio.playback_mode": "Audio Playback Mode",
+    "audio.audio_quality": "Audio Quality",
+    "audio.stream_sync": "Force Streaming When Listening Along",
     "ui.color_theme": "Color Theme",
-    "ui.background_color": "Background Color",
-    "ui.background_url": "Background URL",
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
     "system.presence": "Discord Rich Presence Style"
@@ -108,41 +109,28 @@ export function saveSettings(newSettings: UserSettings): void {
  * Returns the cached user settings.
  */
 export function search(): SearchSettings {
-    return (
-        settings?.search || {
-            accuracy: false,
-            engine: "All"
-        }
-    );
+    return settings?.search || defaultSettings.search;
 }
 
 /**
  * Returns the cached user settings.
  */
 export function audio(): AudioSettings {
-    return settings?.audio || {};
+    return settings?.audio || defaultSettings.audio;
 }
 
 /**
  * Returns the cached user settings.
  */
 export function ui(): UISettings {
-    return settings?.ui || <UISettings> {
-        color_theme: "Dark",
-        background_color: "",
-        background_url: ""
-    };
+    return settings?.ui || defaultSettings.ui;
 }
 
 /**
  * Returns the cached system settings.
  */
 export function system(): SystemSettings {
-    return settings?.system || <SystemSettings> {
-        offline: false,
-        broadcast_listening: "Everyone",
-        presence: "Generic"
-    };
+    return settings?.system || defaultSettings.system;
 }
 
 /*

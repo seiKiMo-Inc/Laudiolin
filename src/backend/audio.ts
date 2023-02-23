@@ -1,7 +1,7 @@
 import type { Playlist, TrackData } from "@backend/types";
 
 import * as settings from "@backend/settings";
-import { isListeningWith, listenWith } from "@backend/social";
+import { isListeningWith, listeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
 import { getIconUrl } from "@app/utils";
@@ -23,7 +23,10 @@ export async function setup(): Promise<void> {
             return await fs.loadLocalTrackData(track.id);
 
         // Set the remote URLs.
-        track.url = getStreamingUrl(track);
+        if (listeningWith != null && settings.audio().stream_sync)
+            track.url = getStreamingUrl(track);
+        else track.url = settings.audio().playback_mode == "Download" ?
+            getDownloadUrl(track) : getStreamingUrl(track);
         track.icon = getIconUrl(track);
         return track;
     };

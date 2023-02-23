@@ -66,12 +66,12 @@ export type SearchSettings = {
     engine: SearchEngine;
 };
 export type AudioSettings = {
-
+    playback_mode: "Download" | "Stream";
+    audio_quality: "Low" | "Medium" | "High";
+    stream_sync: boolean;
 };
 export type UISettings = {
     color_theme: "Light" | "Dark";
-    background_color: string;
-    background_url: string;
 };
 export type SystemSettings = {
     offline: boolean;

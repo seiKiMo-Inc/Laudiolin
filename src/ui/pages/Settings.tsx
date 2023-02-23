@@ -35,13 +35,15 @@ function Setting(props: ISetting) {
         }
     };
 
+
     return (
         <div
             className={"Setting"}
         >
             <div className={"Setting_Text"}>
                 <p>{settings.settingsKeys[props.setting] ?? "Unknown"}</p>
-                { props.description && <p>{props.description}</p> }
+                { props.description && props.description.split("\n")
+                    .map((desc, index) => <p key={index}>{desc}</p>) }
             </div>
 
             <div>
@@ -194,6 +196,32 @@ class Settings extends React.Component<{}, { color: string }> {
                          description={"The engine to query track searching."}
                          options={["YouTube", "Spotify", "All"]} />
 
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Audio</h2>
+
+                <Setting setting={"audio.playback_mode"} type={"select"}
+                         description={"Download = Better consistency; higher initial bandwidth\n" +
+                             "Stream = Poor seeking performance; lower initial bandwidth"}
+                         update={() => this.forceUpdate()}
+                         options={["Download", "Stream"]} />
+                { settings.audio().playback_mode == "Stream" &&
+                    <Setting setting={"audio.audio_quality"} type={"select"}
+                             description={"The quality of the streamed audio."}
+                             options={["Low", "Medium", "High"]} /> }
+                <Setting
+                    setting={"audio.stream_sync"} type={"boolean"}
+                    description={"If enabled, audio will be always be streamed when listening along."}
+                    color={this.state.color} />
+
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
+
+                <Setting setting={"ui.color_theme"} type={"select"}
+                         description={"The color palette to use."}
+                         options={["Dark", "Light"]}
+                         update={state => {
+                             settings.setTheme(state);
+                             this.setState({ color: state == "Light" ? "#ED7D64" : "#3484FC" });
+                         }} />
+
                 <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 
                 <DisplayField
@@ -214,16 +242,6 @@ class Settings extends React.Component<{}, { color: string }> {
                 <Setting setting={"system.presence"} type={"select"}
                          description={"What should your Discord presence look like?"}
                          options={["Generic", "Simple", "None"]} />
-
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
-
-                <Setting setting={"ui.color_theme"} type={"select"}
-                         description={"The color palette to use."}
-                         options={["Dark", "Light"]}
-                         update={state => {
-                             settings.setTheme(state);
-                             this.setState({ color: state == "Light" ? "#ED7D64" : "#3484FC" });
-                         }} />
 
                 <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
 

@@ -1,9 +1,9 @@
 import type { TrackData } from "@backend/types";
 
 import { loadRecents, token } from "@backend/user";
+import { audio, system } from "@backend/settings";
 import { syncToTrack } from "@backend/audio";
 import { listenWith } from "@backend/social";
-import { system } from "@backend/settings";
 
 import { Gateway } from "@app/constants";
 import emitter from "@backend/events";
@@ -224,7 +224,7 @@ export function getDownloadUrl(track: TrackData): string {
  * @param track The track to get the URL for.
  */
 export function getStreamingUrl(track: TrackData): string {
-    return `${Gateway.url}/stream?id=${track.id}`;
+    return `${Gateway.url}/stream?id=${track.id}&quality=${audio().audio_quality}`;
 }
 
 /**
