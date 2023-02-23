@@ -110,6 +110,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public shuffle(): void {
         this.queue = this.queue.sort(() => Math.random() - 0.5);
+        this.emit("shuffle");
     }
 
     /**

@@ -1,4 +1,5 @@
 import type { UserSettings, SearchSettings, AudioSettings, UISettings, SystemSettings } from "@backend/types";
+import { connect } from "@backend/gateway";
 
 let settings: UserSettings | null = null;
 export const defaultSettings: UserSettings = {
@@ -94,6 +95,9 @@ export function setToken(token: string): void {
     settings.token = token;
     saveSettings(settings);
     reloadSettings(settings);
+
+    // Reconnect to the gateway.
+    connect();
 }
 
 /**
