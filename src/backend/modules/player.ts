@@ -247,7 +247,7 @@ export class Track extends Howl implements mod.Track {
     ) {
         super({
             format: "mp3",
-            html5: !playData,
+            html5: !playData || playData.url.includes("stream"),
             src: [playData ? playData.url : data.url],
             volume: 0.5
         });
