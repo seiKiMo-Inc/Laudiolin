@@ -2,8 +2,12 @@ import type { TrackData } from "@backend/types";
 
 import { favorites } from "@backend/user";
 import { Gateway } from "@app/constants";
+import { playTrack } from "@backend/audio";
+import { fetchTrackById } from "@backend/search";
+import * as settings from "@backend/settings";
 
 import * as fs from "@mod/fs";
+import TrackPlayer from "@mod/player";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -66,4 +70,42 @@ export function formatDuration(seconds: number): string {
  */
 export function isFavorite(track: TrackData|null): boolean {
     return track ? favorites.find(t => t.id == track?.id) != null : false;
+}
+
+/**
+ * Saves the current player state to the local storage.
+ */
+export function savePlayerState(): void {
+    // Get the current track.
+    const track = TrackPlayer.getCurrentTrack()?.data;
+
+    // Check if the track is valid.
+    if (track)
+        // Save the current track.
+        settings.save("player.currentTrack", track.id);
+    else
+        // Remove the current track.
+        settings.remove("player.currentTrack");
+}
+
+/**
+ * Loads the player state from the local storage.
+ */
+export async function loadPlayerState(): Promise<void> {
+    // Check if a track is saved.
+    const track = settings.get("player.currentTrack");
+    // Check if the track is valid.
+    if (!track) return;
+
+    // Get the track as a serialized data object.
+    const data = await fetchTrackById(track);
+    // Check if the track is valid.
+    if (!data) return;
+
+    // Add the track to the queue.
+    await playTrack(data, false, true);
+    // Pause the player.
+    TrackPlayer.pause();
+    // Remove the track from the local storage.
+    settings.remove("player.currentTrack");
 }

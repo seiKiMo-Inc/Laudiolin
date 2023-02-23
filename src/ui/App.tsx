@@ -13,6 +13,7 @@ import { invoke } from "@tauri-apps/api";
 import emitter from "@backend/events";
 import { loadState } from "@backend/offline";
 import { openFromUrl } from "@backend/link";
+import { loadPlayerState } from "@app/utils";
 import { login, userData, loaders } from "@backend/user";
 
 import "@css/App.scss";
@@ -92,6 +93,9 @@ class App extends React.Component<any> {
 
         // Check if the user is online.
         this.checkIfOnline();
+        // Load the player's last known state.
+        loadPlayerState()
+            .catch(err => console.warn(err));
 
         // Add event listener to close all active dropdowns when clicking outside of them.
         document.onclick = this.closeDropdowns;

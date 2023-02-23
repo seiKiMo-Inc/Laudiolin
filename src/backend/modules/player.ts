@@ -163,11 +163,13 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * @param track The track to play.
      * @param force Should the track be played even if it is already playing?
      * @param history Should the track be added to the history?
+     * @param play Should the track be played?
      */
     public async play(
         track?: TrackData,
         force = true,
         history = true,
+        play = true
     ): Promise<void> {
         // Check if a track was specified.
         if (!track) {
@@ -197,10 +199,10 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Create a new track.
         this.current = new Track(track,
             await this.alternate?.(track));
-        this.current.play();
+        play && this.current.play();
 
         // Set the player state.
-        this.state.paused = false;
+        this.state.paused = !play;
 
         // Emit the play event.
         this.emit("play", this.current);
@@ -249,7 +251,8 @@ export class Track extends Howl implements mod.Track {
             format: "mp3",
             html5: !playData || playData.url.includes("stream"),
             src: [playData ? playData.url : data.url],
-            volume: 0.5
+            volume: 0.3,
+            autoplay: false
         });
 
         this.on("end", () => {

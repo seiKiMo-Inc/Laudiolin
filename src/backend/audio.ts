@@ -4,7 +4,7 @@ import * as settings from "@backend/settings";
 import { isListeningWith, listeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
-import { getIconUrl } from "@app/utils";
+import { getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
 
@@ -101,14 +101,12 @@ export async function playTrack(
     }
 
     // Play the track if specified.
-    if (play) {
-        await TrackPlayer.play(track, force);
-    } else {
-        await TrackPlayer.add(track);
-    }
+    await TrackPlayer.play(track, force, play);
 
     // Reset the current playlist.
     !fromPlaylist && setCurrentPlaylist(null);
+    // Save the player state.
+    savePlayerState();
 }
 
 /**
