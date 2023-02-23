@@ -35,6 +35,16 @@ class SearchInput extends React.Component<IProps, IState> {
         }, 500);
     }
 
+    onKeyChange(event: React.KeyboardEvent<HTMLInputElement>): void {
+        if (event.key != "Enter") return;
+
+        const text = event.currentTarget.value;
+        doSearch(text)
+            .then(results => navigate("Search", { results }))
+            .catch(err => console.error(err));
+        this.searchTimeout = null;
+    }
+
     render() {
         return (
             <div className={"SearchInput"}>
@@ -44,6 +54,7 @@ class SearchInput extends React.Component<IProps, IState> {
                     type={"text"}
                     placeholder={"What are you looking for today?"}
                     onChange={event => this.onChange(event)}
+                    onKeyUp={event => this.onKeyChange(event)}
                 />
             </div>
         );
