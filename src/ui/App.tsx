@@ -6,6 +6,7 @@ import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
 import ActivityPanel from "@layout/ActivityPanel";
 import TopBar from "@layout/TopBar";
+import Alert from "@components/Alert";
 
 import { invoke } from "@tauri-apps/api";
 
@@ -126,6 +127,7 @@ class App extends React.Component<IProps, IState> {
                     <ActivityPanel />
                     <ControlPanel />
                 </div>
+                <Alert />
             </>
         );
     }
