@@ -48,7 +48,7 @@ class CurrentUser extends React.Component<IProps, never> {
                     <BasicButton
                         onClick={this.onDropdownClick}
                         icon={<BiChevronDown className={"CurrentUser_Chevron"} />}
-                        className={"CurrentUser_DropdownButton"}
+                        className={"CurrentUser_DropdownButton dropbtn"}
                     />
                 </div>
 

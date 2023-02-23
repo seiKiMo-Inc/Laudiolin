@@ -142,6 +142,7 @@ class Playlist extends React.Component<IProps> {
 
                    <div className={"buttons"}>
                        <BasicButton
+                           className={"dropbtn"}
                            icon={<VscEllipsis />}
                            onClick={() => toggleDropdown("Playlist_Actions")}
                        />

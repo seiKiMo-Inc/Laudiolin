@@ -128,3 +128,30 @@ body {
     transform: translateY(0);
     border: var(--accent-color) 1px solid;
 }
+
+.Alert {
+    position: fixed;
+    left: 50%;
+    display: none;
+    bottom: 120px;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--accent-color);
+    color: var(--text-primary-color);
+
+    .AlertContent {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    p {
+        margin: 0;
+    }
+}

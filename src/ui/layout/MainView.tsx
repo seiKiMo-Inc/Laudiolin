@@ -2,17 +2,9 @@ import React from "react";
 
 import Navigate from "@components/Navigate";
 
-interface IState {
-    lightTheme: boolean;
-}
-
-class MainView extends React.Component<any, IState> {
+class MainView extends React.Component<any> {
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            lightTheme: false
-        }
     }
 
     render() {
