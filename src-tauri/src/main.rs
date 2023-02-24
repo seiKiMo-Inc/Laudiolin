@@ -3,7 +3,8 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{App, Wry, Manager};
+use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle};
+use tauri::{SystemTray, SystemTrayMenu, SystemTrayEvent};
 use window_shadows::set_shadow;
 use tokio::fs::File;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -39,6 +40,8 @@ fn main() {
 
             Ok(())
         })
+        .system_tray(configure_system_tray())
+        .on_system_tray_event(tray_handler)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -136,4 +139,37 @@ fn register_deep_link(app: &mut App<Wry>) {
             handle.emit_all("deeplink", request).unwrap();
         },
     ).unwrap();
+}
+
+/// Configures the system tray to be used.
+fn configure_system_tray() -> SystemTray {
+    // Configure items.
+    let quit = CustomMenuItem::new("quit".to_string(), "Exit Laudiolin");
+    // Configure menu.
+    let menu = SystemTrayMenu::new()
+        .add_item(quit);
+
+    return SystemTray::new().with_menu(menu);
+}
+
+/// Event listener for when the system tray is clicked.
+fn tray_handler(app: &AppHandle<Wry>, event: SystemTrayEvent) {
+    match event {
+        SystemTrayEvent::MenuItemClick { id, .. } => { menu_item_handler(id) }
+        SystemTrayEvent::DoubleClick { .. } => {
+            app.get_window("main").unwrap().show()
+                .expect("Unable to show main window.");
+            app.get_window("main").unwrap().set_focus()
+                .expect("Unable to focus main window.");
+        }
+        _ => {}
+    }
+}
+
+/// Event listener for when a menu item in the tray is clicked.
+fn menu_item_handler(id: String) {
+    match id.as_str() {
+        "quit" => { std::process::exit(0) }
+        _ => {}
+    }
 }

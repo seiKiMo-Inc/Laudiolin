@@ -283,6 +283,12 @@ class Settings extends React.Component<{}, IState> {
                     description={"What should your Discord presence look like?"}
                     options={["Generic", "Simple", "None"]}
                 />
+                <Setting
+                    setting={"system.close"}
+                    type={"select"}
+                    description={"Changes the behavior of the close button."}
+                    options={["Exit", "Tray"]}
+                />
 
                 <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
 

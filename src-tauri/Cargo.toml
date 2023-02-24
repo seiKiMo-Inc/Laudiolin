@@ -14,7 +14,7 @@ tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
 # Tauri
-tauri = { version = "1.2.0", features = ["api-all"] }
+tauri = { version = "1.2.0", features = ["api-all", "system-tray"] }
 window-shadows = "0.2.0"
 
 # Serialization

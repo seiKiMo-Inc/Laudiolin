@@ -85,6 +85,7 @@ export type SystemSettings = {
     offline: boolean;
     broadcast_listening: "Nobody" | "Friends" | "Everyone";
     presence: "Generic" | "Simple" | "None";
+    close: "Exit" | "Tray";
 };
 export type SettingType = "boolean" | "input" | "select" | "color";
 

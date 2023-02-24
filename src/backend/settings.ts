@@ -24,7 +24,8 @@ export const defaultSettings: UserSettings = {
     system: {
         offline: false,
         broadcast_listening: "Everyone",
-        presence: "Generic"
+        presence: "Generic",
+        close: "Exit"
     },
     token: ""
 };
@@ -38,7 +39,8 @@ export const settingsKeys: { [key: string]: string } = {
     "ui.color_theme": "Color Theme",
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
-    "system.presence": "Discord Rich Presence Style"
+    "system.presence": "Discord Rich Presence Style",
+    "system.close": "Close Mode"
 };
 
 /**

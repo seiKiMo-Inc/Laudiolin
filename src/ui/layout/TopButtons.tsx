@@ -7,11 +7,17 @@ import {
     VscChromeMaximize
 } from "react-icons/vsc";
 
+import * as settings from "@backend/settings";
+
 import "@css/layout/TopButtons.scss";
 
 class TopButtons extends React.Component {
     closeWindow = async () => {
-        await appWindow.close();
+        if (settings.system().close == "Exit") {
+            await appWindow.close();
+        } else {
+            await appWindow.hide();
+        }
     };
 
     minimizeWindow = async () => {
