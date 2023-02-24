@@ -1,11 +1,11 @@
 import React from "react";
 
 import Home from "@pages/Home";
-import Login from "@pages/Login";
 import Search from "@pages/Search";
 import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
 
+import Login from "@widget/Login";
 import TrackList from "@components/TrackList";
 
 import type { Page } from "@backend/types";

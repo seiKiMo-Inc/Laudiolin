@@ -179,7 +179,7 @@ class Settings extends React.Component<{}, IState> {
         super(props);
 
         this.state = {
-            color: settings.getFromPath("ui.color_theme", "Dark") == "Light" ? "#ED7D64" : "#3484FC",
+            color: settings.ui().color_theme == "Light" ? "#ED7D64" : "#3484FC",
             code: ""
         };
     }

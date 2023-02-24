@@ -84,8 +84,9 @@ export function getSettings(): UserSettings | null {
 /**
  * Sets the user's token.
  * @param token The token.
+ * @param update Whether to update the client.
  */
-export function setToken(token: string): void {
+export function setToken(token: string, update = true): void {
     let settings = getSettings();
     if (settings == undefined) {
         settings = defaultSettings;
@@ -94,10 +95,13 @@ export function setToken(token: string): void {
     // Set the token in the settings.
     settings.token = token;
     saveSettings(settings);
-    reloadSettings(settings);
 
-    // Reconnect to the gateway.
-    connect();
+    if (update) {
+        // Update the client.
+        reloadSettings(settings);
+        // Reconnect to the gateway.
+        connect();
+    }
 }
 
 /**
