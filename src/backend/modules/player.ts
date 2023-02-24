@@ -16,7 +16,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
     /* Queue */
     private current: Track | null = null;
-    private queue: TrackData[] = [];
+    queue: TrackData[] = [];
     private history: TrackData[] = [];
 
     /* State */
@@ -184,11 +184,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Check if something is playing.
         if (this.current && !force) {
             // Add the track to the queue.
-            this.queue.push(track); return;
+            this.queue.push(track);
+            // Emit the queue event.
+            this.emit("queue", track);
+            return;
         }
 
         // Check if a track is already playing.
-        let current; if ((current = this.current)) {
+        let current; if (play && (current = this.current)) {
             // Check if the track is the same.
             if (history && current.id != track.id)
                 // Add the current track to the history.
@@ -200,13 +203,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Create a new track.
         this.current = new Track(track,
             await this.alternate?.(track));
+        // Play the track.
         play && this.current.play();
-
-        // Set the player state.
-        this.state.paused = !play;
 
         // Emit the play event.
         this.emit("play", this.current);
+
+        // Set the player state.
+        this.state.paused = !play;
     }
 
     /**

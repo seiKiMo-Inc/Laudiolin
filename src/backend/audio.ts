@@ -78,6 +78,15 @@ export async function deleteTrack(track: TrackData): Promise<void> {
 }
 
 /**
+ * Removes the specified track from the queue.
+ * @param track The track to remove.
+ */
+export function deQueue(track: TrackData): void {
+    TrackPlayer.queue = TrackPlayer.queue.filter(t => t.id != track.id);
+    TrackPlayer.emit("queue");
+}
+
+/**
  * Adds the specified track to the queue.
  * Plays the track if specified.
  * @param track The track to add.
@@ -101,7 +110,7 @@ export async function playTrack(
     }
 
     // Play the track if specified.
-    await TrackPlayer.play(track, force, play);
+    await TrackPlayer.play(track, force, true, play);
 
     // Reset the current playlist.
     !fromPlaylist && setCurrentPlaylist(null);

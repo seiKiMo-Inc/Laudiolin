@@ -67,7 +67,7 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
                 { this.state.page == "Queue" && <TrackList
-                    title={"Queue"} events={["play", "stop", "destroy", "end", "shuffle"]}
+                    title={"Queue"} events={["play", "stop", "destroy", "end", "shuffle", "queue"]}
                     collection={() => TrackPlayer.getQueue()} emitter={TrackPlayer} queue={true} /> }
             </>
         );
