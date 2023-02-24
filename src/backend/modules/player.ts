@@ -142,7 +142,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 this.play(current.data);
             }
         } else {
-            this.stop(); // Stop the player.
+            this.stop(true, true); // Stop the player.
         }
     }
 
@@ -211,8 +211,16 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
     /**
      * Stops the playback of the player.
+     * @param emit Should the stop event be emitted?
+     * @param clear Should the queue be cleared?
      */
-    public stop(emit = true): void {
+    public stop(emit = true, clear = false): void {
+        if (clear) {
+            this.queue = [];
+            this.current = null;
+            this.state.paused = true;
+        }
+
         // Emit the stop event.
         emit && this.emit("stop");
         // Signal to tracks to stop.
@@ -255,6 +263,14 @@ export class Track extends Howl implements mod.Track {
             src: [playData ? playData.url : data.url],
             volume: 0.3,
             autoplay: false
+        });
+
+        this.on("play", () => {
+            // Check if this track should be playing.
+            if (TrackPlayer.getCurrentTrack()?.id != this.id) {
+                this.stop(); // Stop the track.
+                this.unload(); // Unload the track.
+            }
         });
 
         this.on("end", () => {
