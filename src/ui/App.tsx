@@ -18,8 +18,14 @@ import { login, userData, loaders } from "@backend/user";
 
 import "@css/App.scss";
 import "@css/Text.scss";
+import MiniPlayer from "@components/player/MiniPlayer";
+import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
-class App extends React.Component<any> {
+interface IState {
+    miniPlayer: boolean;
+}
+
+class App extends React.Component<{}, IState> {
     /**
      * Login/Logout callback method.
      */
@@ -27,8 +33,24 @@ class App extends React.Component<any> {
         this.forceUpdate();
     };
 
-    constructor(props: any) {
+    /**
+     * Sets the mini player state.
+     * @param enter Should the mini player enter or exit?
+     */
+    miniPlayer = (enter: boolean) => {
+        this.setState({ miniPlayer: enter });
+        appWindow.setSize(enter ?
+            new LogicalSize(600, 90) :
+            new LogicalSize(1200, 600));
+        appWindow.setResizable(!enter);
+    };
+
+    constructor(props: {}) {
         super(props);
+
+        this.state = {
+            miniPlayer: false
+        };
     }
 
     /**
@@ -101,25 +123,27 @@ class App extends React.Component<any> {
         // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
+        emitter.on("miniPlayer", this.miniPlayer);
+        // Register document event listeners.
+        document.onclick = this.closeDropdowns;
+        document.oncontextmenu = this.closeDropdowns;
 
         // Check if the user is online.
         this.checkIfOnline();
         // Load the player's last known state.
         loadPlayerState().catch((err) => console.warn(err));
-
-        // Add event listener to close all active dropdowns when clicking outside them.
-        document.onclick = this.closeDropdowns;
     }
 
     componentWillUnmount() {
         // Unregister event listeners.
         emitter.off("login", this.reloadUser);
         emitter.off("logout", this.reloadUser);
+        emitter.off("miniPlayer", this.miniPlayer);
         document.onclick = null;
     }
 
     render() {
-        return (
+        return !this.state.miniPlayer ? (
             <>
                 <TopButtons />
                 <div className={"AppContainer"}>
@@ -131,7 +155,7 @@ class App extends React.Component<any> {
                 </div>
                 <Alert />
             </>
-        );
+        ) : <MiniPlayer />;
     }
 }
 
