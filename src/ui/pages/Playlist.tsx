@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { IoMdPlay } from "react-icons/io";
 import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import Track from "@widget/Track";
 import BasicButton from "@components/common/BasicButton";
@@ -95,6 +96,21 @@ class Playlist extends React.Component<IProps> {
         });
     }
 
+    /**
+     * Handles a drag & drop event.
+     * @param result The drag & drop result.
+     */
+    handleDrag(result: DropResult): void {
+        if (!result.destination) return;
+    }
+
+    /**
+     * Gets the style of cursor.
+     */
+    getCursorStyle(drag: boolean, style) {
+
+    }
+
     render() {
        const playlist = this.getPlaylist();
        if (!playlist) return undefined;
@@ -154,10 +170,33 @@ class Playlist extends React.Component<IProps> {
                </BasicDropdown>
 
                <div className={"Playlist_Tracks"}>
-                   {
-                       this.getPlaylistTracks().map((track, index) =>
-                           <Track track={track} playlist={playlist.id} key={index} />)
-                   }
+                   <DragDropContext onDragEnd={this.handleDrag}>
+                       <Droppable droppableId={"trackList"}>
+                           {(provided) => (
+                               <div
+                                   {...provided.droppableProps}
+                                   ref={provided.innerRef}
+                               >
+                                   {
+                                       this.getPlaylistTracks().map((track, index) =>
+                                           <Draggable key={track.id} draggableId={track.id + index} index={index}>
+                                               {(provided) => (
+                                                   <div
+                                                       ref={provided.innerRef}
+                                                       {...provided.draggableProps}
+                                                       {...provided.dragHandleProps}
+                                                   >
+                                                       <Track track={track} playlist={playlist.id} key={index} />
+                                                   </div>
+                                               )}
+                                           </Draggable>
+                                       )
+                                   }
+                                   {provided.placeholder}
+                               </div>
+                           )}
+                       </Droppable>
+                   </DragDropContext>
                </div>
            </div>
        );
