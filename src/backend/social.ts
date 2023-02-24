@@ -36,7 +36,9 @@ export async function listenWith(user: string | null = null): Promise<void> {
  * Gets all online users which are listening on Laudiolin.
  * @param active Should only active users be returned?
  */
-export async function getAvailableUsers(active: boolean = true): Promise<OnlineUser[]> {
+export async function getAvailableUsers(
+    active: boolean = true
+): Promise<OnlineUser[]> {
     const route = `${targetRoute}/social/available?active=${active}`;
     const response = await fetch(route, {
         headers: {
@@ -46,7 +48,9 @@ export async function getAvailableUsers(active: boolean = true): Promise<OnlineU
 
     // Check the response.
     if (response.status != 200) {
-        console.error(`Failed to get available users: ${response.status} ${response.statusText}`);
+        console.error(
+            `Failed to get available users: ${response.status} ${response.statusText}`
+        );
         return [];
     }
 
@@ -67,7 +71,9 @@ export async function getRecentUsers(): Promise<OfflineUser[]> {
 
     // Check the response.
     if (response.status != 200) {
-        console.error(`Failed to get recent users: ${response.status} ${response.statusText}`);
+        console.error(
+            `Failed to get recent users: ${response.status} ${response.statusText}`
+        );
         return [];
     }
 

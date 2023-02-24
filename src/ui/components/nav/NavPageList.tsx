@@ -18,9 +18,12 @@ class NavPageList extends React.Component<{}, never> {
      * @param hover
      */
     getTextColor(isActive: boolean, hover: boolean): React.CSSProperties {
-        return { color: isActive || hover ?
-                "var(--text-primary-color)" :
-                "var(--text-secondary-color)" };
+        return {
+            color:
+                isActive || hover
+                    ? "var(--text-primary-color)"
+                    : "var(--text-secondary-color)"
+        };
     }
 
     render() {
@@ -29,64 +32,100 @@ class NavPageList extends React.Component<{}, never> {
                 <NavLink
                     to={"Recents"}
                     className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
                 >
                     {({ isActive, hover }) => {
                         return (
                             <>
-                                {isActive && <div className={"NavPanel_PageItem_Active"} />}
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
                                 <RxTimer className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>Recents</p>
+                                <p style={this.getTextColor(isActive, hover)}>
+                                    Recents
+                                </p>
                             </>
-                        )
+                        );
                     }}
                 </NavLink>
 
                 <NavLink
                     to={"Favorites"}
                     className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
                 >
                     {({ isActive, hover }) => {
                         return (
                             <>
-                                {isActive && <div className={"NavPanel_PageItem_Active"} />}
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
                                 <BiHeart className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>Favorites</p>
+                                <p style={this.getTextColor(isActive, hover)}>
+                                    Favorites
+                                </p>
                             </>
-                        )
+                        );
                     }}
                 </NavLink>
 
                 <NavLink
                     to={"Downloads"}
                     className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
                 >
                     {({ isActive, hover }) => {
                         return (
                             <>
-                                {isActive && <div className={"NavPanel_PageItem_Active"} />}
-                                <BiDownload className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>Downloads</p>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <BiDownload
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={this.getTextColor(isActive, hover)}>
+                                    Downloads
+                                </p>
                             </>
-                        )
+                        );
                     }}
                 </NavLink>
 
                 <NavLink
                     to={"Settings"}
                     className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({ color: isActive && "var(--text-primary-color)" })}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
                 >
                     {({ isActive, hover }) => {
                         return (
                             <>
-                                {isActive && <div className={"NavPanel_PageItem_Active"} />}
-                                <BiWrench className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>Settings</p>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <BiWrench
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={this.getTextColor(isActive, hover)}>
+                                    Settings
+                                </p>
                             </>
-                        )
+                        );
                     }}
                 </NavLink>
             </div>

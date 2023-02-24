@@ -41,18 +41,22 @@ class App extends React.Component<any> {
                     // Attempt to log in.
                     login()
                         .then(() => openFromUrl())
-                        .catch(err => console.warn(err))
+                        .catch((err) => console.warn(err));
                 } else {
                     // Attempt to load offline user data.
                     // Load the offline state.
-                    setTimeout(() => loadState(
-                        loaders.userData,
-                        loaders.playlists,
-                        loaders.favorites,
-                    ).catch(err => console.warn(err)), 1e3);
+                    setTimeout(
+                        () =>
+                            loadState(
+                                loaders.userData,
+                                loaders.playlists,
+                                loaders.favorites
+                            ).catch((err) => console.warn(err)),
+                        1e3
+                    );
                 }
             })
-            .catch(err => console.warn(err));
+            .catch((err) => console.warn(err));
     }
 
     /**
@@ -70,15 +74,19 @@ class App extends React.Component<any> {
             for (let i = 0; i < target.children.length; i++) {
                 const child = target.children[i] as HTMLElement;
                 if (child.tagName === "svg" || child.tagName === "path") {
-                    return isSVG = true;
+                    return (isSVG = true);
                 }
             }
         }
 
         if (!target.classList.contains("dropbtn") || isSVG) {
-            const currentUserChevron = document.getElementsByClassName("CurrentUser_Chevron")[0] as HTMLElement;
-            currentUserChevron && currentUserChevron.style.transform == "rotate(180deg)" ?
-                currentUserChevron.style.transform = "rotate(0deg)" : null;
+            const currentUserChevron = document.getElementsByClassName(
+                "CurrentUser_Chevron"
+            )[0] as HTMLElement;
+            currentUserChevron &&
+            currentUserChevron.style.transform == "rotate(180deg)"
+                ? (currentUserChevron.style.transform = "rotate(0deg)")
+                : null;
 
             for (let i = 0; i < dropdowns.length; i++) {
                 const openDropdown = dropdowns[i] as HTMLElement;
@@ -87,7 +95,7 @@ class App extends React.Component<any> {
                 }
             }
         }
-    }
+    };
 
     componentDidMount() {
         // Register event listeners.
@@ -97,8 +105,7 @@ class App extends React.Component<any> {
         // Check if the user is online.
         this.checkIfOnline();
         // Load the player's last known state.
-        loadPlayerState()
-            .catch(err => console.warn(err));
+        loadPlayerState().catch((err) => console.warn(err));
 
         // Add event listener to close all active dropdowns when clicking outside them.
         document.onclick = this.closeDropdowns;

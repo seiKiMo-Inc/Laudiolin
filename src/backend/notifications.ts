@@ -9,8 +9,10 @@ import * as settings from "@backend/settings";
  */
 export async function notify(notification: InAppNotificationData) {
     // Check if the user has notifications enabled.
-    if (!settings.get("notifications") ||
-        !await notifs.isPermissionGranted()) {
+    if (
+        !settings.get("notifications") ||
+        !(await notifs.isPermissionGranted())
+    ) {
         // Request permission to send notifications.
         const result = await notifs.requestPermission();
         if (result !== "granted") return;

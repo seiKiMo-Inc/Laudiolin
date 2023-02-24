@@ -1,11 +1,13 @@
 import React from "react";
-import { open } from '@tauri-apps/api/shell';
+import { open } from "@tauri-apps/api/shell";
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
-import { BiCopy } from "react-icons/bi"
+import { BiCopy } from "react-icons/bi";
 
-import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
+import BasicDropdown, {
+    toggleDropdown
+} from "@components/common/BasicDropdown";
 import Alert from "@components/Alert";
 
 import type { TrackData } from "@backend/types";
@@ -79,7 +81,7 @@ class Track extends React.PureComponent<IProps, never> {
         const left = buttonRect.left;
 
         if (top + dropdownRect.height > window.innerHeight) {
-            dropdown.style.top = (buttonRect.top - dropdownRect.height) + "px";
+            dropdown.style.top = buttonRect.top - dropdownRect.height + "px";
         } else {
             dropdown.style.top = top + "px";
         }
@@ -117,8 +119,12 @@ class Track extends React.PureComponent<IProps, never> {
                 <div
                     className={"Track"}
                     onClick={() => this.play()}
-                    onContextMenu={event => {
-                        toggleDropdown(`Track_${track.id}`, event.clientX, event.clientY);
+                    onContextMenu={(event) => {
+                        toggleDropdown(
+                            `Track_${track.id}`,
+                            event.clientX,
+                            event.clientY
+                        );
                         event.preventDefault();
                     }}
                 >
@@ -137,10 +143,21 @@ class Track extends React.PureComponent<IProps, never> {
 
                     <div className={"Track_Interact"}>
                         <p>{formatDuration(track.duration)}</p>
-                        {favorite ?
-                            <AiFillHeart style={{ width: 20, height: 18.18, color: "var(--accent-color)" }} onClick={() => this.favorite()} /> :
-                            <AiOutlineHeart style={{ width: 20, height: 18.18 }} onClick={() => this.favorite()} />
-                        }
+                        {favorite ? (
+                            <AiFillHeart
+                                style={{
+                                    width: 20,
+                                    height: 18.18,
+                                    color: "var(--accent-color)"
+                                }}
+                                onClick={() => this.favorite()}
+                            />
+                        ) : (
+                            <AiOutlineHeart
+                                style={{ width: 20, height: 18.18 }}
+                                onClick={() => this.favorite()}
+                            />
+                        )}
                         <BasicButton
                             id={`Track_${track.id}_Button`}
                             icon={<VscEllipsis />}
@@ -155,24 +172,32 @@ class Track extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
                 <BasicDropdown id={`Track_${track.id}`}>
-                    {
-                        !this.props.queue ?
-                            <a onClick={() => this.queue()}>Add to Queue</a> :
-                            <a onClick={() => this.queue(true)}>Remove from Queue</a>
-                    }
-                    {
-                        isDownloaded(track) ?
-                            <a onClick={() => deleteTrack(track)}>Delete Track</a> :
-                            <a onClick={() => downloadTrack(track)}>Download Track</a>
-                    }
+                    {!this.props.queue ? (
+                        <a onClick={() => this.queue()}>Add to Queue</a>
+                    ) : (
+                        <a onClick={() => this.queue(true)}>
+                            Remove from Queue
+                        </a>
+                    )}
+                    {isDownloaded(track) ? (
+                        <a onClick={() => deleteTrack(track)}>Delete Track</a>
+                    ) : (
+                        <a onClick={() => downloadTrack(track)}>
+                            Download Track
+                        </a>
+                    )}
 
-                    {
-                        this.props.playlist ?
-                            <a>Remove Track from Playlist</a> :
-                            <a>Add Track to Playlist</a>
-                    }
-                    <a onClick={async () => await this.openSource()}>Open Track Source</a>
-                    <a onClick={async () => await this.copyUrl()}>Copy Track URL</a>
+                    {this.props.playlist ? (
+                        <a>Remove Track from Playlist</a>
+                    ) : (
+                        <a>Add Track to Playlist</a>
+                    )}
+                    <a onClick={async () => await this.openSource()}>
+                        Open Track Source
+                    </a>
+                    <a onClick={async () => await this.copyUrl()}>
+                        Copy Track URL
+                    </a>
                 </BasicDropdown>
             </>
         );

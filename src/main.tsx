@@ -21,14 +21,13 @@ import App from "./ui/App";
             fs.createFolders();
             offline.loadDownloads();
         })
-        .catch(err => console.error(err));
-    link.setup()
-        .catch(err => console.error(err));
-    audio.setup()
-        .catch(err => console.error(err));
-    gateway.setup()
+        .catch((err) => console.error(err));
+    link.setup().catch((err) => console.error(err));
+    audio.setup().catch((err) => console.error(err));
+    gateway
+        .setup()
         .then(() => gateway.connect())
-        .catch(err => console.error(err));
+        .catch((err) => console.error(err));
 
     render(); // Render the application.
 })();

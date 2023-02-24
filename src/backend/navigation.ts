@@ -50,7 +50,9 @@ export function navigate(page: Page, args?: any) {
  * Registers the specified listener for navigation events.
  * @param listener The listener to register.
  */
-export function registerListener(listener: (navigate: { page: Page, args?: any }) => void) {
+export function registerListener(
+    listener: (navigate: { page: Page; args?: any }) => void
+) {
     navigationEmitter.on("navigate", listener);
 }
 

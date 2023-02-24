@@ -6,7 +6,7 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
-import 'rc-slider/assets/index.css';
+import "rc-slider/assets/index.css";
 
 import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
@@ -36,11 +36,13 @@ class ControlPanel extends React.Component<any, IState> {
      */
     update = () => {
         const track = TrackPlayer.getCurrentTrack()?.data;
-        this.setState({ track,
+        this.setState({
+            track,
             queue: TrackPlayer.getQueue().length > 0,
             playing: !TrackPlayer.paused,
-            favorite: track ? favorites.find(
-                t => t.id == track.id) != null : false,
+            favorite: track
+                ? favorites.find((t) => t.id == track.id) != null
+                : false,
             progress: TrackPlayer.getProgress(),
             volume: Howler.volume() * 100
         });
@@ -85,22 +87,31 @@ class ControlPanel extends React.Component<any, IState> {
      */
     getRepeatIcon(): React.ReactNode {
         switch (TrackPlayer.getRepeatMode()) {
-            case "none": return <MdRepeat
-                className={"ControlPanel_Control"}
-                onClick={toggleRepeatState}
-            />;
+            case "none":
+                return (
+                    <MdRepeat
+                        className={"ControlPanel_Control"}
+                        onClick={toggleRepeatState}
+                    />
+                );
 
-            case "track": return <MdRepeatOne
-                className={"ControlPanel_Control ControlPanel_Repeat"}
-                onClick={toggleRepeatState}
-                style={{ color: "var(--accent-color)" }}
-            />;
+            case "track":
+                return (
+                    <MdRepeatOne
+                        className={"ControlPanel_Control ControlPanel_Repeat"}
+                        onClick={toggleRepeatState}
+                        style={{ color: "var(--accent-color)" }}
+                    />
+                );
 
-            case "queue": return <MdRepeat
-                className={"ControlPanel_Control ControlPanel_Repeat"}
-                onClick={toggleRepeatState}
-                style={{ color: "var(--accent-color)" }}
-            />;
+            case "queue":
+                return (
+                    <MdRepeat
+                        className={"ControlPanel_Control ControlPanel_Repeat"}
+                        onClick={toggleRepeatState}
+                        style={{ color: "var(--accent-color)" }}
+                    />
+                );
         }
     }
 
@@ -108,18 +119,22 @@ class ControlPanel extends React.Component<any, IState> {
         const { playing, track, favorite } = this.state;
 
         return (
-            <div className={"ControlPanel"} style={{ pointerEvents: !track ? "none" : "all" }}>
-                {
-                    !track && <div className={"ControlPanel_DisabledOverlay"} />
-                }
+            <div
+                className={"ControlPanel"}
+                style={{ pointerEvents: !track ? "none" : "all" }}
+            >
+                {!track && <div className={"ControlPanel_DisabledOverlay"} />}
 
                 <div className={"ControlPanel_Track"}>
-                    {
-                        track && <>
+                    {track && (
+                        <>
                             <img
                                 className={"ControlPanel_Icon"}
                                 alt={track.title ?? "No track"}
-                                src={track.icon ?? "https://i.imgur.com/0Q9QZ9A.png"}
+                                src={
+                                    track.icon ??
+                                    "https://i.imgur.com/0Q9QZ9A.png"
+                                }
                             />
 
                             <div className={"ControlPanel_TrackInfo"}>
@@ -127,22 +142,23 @@ class ControlPanel extends React.Component<any, IState> {
                                 <p>{track.artist}</p>
                             </div>
                         </>
-                    }
+                    )}
                 </div>
 
                 <div className={"ControlPanel_MainControls"}>
                     <div className={"ControlPanel_Controls"}>
-                        {favorite ?
+                        {favorite ? (
                             <AiFillHeart
                                 className={"ControlPanel_Control"}
                                 style={{ color: "var(--accent-color)" }}
                                 onClick={() => this.favorite()}
-                            /> :
+                            />
+                        ) : (
                             <AiOutlineHeart
                                 className={"ControlPanel_Control"}
                                 onClick={() => this.favorite()}
                             />
-                        }
+                        )}
 
                         <MdShuffle
                             className={"ControlPanel_Control"}
@@ -154,16 +170,17 @@ class ControlPanel extends React.Component<any, IState> {
                             onClick={() => TrackPlayer.back()}
                         />
 
-                        {playing ?
+                        {playing ? (
                             <IoMdPause
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
-                            /> :
+                            />
+                        ) : (
                             <IoMdPlay
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
                             />
-                        }
+                        )}
 
                         <IoMdSkipForward
                             className={"ControlPanel_Control"}
@@ -198,10 +215,12 @@ class ControlPanel extends React.Component<any, IState> {
                         }}
                         toggleMute={() => {
                             if (Howler.volume() > 0) {
-                                this.setState({ lastVolume: Howler.volume() * 100 });
+                                this.setState({
+                                    lastVolume: Howler.volume() * 100
+                                });
                                 setVolume(0);
                             } else {
-                                setVolume(this.state.lastVolume / 100)
+                                setVolume(this.state.lastVolume / 100);
                             }
                         }}
                     />

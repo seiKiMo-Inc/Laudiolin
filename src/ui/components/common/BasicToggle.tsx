@@ -29,7 +29,8 @@ function BasicToggle(props: IProps) {
             onColor={props.color ?? getColor()}
             checkedIcon={false}
             uncheckedIcon={false}
-            width={40} height={20}
+            width={40}
+            height={20}
         />
     );
 }

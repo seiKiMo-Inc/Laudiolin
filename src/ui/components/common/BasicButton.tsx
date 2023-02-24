@@ -18,11 +18,13 @@ class BasicButton extends React.Component<IProps> {
                 className={`${this.props.className} BasicButton`}
                 id={this.props.id}
                 style={{
-                    ...this.props.style,
+                    ...this.props.style
                 }}
                 onClick={this.props.onClick}
             >
-                {this.props.customChildren ? this.props.children : (
+                {this.props.customChildren ? (
+                    this.props.children
+                ) : (
                     <>
                         {this.props.icon ? this.props.icon : null}
                         {this.props.text ? this.props.text : null}

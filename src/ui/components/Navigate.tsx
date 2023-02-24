@@ -40,8 +40,7 @@ class Navigate extends React.Component<any, IState> {
     }
 
     componentDidMount() {
-        registerListener(({ page, args }) =>
-            this.navigate(page, args)); // Register navigation listeners.
+        registerListener(({ page, args }) => this.navigate(page, args)); // Register navigation listeners.
     }
 
     componentWillUnmount() {
@@ -51,24 +50,53 @@ class Navigate extends React.Component<any, IState> {
     render() {
         return (
             <>
-                { this.state.page == "Home" && <Home /> }
-                { this.state.page == "Login" && <Login /> }
-                { this.state.page == "Search" && <Search pageArgs={this.state.args} /> }
-                { this.state.page == "Recents" && <TrackList
-                    title={"Recents"} events={["login", "recent"]}
-                    collection={() => recents} /> }
-                { this.state.page == "Profile" && <p>Profile</p> }
-                { this.state.page == "Favorites" && <TrackList
-                    title={"Favorites"} events={["login", "favorites"]}
-                    collection={() => favorites} /> }
-                { this.state.page == "Downloads" && <TrackList
-                    title={"Downloads"} events={["login", "downloads"]}
-                    collection={() => downloads} /> }
-                { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
-                { this.state.page == "Settings" && <Settings /> }
-                { this.state.page == "Queue" && <TrackList
-                    title={"Queue"} events={["play", "stop", "destroy", "end", "shuffle", "queue"]}
-                    collection={() => TrackPlayer.getQueue()} emitter={TrackPlayer} queue={true} /> }
+                {this.state.page == "Home" && <Home />}
+                {this.state.page == "Login" && <Login />}
+                {this.state.page == "Search" && (
+                    <Search pageArgs={this.state.args} />
+                )}
+                {this.state.page == "Recents" && (
+                    <TrackList
+                        title={"Recents"}
+                        events={["login", "recent"]}
+                        collection={() => recents}
+                    />
+                )}
+                {this.state.page == "Profile" && <p>Profile</p>}
+                {this.state.page == "Favorites" && (
+                    <TrackList
+                        title={"Favorites"}
+                        events={["login", "favorites"]}
+                        collection={() => favorites}
+                    />
+                )}
+                {this.state.page == "Downloads" && (
+                    <TrackList
+                        title={"Downloads"}
+                        events={["login", "downloads"]}
+                        collection={() => downloads}
+                    />
+                )}
+                {this.state.page == "Playlist" && (
+                    <Playlist pageArgs={this.state.args} />
+                )}
+                {this.state.page == "Settings" && <Settings />}
+                {this.state.page == "Queue" && (
+                    <TrackList
+                        title={"Queue"}
+                        events={[
+                            "play",
+                            "stop",
+                            "destroy",
+                            "end",
+                            "shuffle",
+                            "queue"
+                        ]}
+                        collection={() => TrackPlayer.getQueue()}
+                        emitter={TrackPlayer}
+                        queue={true}
+                    />
+                )}
             </>
         );
     }

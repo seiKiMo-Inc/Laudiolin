@@ -26,14 +26,14 @@ class TrackList extends React.Component<IProps, never> {
     }
 
     componentDidMount() {
-        const emit = (this.props.emitter ?? emitter);
+        const emit = this.props.emitter ?? emitter;
         for (const event of this.props.events) {
             emit.on(event, this.update);
         }
     }
 
     componentWillUnmount() {
-        const emit = (this.props.emitter ?? emitter);
+        const emit = this.props.emitter ?? emitter;
         for (const event of this.props.events) {
             emit.off(event, this.update);
         }
@@ -45,10 +45,13 @@ class TrackList extends React.Component<IProps, never> {
                 <h2>{this.props.title}</h2>
 
                 <div style={{ marginTop: 35 }}>
-                    {
-                        this.props.collection().map((recent, index) =>
-                            <Track track={recent} key={index} queue={this.props.queue} />)
-                    }
+                    {this.props.collection().map((recent, index) => (
+                        <Track
+                            track={recent}
+                            key={index}
+                            queue={this.props.queue}
+                        />
+                    ))}
                 </div>
             </div>
         );

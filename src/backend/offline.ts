@@ -3,10 +3,20 @@ import { system } from "@backend/settings";
 
 import { notify } from "@backend/notifications";
 import { userData, playlists, favorites } from "@backend/user";
-import type { OfflineUserData, Playlist, TrackData, User } from "@backend/types";
+import type {
+    OfflineUserData,
+    Playlist,
+    TrackData,
+    User
+} from "@backend/types";
 
 import * as fs from "@mod/fs";
-import { AppData, deleteTrackFolder, getDownloadedTracks, loadLocalTrackData } from "@mod/fs";
+import {
+    AppData,
+    deleteTrackFolder,
+    getDownloadedTracks,
+    loadLocalTrackData
+} from "@mod/fs";
 import { readDir, removeFile, createDir, removeDir } from "@tauri-apps/api/fs";
 import emitter from "@backend/events";
 
@@ -22,10 +32,10 @@ export const downloads: TrackData[] = []; // The loaded downloads.
  * The track must be loaded as a download.
  * @param track The track to check.
  */
-export function isDownloaded(track: TrackData|string): boolean {
+export function isDownloaded(track: TrackData | string): boolean {
     // Check if the track is downloaded.
     const id = typeof track == "string" ? track : track.id;
-    return downloads.some(track => track.id == id);
+    return downloads.some((track) => track.id == id);
 }
 
 /**
@@ -38,13 +48,12 @@ export async function loadDownloads(): Promise<void> {
         if (await fs.trackExists({ id: track })) {
             downloads.push(await loadLocalTrackData(track));
         } else {
-            deleteTrackFolder({ id: track })
-                .catch(err => console.warn(err));
+            deleteTrackFolder({ id: track }).catch((err) => console.warn(err));
         }
     }
     emitter.emit("downloads");
 
-    emitter.on("download", track => {
+    emitter.on("download", (track) => {
         downloads.push(track);
         emitter.emit("downloads");
     });
@@ -56,8 +65,9 @@ export async function loadDownloads(): Promise<void> {
  */
 export async function savePlaylist(playlist: Playlist): Promise<void> {
     // Save the playlist to the file system.
-    fs.saveData(playlist, `${playlistsPath}/${playlist.id}.json`)
-        .then(() => downloadedObjects++);
+    fs.saveData(playlist, `${playlistsPath}/${playlist.id}.json`).then(
+        () => downloadedObjects++
+    );
     // Download the tracks in the playlist.
     saveTracks(playlist.tracks);
 }
@@ -76,24 +86,30 @@ export async function loadState(
     // Load the offline data from the filesystem.
     const data = await fs.readData(userDataPath());
     if (!data) {
-        console.error("Unable to load offline user data."); return;
+        console.error("Unable to load offline user data.");
+        return;
     }
 
     // Read the user data.
     const offlineData = data as OfflineUserData;
     console.info("Loaded offline user data.");
     // Read the playlists from the file system.
-    const playlistFiles = (await readDir(playlistsPath()))
-        .map(file => file.name);
+    const playlistFiles = (await readDir(playlistsPath())).map(
+        (file) => file.name
+    );
     console.info("Loaded offline playlists.");
-    const playlistData = await Promise.all(playlistFiles.map(async file =>
-        await fs.readData(`${playlistsPath}/${file}`)
-    ));
+    const playlistData = await Promise.all(
+        playlistFiles.map(
+            async (file) => await fs.readData(`${playlistsPath}/${file}`)
+        )
+    );
     console.info("Loaded offline playlist data.");
     // Read the favorites from the file system.
-    const favoriteData = await Promise.all(offlineData.favorites.map(async id =>
-        await fs.readData(fs.getDataPath({ id }))
-    ));
+    const favoriteData = await Promise.all(
+        offlineData.favorites.map(
+            async (id) => await fs.readData(fs.getDataPath({ id }))
+        )
+    );
     console.info("Loaded offline favorites.");
 
     // Invoke the callbacks.
@@ -107,10 +123,11 @@ export async function loadState(
  * @param tracks An array of track data objects.
  */
 function saveTracks(tracks: TrackData[]): void {
-    tracks.forEach(track => {
-        audio.downloadTrack(track, false)
+    tracks.forEach((track) => {
+        audio
+            .downloadTrack(track, false)
             .then(() => downloadedObjects++)
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     });
 }
 
@@ -125,12 +142,16 @@ export async function offlineSupport(enabled: boolean): Promise<void> {
         const data: OfflineUserData = {
             user: userData!,
             playlists: [],
-            favorites: favorites.map(track => track.id),
+            favorites: favorites.map((track) => track.id)
         };
 
         // Calculate the objects to save.
-        let objects = 1 + playlists.length + favorites.length +
-            playlists.map(playlist => playlist.tracks.length)
+        let objects =
+            1 +
+            playlists.length +
+            favorites.length +
+            playlists
+                .map((playlist) => playlist.tracks.length)
                 .reduce((a, b) => a + b, 0);
         console.info(`Started downloading offline data. (${objects} objects)`);
 
@@ -152,23 +173,26 @@ export async function offlineSupport(enabled: boolean): Promise<void> {
         });
 
         // Save the playlists to the file system.
-        playlists.forEach(playlist => {
+        playlists.forEach((playlist) => {
             // Save the playlist ID to the user data.
             playlist.id && data.playlists.push(playlist.id);
             // Save the playlist to the file system.
-            fs.saveData(playlist, `${playlistsPath()}/${playlist.id}.json`)
-                .then(() => downloadedObjects++);
+            fs.saveData(
+                playlist,
+                `${playlistsPath()}/${playlist.id}.json`
+            ).then(() => downloadedObjects++);
             // Download the tracks in the playlist.
             saveTracks(playlist.tracks);
         });
 
         saveTracks(favorites); // Download every favorite track.
-        fs.saveData(data, userDataPath())
-            .then(() => downloadedObjects++); // Save the user data.
+        fs.saveData(data, userDataPath()).then(() => downloadedObjects++); // Save the user data.
     } else {
         await removeFile(userDataPath()); // Delete the saved user data.
-        await removeDir(playlistsPath(), // Delete the saved playlists.
-            { recursive: true });
+        await removeDir(
+            playlistsPath(), // Delete the saved playlists.
+            { recursive: true }
+        );
         await createDir(playlistsPath()); // Create the playlists directory.
     }
 }

@@ -20,9 +20,9 @@ const messageQueue: BaseGatewayMessage[] = [];
 export async function setup(): Promise<void> {
     const playerSync = (time?: number) => {
         update() // Update the player progress.
-            .catch(err => console.warn(err));
+            .catch((err) => console.warn(err));
         playerUpdate(time) // Update the player status.
-            .catch(err => console.warn(err));
+            .catch((err) => console.warn(err));
     };
 
     // Add playback event listeners.
@@ -48,11 +48,12 @@ async function update(): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    connected && sendGatewayMessage(<SeekMessage> {
-        type: "seek",
-        timestamp: Date.now(),
-        seek: TrackPlayer.getProgress()
-    });
+    connected &&
+        sendGatewayMessage(<SeekMessage>{
+            type: "seek",
+            timestamp: Date.now(),
+            seek: TrackPlayer.getProgress()
+        });
 }
 
 /**
@@ -66,12 +67,13 @@ async function playerUpdate(seek?: number): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    connected && sendGatewayMessage(<PlayerMessage> {
-        type: "player",
-        seek: seek ?? TrackPlayer.getProgress(),
-        track: currentTrack ? currentTrack.data : null,
-        paused: TrackPlayer.paused,
-    });
+    connected &&
+        sendGatewayMessage(<PlayerMessage>{
+            type: "player",
+            seek: seek ?? TrackPlayer.getProgress(),
+            track: currentTrack ? currentTrack.data : null,
+            paused: TrackPlayer.paused
+        });
 }
 
 /**
@@ -129,10 +131,12 @@ function onClose(close: any): void {
  */
 async function onMessage(event: MessageEvent): Promise<void> {
     // Parse the message data.
-    let message: BaseGatewayMessage|null = null; try {
+    let message: BaseGatewayMessage | null = null;
+    try {
         message = JSON.parse(event.data);
     } catch {
-        console.error("Failed to parse message data."); return;
+        console.error("Failed to parse message data.");
+        return;
     }
 
     // Handle the message data.
@@ -141,8 +145,10 @@ async function onMessage(event: MessageEvent): Promise<void> {
             return;
         case "latency":
             // Send another latency ping after 10s.
-            setTimeout(() => sendGatewayMessage(
-                <LatencyMessage> { type: "latency" }), 10e3);
+            setTimeout(
+                () => sendGatewayMessage(<LatencyMessage>{ type: "latency" }),
+                10e3
+            );
             return;
         case "sync":
             const { track, progress, paused, seek } = message as SyncMessage;
@@ -179,13 +185,15 @@ function onError(error: any): void {
  */
 function sendInitMessage(): void {
     try {
-        gateway?.send(JSON.stringify(<InitializeMessage> {
-            type: "initialize",
-            timestamp: Date.now(),
-            token: token(),
-            broadcast: system().broadcast_listening,
-            presence: system().presence
-        }));
+        gateway?.send(
+            JSON.stringify(<InitializeMessage>{
+                type: "initialize",
+                timestamp: Date.now(),
+                token: token(),
+                broadcast: system().broadcast_listening,
+                presence: system().presence
+            })
+        );
     } catch (err) {
         console.error("Failed to send initialize message.", err);
     }
@@ -224,7 +232,9 @@ export function getDownloadUrl(track: TrackData): string {
  * @param track The track to get the URL for.
  */
 export function getStreamingUrl(track: TrackData): string {
-    return `${Gateway.url}/stream?id=${track.id}&quality=${audio().audio_quality}`;
+    return `${Gateway.url}/stream?id=${track.id}&quality=${
+        audio().audio_quality
+    }`;
 }
 
 /**

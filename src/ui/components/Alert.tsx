@@ -8,14 +8,16 @@ class Alert extends React.Component<any> {
 
     public static showAlert(message: string, icon?: React.ReactNode) {
         Alert.message = message;
-        icon ? Alert.icon = icon : null;
+        icon ? (Alert.icon = icon) : null;
 
         emitter.emit("alert");
 
-        const alert = document.getElementsByClassName("Alert")[0] as HTMLElement;
+        const alert = document.getElementsByClassName(
+            "Alert"
+        )[0] as HTMLElement;
         alert.style.display = "block";
 
-        setTimeout(() => alert.style.display = "none", 5000);
+        setTimeout(() => (alert.style.display = "none"), 5000);
     }
 
     componentDidMount() {

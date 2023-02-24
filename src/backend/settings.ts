@@ -1,4 +1,10 @@
-import type { UserSettings, SearchSettings, AudioSettings, UISettings, SystemSettings } from "@backend/types";
+import type {
+    UserSettings,
+    SearchSettings,
+    AudioSettings,
+    UISettings,
+    SystemSettings
+} from "@backend/types";
 import { connect } from "@backend/gateway";
 
 let settings: UserSettings | null = null;
@@ -23,7 +29,7 @@ export const defaultSettings: UserSettings = {
     token: ""
 };
 
-export const settingsKeys: {[key: string]: string} = {
+export const settingsKeys: { [key: string]: string } = {
     "search.accuracy": "Search Accuracy",
     "search.engine": "Preferred Search Engine",
     "audio.playback_mode": "Audio Playback Mode",
@@ -38,13 +44,15 @@ export const settingsKeys: {[key: string]: string} = {
 /**
  * Loads settings from the settings file.
  */
-export function reloadSettings(from?: UserSettings | null):void {
+export function reloadSettings(from?: UserSettings | null): void {
     if (!from) {
         // Check if settings exists in the storage.
         const data = exists("settings");
         // Load the settings as JSON.
-        settings = data == undefined ? defaultSettings
-            : JSON.parse(get("settings") as string);
+        settings =
+            data == undefined
+                ? defaultSettings
+                : JSON.parse(get("settings") as string);
     } else settings = from;
 
     // Check if the settings are undefined.
@@ -64,9 +72,9 @@ export function setTheme(theme: "Light" | "Dark" = null): void {
     if (theme == null) theme = settings?.ui?.color_theme ?? "Light";
 
     // Set the theme.
-    document.getElementsByTagName("html")[0]
-        .setAttribute("data-theme",
-            theme.toString().toLowerCase());
+    document
+        .getElementsByTagName("html")[0]
+        .setAttribute("data-theme", theme.toString().toLowerCase());
 }
 
 /*
@@ -150,7 +158,10 @@ export function system(): SystemSettings {
  * @param path The path to get the value of. (ex. settings.search.accuracy)
  * @param fallback The fallback value to return if the path does not exist.
  */
-export function getFromPath(path: string, fallback: string | null = null): string | null {
+export function getFromPath(
+    path: string,
+    fallback: string | null = null
+): string | null {
     // Get the correct object.
     const parts = path.split(".");
     const key = parts.pop() as string;
@@ -184,8 +195,11 @@ export function saveFromPath(path: string, value: any = ""): void {
  * @param key The key to get the value of.
  * @param fallback The fallback value to return if the key does not exist.
  */
-export function get(key: string, fallback: string | null = null): string | null {
-    return localStorage.getItem(key) as string | null ?? fallback;
+export function get(
+    key: string,
+    fallback: string | null = null
+): string | null {
+    return (localStorage.getItem(key) as string | null) ?? fallback;
 }
 
 /**
@@ -194,7 +208,7 @@ export function get(key: string, fallback: string | null = null): string | null 
  * @param value The value to set.
  */
 export function save(key: string, value: string = ""): void {
-    localStorage.setItem(key, value)
+    localStorage.setItem(key, value);
 }
 
 /**

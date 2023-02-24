@@ -4,8 +4,12 @@ import { Gateway } from "@app/constants";
 import * as settings from "@backend/settings";
 
 const blank: SearchResult = {
-    title: "", artist: "", icon: "",
-    url: "", id: "", duration: -1
+    title: "",
+    artist: "",
+    icon: "",
+    url: "",
+    id: "",
+    duration: -1
 };
 
 /**
@@ -17,9 +21,11 @@ export async function doSearch(query: string): Promise<SearchResults> {
 
     try {
         // Perform a request to the backend.
-        const response = await fetch(`${Gateway.url}/search/${query}?query=${engine}`);
+        const response = await fetch(
+            `${Gateway.url}/search/${query}?query=${engine}`
+        );
         // Return the response as a search results object.
-        return await response.json() as SearchResults;
+        return (await response.json()) as SearchResults;
     } catch (error) {
         return {
             results: [],

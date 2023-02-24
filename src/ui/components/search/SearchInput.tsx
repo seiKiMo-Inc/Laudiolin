@@ -12,7 +12,7 @@ interface IProps {}
 interface IState {}
 
 class SearchInput extends React.Component<IProps, IState> {
-    searchTimeout: NodeJS.Timeout|number = null;
+    searchTimeout: NodeJS.Timeout | number = null;
 
     constructor(props: IProps) {
         super(props);
@@ -29,8 +29,8 @@ class SearchInput extends React.Component<IProps, IState> {
 
         this.searchTimeout = setTimeout(() => {
             doSearch(text)
-                .then(results => navigate("Search", { results }))
-                .catch(err => console.error(err));
+                .then((results) => navigate("Search", { results }))
+                .catch((err) => console.error(err));
             this.searchTimeout = null;
         }, 500);
     }
@@ -40,8 +40,8 @@ class SearchInput extends React.Component<IProps, IState> {
 
         const text = event.currentTarget.value;
         doSearch(text)
-            .then(results => navigate("Search", { results }))
-            .catch(err => console.error(err));
+            .then((results) => navigate("Search", { results }))
+            .catch((err) => console.error(err));
         this.searchTimeout = null;
     }
 
@@ -53,8 +53,8 @@ class SearchInput extends React.Component<IProps, IState> {
                     className={"SearchInput_Input"}
                     type={"text"}
                     placeholder={"What are you looking for today?"}
-                    onChange={event => this.onChange(event)}
-                    onKeyUp={event => this.onKeyChange(event)}
+                    onChange={(event) => this.onChange(event)}
+                    onKeyUp={(event) => this.onKeyChange(event)}
                 />
             </div>
         );

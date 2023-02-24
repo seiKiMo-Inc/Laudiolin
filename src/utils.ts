@@ -29,22 +29,17 @@ export function getIconUrl(track: TrackData): string {
     let split = iconUrl.split("/");
 
     if (iconUrl.includes("i.ytimg.com")) {
-        return url
-            .replace("{ico}", split[4])
-            .replace("{src}", "yt");
+        return url.replace("{ico}", split[4]).replace("{src}", "yt");
     }
     if (iconUrl.includes("i.scdn.co")) {
-        return url
-            .replace("{ico}", split[4])
-            .replace("{src}", "spot");
+        return url.replace("{ico}", split[4]).replace("{src}", "spot");
     }
     if (iconUrl.includes("lh3.googleusercontent.com")) {
-        return url
-            .replace("{ico}", split[3])
-            .replace("{src}", "cart");
+        return url.replace("{ico}", split[3]).replace("{src}", "cart");
     }
 
-    console.warn(`Encountered a weird icon URL! ${icon}`); return url;
+    console.warn(`Encountered a weird icon URL! ${icon}`);
+    return url;
 }
 
 /**
@@ -68,8 +63,8 @@ export function formatDuration(seconds: number): string {
  * Checks if the track is a favorite.
  * @param track The track to check.
  */
-export function isFavorite(track: TrackData|null): boolean {
-    return track ? favorites.find(t => t.id == track?.id) != null : false;
+export function isFavorite(track: TrackData | null): boolean {
+    return track ? favorites.find((t) => t.id == track?.id) != null : false;
 }
 
 /**
@@ -83,9 +78,8 @@ export function savePlayerState(): void {
     if (track)
         // Save the current track.
         settings.save("player.currentTrack", track.id);
-    else
-        // Remove the current track.
-        settings.remove("player.currentTrack");
+    // Remove the current track.
+    else settings.remove("player.currentTrack");
 }
 
 /**

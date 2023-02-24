@@ -8,7 +8,7 @@ import { Gateway } from "@app/constants";
 
 import { setToken } from "@backend/settings";
 
-export const updateTargetRoute = () => targetRoute = Gateway.getUrl();
+export const updateTargetRoute = () => (targetRoute = Gateway.getUrl());
 export let targetRoute = Gateway.getUrl(); // The base address for the backend.
 export let userData: User | null = null; // The loaded user data.
 export let playlists: Playlist[] = []; // The loaded playlist data.
@@ -27,7 +27,7 @@ export const loaders = {
         playlists = data; // Update the playlist data.
         emitter.emit("playlist", data); // Emit the playlist event.
     },
-    favorites: (data: TrackData[]) => favorites = data,
+    favorites: (data: TrackData[]) => (favorites = data)
 };
 
 /*
@@ -38,7 +38,7 @@ export const loaders = {
  * Returns the URL for logging in.
  */
 export function getLoginUrl(): string {
-    return `${targetRoute}/discord`
+    return `${targetRoute}/discord`;
 }
 
 /**
@@ -69,12 +69,15 @@ export async function getCode(): Promise<string | null> {
 
     const route = `${targetRoute}/user/auth`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: code }
+        method: "GET",
+        headers: { Authorization: code }
     });
 
     // Check the response code.
     if (response.status != 200) {
-        console.error(`Failed to get code from the backend. Status code: ${response.status}`);
+        console.error(
+            `Failed to get code from the backend. Status code: ${response.status}`
+        );
         return null;
     }
 
@@ -92,13 +95,16 @@ export async function getToken(code: string): Promise<boolean> {
 
     const route = `${targetRoute}/user/auth`;
     const response = await fetch(route, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code })
     });
 
     // Check the response code.
     if (response.status != 200) {
-        console.error(`Failed to get token from the backend. Status code: ${response.status}`);
+        console.error(
+            `Failed to get token from the backend. Status code: ${response.status}`
+        );
         return false;
     }
 
@@ -116,18 +122,24 @@ export async function getToken(code: string): Promise<boolean> {
  * @param loadData Whether to load the user data.
  * @returns True if the user data was successfully loaded.
  */
-export async function login(code: string = "", loadData: boolean = true): Promise<boolean> {
+export async function login(
+    code: string = "",
+    loadData: boolean = true
+): Promise<boolean> {
     if (code == "") code = token(); // If no code is provided, use the token.
     if (!code || code == "") return false; // If no code is provided, exit.
 
     const route = `${targetRoute}/user`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: code }
+        method: "GET",
+        headers: { Authorization: code }
     });
 
     // Check the response code.
     if (response.status != 301) {
-        console.error(`Failed to get user data from the backend. Status code: ${response.status}`);
+        console.error(
+            `Failed to get user data from the backend. Status code: ${response.status}`
+        );
         await logout(); // Log the user out.
         navigate("Login"); // Redirect to the login page.
 
@@ -142,11 +154,11 @@ export async function login(code: string = "", loadData: boolean = true): Promis
 
     if (loadData) {
         loadRecents() // Load recent tracks.
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
         loadPlaylists() // Load the playlists.
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
         loadFavorites() // Load favorite tracks.
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
     }
 
     return true;
@@ -188,20 +200,26 @@ export async function loadPlaylists() {
     // Loop through the user's playlists.
     for (const playlistId of userData.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
-            method: "GET", headers: { Authorization: token() }
+            method: "GET",
+            headers: { Authorization: token() }
         });
 
         // Check the response code.
         if (response.status != 301) {
-            console.error(`Failed to get playlist data from the backend. Status code: ${response.status}`); return;
+            console.error(
+                `Failed to get playlist data from the backend. Status code: ${response.status}`
+            );
+            return;
         }
 
         playlists.push(await response.json()); // Load the data into the playlist array.
     }
 
     // Remove duplicate playlists.
-    playlists = playlists.filter((playlist, index, self) =>
-        self.findIndex(p => p.id == playlist.id) == index);
+    playlists = playlists.filter(
+        (playlist, index, self) =>
+            self.findIndex((p) => p.id == playlist.id) == index
+    );
 
     emitter.emit("playlist", playlists); // Emit the 'playlist' event.
     console.info(`Loaded ${playlists.length} playlists.`); // Log the success.
@@ -222,7 +240,7 @@ export async function loadFavorites() {
  * Loads recent tracks from the backend.
  * @param tracks The recent tracks to load. (gateway)
  */
-export async function loadRecents(tracks: TrackData[]|null = null) {
+export async function loadRecents(tracks: TrackData[] | null = null) {
     if (tracks) {
         recents = tracks; // Load the recents from the gateway.
         return;
@@ -268,12 +286,16 @@ export function makePlaylist(
     name: string,
     icon: string,
     description: string,
-    tracks: TrackData[],
+    tracks: TrackData[]
 ): Playlist {
     return {
         owner: userId(),
-        id, name, icon, description,
-        isPrivate: false, tracks
+        id,
+        name,
+        icon,
+        description,
+        isPrivate: false,
+        tracks
     };
 }
 
@@ -281,21 +303,25 @@ export function makePlaylist(
  * Returns the author of a playlist.
  * @param playlist The playlist to get the author of.
  */
-export async function getPlaylistAuthor(playlist: Playlist): Promise<PlaylistAuthor> {
+export async function getPlaylistAuthor(
+    playlist: Playlist
+): Promise<PlaylistAuthor> {
     const owner = playlist.owner ?? ""; // Get the owner's ID.
     if (owner == "") return { name: "Unknown", icon: "" }; // If no owner is provided, return "Unknown".
 
     // If the owner is the current user, return the user's username & icon.
-    if (owner == getUserId()) return {
-        name: `${userData?.username}#${userData?.discriminator}`,
-        icon: userData?.avatar ?? ""
-    };
+    if (owner == getUserId())
+        return {
+            name: `${userData?.username}#${userData?.discriminator}`,
+            icon: userData?.avatar ?? ""
+        };
 
     // Otherwise, load the owner's data.
     const user = await getUserById(owner);
     if (!user) return { name: "Unknown", icon: "" }; // If the user data could not be loaded, return "Unknown".
 
-    return { // Return the user's username & icon.
+    return {
+        // Return the user's username & icon.
         name: `${user.username}#${user.discriminator}`,
         icon: user.avatar ?? ""
     };
@@ -309,15 +335,19 @@ export async function getPlaylistAuthor(playlist: Playlist): Promise<PlaylistAut
  * Loads a user from the backend.
  * @param userId The user's ID.
  */
-export async function getUserById(userId: string): Promise<User|null> {
+export async function getUserById(userId: string): Promise<User | null> {
     const route = `${targetRoute}/user/${userId}`;
     const response = await fetch(route, {
-        method: "GET", headers: { Authorization: token() }
+        method: "GET",
+        headers: { Authorization: token() }
     });
 
     // Check the response code.
     if (response.status != 301) {
-        console.error(`Failed to get user data from the backend. Status code: ${response.status}`); return null;
+        console.error(
+            `Failed to get user data from the backend. Status code: ${response.status}`
+        );
+        return null;
     }
 
     return await response.json(); // Load the data into the user data variable.
@@ -327,19 +357,23 @@ export async function getUserById(userId: string): Promise<User|null> {
  * Loads a user's playlists from the backend.
  * @param user The user's data.
  */
-export async function getUserPlaylists(user: User): Promise<Playlist[]|null> {
+export async function getUserPlaylists(user: User): Promise<Playlist[] | null> {
     const route = `${targetRoute}/playlist`;
     const playlists: Playlist[] = []; // The loaded playlists.
 
     // Loop through the user's playlists.
     for (const playlistId in user.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
-            method: "GET", headers: { Authorization: token() }
+            method: "GET",
+            headers: { Authorization: token() }
         });
 
         // Check the response code.
         if (response.status != 301) {
-            console.error(`Failed to get playlist data from the backend. Status code: ${response.status}`); return null;
+            console.error(
+                `Failed to get playlist data from the backend. Status code: ${response.status}`
+            );
+            return null;
         }
 
         playlists.push(await response.json()); // Load the data into the playlist array.
@@ -357,10 +391,14 @@ export async function getUserPlaylists(user: User): Promise<Playlist[]|null> {
  * @param track The track to add.
  * @param add Whether to add or remove the track.
  */
-export async function favoriteTrack(track: TrackData, add: boolean = true): Promise<boolean> {
+export async function favoriteTrack(
+    track: TrackData,
+    add: boolean = true
+): Promise<boolean> {
     const route = `${targetRoute}/user/favorite`;
     const response = await fetch(route, {
-        method: "POST", headers: {
+        method: "POST",
+        headers: {
             Operation: add ? "add" : "remove",
             Authorization: token(),
             "Content-Type": "application/json"
@@ -369,7 +407,12 @@ export async function favoriteTrack(track: TrackData, add: boolean = true): Prom
     });
 
     if (response.status != 200) {
-        console.error(`Failed to ${add ? "add" : "remove"} favorite track. Status code: ${response.status}`); return false;
+        console.error(
+            `Failed to ${add ? "add" : "remove"} favorite track. Status code: ${
+                response.status
+            }`
+        );
+        return false;
     }
 
     // Update the favorites array.
@@ -384,10 +427,13 @@ export async function favoriteTrack(track: TrackData, add: boolean = true): Prom
  * @param playlist The playlist to create.
  * @return The created playlist, or null if it failed.
  */
-export async function createPlaylist(playlist: Playlist): Promise<Playlist|null> {
+export async function createPlaylist(
+    playlist: Playlist
+): Promise<Playlist | null> {
     const route = `${targetRoute}/playlist/create`;
     const response = await fetch(route, {
-        method: "POST", headers: {
+        method: "POST",
+        headers: {
             Authorization: token(),
             "Content-Type": "application/json"
         },
@@ -395,7 +441,10 @@ export async function createPlaylist(playlist: Playlist): Promise<Playlist|null>
     });
 
     if (response.status != 201) {
-        console.error(`Failed to create playlist. Status code: ${response.status}`); return null;
+        console.error(
+            `Failed to create playlist. Status code: ${response.status}`
+        );
+        return null;
     }
 
     return await response.json();
@@ -406,10 +455,11 @@ export async function createPlaylist(playlist: Playlist): Promise<Playlist|null>
  * @param playlistId The playlist's ID.
  */
 export async function deletePlaylist(playlistId: string): Promise<boolean> {
-    playlists = playlists.filter(playlist => playlist.id != playlistId); // Remove the playlist from the array.
+    playlists = playlists.filter((playlist) => playlist.id != playlistId); // Remove the playlist from the array.
     const route = `${targetRoute}/playlist/${playlistId}`;
     const response = await fetch(route, {
-        method: "DELETE", headers: { Authorization: token() }
+        method: "DELETE",
+        headers: { Authorization: token() }
     });
 
     return response.status == 200;

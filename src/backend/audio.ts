@@ -25,8 +25,11 @@ export async function setup(): Promise<void> {
         // Set the remote URLs.
         if (listeningWith != null && settings.audio().stream_sync)
             track.url = getStreamingUrl(track);
-        else track.url = settings.audio().playback_mode == "Download" ?
-            getDownloadUrl(track) : getStreamingUrl(track);
+        else
+            track.url =
+                settings.audio().playback_mode == "Download"
+                    ? getDownloadUrl(track)
+                    : getStreamingUrl(track);
         track.icon = getIconUrl(track);
         return track;
     };
@@ -40,7 +43,10 @@ export async function setup(): Promise<void> {
  * @param track The track to download.
  * @param emit Should the download event be emitted?
  */
-export async function downloadTrack(track: TrackData, emit = true): Promise<void> {
+export async function downloadTrack(
+    track: TrackData,
+    emit = true
+): Promise<void> {
     if (await fs.trackExists(track)) {
         return;
     }
@@ -82,7 +88,7 @@ export async function deleteTrack(track: TrackData): Promise<void> {
  * @param track The track to remove.
  */
 export function deQueue(track: TrackData): void {
-    TrackPlayer.queue = TrackPlayer.queue.filter(t => t.id != track.id);
+    TrackPlayer.queue = TrackPlayer.queue.filter((t) => t.id != track.id);
     TrackPlayer.emit("queue");
 }
 
@@ -157,14 +163,15 @@ export async function toggleRepeatState(): Promise<void> {
  * @param seek Should the player seek?
  */
 export async function syncToTrack(
-    track: TrackData|null,
+    track: TrackData | null,
     progress: number,
     paused: boolean,
     seek: boolean
 ): Promise<void> {
     // Reset the player if the track is null.
     if (track == null) {
-        await TrackPlayer.reset(); return;
+        await TrackPlayer.reset();
+        return;
     }
 
     // Check if the track needs to be played.
@@ -190,7 +197,10 @@ export async function syncToTrack(
  * @param playlist The playlist to play.
  * @param shuffle Should the playlist be shuffled?
  */
-export async function playPlaylist(playlist: Playlist, shuffle: boolean): Promise<void> {
+export async function playPlaylist(
+    playlist: Playlist,
+    shuffle: boolean
+): Promise<void> {
     // Reset the queue.
     TrackPlayer.reset();
 
@@ -198,7 +208,7 @@ export async function playPlaylist(playlist: Playlist, shuffle: boolean): Promis
     let tracks = playlist.tracks
         // Remove duplicate tracks.
         .filter((track, index, self) => {
-            return self.findIndex(t => t.id == track.id) == index;
+            return self.findIndex((t) => t.id == track.id) == index;
         });
     // Shuffle the tracks.
     shuffle && (tracks = tracks.sort(() => Math.random() - 0.5));

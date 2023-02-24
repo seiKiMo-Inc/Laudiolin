@@ -29,8 +29,9 @@ class Search extends React.Component<IProps, never> {
         // Sort the results.
         const sorted = [];
         sorted.push(results.top);
-        results.results.forEach(result =>
-            sorted.includes(results) ? null : sorted.push(result));
+        results.results.forEach((result) =>
+            sorted.includes(results) ? null : sorted.push(result)
+        );
 
         return sorted;
     }
@@ -41,10 +42,10 @@ class Search extends React.Component<IProps, never> {
 
         return (
             <div className={"SearchResults"}>
-                {
-                    results && results.map((result: types.TrackData, index: number) =>
-                        <Track track={result} key={index} />)
-                }
+                {results &&
+                    results.map((result: types.TrackData, index: number) => (
+                        <Track track={result} key={index} />
+                    ))}
             </div>
         );
     }

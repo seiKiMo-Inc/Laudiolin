@@ -22,7 +22,10 @@ class ActivityPanel extends React.Component<{}, IState> {
         const recentUsers = await getRecentUsers();
 
         // check if the user is in both lists
-        const offlineUsers = recentUsers.filter(user => availableUsers.find(u => u.userId == user.userId) == undefined);
+        const offlineUsers = recentUsers.filter(
+            (user) =>
+                availableUsers.find((u) => u.userId == user.userId) == undefined
+        );
 
         this.setState({
             offlineUsers,
@@ -35,7 +38,7 @@ class ActivityPanel extends React.Component<{}, IState> {
      */
     reload = () => this.forceUpdate();
 
-    interval: NodeJS.Timer|number;
+    interval: NodeJS.Timer | number;
 
     constructor(props: {}) {
         super(props);
@@ -64,16 +67,25 @@ class ActivityPanel extends React.Component<{}, IState> {
                 <div className={"ActivityPanel_Info"}>
                     <h3 style={{ paddingBottom: 20 }}>Now Active</h3>
                     <div className={"ActivityPanel_Content"}>
-                        { this.state.onlineUsers.map((user, index) =>
-                            <User user={user as OnlineUser & OfflineUser} key={index} />) }
+                        {this.state.onlineUsers.map((user, index) => (
+                            <User
+                                user={user as OnlineUser & OfflineUser}
+                                key={index}
+                            />
+                        ))}
                     </div>
                 </div>
 
                 <div className={"ActivityPanel_Info"}>
                     <h3 style={{ paddingBottom: 20 }}>Recently Active</h3>
                     <div className={"ActivityPanel_Content"}>
-                        { this.state.offlineUsers.map((user, index) =>
-                            <User user={user as OnlineUser & OfflineUser} isOffline={true} key={index} />) }
+                        {this.state.offlineUsers.map((user, index) => (
+                            <User
+                                user={user as OnlineUser & OfflineUser}
+                                isOffline={true}
+                                key={index}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

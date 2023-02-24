@@ -7,14 +7,9 @@ interface IProps {
     to: Page;
     with?: any;
 
-    children: ((props: {
-        isActive: boolean;
-        hover: boolean;
-    }) => React.ReactNode);
+    children: (props: { isActive: boolean; hover: boolean }) => React.ReactNode;
     className?: string;
-    style?: ((props: {
-        isActive: boolean;
-    }) => React.CSSProperties | undefined);
+    style?: (props: { isActive: boolean }) => React.CSSProperties | undefined;
 }
 
 interface IState {
@@ -41,8 +36,10 @@ class NavLink extends React.PureComponent<IProps, IState> {
     }
 
     componentDidMount() {
-        registerListener(({ page }) =>
-            page != this.props.to && this.setState({ isActive: false }));
+        registerListener(
+            ({ page }) =>
+                page != this.props.to && this.setState({ isActive: false })
+        );
     }
 
     render() {
@@ -56,7 +53,7 @@ class NavLink extends React.PureComponent<IProps, IState> {
                 onMouseOver={() => this.setState({ hover: true })}
                 onMouseLeave={() => this.setState({ hover: false })}
             >
-                { this.props.children({ isActive, hover }) }
+                {this.props.children({ isActive, hover })}
             </div>
         );
     }

@@ -5,7 +5,7 @@ import NavLink from "@components/NavLink";
 import { Playlist } from "@backend/types";
 import emitter from "@backend/events";
 
-import "@css/layout/NavPanel.scss"
+import "@css/layout/NavPanel.scss";
 
 interface IState {
     playlists: Playlist[];
@@ -16,8 +16,7 @@ class Playlists extends React.Component<any, IState> {
      * Playlist update callback.
      * @param playlists The new playlists.
      */
-    update = (playlists: Playlist[]) =>
-        this.setState({ playlists });
+    update = (playlists: Playlist[]) => this.setState({ playlists });
 
     /**
      * Clears all playlists.
@@ -51,14 +50,24 @@ class Playlists extends React.Component<any, IState> {
                 <h3 className={"Playlists_Header"}>Your Playlists</h3>
 
                 <div className={"Playlists_Container"}>
-                    { playlists.map(playlist => (
+                    {playlists.map((playlist) => (
                         <NavLink
-                            to={"Playlist"} with={playlist}
-                            className={"Playlists_Item"} key={playlist.id}
+                            to={"Playlist"}
+                            with={playlist}
+                            className={"Playlists_Item"}
+                            key={playlist.id}
                         >
-                            {({ isActive }) => <p style={{ color: isActive && "var(--text=primary-color)" }}>
-                                {playlist.name}
-                            </p>}
+                            {({ isActive }) => (
+                                <p
+                                    style={{
+                                        color:
+                                            isActive &&
+                                            "var(--text=primary-color)"
+                                    }}
+                                >
+                                    {playlist.name}
+                                </p>
+                            )}
                         </NavLink>
                     ))}
                 </div>

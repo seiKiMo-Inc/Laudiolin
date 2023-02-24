@@ -26,9 +26,17 @@ class BasicDropdown extends React.Component<IProps> {
         return (
             <>
                 {this.props.useButton ? (
-                    <BasicButton onClick={() => toggleDropdown(this.props.id)} className={"dropbtn"} text={this.props.buttonText} />
+                    <BasicButton
+                        onClick={() => toggleDropdown(this.props.id)}
+                        className={"dropbtn"}
+                        text={this.props.buttonText}
+                    />
                 ) : null}
-                <div id={this.props.id} className={`DropdownContent ${this.props.className}`} style={this.props.style}>
+                <div
+                    id={this.props.id}
+                    className={`DropdownContent ${this.props.className}`}
+                    style={this.props.style}
+                >
                     {this.props.children}
                 </div>
             </>

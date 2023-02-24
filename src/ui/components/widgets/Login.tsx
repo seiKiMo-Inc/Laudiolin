@@ -38,7 +38,7 @@ class Login extends React.PureComponent<{}, IState> {
         this.setState({
             save: true,
             waiting: false,
-            loginCode: "",
+            loginCode: ""
         });
 
         // Navigate home.
@@ -66,12 +66,12 @@ class Login extends React.PureComponent<{}, IState> {
             // Request a token using the login code.
             getToken(this.state.loginCode)
                 .then(() => login())
-                .catch(err => console.warn(err));
+                .catch((err) => console.warn(err));
         } else {
             // Open the login URL in a browser.
             invoke("open", { url: `${Gateway.url}/discord` })
                 .then(() => this.setState({ waiting: true }))
-                .catch(err => console.warn(err));
+                .catch((err) => console.warn(err));
         }
     }
 
@@ -110,22 +110,22 @@ class Login extends React.PureComponent<{}, IState> {
     }
 
     render() {
-        const loginText = this.state.loginCode.length > 0 ?
-            "Submit Code" : "Log In with Discord";
+        const loginText =
+            this.state.loginCode.length > 0
+                ? "Submit Code"
+                : "Log In with Discord";
 
         return (
-            <BasicModal
-                id={"login"}
-                className={"Login"}
-            >
+            <BasicModal id={"login"} className={"Login"}>
                 <a className={"Login_Title"}>Log In to Continue</a>
 
                 <div>
                     <input
                         className={"Login_Code"}
-                        type={"text"} maxLength={6}
+                        type={"text"}
+                        maxLength={6}
                         placeholder={"6-Digit Code"}
-                        onChange={e => this.changeLoginCode(e)}
+                        onChange={(e) => this.changeLoginCode(e)}
                     />
                 </div>
 
@@ -147,13 +147,16 @@ class Login extends React.PureComponent<{}, IState> {
 
                 <div className={"Login_Remember"}>
                     <p>Remember me</p>
-                    <BasicToggle default={true}
-                                 update={value => this.setState({ save: value })}/>
+                    <BasicToggle
+                        default={true}
+                        update={(value) => this.setState({ save: value })}
+                    />
                 </div>
 
                 <div style={{ paddingTop: 12 }}>
                     <p className={"Login_Reason"}>
-                        Logging in with Discord lets you create playlists, like songs, connect with your friends and more!
+                        Logging in with Discord lets you create playlists, like
+                        songs, connect with your friends and more!
                     </p>
                 </div>
             </BasicModal>

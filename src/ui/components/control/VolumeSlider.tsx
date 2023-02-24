@@ -30,8 +30,17 @@ class VolumeSlider extends React.Component<IProps, IState> {
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
             >
-                <div className={"ControlPanel_Volume_Icon"} onClick={this.props.toggleMute}>
-                    {this.props.muted || this.props.volume === 0 ? <FiVolumeX /> : this.props.volume > 50 ? <FiVolume2 /> : <FiVolume1 />}
+                <div
+                    className={"ControlPanel_Volume_Icon"}
+                    onClick={this.props.toggleMute}
+                >
+                    {this.props.muted || this.props.volume === 0 ? (
+                        <FiVolumeX />
+                    ) : this.props.volume > 50 ? (
+                        <FiVolume2 />
+                    ) : (
+                        <FiVolume1 />
+                    )}
                 </div>
                 <Slider
                     className={"ControlPanel_Volume_Slider"}
@@ -45,7 +54,9 @@ class VolumeSlider extends React.Component<IProps, IState> {
                         borderColor: "var(--accent-color)",
                         backgroundColor: "white"
                     }}
-                    railStyle={{ backgroundColor: "var(--background-secondary-color)" }}
+                    railStyle={{
+                        backgroundColor: "var(--background-secondary-color)"
+                    }}
                     draggableTrack={true}
                 />
             </div>

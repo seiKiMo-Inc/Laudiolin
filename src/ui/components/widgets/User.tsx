@@ -35,7 +35,7 @@ class User extends React.PureComponent<IProps, never> {
         const diffDays = Math.floor(diff / (1000 * 3600 * 24));
         const diffHours = Math.floor(diff / (1000 * 3600));
         const diffMinutes = Math.floor(diff / (1000 * 60));
-        const diffSeconds = Math.floor(diff / (1000));
+        const diffSeconds = Math.floor(diff / 1000);
 
         if (diffYears > 0) return `${diffYears} years ago`;
         else if (diffMonths > 0) return `${diffMonths} months ago`;
@@ -55,8 +55,24 @@ class User extends React.PureComponent<IProps, never> {
         if (listening == null) return undefined;
 
         return (
-            <div className={"User"} style={this.props.isOffline && { filter: "grayscale(1)", opacity: 0.6, pointerEvents: "none" }}>
-                <div style={{ display: "flex", flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <div
+                className={"User"}
+                style={
+                    this.props.isOffline && {
+                        filter: "grayscale(1)",
+                        opacity: 0.6,
+                        pointerEvents: "none"
+                    }
+                }
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 10,
+                        alignItems: "center"
+                    }}
+                >
                     <img
                         className={"User_Image"}
                         src={user.avatar}
@@ -66,7 +82,11 @@ class User extends React.PureComponent<IProps, never> {
                     <div className={"User_Info"}>
                         <div className={"User_Name"}>
                             <span>{user.username}</span>
-                            <span style={{ color: "var(--text-secondary-color)" }}>#{user.discriminator}</span>
+                            <span
+                                style={{ color: "var(--text-secondary-color)" }}
+                            >
+                                #{user.discriminator}
+                            </span>
                         </div>
                         <div className={"User_Listening"}>
                             <span>{listening.title}</span>
@@ -75,29 +95,31 @@ class User extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
 
-                {
-                    !this.props.isOffline ? (
-                        <BasicButton
-                            className={"User_Listen"}
-                            icon={<FiHeadphones />}
-                            onClick={() => {
-                                if (listeningWith?.userId != user.userId) {
-                                    listenWith(user.userId)
-                                } else {
-                                    listenWith(null);
-                                }
+                {!this.props.isOffline ? (
+                    <BasicButton
+                        className={"User_Listen"}
+                        icon={<FiHeadphones />}
+                        onClick={() => {
+                            if (listeningWith?.userId != user.userId) {
+                                listenWith(user.userId);
+                            } else {
+                                listenWith(null);
+                            }
 
-                                this.forceUpdate();
-                            }}
-                            style={{
-                                backgroundColor: listeningWith?.userId == user.userId ?
-                                    "var(--accent-color)" : "var(--background-secondary-color)"
-                            }}
-                        />
-                    ) : (
-                        <p className={"User_RecentTime"}>{this.formatTime(user.lastSeen)}</p>
-                    )
-                }
+                            this.forceUpdate();
+                        }}
+                        style={{
+                            backgroundColor:
+                                listeningWith?.userId == user.userId
+                                    ? "var(--accent-color)"
+                                    : "var(--background-secondary-color)"
+                        }}
+                    />
+                ) : (
+                    <p className={"User_RecentTime"}>
+                        {this.formatTime(user.lastSeen)}
+                    </p>
+                )}
             </div>
         );
     }

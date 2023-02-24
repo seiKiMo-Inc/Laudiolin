@@ -14,14 +14,21 @@ export const AppData = () => DocumentDirectoryPath;
  * Async wrappers for the filesystem.
  */
 const fs = {
-    exists: async (path: string): Promise<boolean> => await invoke("exists", { path }),
-    createDir: async (path: string): Promise<void> => await invoke("create_dir", { path }),
-    removeDir: async (path: string): Promise<void> => await invoke("delete", { path }),
-    readTextFile: async (path: string): Promise<string> => atob(await invoke("get_file", { path })),
+    exists: async (path: string): Promise<boolean> =>
+        await invoke("exists", { path }),
+    createDir: async (path: string): Promise<void> =>
+        await invoke("create_dir", { path }),
+    removeDir: async (path: string): Promise<void> =>
+        await invoke("delete", { path }),
+    readTextFile: async (path: string): Promise<string> =>
+        atob(await invoke("get_file", { path })),
     writeTextFile: async (path: string, data: string): Promise<void> =>
         await invoke("save_file", { path, data: Base64.encode(data) }),
     writeBinaryFile: async (path: string, data: ArrayBuffer): Promise<void> =>
-        await invoke("save_file", { path, data: Base64.fromUint8Array(new Uint8Array(data)) }),
+        await invoke("save_file", {
+            path,
+            data: Base64.fromUint8Array(new Uint8Array(data))
+        })
 };
 
 /**
@@ -35,11 +42,11 @@ export async function setup(): Promise<void> {
  * Creates the folders needed for Laudiolin.
  */
 export async function createFolders(): Promise<void> {
-    if (!await fs.exists(DocumentDirectoryPath))
+    if (!(await fs.exists(DocumentDirectoryPath)))
         await fs.createDir(DocumentDirectoryPath);
-    if (!await fs.exists(`${DocumentDirectoryPath}/tracks`))
+    if (!(await fs.exists(`${DocumentDirectoryPath}/tracks`)))
         await fs.createDir(`${DocumentDirectoryPath}/tracks`);
-   if (!await fs.exists(`${DocumentDirectoryPath}/playlists`))
+    if (!(await fs.exists(`${DocumentDirectoryPath}/playlists`)))
         await fs.createDir(`${DocumentDirectoryPath}/playlists`);
 }
 
@@ -55,7 +62,9 @@ export async function createTrackFolder(track: TrackData): Promise<void> {
  * Deletes the folder for a track.
  * @param track A track data object.
  */
-export async function deleteTrackFolder(track: TrackData|{ id: string; }): Promise<void> {
+export async function deleteTrackFolder(
+    track: TrackData | { id: string }
+): Promise<void> {
     await fs.removeDir(`${DocumentDirectoryPath}/tracks/${track.id}`);
 }
 
@@ -63,7 +72,7 @@ export async function deleteTrackFolder(track: TrackData|{ id: string; }): Promi
  * Standardized way to get the file path for a track.
  * @param track A track data object.
  */
-export function getTrackPath(track: TrackData|{ id: string; }): string {
+export function getTrackPath(track: TrackData | { id: string }): string {
     return `${DocumentDirectoryPath}/tracks/${track.id}/audio.mp3`;
 }
 
@@ -71,7 +80,7 @@ export function getTrackPath(track: TrackData|{ id: string; }): string {
  * Standardized way to get the file path for a track's icon.
  * @param track A track data object.
  */
-export function getIconPath(track: TrackData|{ id: string; }): string {
+export function getIconPath(track: TrackData | { id: string }): string {
     return `${DocumentDirectoryPath}/tracks/${track.id}/icon.png`;
 }
 
@@ -79,7 +88,7 @@ export function getIconPath(track: TrackData|{ id: string; }): string {
  * Standardized way to get the file path for a track's data.
  * @param track A track data object.
  */
-export function getDataPath(track: TrackData|{ id: string }): string {
+export function getDataPath(track: TrackData | { id: string }): string {
     return `${DocumentDirectoryPath}/tracks/${track.id}/data.json`;
 }
 
@@ -88,7 +97,7 @@ export function getDataPath(track: TrackData|{ id: string }): string {
  */
 export async function getDownloadedTracks(): Promise<string[]> {
     const files = await nfs.readDir(`${DocumentDirectoryPath}/tracks`);
-    return files.map(file => file.name);
+    return files.map((file) => file.name);
 }
 
 /**
@@ -97,7 +106,9 @@ export async function getDownloadedTracks(): Promise<string[]> {
  */
 export async function loadLocalTrackData(trackId: string): Promise<TrackData> {
     return JSON.parse(
-        await fs.readTextFile(`${DocumentDirectoryPath}/tracks/${trackId}/data.json`)
+        await fs.readTextFile(
+            `${DocumentDirectoryPath}/tracks/${trackId}/data.json`
+        )
     );
 }
 
@@ -105,10 +116,14 @@ export async function loadLocalTrackData(trackId: string): Promise<TrackData> {
  * Checks if the files needed for a track to load exist.
  * @param track A track data object.
  */
-export async function trackExists(track: TrackData|{ id: string; }): Promise<boolean> {
-    return (await fs.exists(getTrackPath(track))) &&
+export async function trackExists(
+    track: TrackData | { id: string }
+): Promise<boolean> {
+    return (
+        (await fs.exists(getTrackPath(track))) &&
         (await fs.exists(getIconPath(track))) &&
         (await fs.exists(getDataPath(track)))
+    );
 }
 
 /**
@@ -132,8 +147,8 @@ export async function downloadUrl(url: string, path: string): Promise<void> {
  * @param path The path to read the file from.
  * @return The data read from the file. Null if the file doesn't exist.
  */
-export async function readData(path: string): Promise<any|null> {
-    if (!await fs.exists(path)) return null; // File doesn't exist.
+export async function readData(path: string): Promise<any | null> {
+    if (!(await fs.exists(path))) return null; // File doesn't exist.
     return JSON.parse(await fs.readTextFile(path)); // File exists.
 }
 

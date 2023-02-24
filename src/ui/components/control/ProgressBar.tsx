@@ -43,23 +43,31 @@ class ProgressBar extends React.Component<IProps, IState> {
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
             >
-                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.progress)}</p>
+                <p className={"ControlPanel_ProgressBar_Time"}>
+                    {formatDuration(this.props.progress)}
+                </p>
                 <Slider
                     min={0}
                     max={this.props.duration}
                     value={this.state.progress}
                     onChange={(progress: number) => this.setProgress(progress)}
-                    onAfterChange={(progress: number) => this.props.onSeek(progress)}
+                    onAfterChange={(progress: number) =>
+                        this.props.onSeek(progress)
+                    }
                     trackStyle={{ backgroundColor: "var(--accent-color)" }}
                     handleStyle={{
                         display: this.state.activeThumb ? "block" : "none",
                         borderColor: "var(--accent-color)",
                         backgroundColor: "white"
                     }}
-                    railStyle={{ backgroundColor: "var(--background-secondary-color)" }}
+                    railStyle={{
+                        backgroundColor: "var(--background-secondary-color)"
+                    }}
                     draggableTrack={true}
                 />
-                <p className={"ControlPanel_ProgressBar_Time"}>{formatDuration(this.props.duration)}</p>
+                <p className={"ControlPanel_ProgressBar_Time"}>
+                    {formatDuration(this.props.duration)}
+                </p>
             </div>
         );
     }

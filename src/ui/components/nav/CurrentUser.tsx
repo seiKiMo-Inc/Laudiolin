@@ -20,8 +20,13 @@ class CurrentUser extends React.Component<IProps, never> {
     onDropdownClick() {
         toggleDropdown("currentUserDropdown");
 
-        const dropBtn = document.getElementsByClassName("CurrentUser_Chevron")[0] as HTMLElement;
-        dropBtn.style.transform = dropBtn.style.transform === "rotate(180deg)" ? "rotate(0deg)" : "rotate(180deg)";
+        const dropBtn = document.getElementsByClassName(
+            "CurrentUser_Chevron"
+        )[0] as HTMLElement;
+        dropBtn.style.transform =
+            dropBtn.style.transform === "rotate(180deg)"
+                ? "rotate(0deg)"
+                : "rotate(180deg)";
     }
 
     /**
@@ -38,7 +43,11 @@ class CurrentUser extends React.Component<IProps, never> {
             <>
                 <div className={"CurrentUser"}>
                     <div className={"CurrentUser_Info"}>
-                        <img src={user.avatar} className={"CurrentUser_Img"} alt={user.username} />
+                        <img
+                            src={user.avatar}
+                            className={"CurrentUser_Img"}
+                            alt={user.username}
+                        />
                         <span className={"CurrentUser_Text"}>
                             <p>{user.username}</p>
                             <p>#{user.discriminator}</p>
@@ -47,7 +56,9 @@ class CurrentUser extends React.Component<IProps, never> {
 
                     <BasicButton
                         onClick={this.onDropdownClick}
-                        icon={<BiChevronDown className={"CurrentUser_Chevron"} />}
+                        icon={
+                            <BiChevronDown className={"CurrentUser_Chevron"} />
+                        }
                         className={"CurrentUser_DropdownButton dropbtn"}
                     />
                 </div>
@@ -59,7 +70,8 @@ class CurrentUser extends React.Component<IProps, never> {
             </>
         ) : (
             <BasicButton
-                className={"CurrentUser_LoginBtn"} text={"Login"}
+                className={"CurrentUser_LoginBtn"}
+                text={"Login"}
                 onClick={() => navigate("Login")}
             />
         );

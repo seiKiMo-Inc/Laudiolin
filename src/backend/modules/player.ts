@@ -11,7 +11,7 @@ export type PlayerState = {
 };
 
 export class Player extends EventEmitter implements mod.TrackPlayer {
-    private readonly updateTask: NodeJS.Timer|number;
+    private readonly updateTask: NodeJS.Timer | number;
     public alternate: (track: TrackData) => Promise<TrackData | undefined>;
 
     /* Queue */
@@ -136,8 +136,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             // Play the next track.
             if (loop != "track") {
                 this.play(this.queue.shift()!);
-                if (current && loop == "queue")
-                    this.queue.push(current.data);
+                if (current && loop == "queue") this.queue.push(current.data);
             } else {
                 this.play(current.data);
             }
@@ -196,7 +195,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         // Check if a track is already playing.
-        let current; if (play && (current = this.current)) {
+        let current;
+        if (play && (current = this.current)) {
             // Check if the track is the same.
             if (history && current.id != track.id)
                 // Add the current track to the history.
@@ -206,8 +206,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         // Create a new track.
-        this.current = new Track(track,
-            await this.alternate?.(track));
+        this.current = new Track(track, await this.alternate?.(track));
         // Play the track.
         play && this.current.play();
 
