@@ -63,7 +63,8 @@ export async function getPlaylistById(
     const route = `${targetRoute}/playlist/${playlistId}`;
     const response = await fetch(route, {
         method: "GET",
-        headers: { Authorization: token() }
+        headers: { Authorization: token() },
+        cache: "no-cache"
     });
 
     // Check the response code.

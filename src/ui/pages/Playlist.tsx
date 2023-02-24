@@ -3,24 +3,19 @@ import React, { useEffect } from "react";
 import { IoMdPlay } from "react-icons/io";
 import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
-import {
-    DragDropContext,
-    Draggable,
-    Droppable,
-    DropResult
-} from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import Track from "@widget/Track";
 import BasicButton from "@components/common/BasicButton";
-import BasicDropdown, {
-    toggleDropdown
-} from "@components/common/BasicDropdown";
+import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { getPlaylistAuthor } from "@backend/user";
 import { savePlaylist } from "@backend/offline";
+import { editPlaylist } from "@backend/playlist";
 import { notify } from "@backend/notifications";
+import { reorder } from "@app/utils";
 
 import "@css/pages/Playlist.scss";
 
@@ -51,9 +46,11 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
     ) : undefined;
 }
 
-class Playlist extends React.Component<IProps> {
+class Playlist extends React.Component<IProps, { playlist: types.Playlist }> {
     constructor(props: IProps) {
         super(props);
+
+        this.state = { playlist: props.pageArgs };
     }
 
     /**
@@ -76,7 +73,8 @@ class Playlist extends React.Component<IProps> {
      * Fetches the playlist from the page arguments.
      */
     getPlaylist(): types.Playlist {
-        const args = this.props.pageArgs;
+        const args = this.state.playlist ??
+            this.props.pageArgs;
         if (!args) return undefined;
         return args as types.Playlist;
     }
@@ -112,20 +110,31 @@ class Playlist extends React.Component<IProps> {
      * @param result The drag & drop result.
      */
     handleDrag(result: DropResult): void {
+        // Check for a valid drag result.
         if (!result.destination) return;
-    }
 
-    /**
-     * Gets the style of cursor.
-     */
-    getCursorStyle(drag: boolean, style) {}
+        // Get the playlist.
+        const playlist = this.getPlaylist();
+        if (playlist == undefined) return;
+
+        // Re-order the playlist tracks.
+        const tracks = playlist.tracks;
+        // Update the playlist.
+        playlist.tracks = reorder(
+            tracks,
+            result.source.index,
+            result.destination.index
+        );
+        this.setState({ playlist });
+        editPlaylist(playlist);
+    }
 
     render() {
         const playlist = this.getPlaylist();
         if (!playlist) return undefined;
 
         return (
-            <DragDropContext onDragEnd={this.handleDrag}>
+            <DragDropContext onDragEnd={result => this.handleDrag(result)}>
                 <Droppable droppableId={"trackList"}>
                     {(provided) => (
                         <div

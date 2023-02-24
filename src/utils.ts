@@ -103,3 +103,21 @@ export async function loadPlayerState(): Promise<void> {
     // Remove the track from the local storage.
     settings.remove("player.currentTrack");
 }
+
+/**
+ * Reorders an array.
+ * @param list The array to reorder.
+ * @param start The start index.
+ * @param end The end index.
+ */
+export function reorder<T>(
+    list: T[],
+    start: number,
+    end: number
+): T[] {
+    const result = Array.from(list);
+    const [removed] = result.splice(start, 1);
+    result.splice(end, 0, removed);
+
+    return result;
+}

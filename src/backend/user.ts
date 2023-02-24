@@ -132,7 +132,8 @@ export async function login(
     const route = `${targetRoute}/user`;
     const response = await fetch(route, {
         method: "GET",
-        headers: { Authorization: code }
+        headers: { Authorization: code },
+        cache: "no-cache"
     });
 
     // Check the response code.
@@ -201,7 +202,8 @@ export async function loadPlaylists() {
     for (const playlistId of userData.playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
             method: "GET",
-            headers: { Authorization: token() }
+            headers: { Authorization: token() },
+            cache: "no-cache"
         });
 
         // Check the response code.
