@@ -116,6 +116,13 @@ class Playlist extends React.Component<IProps> {
        if (!playlist) return undefined;
 
        return (
+           <DragDropContext onDragEnd={this.handleDrag}>
+               <Droppable droppableId={"trackList"}>
+                   {(provided) => (
+                       <div
+                           {...provided.droppableProps}
+                           ref={provided.innerRef}
+                       >
            <div className={"Playlist"}>
                <div className={"Playlist_Details"}>
                    <img
@@ -170,13 +177,6 @@ class Playlist extends React.Component<IProps> {
                </BasicDropdown>
 
                <div className={"Playlist_Tracks"}>
-                   <DragDropContext onDragEnd={this.handleDrag}>
-                       <Droppable droppableId={"trackList"}>
-                           {(provided) => (
-                               <div
-                                   {...provided.droppableProps}
-                                   ref={provided.innerRef}
-                               >
                                    {
                                        this.getPlaylistTracks().map((track, index) =>
                                            <Draggable key={track.id} draggableId={track.id + index} index={index}>
@@ -193,12 +193,12 @@ class Playlist extends React.Component<IProps> {
                                        )
                                    }
                                    {provided.placeholder}
-                               </div>
-                           )}
-                       </Droppable>
-                   </DragDropContext>
+
                </div>
            </div>
+                       </div>)}
+               </Droppable>
+           </DragDropContext>
        );
     }
 }
