@@ -103,7 +103,7 @@ export async function loadPlayerState(): Promise<void> {
     if (!data) return;
 
     // Add the track to the queue.
-    await playTrack(data, false, true);
+    await playTrack(data, false, false);
     // Pause the player.
     TrackPlayer.pause();
     // Remove the track from the local storage.

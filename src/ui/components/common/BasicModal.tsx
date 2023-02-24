@@ -8,6 +8,7 @@ interface IProps {
     id: string;
     style?: React.CSSProperties;
     onSubmit?: () => void;
+    buttonText?: string;
 }
 
 class BasicModal extends React.Component<IProps> {
@@ -38,7 +39,7 @@ class BasicModal extends React.Component<IProps> {
                     {this.props.children}
                     {
                         this.props.onSubmit &&
-                        <BasicButton className={"BasicModal_Submit"} text={"Submit"} onClick={this.onSubmit} />
+                        <BasicButton className={"BasicModal_Submit"} text={this.props.buttonText ?? "Submit"} onClick={this.onSubmit} />
                     }
                 </div>
             </div>

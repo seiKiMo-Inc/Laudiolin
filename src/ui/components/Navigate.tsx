@@ -1,11 +1,11 @@
 import React from "react";
 
 import Home from "@pages/Home";
-import Login from "@pages/Login";
 import Search from "@pages/Search";
 import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
 
+import Login from "@widget/Login";
 import TrackList from "@components/TrackList";
 
 import type { Page } from "@backend/types";
@@ -67,8 +67,8 @@ class Navigate extends React.Component<any, IState> {
                 { this.state.page == "Playlist" && <Playlist pageArgs={this.state.args} /> }
                 { this.state.page == "Settings" && <Settings /> }
                 { this.state.page == "Queue" && <TrackList
-                    title={"Queue"} events={["play", "stop", "destroy", "end", "shuffle"]}
-                    collection={() => TrackPlayer.getQueue()} emitter={TrackPlayer} /> }
+                    title={"Queue"} events={["play", "stop", "destroy", "end", "shuffle", "queue"]}
+                    collection={() => TrackPlayer.getQueue()} emitter={TrackPlayer} queue={true} /> }
             </>
         );
     }

@@ -12,6 +12,7 @@ interface IProps {
     collection: () => TrackData[];
 
     emitter?: EventEmitter;
+    queue?: boolean;
 }
 
 class TrackList extends React.Component<IProps, never> {
@@ -46,7 +47,7 @@ class TrackList extends React.Component<IProps, never> {
                 <div style={{ marginTop: 35 }}>
                     {
                         this.props.collection().map((recent, index) =>
-                            <Track track={recent} key={index} />)
+                            <Track track={recent} key={index} queue={this.props.queue} />)
                     }
                 </div>
             </div>

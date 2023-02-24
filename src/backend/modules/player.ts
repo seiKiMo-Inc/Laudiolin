@@ -16,7 +16,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
     /* Queue */
     private current: Track | null = null;
-    private queue: TrackData[] = [];
+    queue: TrackData[] = [];
     private history: TrackData[] = [];
 
     /* State */
@@ -142,7 +142,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 this.play(current.data);
             }
         } else {
-            this.stop(); // Stop the player.
+            this.stop(true, true); // Stop the player.
         }
     }
 
@@ -152,6 +152,11 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     public back(): void {
         // Check if there is a previous track.
         if (this.history.length > 0) {
+            // Add the current track to the queue.
+            if (this.current) {
+                this.queue.unshift(this.current.data);
+                this.emit("queue", this.current.data);
+            }
             // Play the previous track.
             this.play(this.history.pop()!, true, false);
         } else {
@@ -184,11 +189,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Check if something is playing.
         if (this.current && !force) {
             // Add the track to the queue.
-            this.queue.push(track); return;
+            this.queue.push(track);
+            // Emit the queue event.
+            this.emit("queue", track);
+            return;
         }
 
         // Check if a track is already playing.
-        let current; if ((current = this.current)) {
+        let current; if (play && (current = this.current)) {
             // Check if the track is the same.
             if (history && current.id != track.id)
                 // Add the current track to the history.
@@ -200,19 +208,28 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Create a new track.
         this.current = new Track(track,
             await this.alternate?.(track));
+        // Play the track.
         play && this.current.play();
-
-        // Set the player state.
-        this.state.paused = !play;
 
         // Emit the play event.
         this.emit("play", this.current);
+
+        // Set the player state.
+        this.state.paused = !play;
     }
 
     /**
      * Stops the playback of the player.
+     * @param emit Should the stop event be emitted?
+     * @param clear Should the queue be cleared?
      */
-    public stop(emit = true): void {
+    public stop(emit = true, clear = false): void {
+        if (clear) {
+            this.queue = [];
+            this.current = null;
+            this.state.paused = true;
+        }
+
         // Emit the stop event.
         emit && this.emit("stop");
         // Signal to tracks to stop.
@@ -255,6 +272,14 @@ export class Track extends Howl implements mod.Track {
             src: [playData ? playData.url : data.url],
             volume: 0.3,
             autoplay: false
+        });
+
+        this.on("play", () => {
+            // Check if this track should be playing.
+            if (TrackPlayer.getCurrentTrack()?.id != this.id) {
+                this.stop(); // Stop the track.
+                this.unload(); // Unload the track.
+            }
         });
 
         this.on("end", () => {

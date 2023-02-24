@@ -9,7 +9,7 @@ import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown"
 import Alert from "@components/Alert";
 
 import type { TrackData } from "@backend/types";
-import { deleteTrack, downloadTrack, playTrack } from "@backend/audio";
+import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { isDownloaded } from "@backend/offline";
 import { favoriteTrack } from "@backend/user";
@@ -20,6 +20,7 @@ import BasicButton from "@components/common/BasicButton";
 interface IProps {
     track: TrackData;
     playlist?: string;
+    queue?: boolean;
 }
 
 class Track extends React.PureComponent<IProps, never> {
@@ -33,6 +34,20 @@ class Track extends React.PureComponent<IProps, never> {
     play(): void {
         const track = this.props.track;
         track && playTrack(track, true, true);
+    }
+
+    /**
+     * Adds this track to the queue.
+     */
+    queue(remove = false): void {
+        const track = this.props.track;
+        if (track == undefined) return;
+
+        if (remove) {
+            deQueue(track);
+        } else {
+            playTrack(track, false, false);
+        }
     }
 
     /**
@@ -140,6 +155,11 @@ class Track extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
                 <BasicDropdown id={`Track_${track.id}`}>
+                    {
+                        !this.props.queue ?
+                            <a onClick={() => this.queue()}>Add to Queue</a> :
+                            <a onClick={() => this.queue(true)}>Remove from Queue</a>
+                    }
                     {
                         isDownloaded(track) ?
                             <a onClick={() => deleteTrack(track)}>Delete Track</a> :

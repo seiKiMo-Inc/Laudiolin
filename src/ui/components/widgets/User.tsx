@@ -86,10 +86,12 @@ class User extends React.PureComponent<IProps, never> {
                                 } else {
                                     listenWith(null);
                                 }
+
+                                this.forceUpdate();
                             }}
                             style={{
                                 backgroundColor: listeningWith?.userId == user.userId ?
-                                    "var(--accent-color)" : "var(--secondary-background-color)"
+                                    "var(--accent-color)" : "var(--background-secondary-color)"
                             }}
                         />
                     ) : (
