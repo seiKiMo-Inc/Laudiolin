@@ -152,6 +152,11 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     public back(): void {
         // Check if there is a previous track.
         if (this.history.length > 0) {
+            // Add the current track to the queue.
+            if (this.current) {
+                this.queue.unshift(this.current.data);
+                this.emit("queue", this.current.data);
+            }
             // Play the previous track.
             this.play(this.history.pop()!, true, false);
         } else {
