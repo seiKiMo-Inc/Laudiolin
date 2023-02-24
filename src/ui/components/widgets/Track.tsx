@@ -20,6 +20,7 @@ import BasicButton from "@components/common/BasicButton";
 interface IProps {
     track: TrackData;
     playlist?: string;
+    queue?: boolean;
 }
 
 class Track extends React.PureComponent<IProps, never> {
@@ -33,6 +34,14 @@ class Track extends React.PureComponent<IProps, never> {
     play(): void {
         const track = this.props.track;
         track && playTrack(track, true, true);
+    }
+
+    /**
+     * Adds this track to the queue.
+     */
+    queue(): void {
+        const track = this.props.track;
+        track && playTrack(track, false, false);
     }
 
     /**
@@ -140,6 +149,9 @@ class Track extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
                 <BasicDropdown id={`Track_${track.id}`}>
+                    {
+                        !this.props.queue && <a onClick={() => this.queue()}>Add to Queue</a>
+                    }
                     {
                         isDownloaded(track) ?
                             <a onClick={() => deleteTrack(track)}>Delete Track</a> :
