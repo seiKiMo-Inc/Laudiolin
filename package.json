@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-switch": "^7.0.0",
+    "react-beautiful-dnd": "^13.1.1",
     "rc-slider": "^10.1.1",
 
     "events": "^3.3.0",
