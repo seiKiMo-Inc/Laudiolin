@@ -77,9 +77,9 @@ class App extends React.Component<any> {
 
         if (!target.classList.contains("dropbtn") || isSVG) {
             const currentUserChevron = document.getElementsByClassName("CurrentUser_Chevron")[0] as HTMLElement;
-            currentUserChevron.style.transform === "rotate(180deg)" ?
-                currentUserChevron.style.transform = "rotate(0deg)" :
-                null;
+            currentUserChevron && currentUserChevron.style.transform == "rotate(180deg)" ?
+                currentUserChevron.style.transform = "rotate(0deg)" : null;
+
             for (let i = 0; i < dropdowns.length; i++) {
                 const openDropdown = dropdowns[i] as HTMLElement;
                 if (openDropdown.classList.contains("show")) {
