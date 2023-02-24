@@ -13,6 +13,7 @@ import { getCode } from "@backend/user";
 import * as settings from "@backend/settings";
 
 import "@css/pages/Settings.scss";
+import BasicModal from "@components/common/BasicModal";
 
 interface ISetting {
     setting: string;
@@ -168,12 +169,18 @@ function DisplayField(props: IDisplayProps) {
     );
 }
 
-class Settings extends React.Component<{}, { color: string }> {
+interface IState {
+    color: string;
+    code: string;
+}
+
+class Settings extends React.Component<{}, IState> {
     constructor(props: {}) {
         super(props);
 
         this.state = {
-            color: settings.getFromPath("ui.color_theme", "Dark") == "Light" ? "#ED7D64" : "#3484FC"
+            color: settings.getFromPath("ui.color_theme", "Dark") == "Light" ? "#ED7D64" : "#3484FC",
+            code: ""
         };
     }
 
@@ -184,7 +191,8 @@ class Settings extends React.Component<{}, { color: string }> {
         const code = await getCode();
         if (code == null) return;
 
-        console.log(code); // TODO: Show modal with code.
+        this.setState({ code });
+        BasicModal.showModal("login_code");
     }
 
     render() {
@@ -249,6 +257,16 @@ class Settings extends React.Component<{}, { color: string }> {
                     <BasicButton text={"Reconnect"} className={"Setting_Box Setting_Button"}
                                  onClick={() => connect()} />
                 </DisplayField>
+
+                <BasicModal
+                    id={"login_code"}
+                    buttonText={"Close"}
+                    onSubmit={() => null}
+                    style={{ alignItems: "center" }}
+                >
+                    <h1>Authorization Code</h1>
+                    <p>Code: {this.state.code}</p>
+                </BasicModal>
             </div>
         );
     }
