@@ -8,6 +8,7 @@ import * as settings from "@backend/settings";
 
 import * as fs from "@mod/fs";
 import TrackPlayer from "@mod/player";
+import emitter from "@backend/events";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -120,4 +121,12 @@ export function reorder<T>(
     result.splice(end, 0, removed);
 
     return result;
+}
+
+/**
+ * Enters or exits mini mode.
+ * @param enter Whether to enter or exit mini mode.
+ */
+export function toMini(enter: boolean): void {
+    emitter.emit("miniPlayer", enter);
 }
