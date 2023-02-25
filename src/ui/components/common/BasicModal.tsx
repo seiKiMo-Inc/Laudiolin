@@ -32,6 +32,11 @@ class BasicModal extends React.Component<IProps> {
         modal.style.display = "block";
     }
 
+    public static hideModal(id: string) {
+        const modal = document.getElementById(id) as HTMLElement;
+        modal.style.display = "none";
+    }
+
     render() {
         return (
             <div
