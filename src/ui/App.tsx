@@ -40,7 +40,7 @@ class App extends React.Component<{}, IState> {
     miniPlayer = (enter: boolean) => {
         this.setState({ miniPlayer: enter });
         appWindow.setSize(enter ?
-            new LogicalSize(600, 90) :
+            new LogicalSize(427, 240) :
             new LogicalSize(1200, 600));
         appWindow.setResizable(!enter);
     };
@@ -51,6 +51,16 @@ class App extends React.Component<{}, IState> {
         this.state = {
             miniPlayer: false
         };
+    }
+
+    /**
+     * Checks if the window is in mini player mode.
+     * Resizes the window if it is.
+     */
+    async checkMiniPlayerState(): Promise<void> {
+        const size = await appWindow.innerSize();
+        if (size.width == 427 && size.height == 240)
+            this.miniPlayer(false);
     }
 
     /**
@@ -120,6 +130,9 @@ class App extends React.Component<{}, IState> {
     };
 
     componentDidMount() {
+        // Check if the window is in mini player mode.
+        this.checkMiniPlayerState();
+
         // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
