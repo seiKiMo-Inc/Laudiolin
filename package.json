@@ -11,6 +11,7 @@
 
     "start:dev": "tauri dev",
     "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
+    "package": "tauri build",
 
     "dev": "vite",
     "build": "tsc && vite build",
