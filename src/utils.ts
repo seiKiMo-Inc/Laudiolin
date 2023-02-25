@@ -2,13 +2,14 @@ import type { TrackData } from "@backend/types";
 
 import { favorites } from "@backend/user";
 import { Gateway } from "@app/constants";
-import { playTrack } from "@backend/audio";
+import { playTrack, toggleRepeatState } from "@backend/audio";
 import { fetchTrackById } from "@backend/search";
 import * as settings from "@backend/settings";
 
 import * as fs from "@mod/fs";
 import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
+import { navigate } from "@backend/navigation";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -129,4 +130,24 @@ export function reorder<T>(
  */
 export function toMini(enter: boolean): void {
     emitter.emit("miniPlayer", enter);
+}
+
+/**
+ * Handles hotkeys.
+ * @param e The key event.
+ */
+export async function handleHotKeys(e: KeyboardEvent): Promise<void> {
+    if (["INPUT", "TEXTAREA", "SELECT"]
+        .includes((e.target as HTMLElement).tagName)) return;
+
+    e.preventDefault();
+
+    if (e.key == (" " || "SpaceBar")) TrackPlayer.pause();
+    else if (e.key == "ArrowLeft" && (e.ctrlKey || e.metaKey)) TrackPlayer.back();
+    else if (e.key == "ArrowRight" && (e.ctrlKey || e.metaKey)) TrackPlayer.next();
+    else if (e.key == "s" && (e.ctrlKey || e.metaKey)) TrackPlayer.shuffle();
+    else if (e.key == "l" && (e.ctrlKey || e.metaKey)) await toggleRepeatState();
+    else if (e.key == "f" && (e.ctrlKey || e.metaKey)) await this.favorite();
+    else if (e.key == "q" && (e.ctrlKey || e.metaKey)) navigate("Queue");
+    else if (e.key == "m" && (e.ctrlKey || e.metaKey)) this.toggleMute();
 }

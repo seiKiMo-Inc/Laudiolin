@@ -12,6 +12,7 @@ import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
+import { handleHotKeys, toMini } from "@app/utils";
 import { navigate } from "@backend/navigation";
 import { favoriteTrack, favorites } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
@@ -48,6 +49,15 @@ class ControlPanel extends React.Component<any, IState> {
         });
     };
 
+    /**
+     * Handles a hotkey press.
+     * @param e The keyboard event.
+     */
+    hotKeys = (e: KeyboardEvent) => {
+        if (!this.state.track) return;
+        handleHotKeys(e);
+    }
+
     constructor(props: any) {
         super(props);
 
@@ -66,14 +76,14 @@ class ControlPanel extends React.Component<any, IState> {
         TrackPlayer.on("update", this.update);
 
         // Listen for hotkeys.
-        document.addEventListener("keydown", this.handleHotkeys);
+        document.addEventListener("keydown", this.hotKeys);
     }
 
     componentWillUnmount() {
         TrackPlayer.off("update", this.update);
 
         // Stop listening for hotkeys.
-        document.removeEventListener("keydown", this.handleHotkeys);
+        document.removeEventListener("keydown", this.hotKeys);
     }
 
     /**
@@ -133,26 +143,6 @@ class ControlPanel extends React.Component<any, IState> {
         } else {
             setVolume(this.state.lastVolume / 100);
         }
-    }
-
-    /**
-     * Handles hotkeys.
-     * @param e The key event.
-     */
-    handleHotkeys = async (e: KeyboardEvent): Promise<void> => {
-        if (!this.state.track) return;
-        if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement).tagName)) return;
-
-        e.preventDefault();
-
-        if (e.key == (" " || "SpaceBar")) TrackPlayer.pause();
-        else if (e.key == "ArrowLeft" && (e.ctrlKey || e.metaKey)) TrackPlayer.back();
-        else if (e.key == "ArrowRight" && (e.ctrlKey || e.metaKey)) TrackPlayer.next();
-        else if (e.key == "s" && (e.ctrlKey || e.metaKey)) TrackPlayer.shuffle();
-        else if (e.key == "l" && (e.ctrlKey || e.metaKey)) await toggleRepeatState();
-        else if (e.key == "f" && (e.ctrlKey || e.metaKey)) await this.favorite();
-        else if (e.key == "q" && (e.ctrlKey || e.metaKey)) navigate("Queue");
-        else if (e.key == "m" && (e.ctrlKey || e.metaKey)) this.toggleMute();
     }
 
     render() {
@@ -255,7 +245,11 @@ class ControlPanel extends React.Component<any, IState> {
                         }}
                         toggleMute={this.toggleMute}
                     />
-                    <FiExternalLink className={"ControlPanel_Popout"} />
+
+                    <FiExternalLink
+                        className={"ControlPanel_Popout"}
+                        onClick={() => toMini(true)}
+                    />
                 </div>
             </div>
         );

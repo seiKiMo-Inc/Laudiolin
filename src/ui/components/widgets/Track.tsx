@@ -171,6 +171,7 @@ class Track extends React.PureComponent<IProps, never> {
                         />
                     </div>
                 </div>
+
                 <BasicDropdown id={`Track_${track.id}`}>
                     {!this.props.queue ? (
                         <a onClick={() => this.queue()}>Add to Queue</a>
