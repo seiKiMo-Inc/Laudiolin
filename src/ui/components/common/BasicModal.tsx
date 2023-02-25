@@ -23,7 +23,7 @@ class BasicModal extends React.Component<IProps> {
     };
 
     private onSubmit = () => {
-        this.props.onSubmit && this.props.onSubmit();
+        this.props.onSubmit();
         this.hideModal({ target: { className: "BasicModal_Backdrop" } });
     };
 
