@@ -8,18 +8,20 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautif
 import Track from "@widget/Track";
 import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
+import BasicModal from "@components/common/BasicModal";
+import BasicToggle from "@components/common/BasicToggle";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { deletePlaylist, getPlaylistAuthor } from "@backend/user";
 import { savePlaylist } from "@backend/offline";
 import { editPlaylist } from "@backend/playlist";
+import { loadPlaylists } from "@backend/user";
 import { navigate } from "@backend/navigation";
 import { notify } from "@backend/notifications";
 import { reorder } from "@app/utils";
 
 import "@css/pages/Playlist.scss";
-import emitter from "@backend/events";
 
 interface IProps {
     pageArgs: any;
@@ -48,11 +50,14 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
     ) : undefined;
 }
 
-class Playlist extends React.Component<IProps, { playlist: types.Playlist }> {
+class Playlist extends React.Component<IProps, { playlist: types.Playlist, isPrivate: boolean }> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = { playlist: props.pageArgs };
+        this.state = {
+            playlist: props.pageArgs,
+            isPrivate: props.pageArgs.isPrivate
+        };
     }
 
     /**
@@ -143,120 +148,161 @@ class Playlist extends React.Component<IProps, { playlist: types.Playlist }> {
         editPlaylist(playlist);
     }
 
+    /**
+     * Edits the playlist info
+     */
+    editPlaylist = async (): Promise<void> => {
+        const name = (document.getElementById("playlistNameInput") as HTMLInputElement).value;
+        const description = (document.getElementById("playlistDescriptionInput") as HTMLInputElement).value;
+        const icon = (document.getElementById("playlistIconURLInput") as HTMLInputElement).value;
+
+        const playlist = this.getPlaylist();
+        if (playlist == undefined) return;
+
+        const oldName = playlist.name;
+
+        playlist.name = name;
+        playlist.description = description;
+        playlist.icon = icon;
+        playlist.isPrivate = this.state.isPrivate;
+
+        this.setState({ playlist });
+        await editPlaylist(playlist);
+
+        if (oldName != name) await loadPlaylists();
+    }
+
     render() {
         const playlist = this.getPlaylist();
         if (!playlist) return undefined;
 
         return (
-            <DragDropContext onDragEnd={result => this.handleDrag(result)}>
-                <Droppable droppableId={"trackList"}>
-                    {(provided) => (
-                        <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            <div className={"Playlist"}>
-                                <div className={"Playlist_Details"}>
-                                    <img
-                                        className={"icon"}
-                                        alt={playlist.name}
-                                        src={playlist.icon}
-                                    />
+            <>
+                <DragDropContext onDragEnd={result => this.handleDrag(result)}>
+                    <Droppable droppableId={"trackList"}>
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                <div className={"Playlist"}>
+                                    <div className={"Playlist_Details"}>
+                                        <img
+                                            className={"icon"}
+                                            alt={playlist.name}
+                                            src={playlist.icon}
+                                        />
 
-                                    <div className={"info"}>
-                                        <p
-                                            style={{
-                                                textTransform: "uppercase",
-                                                paddingTop: 28
-                                            }}
-                                        >
-                                            {playlist.isPrivate
-                                                ? "Private Playlist"
-                                                : "Public Playlist"}
-                                        </p>
+                                        <div className={"info"}>
+                                            <p
+                                                style={{
+                                                    textTransform: "uppercase",
+                                                    paddingTop: 28
+                                                }}
+                                            >
+                                                {playlist.isPrivate
+                                                    ? "Private Playlist"
+                                                    : "Public Playlist"}
+                                            </p>
 
-                                        <h1 className={"info_title"}>
-                                            {playlist.name}
-                                        </h1>
-                                        <p className={"info_description"}>
-                                            {playlist.description}
-                                        </p>
+                                            <h1 className={"info_title"}>
+                                                {playlist.name}
+                                            </h1>
+                                            <p className={"info_description"}>
+                                                {playlist.description}
+                                            </p>
 
-                                        <PlaylistAuthor playlist={playlist} />
+                                            <PlaylistAuthor playlist={playlist} />
 
-                                        <div className={"Playlist_Actions"}>
+                                            <div className={"Playlist_Actions"}>
+                                                <BasicButton
+                                                    className={"action"}
+                                                    icon={<IoMdPlay />}
+                                                    onClick={() => this.play()}
+                                                />
+
+                                                <BasicButton
+                                                    className={"action"}
+                                                    icon={<MdShuffle />}
+                                                    onClick={() => this.play(true)}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={"Playlist_Interact"}>
+                                        <BasicButton
+                                            className={"edit"}
+                                            text={"Edit Playlist"}
+                                            onClick={() => BasicModal.showModal("playlistModal")}
+                                        />
+
+                                        <div className={"buttons"}>
                                             <BasicButton
-                                                className={"action"}
-                                                icon={<IoMdPlay />}
-                                                onClick={() => this.play()}
-                                            />
-
-                                            <BasicButton
-                                                className={"action"}
-                                                icon={<MdShuffle />}
-                                                onClick={() => this.play(true)}
+                                                className={"dropbtn"}
+                                                icon={<VscEllipsis />}
+                                                onClick={() =>
+                                                    toggleDropdown(
+                                                        "Playlist_Actions"
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </div>
-                                </div>
-
-                                <div className={"Playlist_Interact"}>
-                                    <BasicButton
-                                        className={"edit"}
-                                        text={"Edit Playlist"}
-                                    />
-
-                                    <div className={"buttons"}>
-                                        <BasicButton
-                                            className={"dropbtn"}
-                                            icon={<VscEllipsis />}
-                                            onClick={() =>
-                                                toggleDropdown(
-                                                    "Playlist_Actions"
-                                                )
-                                            }
-                                        />
-                                    </div>
-                                </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
                                     <a onClick={() => this.download()}>Download Playlist</a>
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
                                 </BasicDropdown>
 
-                                <div className={"Playlist_Tracks"}>
-                                    {this.getPlaylistTracks().map(
-                                        (track, index) => (
-                                            <Draggable
-                                                key={track.id}
-                                                draggableId={track.id + index}
-                                                index={index}
-                                            >
-                                                {(provided) => (
-                                                    <div
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
-                                                        <Track
-                                                            track={track}
-                                                            playlist={
-                                                                playlist.id
-                                                            }
-                                                            key={index}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        )
-                                    )}
-                                    {provided.placeholder}
+                                    <div className={"Playlist_Tracks"}>
+                                        {this.getPlaylistTracks().map(
+                                            (track, index) => (
+                                                <Draggable
+                                                    key={track.id}
+                                                    draggableId={track.id + index}
+                                                    index={index}
+                                                >
+                                                    {(provided) => (
+                                                        <div
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                        >
+                                                            <Track
+                                                                track={track}
+                                                                playlist={
+                                                                    playlist.id
+                                                                }
+                                                                key={index}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        )}
+                                        {provided.placeholder}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+
+                <BasicModal id={"playlistModal"} onSubmit={this.editPlaylist}>
+                    <h1>Edit Playlist</h1>
+                    <p>Name</p>
+                    <input type="text" id="playlistNameInput" defaultValue={this.state.playlist.name} />
+                    <p>Description</p>
+                    <textarea id="playlistDescriptionInput" defaultValue={this.state.playlist.description} />
+                    <p>Icon image URL</p>
+                    <input type="text" id="playlistIconURLInput" defaultValue={this.state.playlist.icon} />
+                    <div className="PlaylistCheckBoxModal">
+                        <p>Private Playlist?</p>
+                        <BasicToggle default={this.state.isPrivate} update={() => this.setState({ isPrivate: !this.state.isPrivate })} />
+                    </div>
+                </BasicModal>
+            </>
         );
     }
 }
