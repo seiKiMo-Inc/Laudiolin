@@ -11,13 +11,15 @@ import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown"
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
-import { getPlaylistAuthor } from "@backend/user";
+import { deletePlaylist, getPlaylistAuthor } from "@backend/user";
 import { savePlaylist } from "@backend/offline";
 import { editPlaylist } from "@backend/playlist";
+import { navigate } from "@backend/navigation";
 import { notify } from "@backend/notifications";
 import { reorder } from "@app/utils";
 
 import "@css/pages/Playlist.scss";
+import emitter from "@backend/events";
 
 interface IProps {
     pageArgs: any;
@@ -103,6 +105,18 @@ class Playlist extends React.Component<IProps, { playlist: types.Playlist }> {
                 playlist?.name ?? "Unknown"
             }.`
         });
+    }
+
+    /**
+     * Deletes the playlist.
+     */
+    delete(): void {
+        const playlist = this.getPlaylist();
+
+        // Delete the playlist.
+        playlist && deletePlaylist(playlist.id);
+        // Navigate to the home page.
+        navigate("Home");
     }
 
     /**
@@ -206,9 +220,8 @@ class Playlist extends React.Component<IProps, { playlist: types.Playlist }> {
                                 </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
-                                    <a onClick={() => this.download()}>
-                                        Download Playlist
-                                    </a>
+                                    <a onClick={() => this.download()}>Download Playlist</a>
+                                    <a onClick={() => this.delete()}>Delete Playlist</a>
                                 </BasicDropdown>
 
                                 <div className={"Playlist_Tracks"}>

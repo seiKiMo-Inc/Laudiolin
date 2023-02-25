@@ -464,5 +464,12 @@ export async function deletePlaylist(playlistId: string): Promise<boolean> {
         headers: { Authorization: token() }
     });
 
-    return response.status == 200;
+    if (response.status != 200) {
+        return false;
+    }
+
+    // Reload playlists.
+    await loadPlaylists();
+
+    return true;
 }
