@@ -64,10 +64,16 @@ class ControlPanel extends React.Component<any, IState> {
 
     componentDidMount() {
         TrackPlayer.on("update", this.update);
+
+        // Listen for hotkeys.
+        document.addEventListener("keydown", this.handleHotkeys);
     }
 
     componentWillUnmount() {
         TrackPlayer.off("update", this.update);
+
+        // Stop listening for hotkeys.
+        document.removeEventListener("keydown", this.handleHotkeys);
     }
 
     /**
@@ -113,6 +119,40 @@ class ControlPanel extends React.Component<any, IState> {
                     />
                 );
         }
+    }
+
+    /**
+     * Toggles mute
+     */
+    toggleMute = (): void => {
+        if (Howler.volume() > 0) {
+            this.setState({
+                lastVolume: Howler.volume() * 100
+            });
+            setVolume(0);
+        } else {
+            setVolume(this.state.lastVolume / 100);
+        }
+    }
+
+    /**
+     * Handles hotkeys.
+     * @param e The key event.
+     */
+    handleHotkeys = async (e: KeyboardEvent): Promise<void> => {
+        if (!this.state.track) return;
+        if (["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement).tagName)) return;
+
+        e.preventDefault();
+
+        if (e.key == (" " || "SpaceBar")) TrackPlayer.pause();
+        else if (e.key == "ArrowLeft" && (e.ctrlKey || e.metaKey)) TrackPlayer.back();
+        else if (e.key == "ArrowRight" && (e.ctrlKey || e.metaKey)) TrackPlayer.next();
+        else if (e.key == "s" && (e.ctrlKey || e.metaKey)) TrackPlayer.shuffle();
+        else if (e.key == "l" && (e.ctrlKey || e.metaKey)) await toggleRepeatState();
+        else if (e.key == "f" && (e.ctrlKey || e.metaKey)) await this.favorite();
+        else if (e.key == "q" && (e.ctrlKey || e.metaKey)) navigate("Queue");
+        else if (e.key == "m" && (e.ctrlKey || e.metaKey)) this.toggleMute();
     }
 
     render() {
@@ -213,16 +253,7 @@ class ControlPanel extends React.Component<any, IState> {
                             this.setState({ volume });
                             setVolume(volume / 100);
                         }}
-                        toggleMute={() => {
-                            if (Howler.volume() > 0) {
-                                this.setState({
-                                    lastVolume: Howler.volume() * 100
-                                });
-                                setVolume(0);
-                            } else {
-                                setVolume(this.state.lastVolume / 100);
-                            }
-                        }}
+                        toggleMute={this.toggleMute}
                     />
                     <FiExternalLink className={"ControlPanel_Popout"} />
                 </div>
