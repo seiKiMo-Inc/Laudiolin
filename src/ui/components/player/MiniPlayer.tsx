@@ -146,10 +146,7 @@ class MiniPlayer extends React.Component<any, IState> {
         return (
             <div
                 className={"MiniPlayer"}
-                onContextMenu={(e) => {
-                    e.preventDefault();
-                    toMini(false);
-                }}
+                onContextMenu={e => e.preventDefault()}
             >
                 <div className={"MiniPlayer_Bar"}
                      data-tauri-drag-region={true}
