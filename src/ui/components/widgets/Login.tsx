@@ -69,7 +69,7 @@ class Login extends React.PureComponent<{}, IState> {
                 .catch((err) => console.warn(err));
         } else {
             // Open the login URL in a browser.
-            invoke("open", { url: `${Gateway.url}/discord` })
+            invoke("open", { url: `${Gateway.getUrl()}/discord` })
                 .then(() => this.setState({ waiting: true }))
                 .catch((err) => console.warn(err));
         }

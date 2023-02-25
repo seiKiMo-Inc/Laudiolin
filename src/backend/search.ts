@@ -22,7 +22,7 @@ export async function doSearch(query: string): Promise<SearchResults> {
     try {
         // Perform a request to the backend.
         const response = await fetch(
-            `${Gateway.url}/search/${query}?query=${engine}`
+            `${Gateway.getUrl()}/search/${query}?query=${engine}`
         );
         // Return the response as a search results object.
         return (await response.json()) as SearchResults;
@@ -39,7 +39,7 @@ export async function doSearch(query: string): Promise<SearchResults> {
  * @param id The URL of the song.
  */
 export async function fetchTrackById(id: string): Promise<TrackData> {
-    const response = await fetch(`${Gateway.url}/fetch/${id}`);
+    const response = await fetch(`${Gateway.getUrl()}/fetch/${id}`);
     return (await response.json()) as TrackData;
 }
 

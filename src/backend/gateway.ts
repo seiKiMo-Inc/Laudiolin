@@ -224,7 +224,7 @@ export function sendGatewayMessage(message: BaseGatewayMessage) {
  * @param track The track to get the URL for.
  */
 export function getDownloadUrl(track: TrackData): string {
-    return `${Gateway.url}/download?id=${track.id}`;
+    return `${Gateway.getUrl()}/download?id=${track.id}`;
 }
 
 /**
@@ -232,7 +232,7 @@ export function getDownloadUrl(track: TrackData): string {
  * @param track The track to get the URL for.
  */
 export function getStreamingUrl(track: TrackData): string {
-    return `${Gateway.url}/stream?id=${track.id}&quality=${
+    return `${Gateway.getUrl()}/stream?id=${track.id}&quality=${
         audio().audio_quality
     }`;
 }

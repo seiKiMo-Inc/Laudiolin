@@ -97,7 +97,8 @@ export async function openFromUrl(): Promise<void> {
             // TODO: Display track preview page.
             const track = await fetchTrackById(value);
             track &&
-                playTrack(track, true, true).catch((err) => console.warn(err));
+                playTrack(track, true, true)
+                    .catch((err) => console.warn(err));
             break;
         case "playlist":
             const playlist = await getPlaylistById(value);

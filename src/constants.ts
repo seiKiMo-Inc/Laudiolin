@@ -4,3 +4,6 @@ export let Gateway = {
 
     getUrl: () => Gateway.url
 };
+
+/* Web-browser environment. */
+export const isWeb = false;

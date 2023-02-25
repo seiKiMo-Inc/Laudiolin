@@ -24,7 +24,7 @@ export function getIconUrl(track: TrackData): string {
     // Check if the icon is blank.
     if (icon == "") return fs.toAsset(fs.getIconPath(track));
 
-    let url = `${Gateway.url}/proxy/{ico}?from={src}`;
+    let url = `${Gateway.getUrl()}/proxy/{ico}?from={src}`;
     // Match the icon URL to the correct proxy URL.
     const iconUrl = track.icon;
     let split = iconUrl.split("/");
