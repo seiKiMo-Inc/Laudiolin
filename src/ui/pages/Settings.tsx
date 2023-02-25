@@ -300,6 +300,47 @@ class Settings extends React.Component<{}, IState> {
                     />
                 </DisplayField>
 
+                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Keybinds</h2>
+
+                <DisplayField text={"Toggle Track State"} description={"Toggles between play and pause when pressed"}>
+                    <span className={"Key"}>SpaceBar</span>
+                </DisplayField>
+
+                <DisplayField text={"Next Track"} description={"Skips to the next track"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>&#8594;</span>
+                </DisplayField>
+
+                <DisplayField text={"Previous Track"} description={"Skips to the previous track"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>&#8592;</span>
+                </DisplayField>
+
+                <DisplayField text={"Shuffle Queue"} description={"Shuffles the queue"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>S</span>
+                </DisplayField>
+
+                <DisplayField text={"Repeat Queue"} description={"Repeats the queue or the current track"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>R</span>
+                </DisplayField>
+
+                <DisplayField text={"Favorite Track"} description={"Marks the current track as favorite"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>F</span>
+                </DisplayField>
+
+                <DisplayField text={"Show Queue"} description={"Shows the queue"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>Q</span>
+                </DisplayField>
+
+                <DisplayField text={"Toggle Mute"} description={"Toggles between mute and unmute"}>
+                    <span className={"Key"}>Ctrl</span>
+                    <span className={"Key"}>M</span>
+                </DisplayField>
+
                 <BasicModal
                     id={"login_code"}
                     buttonText={"Close"}
