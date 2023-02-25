@@ -62,7 +62,6 @@ class Navigate extends React.Component<any, IState> {
                         collection={() => recents}
                     />
                 )}
-                {this.state.page == "Profile" && <p>Profile</p>}
                 {this.state.page == "Favorites" && (
                     <TrackList
                         title={"Favorites"}

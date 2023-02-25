@@ -64,7 +64,6 @@ class CurrentUser extends React.Component<IProps, never> {
                 </div>
 
                 <BasicDropdown id={"currentUserDropdown"}>
-                    <a href="#">Profile</a>
                     <a onClick={() => this.logOut()}>Log Out</a>
                 </BasicDropdown>
             </>

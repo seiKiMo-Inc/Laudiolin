@@ -6,7 +6,6 @@ export type Page =
     | "Playing"
     | "Playlist"
     | "Playlists"
-    | "Profile"
     | "Favorites"
     | "Downloads"
     | "Queue"
