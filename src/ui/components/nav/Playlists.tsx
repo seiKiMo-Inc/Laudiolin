@@ -62,7 +62,7 @@ class Playlists extends React.Component<any, IState> {
                                     style={{
                                         color:
                                             isActive &&
-                                            "var(--text=primary-color)"
+                                            "var(--text-primary-color)"
                                     }}
                                 >
                                     {playlist.name}
