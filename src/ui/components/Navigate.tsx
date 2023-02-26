@@ -6,7 +6,6 @@ import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
 import Recents from "@pages/Recents";
 import Favorites from "@pages/Favorites";
-import Downloads from "@pages/Downloads";
 import Queue from "@pages/Queue";
 
 import Login from "@widget/Login";
@@ -56,7 +55,6 @@ class Navigate extends React.Component<any, IState> {
                 )}
                 {this.state.page == "Recents" && <Recents />}
                 {this.state.page == "Favorites" && <Favorites />}
-                {this.state.page == "Downloads" && <Downloads />}
                 {this.state.page == "Playlist" && (
                     <Playlist pageArgs={this.state.args} />
                 )}

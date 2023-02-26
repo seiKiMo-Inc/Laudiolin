@@ -1,12 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import * as fs from "@mod/fs";
-
-import * as link from "@backend/link";
 import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
-import * as offline from "@backend/offline";
 import * as settings from "@backend/settings";
 
 import App from "./ui/App";
@@ -16,13 +12,6 @@ import App from "./ui/App";
     settings.reloadSettings();
 
     // Run initial setup.
-    fs.setup()
-        .then(() => {
-            fs.createFolders();
-            offline.loadDownloads();
-        })
-        .catch((err) => console.error(err));
-    link.setup().catch((err) => console.error(err));
     audio.setup().catch((err) => console.error(err));
     gateway
         .setup()

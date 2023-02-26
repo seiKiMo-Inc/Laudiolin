@@ -12,7 +12,7 @@ import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
-import { handleHotKeys, toMini } from "@app/utils";
+import { getOriginalUrl, handleHotKeys } from "@app/utils";
 import { navigate } from "@backend/navigation";
 import { favoriteTrack, favorites } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
@@ -55,7 +55,7 @@ class ControlPanel extends React.Component<any, IState> {
      */
     hotKeys = (e: KeyboardEvent) => {
         if (!this.state.track) return;
-        handleHotKeys(e);
+        handleHotKeys(e).catch(err => console.warn(err));
     }
 
     constructor(props: any) {
@@ -143,6 +143,18 @@ class ControlPanel extends React.Component<any, IState> {
         } else {
             setVolume(this.state.lastVolume / 100);
         }
+    };
+
+    /**
+     * Opens this track in a new tab.
+     */
+    async openTrack(): Promise<void> {
+        const track = this.state.track;
+        if (track == undefined) return;
+
+        // Get the original URL.
+        const url = await getOriginalUrl(track);
+        url && window.open(url, "_blank");
     }
 
     render() {
@@ -246,8 +258,8 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <FiExternalLink
                         className={"ControlPanel_Popout"}
-                        style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1 }}
-                        onClick={() => toMini(true)}
+                        style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1, }}
+                        onClick={() => this.openTrack()}
                     />
                 </div>
             </div>

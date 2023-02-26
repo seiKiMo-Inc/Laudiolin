@@ -5,10 +5,7 @@ import { isListeningWith, listeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
 import { getIconUrl, savePlayerState } from "@app/utils";
-import { notify } from "@backend/notifications";
-import emitter from "@backend/events";
 
-import * as fs from "@mod/fs";
 import TrackPlayer from "@mod/player";
 
 /**
@@ -18,10 +15,6 @@ export async function setup(): Promise<void> {
     // Add an alternate track loader.
     // Used for loading cached tracks.
     TrackPlayer.alternate = async (track: TrackData) => {
-        if (await fs.trackExists(track))
-            // Use the local URLs.
-            return await fs.loadLocalTrackData(track.id);
-
         // Set the remote URLs.
         if (listeningWith != null && settings.audio().stream_sync)
             track.url = getStreamingUrl(track);
@@ -36,51 +29,6 @@ export async function setup(): Promise<void> {
 
     // Load the volume from the local storage.
     Howler.volume(parseFloat(settings.get("volume", "1")));
-}
-
-/**
- * Downloads a track and saves it to the file system.
- * @param track The track to download.
- * @param emit Should the download event be emitted?
- */
-export async function downloadTrack(
-    track: TrackData,
-    emit = true
-): Promise<void> {
-    if (await fs.trackExists(track)) {
-        return;
-    }
-
-    // Create the track's folder.
-    await fs.createTrackFolder(track);
-    // Download the track data as necessary.
-    await fs.downloadUrl(getDownloadUrl(track), fs.getTrackPath(track));
-    await fs.downloadUrl(getIconUrl(track), fs.getIconPath(track));
-    // Save the track's data.
-    track.icon = fs.toAsset(fs.getIconPath(track));
-    track.url = fs.toAsset(fs.getTrackPath(track));
-    await fs.saveData(track, fs.getDataPath(track));
-
-    if (emit) {
-        // Emit the track downloaded event.
-        emitter.emit("download", track);
-        await notify({
-            type: "info",
-            message: `Finished downloading ${track.title}`
-        });
-    }
-}
-
-/**
- * Deletes a track from the file system.
- * @param track The local track to delete.
- */
-export async function deleteTrack(track: TrackData): Promise<void> {
-    // Delete the track's folder.
-    await fs.deleteTrackFolder(track);
-
-    // Emit the track deleted event.
-    emitter.emit("delete");
 }
 
 /**

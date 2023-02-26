@@ -6,4 +6,4 @@ export let Gateway = {
 };
 
 /* Web-browser environment. */
-export const isWeb = false;
+export const isWeb = true;

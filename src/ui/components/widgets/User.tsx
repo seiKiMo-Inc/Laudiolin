@@ -6,9 +6,9 @@ import BasicButton from "@components/common/BasicButton";
 
 import type { OnlineUser, OfflineUser } from "@backend/types";
 import { listeningWith, listenWith } from "@backend/social";
+import { userData } from "@backend/user";
 
 import "@css/components/User.scss";
-import { userData } from "@backend/user";
 
 interface IProps {
     user: OnlineUser & OfflineUser;

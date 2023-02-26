@@ -1,5 +1,4 @@
 import React from "react";
-import { open } from "@tauri-apps/api/shell";
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
@@ -11,9 +10,8 @@ import BasicDropdown, {
 import Alert from "@components/Alert";
 
 import type { TrackData } from "@backend/types";
-import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
+import { deQueue, playTrack } from "@backend/audio";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
-import { isDownloaded } from "@backend/offline";
 import { favoriteTrack } from "@backend/user";
 
 import "@css/components/Track.scss";
@@ -96,7 +94,7 @@ class Track extends React.PureComponent<IProps, never> {
         const track = this.props.track;
         if (!track) return;
 
-        await open(track.url);
+        window.open('https://www.codexworld.com', '_blank');
     }
 
     /**
@@ -180,13 +178,6 @@ class Track extends React.PureComponent<IProps, never> {
                     ) : (
                         <a onClick={() => this.queue(true)}>
                             Remove from Queue
-                        </a>
-                    )}
-                    {isDownloaded(track) ? (
-                        <a onClick={() => deleteTrack(track)}>Delete Track</a>
-                    ) : (
-                        <a onClick={() => downloadTrack(track)}>
-                            Download Track
                         </a>
                     )}
 

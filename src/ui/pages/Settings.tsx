@@ -9,7 +9,6 @@ import BasicDropdown, {
 import BasicButton from "@components/common/BasicButton";
 
 import type { SettingType } from "@backend/types";
-import { offlineSupport } from "@backend/offline";
 import { connect } from "@backend/gateway";
 import { getCode } from "@backend/user";
 import * as settings from "@backend/settings";
@@ -265,15 +264,6 @@ class Settings extends React.Component<{}, IState> {
                     </DisplayField>
 
                     <Setting
-                        setting={"system.offline"}
-                        type={"boolean"}
-                        description={
-                            "This will make Laudiolin available while you're offline."
-                        }
-                        update={(state) => offlineSupport(state == "true")}
-                        color={this.state.color}
-                    />
-                    <Setting
                         setting={"system.broadcast_listening"}
                         type={"select"}
                         description={"Who should see what you're listening to?"}
@@ -284,12 +274,6 @@ class Settings extends React.Component<{}, IState> {
                         type={"select"}
                         description={"What should your Discord presence look like?"}
                         options={["Generic", "Simple", "None"]}
-                    />
-                    <Setting
-                        setting={"system.close"}
-                        type={"select"}
-                        description={"Changes the behavior of the close button."}
-                        options={["Exit", "Tray"]}
                     />
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>

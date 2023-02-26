@@ -15,11 +15,9 @@ import AnimatedView from "@components/common/AnimatedView";
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { deletePlaylist, getPlaylistAuthor } from "@backend/user";
-import { savePlaylist } from "@backend/offline";
 import { editPlaylist } from "@backend/playlist";
 import { loadPlaylists } from "@backend/user";
 import { navigate } from "@backend/navigation";
-import { notify } from "@backend/notifications";
 import { reorder } from "@app/utils";
 
 import "@css/pages/Playlist.scss";
@@ -100,24 +98,6 @@ class Playlist extends React.Component<IProps, IState> {
      */
     play(shuffle = false): void {
         playPlaylist(this.getPlaylist(), shuffle);
-    }
-
-    /**
-     * Downloads the playlist for offline use.
-     */
-    download(): void {
-        const playlist = this.getPlaylist();
-
-        // Save the playlist.
-        playlist && savePlaylist(playlist);
-
-        // Send a notification.
-        notify({
-            type: "info",
-            message: `Started download of playlist ${
-                playlist?.name ?? "Unknown"
-            }.`
-        });
     }
 
     /**
@@ -269,7 +249,6 @@ class Playlist extends React.Component<IProps, IState> {
                                     </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
-                                    <a onClick={() => this.download()}>Download Playlist</a>
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
                                 </BasicDropdown>
 

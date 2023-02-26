@@ -3,10 +3,10 @@ import React from "react";
 import User from "@widget/User";
 
 import type { OfflineUser, OnlineUser } from "@backend/types";
-
-import "@css/layout/ActivityPanel.scss";
 import { getAvailableUsers, getRecentUsers } from "@backend/social";
 import emitter from "@backend/events";
+
+import "@css/layout/ActivityPanel.scss";
 
 interface IState {
     offlineUsers: OfflineUser[];

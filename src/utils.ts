@@ -6,7 +6,6 @@ import { playTrack, toggleRepeatState } from "@backend/audio";
 import { fetchTrackById } from "@backend/search";
 import * as settings from "@backend/settings";
 
-import * as fs from "@mod/fs";
 import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
 import { navigate } from "@backend/navigation";
@@ -19,11 +18,6 @@ export function getIconUrl(track: TrackData): string {
     const icon = track.icon;
     // Check if the icon is already a proxy.
     if (icon.includes("/proxy/")) return icon;
-    // Check if the icon is a local image.
-    if (icon.includes("asset.localhost"))
-        return fs.toAsset(fs.getIconPath(track));
-    // Check if the icon is blank.
-    if (icon == "") return fs.toAsset(fs.getIconPath(track));
 
     let url = `${Gateway.getUrl()}/proxy/{ico}?from={src}`;
     // Match the icon URL to the correct proxy URL.
@@ -42,6 +36,15 @@ export function getIconUrl(track: TrackData): string {
 
     console.warn(`Encountered a weird icon URL! ${icon}`);
     return url;
+}
+
+/**
+ * Fetches the original URL of a track.
+ * @param track The track to get the original URL for.
+ */
+export async function getOriginalUrl(track: TrackData): Promise<string | null> {
+    const result = await fetchTrackById(track.id);
+    return result?.url;
 }
 
 /**
