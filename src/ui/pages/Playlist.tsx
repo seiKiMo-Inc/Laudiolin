@@ -180,10 +180,6 @@ class Playlist extends React.Component<IProps, IState> {
         if (oldName != name) await loadPlaylists();
     }
 
-    componentDidMount() {
-        console.log(this.state.playlist);
-    }
-
     componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
         if (prevProps.pageArgs != this.props.pageArgs) {
             this.setState({
@@ -192,10 +188,6 @@ class Playlist extends React.Component<IProps, IState> {
                 reloadKey: this.state.reloadKey + 1
             });
         }
-    }
-
-    componentWillUnmount() {
-        console.log("unmounting");
     }
 
     render() {
