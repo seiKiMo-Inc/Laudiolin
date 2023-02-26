@@ -137,3 +137,32 @@
         color: #fff;
     }
 }
+
+.MiniPlayer_Volume {
+    display: inline-flex;
+}
+
+.MiniPlayer_Volume:hover .MiniPlayer_Volume_Slider {
+    display: block;
+}
+
+.MiniPlayer_Volume_Slider {
+    display: none;
+    position: absolute;
+    width: 150px;
+    top: 140px;
+    left: 20px;
+    background-color: #1A1A1A;
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 #000000;
+}
+
+.MiniPlayer_Volume_Slider::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 60px;
+    border: 10px solid transparent;
+    border-top-color: #1A1A1A;
+}

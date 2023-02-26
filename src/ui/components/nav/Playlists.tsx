@@ -96,36 +96,50 @@ class Playlists extends React.Component<any, IState> {
     render() {
         const { playlists } = this.state;
 
-        return playlists.length > 0 ? (
+        return (
             <>
                 <div className={"Playlists_Divider"} />
-                <div className={"Playlists_Header"}>
-                    <h3>Your Playlists</h3>
-                    <BiAddToQueue onClick={() => BasicModal.showModal("playlistCreateModal")} />
-                </div>
 
-                <div className={"Playlists_Container"}>
-                    {playlists.map((playlist) => (
-                        <NavLink
-                            to={"Playlist"}
-                            with={playlist}
-                            className={"Playlists_Item"}
-                            key={playlist.id}
-                        >
-                            {({ isActive }) => (
-                                <p
-                                    style={{
-                                        color:
-                                            isActive &&
-                                            "var(--text-primary-color)"
-                                    }}
-                                >
-                                    {playlist.name}
-                                </p>
-                            )}
-                        </NavLink>
-                    ))}
-                </div>
+                {
+                    playlists.length > 0 ? (
+                        <>
+                            <div className={"Playlists_Header"}>
+                                <h3>Your Playlists</h3>
+                                <BiAddToQueue onClick={() => BasicModal.showModal("playlistCreateModal")} />
+                            </div>
+
+                            <div className={"Playlists_Container"}>
+                                {playlists.map((playlist) => (
+                                    <NavLink
+                                        to={"Playlist"}
+                                        with={playlist}
+                                        className={"Playlists_Item"}
+                                        key={playlist.id}
+                                    >
+                                        {({ isActive }) => (
+                                            <p
+                                                style={{
+                                                    color:
+                                                        isActive &&
+                                                        "var(--text-primary-color)"
+                                                }}
+                                            >
+                                                {playlist.name}
+                                            </p>
+                                        )}
+                                    </NavLink>
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <BasicButton
+                            className={"PlaylistCreateButton"}
+                            onClick={() => BasicModal.showModal("playlistCreateModal")}
+                            text={"Create a playlist"}
+                            icon={<BiAddToQueue />}
+                        />
+                    )
+                }
 
                 <BasicModal id={"playlistCreateModal"} onSubmit={this.createNewPlaylist}>
                     <h1>Create a new playlist</h1>
@@ -150,7 +164,7 @@ class Playlists extends React.Component<any, IState> {
                     <input type={"text"} id={"playlistImportModal_url"} placeholder={"Playlist URL"} />
                 </BasicModal>
             </>
-        ) : null;
+        );
     }
 }
 

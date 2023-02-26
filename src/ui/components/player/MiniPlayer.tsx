@@ -16,6 +16,7 @@ import { toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";
+import Slider from "rc-slider/es";
 
 interface IState {
     queue: boolean;
@@ -23,8 +24,8 @@ interface IState {
     track: TrackData | null;
     progress: number;
     volume: number;
-
     lastVolume: number;
+    activeThumb: boolean;
 }
 
 class MiniPlayer extends React.Component<any, IState> {
@@ -67,7 +68,8 @@ class MiniPlayer extends React.Component<any, IState> {
             track: null,
             progress: 0,
             volume: 100,
-            lastVolume: 100
+            lastVolume: 100,
+            activeThumb: false
         };
     }
 
@@ -83,6 +85,11 @@ class MiniPlayer extends React.Component<any, IState> {
 
         // Stop listening for hotkeys.
         document.removeEventListener("keydown", this.hotKeys);
+    }
+
+    toggleVolumeSlider = () => {
+        const slider = document.getElementsByClassName("MiniPlayer_Volume_Slider")[0] as HTMLElement;
+        slider.style.display = slider.style.display == "none" ? "block" : "none";
     }
 
     /**
@@ -156,7 +163,32 @@ class MiniPlayer extends React.Component<any, IState> {
 
                 <div className={"MiniPlayer_Actions"}>
                     <div className={"MiniPlayer_Controls"}>
-                        <FiVolume1 className={"MiniPlayer_Control"} />
+                        <div className={"MiniPlayer_Volume"}>
+                            <div
+                                className={"MiniPlayer_Volume_Slider"}
+                                onMouseEnter={() => this.setState({ activeThumb: true })}
+                                onMouseLeave={() => this.setState({ activeThumb: false })}
+                            >
+                                <Slider
+                                    min={0}
+                                    max={100}
+                                    value={this.props.muted ? 0 : this.props.volume}
+                                    onChange={this.props.setVolume}
+                                    trackStyle={{ backgroundColor: "var(--accent-color)" }}
+                                    handleStyle={{
+                                        display: this.state.activeThumb ? "block" : "none",
+                                        borderColor: "var(--accent-color)",
+                                        backgroundColor: "white"
+                                    }}
+                                    railStyle={{
+                                        backgroundColor: "var(--background-secondary-color)"
+                                    }}
+                                    draggableTrack={true}
+                                />
+                            </div>
+
+                            <FiVolume1 className={"MiniPlayer_Control MiniPlayer_Volume_Button"} />
+                        </div>
 
                         <MdShuffle
                             className={"MiniPlayer_Control"}
