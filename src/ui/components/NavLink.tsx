@@ -37,8 +37,10 @@ class NavLink extends React.PureComponent<IProps, IState> {
 
     componentDidMount() {
         registerListener(
-            ({ page }) =>
-                page != this.props.to && this.setState({ isActive: false })
+            ({ page, args }) => {
+                if ((page != this.props.to) || (args != this.props.with && page == "Playlist"))
+                    this.setState({ isActive: false });
+            }
         );
     }
 
