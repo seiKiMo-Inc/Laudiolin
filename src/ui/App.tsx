@@ -43,6 +43,11 @@ class App extends React.Component<{}, IState> {
             new LogicalSize(427, 240) :
             new LogicalSize(1200, 600));
         appWindow.setResizable(!enter);
+
+        // If exiting, reload user data.
+        if (!enter) {
+            emitter.emit("playlist", userData.playlists);
+        }
     };
 
     constructor(props: {}) {
