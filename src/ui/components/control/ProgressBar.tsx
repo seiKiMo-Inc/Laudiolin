@@ -5,6 +5,7 @@ import Slider from "rc-slider";
 import { formatDuration } from "@app/utils";
 
 interface IProps {
+    className?: string;
     progress: number;
     duration: number;
 
@@ -39,7 +40,7 @@ class ProgressBar extends React.Component<IProps, IState> {
     render() {
         return (
             <div
-                className={"ControlPanel_ProgressBar"}
+                className={this.props.className ?? "ControlPanel_ProgressBar"}
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
             >

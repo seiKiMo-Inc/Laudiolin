@@ -10,6 +10,7 @@ import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
+import AnimatedView from "@components/common/AnimatedView";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
@@ -25,6 +26,12 @@ import "@css/pages/Playlist.scss";
 
 interface IProps {
     pageArgs: any;
+}
+
+interface IState {
+    playlist: types.Playlist;
+    isPrivate: boolean;
+    reloadKey: number;
 }
 
 function PlaylistAuthor(props: { playlist: types.Playlist }) {
@@ -50,13 +57,14 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
     ) : undefined;
 }
 
-class Playlist extends React.Component<IProps, { playlist: types.Playlist, isPrivate: boolean }> {
+class Playlist extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
         this.state = {
             playlist: props.pageArgs,
-            isPrivate: props.pageArgs.isPrivate
+            isPrivate: props.pageArgs.isPrivate,
+            reloadKey: 0
         };
     }
 
@@ -172,12 +180,30 @@ class Playlist extends React.Component<IProps, { playlist: types.Playlist, isPri
         if (oldName != name) await loadPlaylists();
     }
 
+    componentDidMount() {
+        console.log(this.state.playlist);
+    }
+
+    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
+        if (prevProps.pageArgs != this.props.pageArgs) {
+            this.setState({
+                playlist: this.props.pageArgs,
+                isPrivate: this.props.pageArgs.isPrivate,
+                reloadKey: this.state.reloadKey + 1
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        console.log("unmounting");
+    }
+
     render() {
         const playlist = this.getPlaylist();
         if (!playlist) return undefined;
 
         return (
-            <>
+            <AnimatedView key={this.state.reloadKey.toString()}>
                 <DragDropContext onDragEnd={result => this.handleDrag(result)}>
                     <Droppable droppableId={"trackList"}>
                         {(provided) => (
@@ -292,17 +318,17 @@ class Playlist extends React.Component<IProps, { playlist: types.Playlist, isPri
                 <BasicModal id={"playlistModal"} onSubmit={this.editPlaylist}>
                     <h1>Edit Playlist</h1>
                     <p>Name</p>
-                    <input type="text" id="playlistNameInput" defaultValue={this.state.playlist.name} />
+                    <input type="text" id="playlistNameInput" defaultValue={playlist.name} />
                     <p>Description</p>
-                    <textarea id="playlistDescriptionInput" defaultValue={this.state.playlist.description} />
+                    <textarea id="playlistDescriptionInput" defaultValue={playlist.description} />
                     <p>Icon image URL</p>
-                    <input type="text" id="playlistIconURLInput" defaultValue={this.state.playlist.icon} />
+                    <input type="text" id="playlistIconURLInput" defaultValue={playlist.icon} />
                     <div className="PlaylistCheckBoxModal">
                         <p>Private Playlist?</p>
                         <BasicToggle default={this.state.isPrivate} update={() => this.setState({ isPrivate: !this.state.isPrivate })} />
                     </div>
                 </BasicModal>
-            </>
+            </AnimatedView>
         );
     }
 }

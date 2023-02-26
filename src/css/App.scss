@@ -79,6 +79,7 @@ body {
     grid-area: main;
     background-color: var(--background-secondary-color);
     overflow: auto;
+    overflow-x: hidden;
 }
 
 .BasicButton {
@@ -274,5 +275,23 @@ body {
     box-shadow: inset 0 -5px 0 #00000070;
     color: white;
     font-size: 15px;
+
+    &:active {
+        box-shadow: none;
+        padding: 5px 10px;
+    }
+}
+
+.AnimatedView {
+    animation: slide-in 0.2s ease-out forwards;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 

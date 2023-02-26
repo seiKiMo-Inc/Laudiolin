@@ -7,12 +7,9 @@ import { ImStack } from "react-icons/im";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
-import { VscChromeMaximize, VscChromeMinimize, VscClose } from "react-icons/vsc";
-
-import { appWindow } from "@tauri-apps/api/window";
+import { VscClose } from "react-icons/vsc";
 
 import type { TrackData } from "@backend/types";
-import * as settings from "@backend/settings";
 import { navigate } from "@backend/navigation";
 import { toMini, handleHotKeys } from "@app/utils";
 import { toggleRepeatState } from "@backend/audio";
@@ -52,25 +49,6 @@ class MiniPlayer extends React.Component<any, IState> {
     hotKeys = (e: KeyboardEvent) => {
         if (!this.state.track) return;
         handleHotKeys(e);
-    }
-
-    /**
-     * Closes the window.
-     * Hides the window if the setting is set to hide.
-     */
-    closeWindow = async () => {
-        if (settings.system().close == "Exit") {
-            await appWindow.close();
-        } else {
-            await appWindow.hide();
-        }
-    };
-
-    /**
-     * Minimizes the window.
-     */
-    minimizeWindow = async () => {
-        await appWindow.minimize();
     };
 
     /**
@@ -146,21 +124,18 @@ class MiniPlayer extends React.Component<any, IState> {
         return (
             <div
                 className={"MiniPlayer"}
-                onContextMenu={e => e.preventDefault()}
+                onContextMenu={(e) => {
+                    e.preventDefault();
+                    toMini(false);
+                }}
+                data-tauri-drag-region={true}
+                style={{
+                    backgroundImage: `url(${track?.icon ?? ""})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                }}
             >
-                <div className={"MiniPlayer_Bar"}
-                     data-tauri-drag-region={true}
-                >
-                    <VscClose className={"TopButtons"} onClick={this.closeWindow} />
-                    <VscChromeMaximize
-                        className={"TopButtons"}
-                        onClick={this.maximizeWindow}
-                    />
-                    <VscChromeMinimize
-                        className={"TopButtons"}
-                        onClick={this.minimizeWindow}
-                    />
-                </div>
+                <VscClose className={"MiniPlayer_Exit"} onClick={this.maximizeWindow} />
 
                 <div className={"MiniPlayer_Track"}>
                     {track && (
@@ -223,17 +198,18 @@ class MiniPlayer extends React.Component<any, IState> {
                             }}
                         />
                     </div>
+                </div>
 
-                    <div className={"MiniPlayer_Progress"}>
-                        <ProgressBar
-                            progress={this.state.progress}
-                            duration={TrackPlayer.getDuration()}
-                            onSeek={(progress) => {
-                                this.setState({ progress });
-                                TrackPlayer.seek(progress);
-                            }}
-                        />
-                    </div>
+                <div className={"MiniPlayer_Progress"}>
+                    <ProgressBar
+                        className={"MiniPlayer_ProgressBar"}
+                        progress={this.state.progress}
+                        duration={TrackPlayer.getDuration()}
+                        onSeek={(progress) => {
+                            this.setState({ progress });
+                            TrackPlayer.seek(progress);
+                        }}
+                    />
                 </div>
             </div>
         );

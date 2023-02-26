@@ -1,46 +1,36 @@
 .MiniPlayer {
     width: 100%;
-    height: 220px;
-    padding: 10px;
-
+    height: 240px;
     display: flex;
     user-select: none;
     flex-direction: column;
     justify-content: space-between;
-
-    color: var(--text-primary-color);
-    background-color: var(--background-primary-color);
+    align-items: center;
 }
 
-.MiniPlayer_Bar {
-    display: flex;
-    flex-direction: row-reverse;
+.MiniPlayer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    backdrop-filter: blur(20px) brightness(0.5);
+}
 
+.MiniPlayer_Exit {
     position: absolute;
     top: 0;
     right: 0;
-    width: 100%;
-    height: 17px;
-    z-index: 1000000;
-}
-
-.TopButtons {
-    color: var(--icon-primary-color);
-    padding: 5px 12px;
-    font-size: 20px;
-    background-color: var(--background-primary-color);
-
-    &:nth-child(2) {
-        font-size: 17px;
-        padding: 6.5px 13.5px;
-    }
-
-    &:first-child:hover {
-        background-color: #ec2323;
-    }
+    padding: 10px;
+    font-size: 25px;
+    color: #fff;
+    z-index: 1;
 
     &:hover {
-        background-color: var(--background-secondary-color);
+        cursor: pointer;
+        background-color: #00000060;
     }
 }
 
@@ -49,13 +39,15 @@
     flex-direction: row;
     align-self: center;
     justify-content: center;
-    padding-top: 49px;
+    margin-top: 49px;
+    z-index: 1;
 
     p {
         margin: 0;
-        font-size: 14px;
+        font-size: 20px;
+        font-weight: 500;
         line-height: 21px;
-        color: var(--text-primary-color);
+        color: #FFFFFF;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -64,17 +56,14 @@
     p:nth-child(2) {
         font-size: 12px;
         line-height: 18px;
-        color: var(--text-secondary-color);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 }
 
 .MiniPlayer_Icon {
-    height: 64px;
-    width: 64px;
+    height: 82px;
+    width: auto;
     padding-right: 15px;
+    z-index: 1;
 }
 
 .MiniPlayer_Info {
@@ -83,14 +72,18 @@
     justify-content: center;
     align-self: center;
     height: 100%;
+    gap: 10px;
+    max-width: 200px;
+    z-index: 1;
 }
 
 .MiniPlayer_Actions {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    z-index: 1;
     gap: 28px;
+    margin-bottom: -30px;
 }
 
 .MiniPlayer_Controls {
@@ -99,44 +92,47 @@
     justify-content: center;
     align-items: center;
     align-self: center;
-    gap: 23px;
+    gap: 20px;
     width: 300px;
     height: 28px;
+    z-index: 1;
 }
 
 .MiniPlayer_Control {
-    font-size: 256px;
+    font-size: 20px;
     transition: all 0.1s ease-in-out;
-    color: var(--icon-secondary-color);
-
+    color: #FFFFFF;
+    z-index: 1;
     height: auto;
 
     &:active {
         scale: 0.9;
     }
 
-    &:nth-child(4) {
-        color: var(--icon-primary-color);
-    }
-
     &:hover {
-        filter: brightness(1.5);
-
-        &:nth-child(4) {
-            scale: 1.2;
-        }
+        scale: 1.1;
     }
 }
 
 .MiniPlayer_Progress {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     height: 12px;
     padding-bottom: 6px;
+    width: 90%;
+    z-index: 1;
+    margin-bottom: 15px;
 
     p {
         margin: 0;
+    }
+}
+
+.MiniPlayer_ProgressBar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+
+    p {
+        color: #fff;
     }
 }
