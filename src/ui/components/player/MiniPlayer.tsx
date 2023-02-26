@@ -12,7 +12,7 @@ import { VscClose } from "react-icons/vsc";
 import type { TrackData } from "@backend/types";
 import { navigate } from "@backend/navigation";
 import { toMini, handleHotKeys } from "@app/utils";
-import { toggleRepeatState } from "@backend/audio";
+import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";
@@ -85,11 +85,6 @@ class MiniPlayer extends React.Component<any, IState> {
 
         // Stop listening for hotkeys.
         document.removeEventListener("keydown", this.hotKeys);
-    }
-
-    toggleVolumeSlider = () => {
-        const slider = document.getElementsByClassName("MiniPlayer_Volume_Slider")[0] as HTMLElement;
-        slider.style.display = slider.style.display == "none" ? "block" : "none";
     }
 
     /**
@@ -172,8 +167,11 @@ class MiniPlayer extends React.Component<any, IState> {
                                 <Slider
                                     min={0}
                                     max={100}
-                                    value={this.props.muted ? 0 : this.props.volume}
-                                    onChange={this.props.setVolume}
+                                    value={this.state.volume}
+                                    onChange={(volume: number) => {
+                                        this.setState({ volume });
+                                        setVolume(volume / 100);
+                                    }}
                                     trackStyle={{ backgroundColor: "var(--accent-color)" }}
                                     handleStyle={{
                                         display: this.state.activeThumb ? "block" : "none",
