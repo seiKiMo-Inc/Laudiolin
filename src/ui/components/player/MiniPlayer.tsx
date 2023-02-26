@@ -124,10 +124,7 @@ class MiniPlayer extends React.Component<any, IState> {
         return (
             <div
                 className={"MiniPlayer"}
-                onContextMenu={(e) => {
-                    e.preventDefault();
-                    toMini(false);
-                }}
+                onContextMenu={e => e.preventDefault()}
                 data-tauri-drag-region={true}
                 style={{
                     backgroundImage: `url(${track?.icon ?? ""})`,
