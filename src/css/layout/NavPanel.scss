@@ -197,6 +197,17 @@
     }
 }
 
+.PlaylistCreateButton {
+    color: var(--text-tertiary-color) !important;
+    font-size: 15px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        color: var(--text-primary-color) !important;
+        cursor: pointer;
+    }
+}
+
 .OR_Divider {
     display: flex;
     flex-direction: row;
