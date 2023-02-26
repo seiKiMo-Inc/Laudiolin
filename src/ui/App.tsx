@@ -6,20 +6,21 @@ import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
 import ActivityPanel from "@layout/ActivityPanel";
 import TopBar from "@layout/TopBar";
+
 import Alert from "@components/Alert";
+import MiniPlayer from "@components/player/MiniPlayer";
 
 import { invoke } from "@tauri-apps/api";
+import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 import emitter from "@backend/events";
 import { loadState } from "@backend/offline";
 import { openFromUrl } from "@backend/link";
 import { loadPlayerState } from "@app/utils";
-import { login, userData, loaders } from "@backend/user";
+import { login, userData, loaders, playlists } from "@backend/user";
 
 import "@css/App.scss";
 import "@css/Text.scss";
-import MiniPlayer from "@components/player/MiniPlayer";
-import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 interface IState {
     miniPlayer: boolean;
@@ -46,7 +47,9 @@ class App extends React.Component<{}, IState> {
 
         // If exiting, reload user data.
         if (!enter) {
-            emitter.emit("playlist", userData.playlists);
+            setTimeout(() => {
+                emitter.emit("playlist", playlists);
+            }, 1e3);
         }
     };
 
