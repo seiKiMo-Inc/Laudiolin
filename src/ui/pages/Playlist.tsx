@@ -10,6 +10,7 @@ import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
+import AnimatedView from "@components/common/AnimatedView";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
@@ -202,7 +203,7 @@ class Playlist extends React.Component<IProps, IState> {
         if (!playlist) return undefined;
 
         return (
-            <div key={this.state.reloadKey.toString()}>
+            <AnimatedView key={this.state.reloadKey.toString()}>
                 <DragDropContext onDragEnd={result => this.handleDrag(result)}>
                     <Droppable droppableId={"trackList"}>
                         {(provided) => (
@@ -327,7 +328,7 @@ class Playlist extends React.Component<IProps, IState> {
                         <BasicToggle default={this.state.isPrivate} update={() => this.setState({ isPrivate: !this.state.isPrivate })} />
                     </div>
                 </BasicModal>
-            </div>
+            </AnimatedView>
         );
     }
 }

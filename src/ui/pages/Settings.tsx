@@ -16,6 +16,7 @@ import * as settings from "@backend/settings";
 
 import "@css/pages/Settings.scss";
 import BasicModal from "@components/common/BasicModal";
+import AnimatedView from "@components/common/AnimatedView";
 
 interface ISetting {
     setting: string;
@@ -193,164 +194,166 @@ class Settings extends React.Component<{}, IState> {
 
     render() {
         return (
-            <div className={"Settings"}>
-                <h2 style={{ marginBottom: 20 }}>Settings</h2>
+            <AnimatedView>
+                <div className={"Settings"}>
+                    <h2 style={{ marginBottom: 20 }}>Settings</h2>
 
-                <Setting
-                    setting={"search.engine"}
-                    type={"select"}
-                    description={"The engine to query track searching."}
-                    options={["YouTube", "Spotify", "All"]}
-                />
-
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Audio</h2>
-
-                <Setting
-                    setting={"audio.playback_mode"}
-                    type={"select"}
-                    description={
-                        "Download = Better consistency; higher initial bandwidth\n" +
-                        "Stream = Poor seeking performance; lower initial bandwidth"
-                    }
-                    update={() => this.forceUpdate()}
-                    options={["Download", "Stream"]}
-                />
-                {settings.audio().playback_mode == "Stream" && (
                     <Setting
-                        setting={"audio.audio_quality"}
+                        setting={"search.engine"}
                         type={"select"}
-                        description={"The quality of the streamed audio."}
-                        options={["Low", "Medium", "High"]}
+                        description={"The engine to query track searching."}
+                        options={["YouTube", "Spotify", "All"]}
                     />
-                )}
-                <Setting
-                    setting={"audio.stream_sync"}
-                    type={"boolean"}
-                    description={
-                        "If enabled, audio will be always be streamed when listening along."
-                    }
-                    color={this.state.color}
-                />
 
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Audio</h2>
 
-                <Setting
-                    setting={"ui.color_theme"}
-                    type={"select"}
-                    description={"The color palette to use."}
-                    options={["Dark", "Light"]}
-                    update={(state) => {
-                        settings.setTheme(state);
-                        this.setState({
-                            color: state == "Light" ? "#ED7D64" : "#3484FC"
-                        });
-                    }}
-                />
-
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
-
-                <DisplayField
-                    text={"Get Login Code"}
-                    description={
-                        "Generates a 6-digit code to login on other devices simultaneously."
-                    }
-                >
-                    <BasicButton
-                        text={"Reveal"}
-                        className={"Setting_Box Setting_Button"}
-                        onClick={() => this.revealLoginCode()}
+                    <Setting
+                        setting={"audio.playback_mode"}
+                        type={"select"}
+                        description={
+                            "Download = Better consistency; higher initial bandwidth\n" +
+                            "Stream = Poor seeking performance; lower initial bandwidth"
+                        }
+                        update={() => this.forceUpdate()}
+                        options={["Download", "Stream"]}
                     />
-                </DisplayField>
-
-                <Setting
-                    setting={"system.offline"}
-                    type={"boolean"}
-                    description={
-                        "This will make Laudiolin available while you're offline."
-                    }
-                    update={(state) => offlineSupport(state == "true")}
-                    color={this.state.color}
-                />
-                <Setting
-                    setting={"system.broadcast_listening"}
-                    type={"select"}
-                    description={"Who should see what you're listening to?"}
-                    options={["Everyone", "Friends", "Nobody"]}
-                />
-                <Setting
-                    setting={"system.presence"}
-                    type={"select"}
-                    description={"What should your Discord presence look like?"}
-                    options={["Generic", "Simple", "None"]}
-                />
-                <Setting
-                    setting={"system.close"}
-                    type={"select"}
-                    description={"Changes the behavior of the close button."}
-                    options={["Exit", "Tray"]}
-                />
-
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
-
-                <DisplayField text={"Reconnect to Gateway"}>
-                    <BasicButton
-                        text={"Reconnect"}
-                        className={"Setting_Box Setting_Button"}
-                        onClick={() => connect()}
+                    {settings.audio().playback_mode == "Stream" && (
+                        <Setting
+                            setting={"audio.audio_quality"}
+                            type={"select"}
+                            description={"The quality of the streamed audio."}
+                            options={["Low", "Medium", "High"]}
+                        />
+                    )}
+                    <Setting
+                        setting={"audio.stream_sync"}
+                        type={"boolean"}
+                        description={
+                            "If enabled, audio will be always be streamed when listening along."
+                        }
+                        color={this.state.color}
                     />
-                </DisplayField>
 
-                <h2 style={{ marginTop: 30, marginBottom: 20 }}>Keybinds</h2>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
 
-                <DisplayField text={"Toggle Track State"} description={"Toggles between play and pause when pressed"}>
-                    <span className={"Key"}>SpaceBar</span>
-                </DisplayField>
+                    <Setting
+                        setting={"ui.color_theme"}
+                        type={"select"}
+                        description={"The color palette to use."}
+                        options={["Dark", "Light"]}
+                        update={(state) => {
+                            settings.setTheme(state);
+                            this.setState({
+                                color: state == "Light" ? "#ED7D64" : "#3484FC"
+                            });
+                        }}
+                    />
 
-                <DisplayField text={"Next Track"} description={"Skips to the next track"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>&#8594;</span>
-                </DisplayField>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 
-                <DisplayField text={"Previous Track"} description={"Skips to the previous track"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>&#8592;</span>
-                </DisplayField>
+                    <DisplayField
+                        text={"Get Login Code"}
+                        description={
+                            "Generates a 6-digit code to login on other devices simultaneously."
+                        }
+                    >
+                        <BasicButton
+                            text={"Reveal"}
+                            className={"Setting_Box Setting_Button"}
+                            onClick={() => this.revealLoginCode()}
+                        />
+                    </DisplayField>
 
-                <DisplayField text={"Shuffle Queue"} description={"Shuffles the queue"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>S</span>
-                </DisplayField>
+                    <Setting
+                        setting={"system.offline"}
+                        type={"boolean"}
+                        description={
+                            "This will make Laudiolin available while you're offline."
+                        }
+                        update={(state) => offlineSupport(state == "true")}
+                        color={this.state.color}
+                    />
+                    <Setting
+                        setting={"system.broadcast_listening"}
+                        type={"select"}
+                        description={"Who should see what you're listening to?"}
+                        options={["Everyone", "Friends", "Nobody"]}
+                    />
+                    <Setting
+                        setting={"system.presence"}
+                        type={"select"}
+                        description={"What should your Discord presence look like?"}
+                        options={["Generic", "Simple", "None"]}
+                    />
+                    <Setting
+                        setting={"system.close"}
+                        type={"select"}
+                        description={"Changes the behavior of the close button."}
+                        options={["Exit", "Tray"]}
+                    />
 
-                <DisplayField text={"Repeat Queue"} description={"Repeats the queue or the current track"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>R</span>
-                </DisplayField>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
 
-                <DisplayField text={"Favorite Track"} description={"Marks the current track as favorite"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>F</span>
-                </DisplayField>
+                    <DisplayField text={"Reconnect to Gateway"}>
+                        <BasicButton
+                            text={"Reconnect"}
+                            className={"Setting_Box Setting_Button"}
+                            onClick={() => connect()}
+                        />
+                    </DisplayField>
 
-                <DisplayField text={"Show Queue"} description={"Shows the queue"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>Q</span>
-                </DisplayField>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Keybinds</h2>
 
-                <DisplayField text={"Toggle Mute"} description={"Toggles between mute and unmute"}>
-                    <span className={"Key"}>Ctrl</span>
-                    <span className={"Key"}>M</span>
-                </DisplayField>
+                    <DisplayField text={"Toggle Track State"} description={"Toggles between play and pause when pressed"}>
+                        <span className={"Key"}>SpaceBar</span>
+                    </DisplayField>
 
-                <BasicModal
-                    id={"login_code"}
-                    buttonText={"Close"}
-                    onSubmit={() => null}
-                    style={{ alignItems: "center" }}
-                >
-                    <h1>Authorization Code</h1>
-                    <p>Code: {this.state.code}</p>
-                </BasicModal>
-            </div>
+                    <DisplayField text={"Next Track"} description={"Skips to the next track"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>&#8594;</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Previous Track"} description={"Skips to the previous track"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>&#8592;</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Shuffle Queue"} description={"Shuffles the queue"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>S</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Repeat Queue"} description={"Repeats the queue or the current track"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>R</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Favorite Track"} description={"Marks the current track as favorite"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>F</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Show Queue"} description={"Shows the queue"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>Q</span>
+                    </DisplayField>
+
+                    <DisplayField text={"Toggle Mute"} description={"Toggles between mute and unmute"}>
+                        <span className={"Key"}>Ctrl</span>
+                        <span className={"Key"}>M</span>
+                    </DisplayField>
+
+                    <BasicModal
+                        id={"login_code"}
+                        buttonText={"Close"}
+                        onSubmit={() => null}
+                        style={{ alignItems: "center" }}
+                    >
+                        <h1>Authorization Code</h1>
+                        <p>Code: {this.state.code}</p>
+                    </BasicModal>
+                </div>
+            </AnimatedView>
         );
     }
 }

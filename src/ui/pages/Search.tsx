@@ -5,6 +5,7 @@ import Track from "@widget/Track";
 import * as types from "@backend/types";
 
 import "@css/pages/SearchResults.scss";
+import AnimatedView from "@components/common/AnimatedView";
 
 interface IProps {
     pageArgs: any;
@@ -41,12 +42,14 @@ class Search extends React.Component<IProps, never> {
         const results = this.getResults(pageArgs);
 
         return (
-            <div className={"SearchResults"}>
-                {results &&
-                    results.map((result: types.TrackData, index: number) => (
-                        <Track track={result} key={index} />
-                    ))}
-            </div>
+            <AnimatedView>
+                <div className={"SearchResults"}>
+                    {results &&
+                        results.map((result: types.TrackData, index: number) => (
+                            <Track track={result} key={index} />
+                        ))}
+                </div>
+            </AnimatedView>
         );
     }
 }
