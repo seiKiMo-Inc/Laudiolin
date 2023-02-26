@@ -112,6 +112,8 @@ class Track extends React.PureComponent<IProps, never> {
 
     render() {
         const { track } = this.props;
+        if (track == undefined) return null;
+
         const favorite = isFavorite(track);
 
         return (
