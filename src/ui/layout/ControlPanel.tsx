@@ -149,12 +149,7 @@ class ControlPanel extends React.Component<any, IState> {
         const { playing, track, favorite } = this.state;
 
         return (
-            <div
-                className={"ControlPanel"}
-                style={{ pointerEvents: !track ? "none" : "all" }}
-            >
-                {!track && <div className={"ControlPanel_DisabledOverlay"} />}
-
+            <div className={"ControlPanel"}>
                 <div className={"ControlPanel_Track"}>
                     {track && (
                         <>
@@ -175,7 +170,10 @@ class ControlPanel extends React.Component<any, IState> {
                     )}
                 </div>
 
-                <div className={"ControlPanel_MainControls"}>
+                <div
+                    className={"ControlPanel_MainControls"}
+                    style={!track && { pointerEvents: "none", opacity: 0.7 }}
+                >
                     <div className={"ControlPanel_Controls"}>
                         {favorite ? (
                             <AiFillHeart
@@ -248,6 +246,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <FiExternalLink
                         className={"ControlPanel_Popout"}
+                        style={!track && { pointerEvents: "none", opacity: 0.7 }}
                         onClick={() => toMini(true)}
                     />
                 </div>
