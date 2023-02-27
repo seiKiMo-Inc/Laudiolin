@@ -18,10 +18,12 @@ import { loadState } from "@backend/offline";
 import { openFromUrl } from "@backend/link";
 import { loadPlayerState } from "@app/utils";
 import { login, userData, loaders, playlists } from "@backend/user";
+import { get } from "@backend/settings";
 
 import "@css/App.scss";
 import "@css/Text.scss";
 import "react-tooltip/dist/react-tooltip.css";
+import { navigate } from "@backend/navigation";
 
 interface IState {
     miniPlayer: boolean;
@@ -141,6 +143,10 @@ class App extends React.Component<{}, IState> {
     componentDidMount() {
         // Check if the window is in mini player mode.
         this.checkMiniPlayerState();
+
+        // Check if user is logged in.
+        if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
+            navigate("Login");
 
         // Register event listeners.
         emitter.on("login", this.reloadUser);
