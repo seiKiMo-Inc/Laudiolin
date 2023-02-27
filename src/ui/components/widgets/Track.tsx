@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { open } from "@tauri-apps/api/shell";
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
@@ -33,7 +33,7 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Plays this track.
      */
-    play(): void {
+    play(e: MouseEvent): void {
         const track = this.props.track;
         track && playTrack(track, true, true);
     }
@@ -67,26 +67,16 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Sets the position of a dropdown.
      */
-    setDropdownPosition(): void {
+    setDropdownPosition(e: MouseEvent): void {
         const id = this.props.track.id;
         const dropdown = document.getElementById(`Track_${id}`);
-        const button = document.getElementById(`Track_${id}_Button`);
+        const trackWidth = document.getElementsByClassName("Track")[0]?.clientWidth;
 
-        if (!button || !dropdown) return;
-
-        const buttonRect = button.getBoundingClientRect();
-        const dropdownRect = dropdown.getBoundingClientRect();
-
-        const top = buttonRect.top + buttonRect.height;
-        const left = buttonRect.left;
-
-        if (top + dropdownRect.height > window.innerHeight) {
-            dropdown.style.top = buttonRect.top - dropdownRect.height + "px";
-        } else {
-            dropdown.style.top = top + "px";
+        if (dropdown && trackWidth) {
+            dropdown.style.left = `${trackWidth - 250}px`;
         }
 
-        dropdown.style.left = left + "px";
+        dropdown.style.top = `${e.clientY - 100}px`;
     }
 
     /**
@@ -120,15 +110,7 @@ class Track extends React.PureComponent<IProps, never> {
             <>
                 <div
                     className={"Track"}
-                    onClick={() => this.play()}
-                    onContextMenu={(event) => {
-                        toggleDropdown(
-                            `Track_${track.id}`,
-                            event.clientX,
-                            event.clientY
-                        );
-                        event.preventDefault();
-                    }}
+                    onClick={(e) => this.play(e)}
                 >
                     <div className={"Track_Info"}>
                         <img
@@ -163,10 +145,9 @@ class Track extends React.PureComponent<IProps, never> {
                         <BasicButton
                             id={`Track_${track.id}_Button`}
                             icon={<VscEllipsis />}
-                            onClick={() => {
-                                this.setDropdownPosition();
+                            onClick={(e) => {
+                                this.setDropdownPosition(e);
                                 toggleDropdown(`Track_${track.id}`);
-                                event.preventDefault();
                             }}
                             className={"dropbtn"}
                             style={{ backgroundColor: "transparent" }}
@@ -174,7 +155,7 @@ class Track extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
 
-                <BasicDropdown id={`Track_${track.id}`}>
+                <BasicDropdown id={`Track_${track.id}`} className={`Track_${track.id}`}>
                     {!this.props.queue ? (
                         <a onClick={() => this.queue()}>Add to Queue</a>
                     ) : (
