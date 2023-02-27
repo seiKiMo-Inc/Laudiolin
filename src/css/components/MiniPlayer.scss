@@ -41,6 +41,7 @@
     justify-content: center;
     margin-top: 49px;
     z-index: 1;
+    gap: 15px;
 
     p {
         margin: 0;
@@ -62,9 +63,8 @@
 .MiniPlayer_Icon {
     height: 82px;
     width: auto;
-    padding-right: 15px;
     z-index: 1;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .MiniPlayer_Info {
