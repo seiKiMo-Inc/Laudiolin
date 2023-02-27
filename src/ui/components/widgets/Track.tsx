@@ -33,7 +33,7 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Plays this track.
      */
-    play(e: MouseEvent): void {
+    play(): void {
         const track = this.props.track;
         track && playTrack(track, true, true);
     }
@@ -110,7 +110,7 @@ class Track extends React.PureComponent<IProps, never> {
             <>
                 <div
                     className={"Track"}
-                    onClick={(e) => this.play(e)}
+                    onClick={() => this.play()}
                 >
                     <div className={"Track_Info"}>
                         <img
@@ -134,18 +134,25 @@ class Track extends React.PureComponent<IProps, never> {
                                     height: 18.18,
                                     color: "var(--accent-color)"
                                 }}
-                                onClick={() => this.favorite()}
+                                onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await this.favorite();
+                                }}
                             />
                         ) : (
                             <AiOutlineHeart
                                 style={{ width: 20, height: 18.18 }}
-                                onClick={() => this.favorite()}
+                                onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await this.favorite();
+                                }}
                             />
                         )}
                         <BasicButton
                             id={`Track_${track.id}_Button`}
                             icon={<VscEllipsis />}
                             onClick={(e) => {
+                                e.stopPropagation();
                                 this.setDropdownPosition(e);
                                 toggleDropdown(`Track_${track.id}`);
                             }}
