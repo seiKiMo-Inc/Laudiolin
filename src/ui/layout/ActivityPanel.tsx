@@ -64,30 +64,46 @@ class ActivityPanel extends React.Component<{}, IState> {
     render() {
         return (
             <div className={"ActivityPanel"}>
-                <div className={"ActivityPanel_Info"}>
-                    <h3 style={{ paddingBottom: 20 }}>Now Active</h3>
-                    <div className={"ActivityPanel_Content"}>
-                        {this.state.onlineUsers.map((user, index) => (
-                            <User
-                                user={user as OnlineUser & OfflineUser}
-                                key={index}
-                            />
-                        ))}
-                    </div>
-                </div>
+                {
+                    (this.state.onlineUsers.length > 0 || this.state.offlineUsers.length > 0) ? (
+                        <>
+                            {
+                                this.state.onlineUsers.length > 0 && (
+                                    <div className={"ActivityPanel_Info"}>
+                                        <h3 style={{ paddingBottom: 20 }}>Now Active</h3>
+                                        <div className={"ActivityPanel_Content"}>
+                                            {this.state.onlineUsers.map((user, index) => (
+                                                <User
+                                                    user={user as OnlineUser & OfflineUser}
+                                                    key={index}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )
+                            }
 
-                <div className={"ActivityPanel_Info"}>
-                    <h3 style={{ paddingBottom: 20 }}>Recently Active</h3>
-                    <div className={"ActivityPanel_Content"}>
-                        {this.state.offlineUsers.map((user, index) => (
-                            <User
-                                user={user as OnlineUser & OfflineUser}
-                                isOffline={true}
-                                key={index}
-                            />
-                        ))}
-                    </div>
-                </div>
+                            {
+                                this.state.offlineUsers.length > 0 && (
+                                    <div className={"ActivityPanel_Info"}>
+                                        <h3 style={{ paddingBottom: 20 }}>Recently Active</h3>
+                                        <div className={"ActivityPanel_Content"}>
+                                            {this.state.offlineUsers.map((user, index) => (
+                                                <User
+                                                    user={user as OnlineUser & OfflineUser}
+                                                    isOffline={true}
+                                                    key={index}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </>
+                    ) : (
+                        <h2 className={"ActivityPanel_Empty"}>Hmmmm...<br />&emsp;&emsp;So empty.</h2>
+                    )
+                }
             </div>
         );
     }
