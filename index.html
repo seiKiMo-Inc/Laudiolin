@@ -4,9 +4,73 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laudiolin</title>
+    <style>
+      #placeholderBG {
+        background: #000;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100000;
+      }
+
+      #placeholderBG img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 100%;
+      }
+
+      .loader, .loader:before, .loader:after {
+        border-radius: 50%;
+        width: 2.5em;
+        height: 2.5em;
+        animation-fill-mode: both;
+        animation: bblFadInOut 1.8s infinite ease-in-out;
+      }
+
+      .loader {
+        color: #FFF;
+        font-size: 7px;
+        text-indent: -9999em;
+        animation-delay: -0.16s;
+        z-index: 100000;
+        position: absolute;
+        top: calc(50% + 40px);
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .loader:before,
+      .loader:after {
+        content: '';
+        position: absolute;
+        top: 0;
+      }
+
+      .loader:before {
+        left: -3.5em;
+        animation-delay: -0.32s;
+      }
+
+      .loader:after {
+        left: 3.5em;
+      }
+
+      @keyframes bblFadInOut {
+        0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
+        40% { box-shadow: 0 2.5em 0 0 }
+      }
+    </style>
   </head>
 
   <body>
+    <div id="placeholderBG">
+        <img src="/launch_screen.png" alt="placeholderBG" />
+    </div>
+    <span class="loader"></span>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

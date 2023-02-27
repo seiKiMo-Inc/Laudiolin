@@ -16,7 +16,7 @@ import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 import emitter from "@backend/events";
 import { loadState } from "@backend/offline";
 import { openFromUrl } from "@backend/link";
-import { loadPlayerState } from "@app/utils";
+import { loadPlayerState, fadeOut } from "@app/utils";
 import { login, userData, loaders, playlists } from "@backend/user";
 import { get } from "@backend/settings";
 
@@ -35,6 +35,7 @@ class App extends React.Component<{}, IState> {
      */
     reloadUser = () => {
         this.forceUpdate();
+        this.fadeLaunchScreen();
     };
 
     /**
@@ -140,6 +141,16 @@ class App extends React.Component<{}, IState> {
         }
     };
 
+    fadeLaunchScreen = (): void => {
+        setTimeout(() => {
+            const placeholderBG = document.getElementById("placeholderBG");
+            const loader = document.getElementsByClassName("loader")[0] as HTMLElement;
+
+            fadeOut(placeholderBG, 200);
+            fadeOut(loader, 200);
+        }, 1e3);
+    }
+
     componentDidMount() {
         // Check if the window is in mini player mode.
         this.checkMiniPlayerState();
@@ -160,6 +171,9 @@ class App extends React.Component<{}, IState> {
         this.checkIfOnline();
         // Load the player's last known state.
         loadPlayerState().catch((err) => console.warn(err));
+
+        // Fade launch screen.
+        if (get("authenticated") !== "discord") this.fadeLaunchScreen();
     }
 
     componentWillUnmount() {
