@@ -6,6 +6,7 @@ import {
     BiChevronRight,
     BiGroup
 } from "react-icons/bi";
+import { Tooltip } from "react-tooltip";
 
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
@@ -66,16 +67,19 @@ class TopBar extends React.Component<{}, IState> {
                         className={"TopBar_NavButtons"}
                         size={30}
                         onClick={() => goBack()}
+                        data-tooltip-content={"Go back"}
                     />
                     <BiHomeAlt
                         className={"TopBar_NavButtons"}
                         size={20}
                         onClick={() => navigate("Home")}
+                        data-tooltip-content={"Home"}
                     />
                     <BiChevronRight
                         className={"TopBar_NavButtons"}
                         size={30}
                         onClick={() => goForward()}
+                        data-tooltip-content={"Go forward"}
                     />
                 </div>
 
@@ -94,7 +98,11 @@ class TopBar extends React.Component<{}, IState> {
                         />
                     }
                     onClick={this.toggleActivityPanel}
+                    tooltipId={"activity_tooltip"}
                 />
+
+                <Tooltip anchorSelect={".TopBar_NavButtons"} place={"bottom"} />
+                <Tooltip id={"activity_tooltip"} place={"bottom"}>Toggle Activity Tab</Tooltip>
             </div>
         );
     }

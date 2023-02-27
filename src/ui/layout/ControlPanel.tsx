@@ -6,7 +6,7 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
-import "rc-slider/assets/index.css";
+import { Tooltip } from "react-tooltip";
 
 import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
@@ -19,6 +19,7 @@ import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
+import "rc-slider/assets/index.css";
 
 interface IState {
     queue: boolean;
@@ -180,39 +181,46 @@ class ControlPanel extends React.Component<any, IState> {
                                 className={"ControlPanel_Control"}
                                 style={{ color: "var(--accent-color)" }}
                                 onClick={() => this.favorite()}
+                                data-tooltip-content={"Remove from favorites"}
                             />
                         ) : (
                             <AiOutlineHeart
                                 className={"ControlPanel_Control"}
                                 onClick={() => this.favorite()}
+                                data-tooltip-content={"Add to favorites"}
                             />
                         )}
 
                         <MdShuffle
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.shuffle()}
+                            data-tooltip-content={"Shuffle"}
                         />
 
                         <IoMdSkipBackward
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.back()}
+                            data-tooltip-content={"Previous"}
                         />
 
                         {playing ? (
                             <IoMdPause
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
+                                data-tooltip-content={"Pause"}
                             />
                         ) : (
                             <IoMdPlay
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
+                                data-tooltip-content={"Play"}
                             />
                         )}
 
                         <IoMdSkipForward
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.next()}
+                            data-tooltip-content={"Next"}
                         />
 
                         {this.getRepeatIcon()}
@@ -220,6 +228,7 @@ class ControlPanel extends React.Component<any, IState> {
                         <ImStack
                             className={"ControlPanel_Control"}
                             onClick={() => navigate("Queue")}
+                            data-tooltip-content={"See Queue"}
                         />
                     </div>
 
@@ -248,8 +257,12 @@ class ControlPanel extends React.Component<any, IState> {
                         className={"ControlPanel_Popout"}
                         style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1 }}
                         onClick={() => toMini(true)}
+                        data-tooltip-content={"Popout Player"}
                     />
                 </div>
+
+                <Tooltip anchorSelect={".ControlPanel_Control"} />
+                <Tooltip anchorSelect={".ControlPanel_Popout"} />
             </div>
         );
     }

@@ -21,6 +21,7 @@ import { login, userData, loaders, playlists } from "@backend/user";
 
 import "@css/App.scss";
 import "@css/Text.scss";
+import "react-tooltip/dist/react-tooltip.css";
 
 interface IState {
     miniPlayer: boolean;

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { BiAddToQueue } from "react-icons/bi";
+import { Tooltip } from "react-tooltip";
 
 import NavLink from "@components/NavLink";
 import BasicModal from "@components/common/BasicModal";
@@ -105,7 +106,10 @@ class Playlists extends React.Component<any, IState> {
                         <>
                             <div className={"Playlists_Header"}>
                                 <h3>Your Playlists</h3>
-                                <BiAddToQueue onClick={() => BasicModal.showModal("playlistCreateModal")} />
+                                <BiAddToQueue
+                                    onClick={() => BasicModal.showModal("playlistCreateModal")}
+                                    data-tooltip-id={"create_playlist_tooltip"}
+                                />
                             </div>
 
                             <div className={"Playlists_Container"}>
@@ -137,6 +141,7 @@ class Playlists extends React.Component<any, IState> {
                             onClick={() => BasicModal.showModal("playlistCreateModal")}
                             text={"Create a playlist"}
                             icon={<BiAddToQueue />}
+                            tooltipId={"create_playlist_tooltip"}
                         />
                     )
                 }
@@ -163,6 +168,8 @@ class Playlists extends React.Component<any, IState> {
                     <p style={{ color: "var(--text-secondary-color)" }}>You can import any playlist from YouTube or Spotify.</p>
                     <input type={"text"} id={"playlistImportModal_url"} placeholder={"Playlist URL"} />
                 </BasicModal>
+
+                <Tooltip id={"create_playlist_tooltip"}>Create Playlist</Tooltip>
             </>
         );
     }
