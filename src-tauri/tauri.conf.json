@@ -13,9 +13,6 @@
   "tauri": {
     "allowlist": {
       "all": true,
-      "fs": {
-        "scope": ["**"]
-      },
       "shell": {
         "all": false,
         "open": true
@@ -50,19 +47,33 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "Play music!",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "language": {
+            "en-US": {
+              "localePath": "bundler/strings.wxl"
+            }
+          },
+          "template": "bundler/bundler.wxs",
+          "license": "bundler/LICENSE.rtf"
+        }
       }
     },
     "security": {
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "dialog": true,
+      "endpoints": [
+        "https://github.com/seiKiMo-Inc/Laudiolin/blob/tauri-react-v2/src-tauri/updates.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk1OTQ0Q0Y0Q0NDQzAyRTQKUldUa0Fzek05RXlVbFZJV3l3VW5vRml0ekJHQW9ETkY4ekN6RTNGSUhXbVVjdkNuRm10dCtockMK"
     },
     "windows": [
       {

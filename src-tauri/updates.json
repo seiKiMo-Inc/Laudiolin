@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "notes": "Updated user interface & major overhauls.",
+  "pub_date": "2023-02-28T01:54:27Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFE2VGcrbGlvRkhZaVZJR285dytKcHBQS2FzRWR6V0ZXMC9kdE50eCtXUkJUK29QaTlYSEhNczIrNjQ2TnArN1FmWjlzZEI0ejBRQlVWQW5EUDFRK3dFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3NTQ5NDU1CWZpbGU6TGF1ZGlvbGluXzIuMC4wX3g2NF9lbi1VUy5tc2kuemlwCjhjWjlWOE5RZEFlSzZNa0kzdEF0aUlocW91VzJkbzdGQUZSZmpkRzk1YmNUV0JqSzh1WmZmRjMrSmg2SUYzMUxpSnNLanZqMEI1U2FZVzVWTzRhbkJ3PT0K",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.0.0/Laudiolin_2.0.0_x64_en-US.msi.zip"
+    }
+  }
+}

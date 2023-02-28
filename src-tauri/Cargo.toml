@@ -1,6 +1,6 @@
 [package]
 name = "laudiolin"
-version = "0.1.0"
+version = "2.0.0"
 description = "A music player."
 authors = ["KingRainbow44", "Arikatsu"]
 license = "MIT"
@@ -14,7 +14,7 @@ tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
 # Tauri
-tauri = { version = "1.2.0", features = ["api-all", "system-tray"] }
+tauri = { version = "1.2.0", features = ["api-all", "system-tray", "updater"] }
 window-shadows = "0.2.0"
 
 # Serialization
