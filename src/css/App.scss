@@ -295,3 +295,27 @@ body {
     }
 }
 
+.empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
+    gap: 20px;
+
+    h1 {
+        margin: 0;
+        color: var(--text-secondary-color);
+        font-size: 40px;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 0;
+        color: var(--text-secondary-color);
+        font-size: 15px;
+    }
+}
+

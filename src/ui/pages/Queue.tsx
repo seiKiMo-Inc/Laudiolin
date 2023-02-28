@@ -11,7 +11,7 @@ class Queue extends React.Component {
     }
 
     render() {
-        return (
+        return TrackPlayer.getQueue().length > 0 ? (
             <AnimatedView>
                 <TrackList
                     title={"Queue"}
@@ -27,6 +27,11 @@ class Queue extends React.Component {
                     emitter={TrackPlayer}
                     queue={true}
                 />
+            </AnimatedView>
+        ) : (
+            <AnimatedView className={"empty"}>
+                <h1>No Song In Queue</h1>
+                <p>Go queue a song.</p>
             </AnimatedView>
         );
     }

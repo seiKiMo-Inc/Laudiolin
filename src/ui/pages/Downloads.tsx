@@ -7,13 +7,18 @@ import { downloads } from "@backend/offline";
 
 class Downloads extends React.Component {
     render() {
-        return (
+        return downloads.length > 0 ? (
             <AnimatedView>
                 <TrackList
                     title={"Downloads"}
                     events={["login", "downloads"]}
                     collection={() => downloads}
                 />
+            </AnimatedView>
+        ) : (
+            <AnimatedView className={"empty"}>
+                <h1>No Downloads</h1>
+                <p>Downloaded tracks will appear here.</p>
             </AnimatedView>
         );
     }
