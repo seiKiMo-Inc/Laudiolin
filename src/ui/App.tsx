@@ -79,25 +79,24 @@ class App extends React.Component<{}, IState> {
      * Checks if the user is online.
      */
     checkIfOnline(): void {
+        const loadOffline = () =>
+            loadState(
+                loaders.userData,
+                loaders.playlists,
+                loaders.favorites
+            ).catch((err) => console.warn(err));
+
         invoke("online")
             .then((online: boolean) => {
                 if (online) {
                     // Attempt to log in.
                     login()
                         .then(() => openFromUrl())
-                        .catch((err) => console.warn(err));
+                        .catch(() => loadOffline());
                 } else {
                     // Attempt to load offline user data.
                     // Load the offline state.
-                    setTimeout(
-                        () =>
-                            loadState(
-                                loaders.userData,
-                                loaders.playlists,
-                                loaders.favorites
-                            ).catch((err) => console.warn(err)),
-                        1e3
-                    );
+                    setTimeout(loadOffline, 1e3);
                 }
             })
             .catch((err) => console.warn(err));

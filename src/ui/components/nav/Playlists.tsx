@@ -114,7 +114,7 @@ class Playlists extends React.Component<any, IState> {
 
                             <div className={"Playlists_Container"}>
                                 {playlists.map((playlist) => (
-                                    <NavLink
+                                    playlist && <NavLink
                                         to={"Playlist"}
                                         with={playlist}
                                         className={"Playlists_Item"}

@@ -116,6 +116,8 @@ export async function loadState(
     userData(offlineData.user);
     playlists(playlistData as Playlist[]);
     favorites(favoriteData as TrackData[]);
+
+    console.log(offlineData, playlistData, favoriteData)
 }
 
 /**

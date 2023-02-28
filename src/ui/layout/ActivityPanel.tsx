@@ -18,19 +18,26 @@ class ActivityPanel extends React.Component<{}, IState> {
      * Updates the list of users.
      */
     update = async () => {
-        const availableUsers = await getAvailableUsers();
-        const recentUsers = await getRecentUsers();
+        try {
+            const availableUsers = await getAvailableUsers();
+            const recentUsers = await getRecentUsers();
 
-        // check if the user is in both lists
-        const offlineUsers = recentUsers.filter(
-            (user) =>
-                availableUsers.find((u) => u.userId == user.userId) == undefined
-        );
+            // check if the user is in both lists
+            const offlineUsers = recentUsers.filter(
+                (user) =>
+                    availableUsers.find((u) => u.userId == user.userId) == undefined
+            );
 
-        this.setState({
-            offlineUsers,
-            onlineUsers: availableUsers
-        });
+            this.setState({
+                offlineUsers,
+                onlineUsers: availableUsers
+            });
+        } catch {
+            this.setState({
+                offlineUsers: [],
+                onlineUsers: []
+            });
+        }
     };
 
     /**
