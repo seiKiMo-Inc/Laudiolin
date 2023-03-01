@@ -10,7 +10,8 @@ import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
 import type { TrackData } from "@backend/types";
-import { navigate } from "@backend/navigation";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 import { toMini, handleHotKeys } from "@app/utils";
 import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
@@ -221,7 +222,7 @@ class MiniPlayer extends React.Component<any, IState> {
                             className={"MiniPlayer_Control"}
                             onClick={() => {
                                 toMini(false);
-                                setTimeout(() => navigate("Queue"), 300);
+                                setTimeout(() => router.navigate(contentRoutes.QUEUE), 300);
                             }}
                         />
                     </div>

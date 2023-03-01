@@ -11,8 +11,10 @@ import { Tooltip } from "react-tooltip";
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
 
-import { goBack, navigate, goForward } from "@backend/navigation";
 import { get, save } from "@backend/settings";
+
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/TopBar.scss";
 
@@ -66,19 +68,19 @@ class TopBar extends React.Component<{}, IState> {
                     <BiChevronLeft
                         className={"TopBar_NavButtons"}
                         size={30}
-                        onClick={() => goBack()}
+                        onClick={() => window.history.back()}
                         data-tooltip-content={"Go back"}
                     />
                     <BiHomeAlt
                         className={"TopBar_NavButtons"}
                         size={20}
-                        onClick={() => navigate("Home")}
+                        onClick={() => router.navigate(contentRoutes.HOME)}
                         data-tooltip-content={"Home"}
                     />
                     <BiChevronRight
                         className={"TopBar_NavButtons"}
                         size={30}
-                        onClick={() => goForward()}
+                        onClick={() => window.history.forward()}
                         data-tooltip-content={"Go forward"}
                     />
                 </div>

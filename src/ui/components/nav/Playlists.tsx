@@ -1,9 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import { BiAddToQueue } from "react-icons/bi";
 import { Tooltip } from "react-tooltip";
 
-import NavLink from "@components/NavLink";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
 import BasicButton from "@components/common/BasicButton";
@@ -13,6 +13,7 @@ import { Playlist } from "@backend/types";
 import emitter from "@backend/events";
 import { createPlaylist, loadPlaylists, login } from "@backend/user";
 import { importPlaylist } from "@backend/playlist";
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
 
@@ -115,10 +116,10 @@ class Playlists extends React.Component<any, IState> {
                             <div className={"Playlists_Container"}>
                                 {playlists.map((playlist) => (
                                     playlist && <NavLink
-                                        to={"Playlist"}
-                                        with={playlist}
+                                        to={`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`}
                                         className={"Playlists_Item"}
                                         key={playlist.id}
+                                        style={{ textDecoration: "none" }}
                                     >
                                         {({ isActive }) => (
                                             <p

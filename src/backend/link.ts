@@ -5,8 +5,9 @@ import { login } from "@backend/user";
 import { listenWith } from "@backend/social";
 import { fetchTrackById } from "@backend/search";
 import { playTrack } from "@backend/audio";
-import { navigate } from "@backend/navigation";
 import { getPlaylistById } from "@backend/playlist";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 /*
  * Deep links:
@@ -72,7 +73,7 @@ async function onLinked(event: Event<string>) {
         case "playlist":
             if (action != "id") break;
             const playlist = await getPlaylistById(value);
-            playlist && navigate("Playlist", playlist);
+            playlist && await router.navigate(`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`);
             break;
     }
 }
@@ -102,7 +103,7 @@ export async function openFromUrl(): Promise<void> {
             break;
         case "playlist":
             const playlist = await getPlaylistById(value);
-            playlist && navigate("Playlist", playlist);
+            playlist && await router.navigate(`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`);
             break;
         case "listen":
             listenWith(value).catch((err) => console.warn(err));

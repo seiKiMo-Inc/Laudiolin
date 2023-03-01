@@ -1,9 +1,10 @@
 import React from "react";
-
-import NavLink from "@components/NavLink";
+import { NavLink } from "react-router-dom";
 
 import { RxTimer } from "react-icons/rx";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
+
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
 
@@ -30,13 +31,13 @@ class NavPageList extends React.Component<{}, never> {
         return (
             <div className={"NavPanel_PageList"}>
                 <NavLink
-                    to={"Recents"}
+                    to={contentRoutes.RECENTS}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
                         color: isActive && "var(--text-primary-color)"
                     })}
                 >
-                    {({ isActive, hover }) => {
+                    {({ isActive }) => {
                         return (
                             <>
                                 {isActive && (
@@ -44,8 +45,11 @@ class NavPageList extends React.Component<{}, never> {
                                         className={"NavPanel_PageItem_Active"}
                                     />
                                 )}
-                                <RxTimer className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>
+                                <RxTimer
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Recents
                                 </p>
                             </>
@@ -54,13 +58,13 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={"Favorites"}
+                    to={contentRoutes.FAVORITES}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
                         color: isActive && "var(--text-primary-color)"
                     })}
                 >
-                    {({ isActive, hover }) => {
+                    {({ isActive }) => {
                         return (
                             <>
                                 {isActive && (
@@ -68,8 +72,11 @@ class NavPageList extends React.Component<{}, never> {
                                         className={"NavPanel_PageItem_Active"}
                                     />
                                 )}
-                                <BiHeart className={"NavPanel_PageItem_Icon"} />
-                                <p style={this.getTextColor(isActive, hover)}>
+                                <BiHeart
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Favorites
                                 </p>
                             </>
@@ -78,13 +85,13 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={"Downloads"}
+                    to={contentRoutes.DOWNLOADS}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
                         color: isActive && "var(--text-primary-color)"
                     })}
                 >
-                    {({ isActive, hover }) => {
+                    {({ isActive }) => {
                         return (
                             <>
                                 {isActive && (
@@ -93,9 +100,10 @@ class NavPageList extends React.Component<{}, never> {
                                     />
                                 )}
                                 <BiDownload
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
                                     className={"NavPanel_PageItem_Icon"}
                                 />
-                                <p style={this.getTextColor(isActive, hover)}>
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Downloads
                                 </p>
                             </>
@@ -104,13 +112,13 @@ class NavPageList extends React.Component<{}, never> {
                 </NavLink>
 
                 <NavLink
-                    to={"Settings"}
+                    to={contentRoutes.SETTINGS}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
                         color: isActive && "var(--text-primary-color)"
                     })}
                 >
-                    {({ isActive, hover }) => {
+                    {({ isActive }) => {
                         return (
                             <>
                                 {isActive && (
@@ -119,9 +127,10 @@ class NavPageList extends React.Component<{}, never> {
                                     />
                                 )}
                                 <BiWrench
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
                                     className={"NavPanel_PageItem_Icon"}
                                 />
-                                <p style={this.getTextColor(isActive, hover)}>
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Settings
                                 </p>
                             </>

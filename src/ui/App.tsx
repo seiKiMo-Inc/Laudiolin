@@ -19,11 +19,12 @@ import { openFromUrl } from "@backend/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
 import { login, userData, loaders, playlists } from "@backend/user";
 import { get } from "@backend/settings";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/App.scss";
 import "@css/Text.scss";
 import "react-tooltip/dist/react-tooltip.css";
-import { navigate } from "@backend/navigation";
 
 interface IState {
     miniPlayer: boolean;
@@ -156,7 +157,7 @@ class App extends React.Component<{}, IState> {
 
         // Check if user is logged in.
         if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
-            navigate("Login");
+            router.navigate(contentRoutes.LOGIN);
 
         // Register event listeners.
         emitter.on("login", this.reloadUser);
@@ -199,5 +200,4 @@ class App extends React.Component<{}, IState> {
         ) : <MiniPlayer />;
     }
 }
-
 export default App;

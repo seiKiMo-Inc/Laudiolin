@@ -8,9 +8,10 @@ import { toggleDropdown } from "@components/common/BasicDropdown";
 
 import type { User } from "@backend/types";
 import { logout } from "@backend/user";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
-import { navigate } from "@backend/navigation";
 
 interface IProps {
     user?: User;
@@ -71,7 +72,7 @@ class CurrentUser extends React.Component<IProps, never> {
             <BasicButton
                 className={"CurrentUser_LoginBtn"}
                 text={"Login"}
-                onClick={() => navigate("Login")}
+                onClick={() => router.navigate(contentRoutes.LOGIN)}
             />
         );
     }

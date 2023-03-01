@@ -11,21 +11,23 @@ import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown"
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
 import AnimatedView from "@components/common/AnimatedView";
+import Router from "@components/common/Router";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { deletePlaylist, getPlaylistAuthor } from "@backend/user";
 import { savePlaylist } from "@backend/offline";
-import { editPlaylist } from "@backend/playlist";
+import { editPlaylist, fetchPlaylist } from "@backend/playlist";
 import { loadPlaylists } from "@backend/user";
-import { navigate } from "@backend/navigation";
 import { notify } from "@backend/notifications";
 import { reorder } from "@app/utils";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/pages/Playlist.scss";
 
 interface IProps {
-    pageArgs: any;
+    match: any;
 }
 
 interface IState {
@@ -62,8 +64,8 @@ class Playlist extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            playlist: props.pageArgs,
-            isPrivate: props.pageArgs.isPrivate,
+            playlist: null,
+            isPrivate: false,
             reloadKey: 0
         };
     }
@@ -71,8 +73,8 @@ class Playlist extends React.Component<IProps, IState> {
     /**
      * Returns the tracks in the playlist.
      */
-    getPlaylistTracks(): types.TrackData[] {
-        const playlist = this.getPlaylist();
+    async getPlaylistTracks(): Promise<types.TrackData[]> {
+        const playlist = await this.getPlaylist();
         if (!playlist) return [];
 
         return (
@@ -87,9 +89,9 @@ class Playlist extends React.Component<IProps, IState> {
     /**
      * Fetches the playlist from the page arguments.
      */
-    getPlaylist(): types.Playlist {
+    async getPlaylist(): Promise<types.Playlist> {
         const args = this.state.playlist ??
-            this.props.pageArgs;
+            (await fetchPlaylist(this.props.match.params.id));
         if (!args) return undefined;
         return args as types.Playlist;
     }
@@ -98,15 +100,15 @@ class Playlist extends React.Component<IProps, IState> {
      * Plays the playlist.
      * @param shuffle Whether to shuffle the playlist.
      */
-    play(shuffle = false): void {
-        playPlaylist(this.getPlaylist(), shuffle);
+    async play(shuffle = false): Promise<void> {
+        await playPlaylist(await this.getPlaylist(), shuffle);
     }
 
     /**
      * Downloads the playlist for offline use.
      */
-    download(): void {
-        const playlist = this.getPlaylist();
+    async download(): Promise<void> {
+        const playlist = await this.getPlaylist();
 
         // Save the playlist.
         playlist && savePlaylist(playlist);
@@ -123,25 +125,25 @@ class Playlist extends React.Component<IProps, IState> {
     /**
      * Deletes the playlist.
      */
-    delete(): void {
-        const playlist = this.getPlaylist();
+    async delete(): Promise<void> {
+        const playlist = await this.getPlaylist();
 
         // Delete the playlist.
         playlist && deletePlaylist(playlist.id);
         // Navigate to the home page.
-        navigate("Home");
+        await router.navigate(contentRoutes.HOME);
     }
 
     /**
      * Handles a drag & drop event.
      * @param result The drag & drop result.
      */
-    handleDrag(result: DropResult): void {
+    async handleDrag(result: DropResult): Promise<void> {
         // Check for a valid drag result.
         if (!result.destination) return;
 
         // Get the playlist.
-        const playlist = this.getPlaylist();
+        const playlist = await this.getPlaylist();
         if (playlist == undefined) return;
 
         // Re-order the playlist tracks.
@@ -164,7 +166,7 @@ class Playlist extends React.Component<IProps, IState> {
         const description = (document.getElementById("playlistDescriptionInput") as HTMLInputElement).value;
         const icon = (document.getElementById("playlistIconURLInput") as HTMLInputElement).value;
 
-        const playlist = this.getPlaylist();
+        const playlist = await this.getPlaylist();
         if (playlist == undefined) return;
 
         const oldName = playlist.name;
@@ -180,18 +182,21 @@ class Playlist extends React.Component<IProps, IState> {
         if (oldName != name) await loadPlaylists();
     }
 
-    componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
-        if (prevProps.pageArgs != this.props.pageArgs) {
-            this.setState({
-                playlist: this.props.pageArgs,
-                isPrivate: this.props.pageArgs.isPrivate,
-                reloadKey: this.state.reloadKey + 1
-            });
+    async componentDidMount() {
+        await loadPlaylists();
+        const playlist = await this.getPlaylist();
+        this.setState({ playlist, isPrivate: playlist.isPrivate });
+    }
+
+    async componentDidUpdate(prevProps: IProps) {
+        if (prevProps.match.params.id != this.props.match.params.id) {
+            const playlist = await fetchPlaylist(this.props.match.params.id);
+            this.setState({ playlist, isPrivate: playlist.isPrivate, reloadKey: this.state.reloadKey + 1 });
         }
     }
 
     render() {
-        const playlist = this.getPlaylist();
+        const { playlist } = this.state
         if (!playlist) return undefined;
 
         return (
@@ -274,7 +279,7 @@ class Playlist extends React.Component<IProps, IState> {
                                 </BasicDropdown>
 
                                     <div className={"Playlist_Tracks"}>
-                                        {this.getPlaylistTracks().map(
+                                        {playlist.tracks.map(
                                             (track, index) => (
                                                 <Draggable
                                                     key={track.id}
@@ -325,4 +330,4 @@ class Playlist extends React.Component<IProps, IState> {
     }
 }
 
-export default Playlist;
+export default Router(Playlist);

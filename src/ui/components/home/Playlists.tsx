@@ -1,15 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { RiHeartFill } from "react-icons/ri";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 import PlaylistItem from "@widget/Playlist";
-import NavLink from "@components/NavLink";
 import BasicButton from "@components/common/BasicButton";
 
 import { Playlist } from "@backend/types";
 import emitter from "@backend/events";
 import { playlists } from "@backend/user";
+import { contentRoutes } from "@app/constants";
 
 interface IState {
     playlists: Playlist[];
@@ -64,19 +65,21 @@ class Playlists extends React.Component<any, IState> {
                     className={"Home_PlaylistScroll"}
                 />
 
-                <NavLink to={"Favorites"}>
-                    {() => (
-                        <div className={"Home_PlaylistFavorites"}>
-                            <RiHeartFill />
-                            <h3>Favorites</h3>
-                        </div>
-                    )}
-                </NavLink>
+                <Link to={contentRoutes.FAVORITES} style={{ textDecoration: "none" }}>
+                    <div className={"Home_PlaylistFavorites"}>
+                        <RiHeartFill />
+                        <h3>Favorites</h3>
+                    </div>
+                </Link>
 
                 {this.state.playlists.map((playlist: Playlist) => (
-                    <NavLink to={"Playlist"} with={playlist} key={playlist.id}>
-                        {() => (<PlaylistItem playlist={playlist} />)}
-                    </NavLink>
+                    <Link
+                        to={`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`}
+                        key={playlist.id}
+                        style={{ textDecoration: "none" }}
+                    >
+                        <PlaylistItem playlist={playlist} />
+                    </Link>
                 ))}
 
                 <BasicButton

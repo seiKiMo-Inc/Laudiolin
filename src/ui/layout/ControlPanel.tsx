@@ -13,7 +13,8 @@ import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
 import { handleHotKeys, toMini } from "@app/utils";
-import { navigate } from "@backend/navigation";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 import { favoriteTrack, favorites } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
@@ -227,7 +228,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                         <ImStack
                             className={"ControlPanel_Control"}
-                            onClick={() => navigate("Queue")}
+                            onClick={() => router.navigate(contentRoutes.QUEUE)}
                             data-tooltip-content={"See Queue"}
                         />
                     </div>

@@ -8,9 +8,10 @@ import { invoke } from "@tauri-apps/api";
 
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
-import { navigate } from "@backend/navigation";
 import { getToken, login } from "@backend/user";
 import * as settings from "@backend/settings";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/components/Login.scss";
 
@@ -42,7 +43,7 @@ class Login extends React.PureComponent<{}, IState> {
         });
 
         // Navigate home.
-        navigate("Home");
+        router.navigate(contentRoutes.HOME);
     };
 
     constructor(props: {}) {

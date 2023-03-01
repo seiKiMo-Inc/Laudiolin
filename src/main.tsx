@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import * as fs from "@mod/fs";
 
@@ -10,6 +11,11 @@ import * as offline from "@backend/offline";
 import * as settings from "@backend/settings";
 
 import App from "./ui/App";
+
+// Create the router.
+export const router = createBrowserRouter([
+    { path: "*", element: <App /> }
+]);
 
 (async () => {
     // Load settings.
@@ -38,5 +44,5 @@ import App from "./ui/App";
 function render() {
     // Render the application.
     const root = document.getElementById("root");
-    createRoot(root!).render(<App />);
+    createRoot(root!).render(<RouterProvider router={router} />);
 }

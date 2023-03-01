@@ -9,7 +9,8 @@ import * as settings from "@backend/settings";
 import * as fs from "@mod/fs";
 import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
-import { navigate } from "@backend/navigation";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -148,7 +149,7 @@ export async function handleHotKeys(e: KeyboardEvent): Promise<void> {
     else if (e.key == "s" && (e.ctrlKey || e.metaKey)) TrackPlayer.shuffle();
     else if (e.key == "l" && (e.ctrlKey || e.metaKey)) await toggleRepeatState();
     else if (e.key == "f" && (e.ctrlKey || e.metaKey)) await this.favorite();
-    else if (e.key == "q" && (e.ctrlKey || e.metaKey)) navigate("Queue");
+    else if (e.key == "q" && (e.ctrlKey || e.metaKey)) await router.navigate(contentRoutes.QUEUE);
     else if (e.key == "m" && (e.ctrlKey || e.metaKey)) this.toggleMute();
 }
 
