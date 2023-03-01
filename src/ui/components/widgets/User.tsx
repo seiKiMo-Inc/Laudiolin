@@ -37,11 +37,16 @@ class User extends React.PureComponent<IProps, never> {
         const diffMinutes = Math.floor(diff / (1000 * 60));
         const diffSeconds = Math.floor(diff / 1000);
 
-        if (diffYears > 0) return `${diffYears} years ago`;
-        else if (diffMonths > 0) return `${diffMonths} months ago`;
-        else if (diffWeeks > 0) return `${diffWeeks} weeks ago`;
-        else if (diffDays > 0) return `${diffDays} days ago`;
-        else if (diffHours > 0) return `${diffHours} hours ago`;
+        if (diffYears > 1) return `${diffYears} years ago`;
+        else if (diffYears == 1) return `${diffYears} year ago`;
+        else if (diffMonths > 1) return `${diffMonths} months ago`;
+        else if (diffMonths == 1) return `${diffMonths} month ago`;
+        else if (diffWeeks > 1) return `${diffWeeks} weeks ago`;
+        else if (diffWeeks == 1) return `${diffWeeks} week ago`;
+        else if (diffDays > 1) return `${diffDays} days ago`;
+        else if (diffDays == 1) return `${diffDays} day ago`;
+        else if (diffHours > 1) return `${diffHours} hours ago`;
+        else if (diffHours == 1) return `${diffHours} hour ago`;
         else if (diffMinutes > 1) return `${diffMinutes} minutes ago`;
         else if (diffMinutes == 1) return `${diffMinutes} minute ago`;
         else if (diffSeconds > 0) return `${diffSeconds} seconds ago`;
