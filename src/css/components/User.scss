@@ -27,11 +27,13 @@
 }
 
 .User_Name {
-    &:nth-child(1) {
-        color: var(--text-primary-color);
-    }
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-primary-color);
 
-    &:nth-child(2) {
+    span:nth-child(2) {
         color: var(--text-secondary-color);
     }
 }

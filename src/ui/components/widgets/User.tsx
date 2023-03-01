@@ -87,11 +87,7 @@ class User extends React.PureComponent<IProps, never> {
                     <div className={"User_Info"}>
                         <div className={"User_Name"}>
                             <span>{user.username}</span>
-                            <span
-                                style={{ color: "var(--text-secondary-color)" }}
-                            >
-                                #{user.discriminator}
-                            </span>
+                            <span>#{user.discriminator}</span>
                         </div>
                         <div className={"User_Listening"}>
                             <span>{listening.title}</span>
