@@ -186,7 +186,7 @@ class App extends React.Component<{}, IState> {
 
     render() {
         return !this.state.miniPlayer ? (
-            <>
+            <main onContextMenu={(e) => e.preventDefault()}>
                 <TopButtons />
                 <div className={"AppContainer"}>
                     <NavPanel user={userData} />
@@ -196,7 +196,7 @@ class App extends React.Component<{}, IState> {
                     <ControlPanel />
                 </div>
                 <Alert />
-            </>
+            </main>
         ) : <MiniPlayer />;
     }
 }
