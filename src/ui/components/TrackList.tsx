@@ -41,7 +41,7 @@ class TrackList extends React.Component<IProps, never> {
 
     render() {
         return (
-            <div>
+            <div style={{ padding: 20 }}>
                 <h2>{this.props.title}</h2>
 
                 <div style={{ marginTop: 35 }}>
