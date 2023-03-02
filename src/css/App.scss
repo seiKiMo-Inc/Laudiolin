@@ -46,6 +46,10 @@ body {
     * {
         font-family: 'Poppins', sans-serif;
     }
+
+    svg:focus {
+        outline: none;
+    }
 }
 
 ::-webkit-scrollbar {
