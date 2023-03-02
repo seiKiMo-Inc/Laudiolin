@@ -45,8 +45,7 @@
 .Home_PlaylistScroll {
     visibility: hidden;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 150px;
     font-size: 30px;
     color: white !important;
     background-color: var(--accent-color) !important;

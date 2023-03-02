@@ -57,20 +57,13 @@ class Playlists extends React.Component<any, IState> {
     }
 
     render() {
-        return this.state.playlists.length > 0 ? (
+        return (
             <div className={"Home_Playlists"}>
                 <BasicButton
                     onClick={() => this.scrollTo("left")}
                     icon={<BiChevronLeft />}
                     className={"Home_PlaylistScroll"}
                 />
-
-                <Link to={contentRoutes.FAVORITES} style={{ textDecoration: "none" }}>
-                    <div className={"Home_PlaylistFavorites"}>
-                        <RiHeartFill />
-                        <h3>Favorites</h3>
-                    </div>
-                </Link>
 
                 {this.state.playlists.map((playlist: Playlist) => (
                     <Link
@@ -88,7 +81,7 @@ class Playlists extends React.Component<any, IState> {
                     className={"Home_PlaylistScroll"}
                 />
             </div>
-        ) : null;
+        );
     }
 }
 
