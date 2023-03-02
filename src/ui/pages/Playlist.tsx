@@ -15,11 +15,12 @@ import Router from "@components/common/Router";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
-import { deletePlaylist, getPlaylistAuthor } from "@backend/user";
+import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/user";
 import { savePlaylist } from "@backend/offline";
 import { editPlaylist, fetchPlaylist } from "@backend/playlist";
 import { loadPlaylists } from "@backend/user";
 import { notify } from "@backend/notifications";
+import emitter from "@backend/events";
 import { reorder } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
@@ -132,6 +133,9 @@ class Playlist extends React.Component<IProps, IState> {
         playlist && deletePlaylist(playlist.id);
         // Navigate to the home page.
         await router.navigate(contentRoutes.HOME);
+        // Remove the playlist from the list.
+        const newPlaylists = playlists.filter((p) => p.id != playlist.id);
+        emitter.emit("playlist", newPlaylists);
     }
 
     /**

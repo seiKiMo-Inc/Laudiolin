@@ -57,7 +57,7 @@ class Playlists extends React.Component<any, IState> {
     }
 
     render() {
-        return (
+        return this.state.playlists.length > 0 ? (
             <div className={"Home_Playlists"}>
                 <BasicButton
                     onClick={() => this.scrollTo("left")}
@@ -88,7 +88,7 @@ class Playlists extends React.Component<any, IState> {
                     className={"Home_PlaylistScroll"}
                 />
             </div>
-        );
+        ) : null;
     }
 }
 
