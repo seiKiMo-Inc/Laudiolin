@@ -13,6 +13,7 @@ interface IProps {
 
     emitter?: EventEmitter;
     queue?: boolean;
+    padding?: number;
 }
 
 class TrackList extends React.Component<IProps, never> {
@@ -41,7 +42,7 @@ class TrackList extends React.Component<IProps, never> {
 
     render() {
         return (
-            <div style={{ padding: 20 }}>
+            <div style={{ padding: this.props.padding ?? 20 }}>
                 <h2>{this.props.title}</h2>
 
                 <div style={{ marginTop: 35 }}>
