@@ -183,7 +183,6 @@ class Playlist extends React.Component<IProps, IState> {
     }
 
     async componentDidMount() {
-        await loadPlaylists();
         const playlist = await this.getPlaylist();
         this.setState({ playlist, isPrivate: playlist.isPrivate });
     }
