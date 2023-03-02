@@ -103,8 +103,8 @@ class TopBar extends React.Component<{}, IState> {
                     tooltipId={"activity_tooltip"}
                 />
 
-                <Tooltip anchorSelect={".TopBar_NavButtons"} place={"bottom"} />
-                <Tooltip id={"activity_tooltip"} place={"bottom"}>Toggle Activity Tab</Tooltip>
+                <Tooltip anchorSelect={".TopBar_NavButtons"} place={"bottom"} className={"Tooltip"} />
+                <Tooltip id={"activity_tooltip"} place={"bottom"} className={"Tooltip"}>Toggle Activity Tab</Tooltip>
             </div>
         );
     }

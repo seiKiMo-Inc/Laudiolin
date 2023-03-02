@@ -262,8 +262,8 @@ class ControlPanel extends React.Component<any, IState> {
                     />
                 </div>
 
-                <Tooltip anchorSelect={".ControlPanel_Control"} />
-                <Tooltip anchorSelect={".ControlPanel_Popout"} />
+                <Tooltip anchorSelect={".ControlPanel_Control"} className={"Tooltip"} />
+                <Tooltip anchorSelect={".ControlPanel_Popout"} className={"Tooltip"} />
             </div>
         );
     }

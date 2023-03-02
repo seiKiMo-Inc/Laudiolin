@@ -170,7 +170,7 @@ class Playlists extends React.Component<any, IState> {
                     <input type={"text"} id={"playlistImportModal_url"} placeholder={"Playlist URL"} />
                 </BasicModal>
 
-                <Tooltip id={"create_playlist_tooltip"}>Create Playlist</Tooltip>
+                <Tooltip id={"create_playlist_tooltip"} className={"Tooltip"}>Create Playlist</Tooltip>
             </>
         );
     }

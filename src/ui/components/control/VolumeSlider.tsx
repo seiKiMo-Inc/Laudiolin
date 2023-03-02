@@ -63,7 +63,7 @@ class VolumeSlider extends React.Component<IProps, IState> {
                     }}
                     draggableTrack={true}
                 />
-                <Tooltip id={"volume_tooltip"} />
+                <Tooltip id={"volume_tooltip"} className={"Tooltip"} />
             </div>
         );
     }
