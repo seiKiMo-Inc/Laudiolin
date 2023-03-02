@@ -1,5 +1,3 @@
-import * as notifs from "@tauri-apps/api/notification";
-
 import type { InAppNotificationData } from "@backend/types";
 import * as settings from "@backend/settings";
 
@@ -11,10 +9,10 @@ export async function notify(notification: InAppNotificationData) {
     // Check if the user has notifications enabled.
     if (
         !settings.get("notifications") ||
-        !(await notifs.isPermissionGranted())
+        !(Notification.permission == "granted")
     ) {
         // Request permission to send notifications.
-        const result = await notifs.requestPermission();
+        const result = await Notification.requestPermission();
         if (result !== "granted") return;
 
         // Save the user's preference.
@@ -22,8 +20,12 @@ export async function notify(notification: InAppNotificationData) {
     }
 
     // Send the notification.
-    notifs.sendNotification({
-        title: "Laudiolin",
+    const notif = new Notification("Laudiolin", {
         body: notification.message
     });
+
+    notif.onclick = () => {
+        window.parent.focus();
+        notif.close();
+    };
 }

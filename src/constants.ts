@@ -6,13 +6,12 @@ export let Gateway = {
 };
 
 /* Web-browser environment. */
-export const isWeb = false;
+export const isWeb = true;
 
 /* Content routes. */
 export const contentRoutes = {
     HOME: "/",
     FAVORITES: "/favorites",
-    DOWNLOADS: "/downloads",
     PLAYLIST: "/playlist/:id",
     QUEUE: "/queue",
     SETTINGS: "/settings",

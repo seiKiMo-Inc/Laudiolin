@@ -7,16 +7,11 @@
 
   "type": "module",
   "scripts": {
-    "postinstall": "rustup override set nightly",
-
-    "start:dev": "tauri dev",
     "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
-    "package": "tauri build",
 
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
+    "preview": "vite preview"
   },
 
   "dependencies": {
@@ -31,9 +26,7 @@
 
     "events": "^3.3.0",
     "howler": "^2.2.3",
-    "js-base64": "^3.7.5",
-
-    "@tauri-apps/api": "^1.2.0"
+    "js-base64": "^3.7.5"
   },
   "devDependencies": {
     "typescript": "^4.6.4",
@@ -56,8 +49,6 @@
     "postcss-load-config": "^4.0.1",
     "postcss-font-magician": "^3.0.0",
 
-    "prettier": "^2.7.1",
-
-    "@tauri-apps/cli": "^1.2.2"
+    "prettier": "^2.7.1"
   }
 }

@@ -4,8 +4,6 @@ import BasicModal from "@components/common/BasicModal";
 import BasicButton from "@components/common/BasicButton";
 import BasicToggle from "@components/common/BasicToggle";
 
-import { invoke } from "@tauri-apps/api";
-
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
 import { getToken, login } from "@backend/user";
@@ -19,6 +17,8 @@ interface IState {
     save: boolean;
     waiting: boolean;
     loginCode: string;
+    window: Window;
+    interval: number;
 }
 
 class Login extends React.PureComponent<{}, IState> {
@@ -39,11 +39,41 @@ class Login extends React.PureComponent<{}, IState> {
         this.setState({
             save: true,
             waiting: false,
-            loginCode: ""
+            loginCode: "",
+            window: null,
+            interval: 0
         });
 
         // Navigate home.
         router.navigate(contentRoutes.HOME);
+    };
+
+    /**
+     * Listens for a successful login.
+     */
+    listenForLogin = () => {
+        // Check if the localstorage has been updated.
+        if (localStorage.getItem("authenticated") == null)
+            return;
+
+        // Validate the code.
+        const code = localStorage.getItem("user_token");
+        if (code == null || code == "")
+            return;
+
+        // Perform a login.
+        login().then(() => {
+            settings.setToken(code);
+            settings.save("authenticated", "discord");
+        }).catch((err) => console.warn(err));
+
+        // If it has, stop listening.
+        clearInterval(this.state.interval);
+        // Close the window.
+        this.state.window.close();
+
+        // Perform a cleanup.
+        this.cleanup();
     };
 
     constructor(props: {}) {
@@ -52,7 +82,9 @@ class Login extends React.PureComponent<{}, IState> {
         this.state = {
             save: true,
             waiting: false,
-            loginCode: ""
+            loginCode: "",
+            window: null,
+            interval: 0
         };
     }
 
@@ -69,10 +101,12 @@ class Login extends React.PureComponent<{}, IState> {
                 .then(() => login())
                 .catch((err) => console.warn(err));
         } else {
-            // Open the login URL in a browser.
-            invoke("open", { url: `${Gateway.getUrl()}/discord` })
-                .then(() => this.setState({ waiting: true }))
-                .catch((err) => console.warn(err));
+            // Open the login URL in a new tab.
+            this.setState({
+                waiting: true,
+                window: window.open(`${Gateway.getUrl()}/discord`, "_blank"),
+                interval: setInterval(this.listenForLogin, 3e3) as unknown as number
+            });
         }
     }
 

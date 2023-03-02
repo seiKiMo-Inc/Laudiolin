@@ -8,7 +8,6 @@ import Favorites from "@pages/Favorites";
 import Search from "@pages/Search";
 import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
-import Downloads from "@pages/Downloads";
 import Queue from "@pages/Queue";
 import Recents from "@pages/Recents";
 import Login from "@widget/Login";
@@ -27,7 +26,6 @@ class MainView extends React.Component<any> {
                     <Route path={contentRoutes.SEARCH} element={<Search />} />
                     <Route path={contentRoutes.SETTINGS} element={<Settings />} />
                     <Route path={contentRoutes.PLAYLIST} element={<Playlist />} />
-                    <Route path={contentRoutes.DOWNLOADS} element={<Downloads />} />
                     <Route path={contentRoutes.QUEUE} element={<Queue />} />
                     <Route path={contentRoutes.RECENTS} element={<Recents />} />
                     <Route path={contentRoutes.LOGIN} element={<Login />} />

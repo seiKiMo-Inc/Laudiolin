@@ -16,10 +16,8 @@ import Router from "@components/common/Router";
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
 import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/user";
-import { savePlaylist } from "@backend/offline";
 import { editPlaylist, fetchPlaylist } from "@backend/playlist";
 import { loadPlaylists } from "@backend/user";
-import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
 import { reorder } from "@app/utils";
 import { router } from "@app/main";
@@ -103,24 +101,6 @@ class Playlist extends React.Component<IProps, IState> {
      */
     async play(shuffle = false): Promise<void> {
         await playPlaylist(await this.getPlaylist(), shuffle);
-    }
-
-    /**
-     * Downloads the playlist for offline use.
-     */
-    async download(): Promise<void> {
-        const playlist = await this.getPlaylist();
-
-        // Save the playlist.
-        playlist && savePlaylist(playlist);
-
-        // Send a notification.
-        notify({
-            type: "info",
-            message: `Started download of playlist ${
-                playlist?.name ?? "Unknown"
-            }.`
-        });
     }
 
     /**
@@ -277,7 +257,6 @@ class Playlist extends React.Component<IProps, IState> {
                                     </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
-                                    <a onClick={() => this.download()}>Download Playlist</a>
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
                                 </BasicDropdown>
 

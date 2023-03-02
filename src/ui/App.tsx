@@ -1,6 +1,5 @@
 import React from "react";
 
-import TopButtons from "@layout/TopButtons";
 import ControlPanel from "@layout/ControlPanel";
 import NavPanel from "@layout/NavPanel";
 import MainView from "@layout/MainView";
@@ -8,16 +7,11 @@ import ActivityPanel from "@layout/ActivityPanel";
 import TopBar from "@layout/TopBar";
 
 import Alert from "@components/Alert";
-import MiniPlayer from "@components/player/MiniPlayer";
-
-import { invoke } from "@tauri-apps/api";
-import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 import emitter from "@backend/events";
-import { loadState } from "@backend/offline";
 import { openFromUrl } from "@backend/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
-import { login, userData, loaders, playlists } from "@backend/user";
+import { login, userData } from "@backend/user";
 import { get } from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
@@ -39,68 +33,12 @@ class App extends React.Component<{}, IState> {
         this.fadeLaunchScreen();
     };
 
-    /**
-     * Sets the mini player state.
-     * @param enter Should the mini player enter or exit?
-     */
-    miniPlayer = (enter: boolean) => {
-        this.setState({ miniPlayer: enter });
-        appWindow.setSize(enter ?
-            new LogicalSize(427, 240) :
-            new LogicalSize(1200, 600));
-        appWindow.setResizable(!enter);
-
-        // If exiting, reload user data.
-        if (!enter) {
-            setTimeout(() => {
-                emitter.emit("playlist", playlists);
-            }, 1e3);
-        }
-    };
-
     constructor(props: {}) {
         super(props);
 
         this.state = {
             miniPlayer: false
         };
-    }
-
-    /**
-     * Checks if the window is in mini player mode.
-     * Resizes the window if it is.
-     */
-    async checkMiniPlayerState(): Promise<void> {
-        const size = await appWindow.innerSize();
-        if (size.width == 427 && size.height == 240)
-            this.miniPlayer(false);
-    }
-
-    /**
-     * Checks if the user is online.
-     */
-    checkIfOnline(): void {
-        const loadOffline = () =>
-            loadState(
-                loaders.userData,
-                loaders.playlists,
-                loaders.favorites
-            ).catch((err) => console.warn(err));
-
-        invoke("online")
-            .then((online: boolean) => {
-                if (online) {
-                    // Attempt to log in.
-                    login()
-                        .then(() => openFromUrl())
-                        .catch(() => loadOffline());
-                } else {
-                    // Attempt to load offline user data.
-                    // Load the offline state.
-                    setTimeout(loadOffline, 1e3);
-                }
-            })
-            .catch((err) => console.warn(err));
     }
 
     /**
@@ -152,8 +90,10 @@ class App extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
-        // Check if the window is in mini player mode.
-        this.checkMiniPlayerState();
+        // Attempt to log in.
+        login()
+            .then(() => openFromUrl())
+            .catch((err) => console.warn(err));
 
         // Check if user is logged in.
         if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
@@ -162,13 +102,11 @@ class App extends React.Component<{}, IState> {
         // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
-        emitter.on("miniPlayer", this.miniPlayer);
+
         // Register document event listeners.
         document.onclick = this.closeDropdowns;
         document.oncontextmenu = this.closeDropdowns;
 
-        // Check if the user is online.
-        this.checkIfOnline();
         // Load the player's last known state.
         loadPlayerState().catch((err) => console.warn(err));
 
@@ -180,14 +118,12 @@ class App extends React.Component<{}, IState> {
         // Unregister event listeners.
         emitter.off("login", this.reloadUser);
         emitter.off("logout", this.reloadUser);
-        emitter.off("miniPlayer", this.miniPlayer);
         document.onclick = null;
     }
 
     render() {
-        return !this.state.miniPlayer ? (
+        return (
             <main onContextMenu={(e) => e.preventDefault()}>
-                <TopButtons />
                 <div className={"AppContainer"}>
                     <NavPanel user={userData} />
                     <TopBar />
@@ -197,7 +133,7 @@ class App extends React.Component<{}, IState> {
                 </div>
                 <Alert />
             </main>
-        ) : <MiniPlayer />;
+        );
     }
 }
 export default App;
