@@ -13,13 +13,16 @@ A "high quality" music player written in TypeScript using Tauri and React.
 
 ## Features
 
-- Play music from online services like YouTube.
+- Play music from online services like YouTube and Spotify.
 - Download audios.
 - Login using Discord OAuth.
 - Create playlists (synced with your account).
 - Discord Rich Presence showing your current song.
 - Queue system with shuffle and repeat.
-- Background customization.
+- Miniplayer.
+- Listening along with friends and online people based on preference.
+- Importing playlists from YouTube and Spotify.
+- Look at what your friends are listening to.
 - No ads or any kind of monetization.
 
 ## Installation
@@ -28,23 +31,29 @@ If you do not wish to build the app from source you can download the latest rele
 
 ## Screenshots
 
-*Home page when idle:*
-![Home screen idle]()
+*Login page:*
+
+![Login page](https://user-images.githubusercontent.com/104459145/222646665-1d8d0df1-c229-4425-9031-8c105cec0dc5.png)
+
+*Home page:*
+
+![Home screen](https://user-images.githubusercontent.com/104459145/222647486-caaa96a2-ee64-478f-9fa4-df0a683003a2.png)
 
 *Search results:*
-![Search results]()
 
-*Playing a song:*
-![Playing a song]()
+![Search results](https://user-images.githubusercontent.com/104459145/222647186-dff9f59f-d6a3-4e7d-b243-616ddd6e5552.png)
 
 *Playlists:*
-![Playlists]()
 
-*Track Page:*
-![Track page]()
+![Playlists](https://user-images.githubusercontent.com/104459145/222647728-fb285311-a8a7-4734-b99a-c813c870e2cc.png)
 
-*Laudiolin with custom background and brightness set by the user:*
-![Custom background]()
+*Settings:*
+
+![Settings](https://user-images.githubusercontent.com/104459145/222647952-b0adf02c-b042-488f-9df1-3ea80313f90f.png)
+
+*Miniplayer:*
+
+![Miniplayer](https://user-images.githubusercontent.com/104459145/222648195-5f115024-a9ea-4a44-84a2-0363fb70c2b5.png)
 
 and more...
 
@@ -65,6 +74,7 @@ npm run start:dev             # Start the app in development mode
 
 ### Building From Source
 
+- run `npm i` to install all dependencies
 - run `npm run package` for a `release` build
 - run `npm run package -- --debug` for a `debug` build
 
@@ -83,6 +93,14 @@ Just Try to follow the style of the code and use `npm run lint` to format your c
 
 ### Creators
 
+#### V2 (Current)
+
 - [Arikatsu](https://github.com/Arikatsu)
 - [KingRainbow44](https://github.com/KingRainbow44)
-- no more shichihachi 😭
+- [Natsu](https://github.com/natsurepo)
+
+#### V1
+
+- [Arikatsu](https://github.com/Arikatsu)
+- [KingRainbow44](https://github.com/KingRainbow44)
+- [Shichihachi](https://github.com/Shichiha)
