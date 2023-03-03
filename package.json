@@ -1,7 +1,7 @@
 {
   "name": "laudiolin",
   "description": "A music player.",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "authors": ["KingRainbow44", "Arikatsu"],
   "private": true,
 
@@ -17,8 +17,10 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2",
     "react-icons": "^4.7.1",
     "react-switch": "^7.0.0",
+    "react-tooltip": "^5.8.3",
     "react-beautiful-dnd": "^13.1.1",
     "rc-slider": "^10.1.1",
 

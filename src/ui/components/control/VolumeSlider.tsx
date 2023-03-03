@@ -2,6 +2,7 @@ import React from "react";
 
 import { FiVolumeX, FiVolume1, FiVolume2 } from "react-icons/fi";
 import Slider from "rc-slider/es";
+import { Tooltip } from "react-tooltip";
 
 interface IProps {
     volume: number;
@@ -29,6 +30,9 @@ class VolumeSlider extends React.Component<IProps, IState> {
                 className={"ControlPanel_Volume"}
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
+                data-tooltip-content={this.props.volume + "%"}
+                data-tooltip-float={true}
+                data-tooltip-id={"volume_tooltip"}
             >
                 <div
                     className={"ControlPanel_Volume_Icon"}
@@ -59,6 +63,7 @@ class VolumeSlider extends React.Component<IProps, IState> {
                     }}
                     draggableTrack={true}
                 />
+                <Tooltip id={"volume_tooltip"} className={"Tooltip"} />
             </div>
         );
     }

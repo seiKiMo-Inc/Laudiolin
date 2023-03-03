@@ -8,7 +8,8 @@ import * as settings from "@backend/settings";
 
 import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
-import { navigate } from "@backend/navigation";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -151,6 +152,25 @@ export async function handleHotKeys(e: KeyboardEvent): Promise<void> {
     else if (e.key == "s" && (e.ctrlKey || e.metaKey)) TrackPlayer.shuffle();
     else if (e.key == "l" && (e.ctrlKey || e.metaKey)) await toggleRepeatState();
     else if (e.key == "f" && (e.ctrlKey || e.metaKey)) await this.favorite();
-    else if (e.key == "q" && (e.ctrlKey || e.metaKey)) navigate("Queue");
+    else if (e.key == "q" && (e.ctrlKey || e.metaKey)) await router.navigate(contentRoutes.QUEUE);
     else if (e.key == "m" && (e.ctrlKey || e.metaKey)) this.toggleMute();
+}
+
+/**
+ * Fades a component out.
+ * @param element The element to fade out.
+ * @param duration The duration of the fade.
+ */
+export function fadeOut(element: HTMLElement, duration: number): void {
+    let start = new Date().getTime();
+    (function next() {
+        let time = new Date().getTime() - start;
+        if(time < duration) {
+            element.style.opacity = `${1 - time / duration}`;
+            requestAnimationFrame(next);
+        } else {
+            element.style.opacity = '0';
+            element.style.display = 'none';
+        }
+    })();
 }

@@ -46,6 +46,10 @@ body {
     * {
         font-family: 'Poppins', sans-serif;
     }
+
+    svg:focus {
+        outline: none;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -75,7 +79,6 @@ body {
 }
 
 .MainView {
-    padding: 20px;
     grid-area: main;
     background-color: var(--background-secondary-color);
     overflow: auto;
@@ -294,4 +297,33 @@ body {
         transform: translateX(0);
     }
 }
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
+    gap: 20px;
+
+    h1 {
+        margin: 0;
+        color: var(--text-secondary-color);
+        font-size: 40px;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 0;
+        color: var(--text-secondary-color);
+        font-size: 15px;
+    }
+}
+
+.Tooltip {
+    z-index: 1000;
+}
+
 

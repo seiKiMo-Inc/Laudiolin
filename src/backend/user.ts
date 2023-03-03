@@ -1,10 +1,11 @@
 import type { User, Playlist, TrackData, PlaylistAuthor } from "@backend/types";
 
 import emitter from "@backend/events";
-import { navigate } from "@backend/navigation";
 import * as settings from "@backend/settings";
 
 import { Gateway } from "@app/constants";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import { setToken } from "@backend/settings";
 
@@ -142,7 +143,7 @@ export async function login(
             `Failed to get user data from the backend. Status code: ${response.status}`
         );
         await logout(); // Log the user out.
-        navigate("Login"); // Redirect to the login page.
+        await router.navigate(contentRoutes.LOGIN); // Redirect to the login page.
 
         return false;
     }
@@ -186,7 +187,7 @@ export function logout() {
     emitter.emit("logout");
 
     // Send the user to the login page.
-    navigate("Login");
+    router.navigate(contentRoutes.LOGIN);
 }
 
 /**

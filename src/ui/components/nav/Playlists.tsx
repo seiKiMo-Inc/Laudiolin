@@ -1,8 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import { BiAddToQueue } from "react-icons/bi";
+import { Tooltip } from "react-tooltip";
 
-import NavLink from "@components/NavLink";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
 import BasicButton from "@components/common/BasicButton";
@@ -12,6 +13,7 @@ import { Playlist } from "@backend/types";
 import emitter from "@backend/events";
 import { createPlaylist, loadPlaylists, login } from "@backend/user";
 import { importPlaylist } from "@backend/playlist";
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
 
@@ -105,16 +107,19 @@ class Playlists extends React.Component<any, IState> {
                         <>
                             <div className={"Playlists_Header"}>
                                 <h3>Your Playlists</h3>
-                                <BiAddToQueue onClick={() => BasicModal.showModal("playlistCreateModal")} />
+                                <BiAddToQueue
+                                    onClick={() => BasicModal.showModal("playlistCreateModal")}
+                                    data-tooltip-id={"create_playlist_tooltip"}
+                                />
                             </div>
 
                             <div className={"Playlists_Container"}>
                                 {playlists.map((playlist) => (
-                                    <NavLink
-                                        to={"Playlist"}
-                                        with={playlist}
+                                    playlist && <NavLink
+                                        to={`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`}
                                         className={"Playlists_Item"}
                                         key={playlist.id}
+                                        style={{ textDecoration: "none" }}
                                     >
                                         {({ isActive }) => (
                                             <p
@@ -137,6 +142,7 @@ class Playlists extends React.Component<any, IState> {
                             onClick={() => BasicModal.showModal("playlistCreateModal")}
                             text={"Create a playlist"}
                             icon={<BiAddToQueue />}
+                            tooltipId={"create_playlist_tooltip"}
                         />
                     )
                 }
@@ -163,6 +169,8 @@ class Playlists extends React.Component<any, IState> {
                     <p style={{ color: "var(--text-secondary-color)" }}>You can import any playlist from YouTube or Spotify.</p>
                     <input type={"text"} id={"playlistImportModal_url"} placeholder={"Playlist URL"} />
                 </BasicModal>
+
+                <Tooltip id={"create_playlist_tooltip"} className={"Tooltip"}>Create Playlist</Tooltip>
             </>
         );
     }

@@ -15,3 +15,12 @@
     flex-direction: column;
     gap: 15px;
 }
+
+.ActivityPanel_Empty {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    font-weight: 500;
+}

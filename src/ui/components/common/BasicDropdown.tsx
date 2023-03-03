@@ -14,7 +14,17 @@ interface IProps {
 
 export function toggleDropdown(id: string, x?: number, y?: number) {
     const element = document.getElementById(id);
+    const dropdowns = document.getElementsByClassName("DropdownContent");
+
+    for (let i = 0; i < dropdowns.length; i++) {
+        const openDropdown = dropdowns[i];
+        if (openDropdown.id !== id) {
+            openDropdown.classList.remove("show");
+        }
+    }
+
     element.classList.toggle("show");
+
     if (x && y) {
         element.style.left = x + "px";
         element.style.top = y + "px";

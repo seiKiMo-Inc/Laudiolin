@@ -1,6 +1,16 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Navigate from "@components/Navigate";
+import { contentRoutes } from "@app/constants";
+
+import Home from "@pages/Home";
+import Favorites from "@pages/Favorites";
+import Search from "@pages/Search";
+import Settings from "@pages/Settings";
+import Playlist from "@pages/Playlist";
+import Queue from "@pages/Queue";
+import Recents from "@pages/Recents";
+import Login from "@widget/Login";
 
 class MainView extends React.Component<any> {
     constructor(props: any) {
@@ -10,7 +20,16 @@ class MainView extends React.Component<any> {
     render() {
         return (
             <div className={"MainView"}>
-                <Navigate />
+                <Routes>
+                    <Route path={contentRoutes.HOME} element={<Home />} />
+                    <Route path={contentRoutes.FAVORITES} element={<Favorites />} />
+                    <Route path={contentRoutes.SEARCH} element={<Search />} />
+                    <Route path={contentRoutes.SETTINGS} element={<Settings />} />
+                    <Route path={contentRoutes.PLAYLIST} element={<Playlist />} />
+                    <Route path={contentRoutes.QUEUE} element={<Queue />} />
+                    <Route path={contentRoutes.RECENTS} element={<Recents />} />
+                    <Route path={contentRoutes.LOGIN} element={<Login />} />
+                </Routes>
             </div>
         );
     }

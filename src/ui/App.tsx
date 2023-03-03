@@ -10,11 +10,15 @@ import Alert from "@components/Alert";
 
 import emitter from "@backend/events";
 import { openFromUrl } from "@backend/link";
-import { loadPlayerState } from "@app/utils";
+import { loadPlayerState, fadeOut } from "@app/utils";
 import { login, userData } from "@backend/user";
+import { get } from "@backend/settings";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/App.scss";
 import "@css/Text.scss";
+import "react-tooltip/dist/react-tooltip.css";
 
 interface IState {
     miniPlayer: boolean;
@@ -26,6 +30,7 @@ class App extends React.Component<{}, IState> {
      */
     reloadUser = () => {
         this.forceUpdate();
+        this.fadeLaunchScreen();
     };
 
     constructor(props: {}) {
@@ -74,21 +79,39 @@ class App extends React.Component<{}, IState> {
         }
     };
 
+    fadeLaunchScreen = (): void => {
+        setTimeout(() => {
+            const placeholderBG = document.getElementById("placeholderBG");
+            const loader = document.getElementsByClassName("loader")[0] as HTMLElement;
+
+            fadeOut(placeholderBG, 200);
+            fadeOut(loader, 200);
+        }, 1e3);
+    }
+
     componentDidMount() {
         // Attempt to log in.
         login()
             .then(() => openFromUrl())
             .catch((err) => console.warn(err));
 
+        // Check if user is logged in.
+        if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
+            router.navigate(contentRoutes.LOGIN);
+
         // Register event listeners.
         emitter.on("login", this.reloadUser);
         emitter.on("logout", this.reloadUser);
+
         // Register document event listeners.
         document.onclick = this.closeDropdowns;
         document.oncontextmenu = this.closeDropdowns;
 
         // Load the player's last known state.
         loadPlayerState().catch((err) => console.warn(err));
+
+        // Fade launch screen.
+        if (get("authenticated") !== "discord") this.fadeLaunchScreen();
     }
 
     componentWillUnmount() {
@@ -100,7 +123,7 @@ class App extends React.Component<{}, IState> {
 
     render() {
         return (
-            <>
+            <main onContextMenu={(e) => e.preventDefault()}>
                 <div className={"AppContainer"}>
                     <NavPanel user={userData} />
                     <TopBar />
@@ -109,9 +132,8 @@ class App extends React.Component<{}, IState> {
                     <ControlPanel />
                 </div>
                 <Alert />
-            </>
+            </main>
         );
     }
 }
-
 export default App;

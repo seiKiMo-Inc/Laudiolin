@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
@@ -65,36 +65,26 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Sets the position of a dropdown.
      */
-    setDropdownPosition(): void {
+    setDropdownPosition(e: MouseEvent): void {
         const id = this.props.track.id;
         const dropdown = document.getElementById(`Track_${id}`);
-        const button = document.getElementById(`Track_${id}_Button`);
+        const trackWidth = document.getElementsByClassName("Track")[0]?.clientWidth;
 
-        if (!button || !dropdown) return;
-
-        const buttonRect = button.getBoundingClientRect();
-        const dropdownRect = dropdown.getBoundingClientRect();
-
-        const top = buttonRect.top + buttonRect.height;
-        const left = buttonRect.left;
-
-        if (top + dropdownRect.height > window.innerHeight) {
-            dropdown.style.top = buttonRect.top - dropdownRect.height + "px";
-        } else {
-            dropdown.style.top = top + "px";
+        if (dropdown && trackWidth) {
+            dropdown.style.left = `${trackWidth - 250}px`;
         }
 
-        dropdown.style.left = left + "px";
+        dropdown.style.top = `${e.clientY - 100}px`;
     }
 
     /**
      * Opens the track source in a browser.
      */
-    async openSource(): Promise<void> {
+    openSource(): void {
         const track = this.props.track;
         if (!track) return;
 
-        window.open('https://www.codexworld.com', '_blank');
+        window.open(track.url, "_blank");
     }
 
     /**
@@ -119,14 +109,6 @@ class Track extends React.PureComponent<IProps, never> {
                 <div
                     className={"Track"}
                     onClick={() => this.play()}
-                    onContextMenu={(event) => {
-                        toggleDropdown(
-                            `Track_${track.id}`,
-                            event.clientX,
-                            event.clientY
-                        );
-                        event.preventDefault();
-                    }}
                 >
                     <div className={"Track_Info"}>
                         <img
@@ -150,21 +132,27 @@ class Track extends React.PureComponent<IProps, never> {
                                     height: 18.18,
                                     color: "var(--accent-color)"
                                 }}
-                                onClick={() => this.favorite()}
+                                onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await this.favorite();
+                                }}
                             />
                         ) : (
                             <AiOutlineHeart
                                 style={{ width: 20, height: 18.18 }}
-                                onClick={() => this.favorite()}
+                                onClick={async (e) => {
+                                    e.stopPropagation();
+                                    await this.favorite();
+                                }}
                             />
                         )}
                         <BasicButton
                             id={`Track_${track.id}_Button`}
                             icon={<VscEllipsis />}
-                            onClick={() => {
-                                this.setDropdownPosition();
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                this.setDropdownPosition(e);
                                 toggleDropdown(`Track_${track.id}`);
-                                event.preventDefault();
                             }}
                             className={"dropbtn"}
                             style={{ backgroundColor: "transparent" }}
@@ -172,7 +160,7 @@ class Track extends React.PureComponent<IProps, never> {
                     </div>
                 </div>
 
-                <BasicDropdown id={`Track_${track.id}`}>
+                <BasicDropdown id={`Track_${track.id}`} className={`Track_${track.id}`}>
                     {!this.props.queue ? (
                         <a onClick={() => this.queue()}>Add to Queue</a>
                     ) : (
@@ -186,7 +174,7 @@ class Track extends React.PureComponent<IProps, never> {
                     ) : (
                         <a>Add Track to Playlist</a>
                     )}
-                    <a onClick={async () => await this.openSource()}>
+                    <a onClick={() => this.openSource()}>
                         Open Track Source
                     </a>
                     <a onClick={async () => await this.copyUrl()}>

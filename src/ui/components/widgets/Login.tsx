@@ -6,9 +6,10 @@ import BasicToggle from "@components/common/BasicToggle";
 
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
-import { navigate } from "@backend/navigation";
 import { getToken, login } from "@backend/user";
 import * as settings from "@backend/settings";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/components/Login.scss";
 
@@ -16,7 +17,6 @@ interface IState {
     save: boolean;
     waiting: boolean;
     loginCode: string;
-
     window: Window;
     interval: number;
 }
@@ -45,7 +45,7 @@ class Login extends React.PureComponent<{}, IState> {
         });
 
         // Navigate home.
-        navigate("Home");
+        router.navigate(contentRoutes.HOME);
     };
 
     /**

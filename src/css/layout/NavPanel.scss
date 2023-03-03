@@ -100,18 +100,27 @@
     align-items: center;
     gap: 10px;
     transition: all 0.2s ease-in-out;
-    color: var(--text-tertiary-color);
+    color: var(--text-tertiary-color) !important;
     text-decoration: none;
 
     &:hover {
         color: var(--text-primary-color) !important;
         cursor: pointer;
+
+        p {
+            color: var(--text-primary-color) !important;
+        }
     }
 
     * {
         font-size: 15px;
         font-weight: 500;
         margin-left: 10px;
+    }
+
+    p {
+        transition: all 0.2s ease-in-out;
+        color: var(--text-tertiary-color);
     }
 }
 

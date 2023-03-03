@@ -9,6 +9,13 @@
     padding: 60px 30px !important;
 }
 
+#login {
+    background-image: url("/background.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .Login_Title {
     color: var(--text-primary-color);
 

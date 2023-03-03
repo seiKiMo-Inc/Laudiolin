@@ -3,7 +3,9 @@ import React, { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import { doSearch } from "@backend/search";
-import { navigate } from "@backend/navigation";
+import emitter from "@backend/events";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 
 import "@css/layout/TopBar.scss";
 
@@ -29,7 +31,10 @@ class SearchInput extends React.Component<IProps, IState> {
 
         this.searchTimeout = setTimeout(() => {
             doSearch(text)
-                .then((results) => navigate("Search", { results }))
+                .then(async (results) => {
+                    await router.navigate(contentRoutes.SEARCH);
+                    emitter.emit("search", results);
+                })
                 .catch((err) => console.error(err));
             this.searchTimeout = null;
         }, 500);
@@ -40,7 +45,10 @@ class SearchInput extends React.Component<IProps, IState> {
 
         const text = event.currentTarget.value;
         doSearch(text)
-            .then((results) => navigate("Search", { results }))
+            .then(async (results) => {
+                await router.navigate(contentRoutes.SEARCH);
+                emitter.emit("search", results);
+            })
             .catch((err) => console.error(err));
         this.searchTimeout = null;
     }

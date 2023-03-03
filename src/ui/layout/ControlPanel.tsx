@@ -6,19 +6,21 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FiExternalLink } from "react-icons/fi";
-import "rc-slider/assets/index.css";
+import { Tooltip } from "react-tooltip";
 
 import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@backend/types";
 import { getOriginalUrl, handleHotKeys } from "@app/utils";
-import { navigate } from "@backend/navigation";
+import { router } from "@app/main";
+import { contentRoutes } from "@app/constants";
 import { favoriteTrack, favorites } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
+import "rc-slider/assets/index.css";
 
 interface IState {
     queue: boolean;
@@ -56,7 +58,7 @@ class ControlPanel extends React.Component<any, IState> {
     hotKeys = (e: KeyboardEvent) => {
         if (!this.state.track) return;
         handleHotKeys(e).catch(err => console.warn(err));
-    }
+    };
 
     constructor(props: any) {
         super(props);
@@ -143,7 +145,7 @@ class ControlPanel extends React.Component<any, IState> {
         } else {
             setVolume(this.state.lastVolume / 100);
         }
-    };
+    }
 
     /**
      * Opens this track in a new tab.
@@ -192,46 +194,54 @@ class ControlPanel extends React.Component<any, IState> {
                                 className={"ControlPanel_Control"}
                                 style={{ color: "var(--accent-color)" }}
                                 onClick={() => this.favorite()}
+                                data-tooltip-content={"Remove from favorites"}
                             />
                         ) : (
                             <AiOutlineHeart
                                 className={"ControlPanel_Control"}
                                 onClick={() => this.favorite()}
+                                data-tooltip-content={"Add to favorites"}
                             />
                         )}
 
                         <MdShuffle
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.shuffle()}
+                            data-tooltip-content={"Shuffle"}
                         />
 
                         <IoMdSkipBackward
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.back()}
+                            data-tooltip-content={"Previous"}
                         />
 
                         {playing ? (
                             <IoMdPause
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
+                                data-tooltip-content={"Pause"}
                             />
                         ) : (
                             <IoMdPlay
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
+                                data-tooltip-content={"Play"}
                             />
                         )}
 
                         <IoMdSkipForward
                             className={"ControlPanel_Control"}
                             onClick={() => TrackPlayer.next()}
+                            data-tooltip-content={"Next"}
                         />
 
                         {this.getRepeatIcon()}
 
                         <ImStack
                             className={"ControlPanel_Control"}
-                            onClick={() => navigate("Queue")}
+                            onClick={() => router.navigate(contentRoutes.QUEUE)}
+                            data-tooltip-content={"See Queue"}
                         />
                     </div>
 
@@ -258,10 +268,14 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <FiExternalLink
                         className={"ControlPanel_Popout"}
-                        style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1, }}
+                        style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1 }}
                         onClick={() => this.openTrack()}
+                        data-tooltip-content={"Open Track Source"}
                     />
                 </div>
+
+                <Tooltip anchorSelect={".ControlPanel_Control"} className={"Tooltip"} />
+                <Tooltip anchorSelect={".ControlPanel_Popout"} className={"Tooltip"} />
             </div>
         );
     }

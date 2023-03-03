@@ -39,44 +39,52 @@ export async function listenWith(user: string | null = null): Promise<void> {
 export async function getAvailableUsers(
     active: boolean = true
 ): Promise<OnlineUser[]> {
-    const route = `${targetRoute}/social/available?active=${active}`;
-    const response = await fetch(route, {
-        headers: {
-            Authorization: userData ? token() : ""
-        }
-    });
+    try {
+        const route = `${targetRoute}/social/available?active=${active}`;
+        const response = await fetch(route, {
+            headers: {
+                Authorization: userData ? token() : ""
+            }
+        });
 
-    // Check the response.
-    if (response.status != 200) {
-        console.error(
-            `Failed to get available users: ${response.status} ${response.statusText}`
-        );
+        // Check the response.
+        if (response.status != 200) {
+            console.error(
+                `Failed to get available users: ${response.status} ${response.statusText}`
+            );
+            return [];
+        }
+
+        // Return the users.
+        return (await response.json()).onlineUsers;
+    } catch {
         return [];
     }
-
-    // Return the users.
-    return (await response.json()).onlineUsers;
 }
 
 /**
  * Gets all offline users which are listening on Laudiolin.
  */
 export async function getRecentUsers(): Promise<OfflineUser[]> {
-    const route = `${targetRoute}/social/recent`;
-    const response = await fetch(route, {
-        headers: {
-            Authorization: userData ? token() : ""
-        }
-    });
+    try {
+        const route = `${targetRoute}/social/recent`;
+        const response = await fetch(route, {
+            headers: {
+                Authorization: userData ? token() : ""
+            }
+        });
 
-    // Check the response.
-    if (response.status != 200) {
-        console.error(
-            `Failed to get recent users: ${response.status} ${response.statusText}`
-        );
+        // Check the response.
+        if (response.status != 200) {
+            console.error(
+                `Failed to get recent users: ${response.status} ${response.statusText}`
+            );
+            return [];
+        }
+
+        // Return the users.
+        return (await response.json()).recentUsers;
+    } catch {
         return [];
     }
-
-    // Return the users.
-    return (await response.json()).recentUsers;
 }
