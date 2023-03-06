@@ -44,6 +44,7 @@ class Search extends React.Component<any, IState> {
 
     componentDidMount() {
         emitter.on("search", (results: types.SearchResults) => {
+            if (results.results.length < 1) return this.setState({ results: null });
             const sorted = this.getResults(results);
             this.setState({ results: sorted });
         });
@@ -52,7 +53,7 @@ class Search extends React.Component<any, IState> {
     render() {
         const { results } = this.state;
 
-        return (
+        return results != null ? (
             <AnimatedView>
                 <div className={"SearchResults"}>
                     {results &&
@@ -60,6 +61,10 @@ class Search extends React.Component<any, IState> {
                             <Track track={result} key={index} />
                         ))}
                 </div>
+            </AnimatedView>
+        ) : (
+            <AnimatedView className={"empty"}>
+                <h1>No results found.</h1>
             </AnimatedView>
         );
     }
