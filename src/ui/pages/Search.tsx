@@ -5,6 +5,7 @@ import AnimatedView from "@components/common/AnimatedView";
 
 import * as types from "@backend/types";
 import emitter from "@backend/events";
+import { save, get } from "@backend/settings";
 
 import "@css/pages/SearchResults.scss";
 
@@ -17,7 +18,7 @@ class Search extends React.Component<any, IState> {
         super(props);
 
         this.state = {
-            results: null
+            results: JSON.parse(get("searchResults")) || null
         }
     }
 
@@ -48,6 +49,11 @@ class Search extends React.Component<any, IState> {
             const sorted = this.getResults(results);
             this.setState({ results: sorted });
         });
+    }
+
+    componentWillUnmount() {
+        save("searchResults", JSON.stringify(this.state.results));
+        emitter.off("search", () => this.setState({ results: null }) );
     }
 
     render() {
