@@ -80,6 +80,8 @@ async function playerUpdate(seek?: number): Promise<void> {
  * Sets up the gateway.
  */
 export function connect(): void {
+    if (connected) return;
+
     console.info("Connecting to gateway...");
 
     // Create a WebSocket.
@@ -123,6 +125,9 @@ function onClose(close: any): void {
 
     // Reset the connection state.
     connected = false;
+
+    // Attempt to reconnect to the gateway.
+    setTimeout(() => connect(), 5e3);
 }
 
 /**
