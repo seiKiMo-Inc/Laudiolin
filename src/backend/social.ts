@@ -1,7 +1,7 @@
 import type { OfflineUser, OnlineUser, User } from "@backend/types";
 
-import { getUserById, token, userData } from "@backend/user";
-import { listenAlongWith } from "@backend/gateway";
+import { userData, getUserById, token } from "@backend/user";
+import { gateway, connect, listenAlongWith } from "@backend/gateway";
 
 import emitter from "@backend/events";
 import { targetRoute } from "@backend/user";
@@ -22,6 +22,10 @@ export function isListeningWith(): boolean {
  * @param user The user to listen along with.
  */
 export async function listenWith(user: string | null = null): Promise<void> {
+    // Check if the user is connected to the gateway.
+    if (gateway.readyState == WebSocket.CLOSED)
+        connect(); // Attempt to connect to the gateway.
+
     // Reset the track player.
     TrackPlayer.reset();
     // Set the listening with user.
