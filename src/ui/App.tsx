@@ -97,7 +97,8 @@ class App extends React.Component<{}, IState> {
 
         // Check if user is logged in.
         if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
-            router.navigate(contentRoutes.LOGIN);
+            router.navigate(contentRoutes.LOGIN)
+                .catch((err) => console.warn(err));
 
         // Register event listeners.
         emitter.on("login", this.reloadUser);
