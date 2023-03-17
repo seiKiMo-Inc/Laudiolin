@@ -8,6 +8,8 @@ export type Loop = "none" | "track" | "queue";
 export type PlayerState = {
     paused: boolean;
     loop: Loop;
+    progress: number;
+    progressTicks: number;
 };
 
 export class Player extends EventEmitter implements mod.TrackPlayer {
@@ -22,7 +24,9 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     /* State */
     public state: PlayerState = {
         paused: false,
-        loop: "none"
+        loop: "none",
+        progress: 0,
+        progressTicks: 0
     };
 
     constructor() {
@@ -45,6 +49,20 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             ...this.state,
             progress: this.getProgress()
         });
+
+        // Check if the track is in the same position as it was before.
+        if (this.state.progress == this.getProgress())
+            this.state.progressTicks += 1;
+        else {
+            this.state.progress = this.getProgress();
+            this.state.progressTicks = 0;
+        }
+
+        // Check if the track has been stuck for 10 seconds.
+        if (this.state.progressTicks >= 20) {
+            this.next();
+            this.state.progressTicks = 0;
+        }
     }
 
     /**
