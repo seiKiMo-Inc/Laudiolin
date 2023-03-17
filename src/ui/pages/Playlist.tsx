@@ -189,7 +189,10 @@ class Playlist extends React.Component<IProps, IState> {
 
     async componentDidMount() {
         const playlist = await this.getPlaylist();
-        if (!playlist) await router.navigate(contentRoutes.HOME);
+        if (!playlist) {
+            await router.navigate(contentRoutes.HOME);
+            return;
+        }
 
         this.setState({ playlist, isPrivate: playlist.isPrivate });
     }
