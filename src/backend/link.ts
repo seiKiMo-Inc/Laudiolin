@@ -31,9 +31,12 @@ export async function openFromUrl(): Promise<void> {
         case "playlist":
             const playlist = await getPlaylistById(value);
             playlist && await router.navigate(`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`);
-            break;
+            return;
         case "listen":
             listenWith(value).catch((err) => console.warn(err));
             break;
     }
+
+    // Navigate to the home page.
+    await router.navigate(contentRoutes.HOME);
 }
