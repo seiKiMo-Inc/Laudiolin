@@ -6,9 +6,10 @@ import BasicButton from "@components/common/BasicButton";
 
 import type { OnlineUser, OfflineUser } from "@backend/types";
 import { listeningWith, listenWith } from "@backend/social";
+import { userData } from "@backend/user";
+import { parseArtist } from "@backend/search";
 
 import "@css/components/User.scss";
-import { userData } from "@backend/user";
 
 interface IProps {
     user: OnlineUser & OfflineUser;
@@ -91,7 +92,7 @@ class User extends React.PureComponent<IProps, never> {
                         </div>
                         <div className={"User_Listening"}>
                             <span>{listening.title}</span>
-                            <span>{` • ${listening.artist}`}</span>
+                            <span>{` • ${parseArtist(listening.artist)}`}</span>
                         </div>
                     </div>
                 </div>
