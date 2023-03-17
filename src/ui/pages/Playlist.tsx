@@ -159,7 +159,8 @@ class Playlist extends React.Component<IProps, IState> {
             result.destination.index
         );
         this.setState({ playlist });
-        editPlaylist(playlist);
+        editPlaylist(playlist)
+            .catch(err => console.warn(err));
     }
 
     /**
@@ -188,6 +189,8 @@ class Playlist extends React.Component<IProps, IState> {
 
     async componentDidMount() {
         const playlist = await this.getPlaylist();
+        if (!playlist) await router.navigate(contentRoutes.HOME);
+
         this.setState({ playlist, isPrivate: playlist.isPrivate });
     }
 
