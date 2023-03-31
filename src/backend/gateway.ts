@@ -80,6 +80,8 @@ async function playerUpdate(seek?: number): Promise<void> {
  * Sets up the gateway.
  */
 export function connect(): void {
+    if (connected) return;
+
     console.info("Connecting to gateway...");
 
     // Create a WebSocket.
@@ -112,6 +114,13 @@ function onOpen(): void {
         connected = true;
         // Send all queued messages.
         messageQueue.forEach((message) => sendGatewayMessage(message));
+
+        // Check if the player is playing.
+        if (TrackPlayer.getCurrentTrack() != null) {
+            // Send player status update.
+            playerUpdate()
+                .catch(err => console.warn(err));
+        }
     }, 500);
 }
 
@@ -123,6 +132,9 @@ function onClose(close: any): void {
 
     // Reset the connection state.
     connected = false;
+
+    // Attempt to reconnect to the gateway.
+    setTimeout(() => connect(), 5e3);
 }
 
 /**

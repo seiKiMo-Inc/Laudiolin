@@ -12,6 +12,7 @@ import { VscClose } from "react-icons/vsc";
 import type { TrackData } from "@backend/types";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import { parseArtist } from "@backend/search";
 import { toMini, handleHotKeys } from "@app/utils";
 import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
@@ -151,7 +152,7 @@ class MiniPlayer extends React.Component<any, IState> {
 
                             <div className={"MiniPlayer_Info"}>
                                 <p>{track.title}</p>
-                                <p>{track.artist}</p>
+                                <p>{parseArtist(track.artist)}</p>
                             </div>
                         </>
                     )}

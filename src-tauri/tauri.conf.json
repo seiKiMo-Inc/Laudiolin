@@ -17,6 +17,10 @@
         "all": false,
         "open": true
       },
+      "fs": {
+        "all": true,
+        "scope": ["**"]
+      },
       "protocol": {
         "asset": true,
         "assetScope": ["**"]

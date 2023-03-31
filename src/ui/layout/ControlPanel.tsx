@@ -15,8 +15,9 @@ import type { TrackData } from "@backend/types";
 import { handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { favoriteTrack, favorites } from "@backend/user";
+import { favorites, favoriteTrack } from "@backend/user";
 import { setVolume, toggleRepeatState } from "@backend/audio";
+import { parseArtist } from "@backend/search";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
@@ -166,7 +167,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                             <div className={"ControlPanel_TrackInfo"}>
                                 <p>{track.title}</p>
-                                <p>{track.artist}</p>
+                                <p>{parseArtist(track.artist)}</p>
                             </div>
                         </>
                     )}

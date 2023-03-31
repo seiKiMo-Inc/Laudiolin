@@ -15,6 +15,7 @@ import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { isDownloaded } from "@backend/offline";
 import { favoriteTrack } from "@backend/user";
+import { parseArtist } from "@backend/search";
 
 import "@css/components/Track.scss";
 import BasicButton from "@components/common/BasicButton";
@@ -129,7 +130,7 @@ class Track extends React.PureComponent<IProps, never> {
 
                         <div className={"Track_Text"}>
                             <p>{track.title}</p>
-                            <p>{track.artist}</p>
+                            <p>{parseArtist(track.artist)}</p>
                         </div>
                     </div>
 
