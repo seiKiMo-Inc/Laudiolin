@@ -114,6 +114,13 @@ function onOpen(): void {
         connected = true;
         // Send all queued messages.
         messageQueue.forEach((message) => sendGatewayMessage(message));
+
+        // Check if the player is playing.
+        if (TrackPlayer.getCurrentTrack() != null) {
+            // Send player status update.
+            playerUpdate()
+                .catch(err => console.warn(err));
+        }
     }, 500);
 }
 
