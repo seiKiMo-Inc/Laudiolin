@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
 
+import { BiCopy } from "react-icons/bi";
 import { IoMdPlay } from "react-icons/io";
 import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
-import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import Track from "@widget/Track";
+import Alert from "@components/Alert";
+
 import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
 import AnimatedView from "@components/common/AnimatedView";
 import Router from "@components/common/Router";
+
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
@@ -110,12 +114,21 @@ class Playlist extends React.Component<IProps, IState> {
         const playlist = await this.getPlaylist();
 
         // Delete the playlist.
-        playlist && deletePlaylist(playlist.id);
+        playlist && await deletePlaylist(playlist.id);
         // Navigate to the home page.
         await router.navigate(contentRoutes.HOME);
         // Remove the playlist from the list.
         const newPlaylists = playlists.filter((p) => p.id != playlist.id);
         emitter.emit("playlist", newPlaylists);
+    }
+
+    /**
+     * Copies the URL of the playlist to the URL.
+     */
+    async share(): Promise<void> {
+        await navigator.clipboard.writeText(
+            `https://laudiolin.seikimo.moe/playlist/${this.state.playlist.id}`);
+        Alert.showAlert("Playlist URL copied to clipboard!", <BiCopy />);
     }
 
     /**
@@ -138,8 +151,9 @@ class Playlist extends React.Component<IProps, IState> {
             result.source.index,
             result.destination.index
         );
+
+        await editPlaylist(playlist);
         this.setState({ playlist });
-        editPlaylist(playlist);
     }
 
     /**
@@ -258,6 +272,7 @@ class Playlist extends React.Component<IProps, IState> {
 
                                 <BasicDropdown id={"Playlist_Actions"}>
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
+                                    <a onClick={() => this.share()}>Copy Playlist URL</a>
                                 </BasicDropdown>
 
                                     <div className={"Playlist_Tracks"}>
