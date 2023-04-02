@@ -63,6 +63,17 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
 }
 
 class Playlist extends React.Component<IProps, IState> {
+    /**
+     * Invoked when the playlist should reload.
+     *
+     * @param playlist The playlist to reload.
+     */
+    reload = (playlist: types.Playlist) => {
+        if (playlist.id == this.state.playlist.id) {
+            this.setState({ playlist });
+        }
+    };
+
     constructor(props: IProps) {
         super(props);
 
@@ -183,6 +194,8 @@ class Playlist extends React.Component<IProps, IState> {
     async componentDidMount() {
         const playlist = await this.getPlaylist();
         this.setState({ playlist, isPrivate: playlist.isPrivate });
+
+        emitter.on("reload:playlist", this.reload);
     }
 
     async componentDidUpdate(prevProps: IProps) {
@@ -190,6 +203,10 @@ class Playlist extends React.Component<IProps, IState> {
             const playlist = await fetchPlaylist(this.props.match.params.id);
             this.setState({ playlist, isPrivate: playlist.isPrivate, reloadKey: this.state.reloadKey + 1 });
         }
+    }
+
+    componentWillUnmount() {
+        emitter.off("reload:playlist", this.reload);
     }
 
     render() {

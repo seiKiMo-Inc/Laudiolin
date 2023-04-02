@@ -4,18 +4,21 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
 import { BiCopy } from "react-icons/bi";
 
+import Alert from "@components/Alert";
+
 import BasicDropdown, {
     toggleDropdown
 } from "@components/common/BasicDropdown";
-import Alert from "@components/Alert";
+import BasicButton from "@components/common/BasicButton";
 
 import type { TrackData } from "@backend/types";
+import { fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
 import { deQueue, playTrack } from "@backend/audio";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { favoriteTrack } from "@backend/user";
+import emitter from "@backend/events";
 
 import "@css/components/Track.scss";
-import BasicButton from "@components/common/BasicButton";
 
 interface IProps {
     track: TrackData;
@@ -39,14 +42,14 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Adds this track to the queue.
      */
-    queue(remove = false): void {
+    async queue(remove = false): Promise<void> {
         const track = this.props.track;
         if (track == undefined) return;
 
         if (remove) {
             deQueue(track);
         } else {
-            playTrack(track, false, false);
+            await playTrack(track, false, false);
         }
     }
 
@@ -104,6 +107,36 @@ class Track extends React.PureComponent<IProps, never> {
 
         await navigator.clipboard.writeText(track.url);
         Alert.showAlert("Copied URL to clipboard.", <BiCopy />);
+    }
+
+    /**
+     * Adds this track to a playlist.
+     */
+    async addToPlaylist(): Promise<void> {
+
+    }
+
+    /**
+     * Removes this track from its playlist.
+     */
+    async removeFromPlaylist(): Promise<void> {
+        if (!this.props.playlist) return;
+
+        // Fetch the playlist's contents.
+        const playlist = await fetchPlaylist(this.props.playlist);
+        if (!playlist) return;
+
+        // Get the index of this track from the playlist.
+        const index = playlist.tracks.findIndex(t => t.id === this.props.track.id);
+        if (index == -1) return;
+
+        // Remove the track from the playlist.
+        playlist.tracks.splice(index, 1);
+        await removeTrackFromPlaylist(this.props.playlist, index);
+        Alert.showAlert("Removed track from playlist.");
+
+        // Reload the playlist.
+        emitter.emit("playlist:reload", playlist);
     }
 
     render() {
@@ -178,9 +211,9 @@ class Track extends React.PureComponent<IProps, never> {
                     )}
 
                     {this.props.playlist ? (
-                        <a>Remove Track from Playlist</a>
+                        <a onClick={() => this.removeFromPlaylist()}>Remove Track from Playlist</a>
                     ) : (
-                        <a>Add Track to Playlist</a>
+                        <a onClick={() => this.addToPlaylist()}>Add Track to Playlist</a>
                     )}
                     <a onClick={() => this.openSource()}>
                         Open Track Source
