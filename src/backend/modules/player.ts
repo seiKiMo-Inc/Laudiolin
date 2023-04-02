@@ -51,18 +51,19 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         });
 
         // Check if the track is in the same position as it was before.
-        if (this.state.progress == this.getProgress())
-            this.state.progressTicks += 1;
-        else {
-            this.state.progress = this.getProgress();
-            this.state.progressTicks = 0;
-        }
+        if (!this.state.paused) {
+            if (this.state.progress == this.getProgress())
+                this.state.progressTicks += 1;
+            else {
+                this.state.progress = this.getProgress();
+                this.state.progressTicks = 0;
+            }
 
-        // Check if the track has been stuck for 10 seconds.
-        if (this.state.progressTicks >= 20 &&
-            !this.state.paused) {
-            this.next();
-            this.state.progressTicks = 0;
+            // Check if the track has been stuck for 10 seconds.
+            if (this.state.progressTicks >= 20) {
+                this.next();
+                this.state.progressTicks = 0;
+            }
         }
     }
 
@@ -99,6 +100,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public reset(): void {
         // Reset the state.
+        this.state.progress = 0;
+        this.state.progressTicks = 0;
         this.state.paused = true;
         this.state.loop = "none";
         // Reset the queues.
@@ -234,6 +237,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
         // Set the player state.
         this.state.paused = !play;
+        this.state.progressTicks = 0;
     }
 
     /**
@@ -246,6 +250,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             this.queue = [];
             this.current = null;
             this.state.paused = true;
+            this.state.progressTicks = 0;
         }
 
         // Emit the stop event.
@@ -265,6 +270,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             this.current?.pause();
             this.state.paused = true;
         }
+
+        this.state.progressTicks = 0;
 
         this.update();
     }
