@@ -1,11 +1,11 @@
 {
-  "version": "2.1.0",
-  "notes": "Added the home page and various bug fixes.",
-  "pub_date": "2023-02-28T01:54:27Z",
+  "version": "2.1.1",
+  "notes": "Share playlists & various bug fixes!",
+  "pub_date": "2023-04-02T18:36:02Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFIxai9QMHhaTXlnUE8xV0dIZnl6OHZ0QW5jVGVISUdZT204cXJYU2o1NGFWT05aTjU4dVI3RllnekQ4bG0raGdHaWxpSTJmcWp1Qmx4QXkrMVJjUmdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjc3ODExNDc0CWZpbGU6TGF1ZGlvbGluXzIuMS4wX3g2NF9lbi1VUy5tc2kuemlwClRHOEluSzBmTzY5OTVPN3VzQm00T0N4R2NyRlZZbWRrdkRNZ0RNU0ZNUGtQckNDUEJlcE5NVmJRaTVvVVc4ZUVTT1NxSGdsNTNCOGJiYytpTDNtWUFnPT0K",
-      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.1.0/Laudiolin_2.1.0x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFc4ZVJBUHozWXZhaWtnazVod2dnMTJSR2lIVlNxaldNYkxYdXlrMUlqTTgzNXVmejkvVDcrK1U4cytVY2w2MzcwSitwMzRBNkd4ZWNDRTdGZ010R0FFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjgwNDYwNDMwCWZpbGU6TGF1ZGlvbGluXzIuMS4xX3g2NF9lbi1VUy5tc2kuemlwCkhwWXEzVEU2b2VwNGNJRlNtcWRERXFzWCs5MHArVE5ITjVwcGlVdkNUTS8zT1l3VnpsNmwyR3pWTFdiZXdUMFJBVnlSb2ZwcmxBcVdJVy9GUVdSN0NBPT0K",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.1.1/Laudiolin_2.1.1x64_en-US.msi.zip"
     }
   }
 }
