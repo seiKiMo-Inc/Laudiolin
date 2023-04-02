@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
 
+import { BiCopy } from "react-icons/bi";
 import { IoMdPlay } from "react-icons/io";
 import { MdShuffle } from "react-icons/md";
 import { VscEllipsis } from "react-icons/vsc";
-import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import Track from "@widget/Track";
+import Alert from "@components/Alert";
+
 import BasicButton from "@components/common/BasicButton";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicModal from "@components/common/BasicModal";
 import BasicToggle from "@components/common/BasicToggle";
 import AnimatedView from "@components/common/AnimatedView";
 import Router from "@components/common/Router";
+
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import * as types from "@backend/types";
 import { playPlaylist } from "@backend/audio";
@@ -61,6 +65,17 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
 }
 
 class Playlist extends React.Component<IProps, IState> {
+    /**
+     * Invoked when the playlist should reload.
+     *
+     * @param playlist The playlist to reload.
+     */
+    reload = (playlist: types.Playlist) => {
+        if (playlist.id == this.state.playlist.id) {
+            this.setState({ playlist });
+        }
+    };
+
     constructor(props: IProps) {
         super(props);
 
@@ -112,7 +127,7 @@ class Playlist extends React.Component<IProps, IState> {
         const playlist = await this.getPlaylist();
 
         // Save the playlist.
-        playlist && savePlaylist(playlist);
+        playlist && await savePlaylist(playlist);
 
         // Send a notification.
         notify({
@@ -120,7 +135,7 @@ class Playlist extends React.Component<IProps, IState> {
             message: `Started download of playlist ${
                 playlist?.name ?? "Unknown"
             }.`
-        });
+        }).catch(err => console.warn(err));
     }
 
     /**
@@ -130,12 +145,21 @@ class Playlist extends React.Component<IProps, IState> {
         const playlist = await this.getPlaylist();
 
         // Delete the playlist.
-        playlist && deletePlaylist(playlist.id);
+        playlist && await deletePlaylist(playlist.id);
         // Navigate to the home page.
         await router.navigate(contentRoutes.HOME);
         // Remove the playlist from the list.
         const newPlaylists = playlists.filter((p) => p.id != playlist.id);
         emitter.emit("playlist", newPlaylists);
+    }
+
+    /**
+     * Copies the URL of the playlist to the URL.
+     */
+    async share(): Promise<void> {
+        await navigator.clipboard.writeText(
+            `https://laudiolin.seikimo.moe/playlist/${this.state.playlist.id}`);
+        Alert.showAlert("Playlist URL copied to clipboard!", <BiCopy />);
     }
 
     /**
@@ -194,6 +218,7 @@ class Playlist extends React.Component<IProps, IState> {
             return;
         }
 
+        emitter.on("reload:playlist", this.reload);
         this.setState({ playlist, isPrivate: playlist.isPrivate });
     }
 
@@ -202,6 +227,10 @@ class Playlist extends React.Component<IProps, IState> {
             const playlist = await fetchPlaylist(this.props.match.params.id);
             this.setState({ playlist, isPrivate: playlist.isPrivate, reloadKey: this.state.reloadKey + 1 });
         }
+    }
+
+    componentWillUnmount() {
+        emitter.off("reload:playlist", this.reload);
     }
 
     render() {
@@ -285,6 +314,7 @@ class Playlist extends React.Component<IProps, IState> {
                                 <BasicDropdown id={"Playlist_Actions"}>
                                     <a onClick={() => this.download()}>Download Playlist</a>
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
+                                    <a onClick={() => this.share()}>Copy Playlist URL</a>
                                 </BasicDropdown>
 
                                     <div className={"Playlist_Tracks"}>
