@@ -59,7 +59,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         // Check if the track has been stuck for 10 seconds.
-        if (this.state.progressTicks >= 20) {
+        if (this.state.progressTicks >= 20 &&
+            !this.state.paused) {
             this.next();
             this.state.progressTicks = 0;
         }
