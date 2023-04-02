@@ -107,7 +107,7 @@ body {
     transform: translateY(20%);
     transition: all 0.1s ease-in-out;
     box-shadow: #00000070 0 0 10px 0;
-    position: absolute;
+    position: fixed;
     z-index: 100;
     min-width: 200px;
 

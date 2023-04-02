@@ -69,12 +69,20 @@ class Track extends React.PureComponent<IProps, never> {
         const id = this.props.track.id;
         const dropdown = document.getElementById(`Track_${id}`);
         const trackWidth = document.getElementsByClassName("Track")[0]?.clientWidth;
+        const container = document.getElementsByClassName("Playlist")[0] as HTMLElement ??
+            document.getElementsByClassName("Home")[0] as HTMLElement ??
+            dropdown?.parentElement;
+
+        if (!container) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const scrollOffset = container.scrollTop;
 
         if (dropdown && trackWidth) {
             dropdown.style.left = `${trackWidth - 250}px`;
         }
 
-        dropdown.style.top = `${e.clientY - 100}px`;
+        dropdown.style.top = `${e.clientY - containerRect.top + scrollOffset}px`;
     }
 
     /**
