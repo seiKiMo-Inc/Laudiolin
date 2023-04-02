@@ -10,9 +10,10 @@ import BasicDropdown, {
     toggleDropdown
 } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
+import BasicModal from "@components/common/BasicModal";
 
 import type { TrackData } from "@backend/types";
-import { fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
+import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
 import { deQueue, playTrack } from "@backend/audio";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { favoriteTrack } from "@backend/user";
@@ -26,9 +27,21 @@ interface IProps {
     queue?: boolean;
 }
 
-class Track extends React.PureComponent<IProps, never> {
+interface IState {
+    selectedId: string | null;
+    selectedName: string | null;
+    inPlaylist: string | null;
+}
+
+class Track extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            selectedId: null,
+            selectedName: null,
+            inPlaylist: props.playlist
+        };
     }
 
     /**
@@ -113,7 +126,30 @@ class Track extends React.PureComponent<IProps, never> {
      * Adds this track to a playlist.
      */
     async addToPlaylist(): Promise<void> {
+        // Open the playlist modal.
+        if (this.state.selectedId == null) {
+            this.setState({ selectedId: "" });
+            BasicModal.showModal("add_playlist");
+        } else {
+            // Add the track to the playlist.
+            const playlist = await fetchPlaylist(this.state.selectedId);
+            if (!playlist) {
+                this.setState({ selectedId: null, selectedName: null });
+                return;
+            }
 
+            playlist.tracks.push(this.props.track);
+            await addTrackToPlaylist(this.state.selectedId, this.props.track);
+            Alert.showAlert("Added track to playlist.");
+
+            this.setState({
+                selectedId: null, selectedName: null,
+                inPlaylist: this.state.selectedId
+            });
+
+            // Reload the playlist.
+            emitter.emit("playlist:reload", playlist);
+        }
     }
 
     /**
@@ -222,6 +258,43 @@ class Track extends React.PureComponent<IProps, never> {
                         Copy Track URL
                     </a>
                 </BasicDropdown>
+
+                <BasicModal
+                    id={"add_playlist"}
+                    buttonText={"Add to Playlist"}
+                    onSubmit={() => this.addToPlaylist()}
+                    style={{ alignItems: "center" }}
+                >
+                    <h1>Select a Playlist</h1>
+                    <BasicButton
+                        id={`AddTrack_${track.id}_Button dropbtn`}
+                        className={`Track_Button`}
+                        text={this.state.selectedName ?? "Select a Playlist"}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleDropdown(`AddTrack_${track.id}`);
+                        }}
+                    />
+
+                    <BasicDropdown
+                        id={`AddTrack_${track.id}`}
+                        className={`Track_${track.id}`}
+                    >
+                        {
+                            fetchAllPlaylists().map((playlist, index) => {
+                                return (
+                                    <a
+                                        key={index}
+                                        onClick={() => this.setState({
+                                            selectedId: playlist.id,
+                                            selectedName: playlist.name
+                                        })}
+                                    >{playlist.name}</a>
+                                );
+                            })
+                        }
+                    </BasicDropdown>
+                </BasicModal>
             </>
         );
     }
