@@ -5,20 +5,24 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { VscEllipsis } from "react-icons/vsc";
 import { BiCopy } from "react-icons/bi";
 
+import Alert from "@components/Alert";
+
 import BasicDropdown, {
     toggleDropdown
 } from "@components/common/BasicDropdown";
-import Alert from "@components/Alert";
+import BasicButton from "@components/common/BasicButton";
 
 import type { TrackData } from "@backend/types";
 import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
+import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 import { isDownloaded } from "@backend/offline";
 import { favoriteTrack } from "@backend/user";
 import { parseArtist } from "@backend/search";
+import emitter from "@backend/events";
 
 import "@css/components/Track.scss";
-import BasicButton from "@components/common/BasicButton";
+import BasicModal from "@components/common/BasicModal";
 
 interface IProps {
     track: TrackData;
@@ -26,9 +30,21 @@ interface IProps {
     queue?: boolean;
 }
 
-class Track extends React.PureComponent<IProps, never> {
+interface IState {
+    selectedId: string | null;
+    selectedName: string | null;
+    inPlaylist: string | null;
+}
+
+class Track extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            selectedId: null,
+            selectedName: null,
+            inPlaylist: props.playlist
+        };
     }
 
     /**
@@ -68,9 +84,8 @@ class Track extends React.PureComponent<IProps, never> {
     /**
      * Sets the position of a dropdown.
      */
-    setDropdownPosition(e: MouseEvent): void {
-        const id = this.props.track.id;
-        const dropdown = document.getElementById(`Track_${id}`);
+    setDropdownPosition(e: MouseEvent, id: string): void {
+        const dropdown = document.getElementById(id);
         const trackWidth = document.getElementsByClassName("Track")[0]?.clientWidth;
         const container = document.getElementsByClassName("Playlist")[0] as HTMLElement ??
             document.getElementsByClassName("Home")[0] as HTMLElement ??
@@ -107,6 +122,60 @@ class Track extends React.PureComponent<IProps, never> {
 
         await navigator.clipboard.writeText(track.url);
         Alert.showAlert("Copied URL to clipboard.", <BiCopy />);
+    }
+
+    /**
+     * Adds this track to a playlist.
+     */
+    async addToPlaylist(): Promise<void> {
+        // Open the playlist modal.
+        if (this.state.selectedId == null) {
+            this.setState({ selectedId: "" });
+            BasicModal.showModal("add_playlist");
+        } else {
+            // Add the track to the playlist.
+            const playlist = await fetchPlaylist(this.state.selectedId);
+            if (!playlist) {
+                this.setState({ selectedId: null, selectedName: null });
+                return;
+            }
+
+            playlist.tracks.push(this.props.track);
+            await addTrackToPlaylist(this.state.selectedId, this.props.track);
+            Alert.showAlert("Added track to playlist.");
+
+            this.setState({
+                selectedId: null, selectedName: null,
+                inPlaylist: this.state.selectedId
+            });
+
+            // Reload the playlist.
+            emitter.emit("playlist:reload", playlist);
+        }
+    }
+
+    /**
+     * Removes this track from its playlist.
+     */
+    async removeFromPlaylist(): Promise<void> {
+        const playlistId = this.state.inPlaylist ?? this.props.playlist;
+        if (!playlistId) return;
+
+        // Fetch the playlist's contents.
+        const playlist = await fetchPlaylist(playlistId);
+        if (!playlist) return;
+
+        // Get the index of this track from the playlist.
+        const index = playlist.tracks.findIndex(t => t.id === this.props.track.id);
+        if (index == -1) return;
+
+        // Remove the track from the playlist.
+        playlist.tracks.splice(index, 1);
+        await removeTrackFromPlaylist(playlistId, index);
+        Alert.showAlert("Removed track from playlist.");
+
+        // Reload the playlist.
+        emitter.emit("playlist:reload", playlist);
     }
 
     render() {
@@ -162,7 +231,7 @@ class Track extends React.PureComponent<IProps, never> {
                             icon={<VscEllipsis />}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                this.setDropdownPosition(e);
+                                this.setDropdownPosition(e, `Track_${track.id}`);
                                 toggleDropdown(`Track_${track.id}`);
                             }}
                             className={"dropbtn"}
@@ -187,10 +256,10 @@ class Track extends React.PureComponent<IProps, never> {
                         </a>
                     )}
 
-                    {this.props.playlist ? (
-                        <a>Remove Track from Playlist</a>
+                    {(this.props.playlist || this.state.inPlaylist) ? (
+                        <a onClick={() => this.removeFromPlaylist()}>Remove Track from Playlist</a>
                     ) : (
-                        <a>Add Track to Playlist</a>
+                        <a onClick={() => this.addToPlaylist()}>Add Track to Playlist</a>
                     )}
                     <a onClick={async () => await this.openSource()}>
                         Open Track Source
@@ -199,6 +268,43 @@ class Track extends React.PureComponent<IProps, never> {
                         Copy Track URL
                     </a>
                 </BasicDropdown>
+
+                <BasicModal
+                    id={"add_playlist"}
+                    buttonText={"Add to Playlist"}
+                    onSubmit={() => this.addToPlaylist()}
+                    style={{ alignItems: "center" }}
+                >
+                    <h1>Select a Playlist</h1>
+                    <BasicButton
+                        id={`AddTrack_${track.id}_Button dropbtn`}
+                        className={`Track_Button`}
+                        text={this.state.selectedName ?? "Select a Playlist"}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleDropdown(`AddTrack_${track.id}`);
+                        }}
+                    />
+
+                    <BasicDropdown
+                        id={`AddTrack_${track.id}`}
+                        className={`Track_${track.id}`}
+                    >
+                        {
+                            fetchAllPlaylists().map((playlist, index) => {
+                                return (
+                                    <a
+                                        key={index}
+                                        onClick={() => this.setState({
+                                            selectedId: playlist.id,
+                                            selectedName: playlist.name
+                                        })}
+                                    >{playlist.name}</a>
+                                );
+                            })
+                        }
+                    </BasicDropdown>
+                </BasicModal>
             </>
         );
     }

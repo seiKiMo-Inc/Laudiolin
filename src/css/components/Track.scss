@@ -65,3 +65,9 @@
         color: var(--text-secondary-color);
     }
 }
+
+.Track_Button {
+    justify-content: center;
+    background-color: var(--accent-color) !important;
+    transition: all 0.1s ease-in-out;
+}
