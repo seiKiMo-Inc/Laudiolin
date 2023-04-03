@@ -218,7 +218,7 @@ class Playlist extends React.Component<IProps, IState> {
             return;
         }
 
-        emitter.on("reload:playlist", this.reload);
+        emitter.on("playlist:reload", this.reload);
         this.setState({ playlist, isPrivate: playlist.isPrivate });
     }
 
@@ -230,7 +230,7 @@ class Playlist extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        emitter.off("reload:playlist", this.reload);
+        emitter.off("playlist:reload", this.reload);
     }
 
     render() {
