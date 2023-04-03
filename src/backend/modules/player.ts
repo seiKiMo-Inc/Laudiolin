@@ -65,6 +65,15 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 this.state.progressTicks = 0;
             }
         }
+
+        if ("mediaSession" in navigator) {
+            // Update the playback state.
+            let state = this.paused ? "paused" : "playing";
+            if (this.getCurrentTrack() == null)
+                state = "none";
+
+            navigator.mediaSession.playbackState = state as MediaSessionPlaybackState;
+        }
     }
 
     /**
@@ -238,6 +247,47 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Set the player state.
         this.state.paused = !play;
         this.state.progressTicks = 0;
+
+        // Update the navigator metadata.
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track.title,
+                artist: track.artist,
+                album: "Laudiolin",
+                artwork: [
+                    {
+                        src: track.icon,
+                        sizes: "96x96",
+                        type: "image/png",
+                    },
+                    {
+                        src: track.icon,
+                        sizes: "128x128",
+                        type: "image/png",
+                    },
+                    {
+                        src: track.icon,
+                        sizes: "192x192",
+                        type: "image/png",
+                    },
+                    {
+                        src: track.icon,
+                        sizes: "256x256",
+                        type: "image/png",
+                    },
+                    {
+                        src: track.icon,
+                        sizes: "384x384",
+                        type: "image/png",
+                    },
+                    {
+                        src: track.icon,
+                        sizes: "512x512",
+                        type: "image/png",
+                    }
+                ],
+            });
+        }
     }
 
     /**
