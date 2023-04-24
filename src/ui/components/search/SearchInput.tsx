@@ -15,7 +15,6 @@ import { SearchEngine } from "@app/backend/types";
 
 import "@css/layout/TopBar.scss";
 
-// -------------------------------------------------
 
 interface IProps {}
 
