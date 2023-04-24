@@ -7,11 +7,15 @@ import { FaSpotify, FaYoutube } from "react-icons/fa";
 import { doSearch } from "@backend/search";
 import emitter from "@backend/events";
 import { getFromPath, saveFromPath } from "@backend/settings";
-import { router } from "@app/main";
+
 import { contentRoutes } from "@app/constants";
+import { router } from "@app/main";
+
+import { SearchEngine } from "@app/backend/types";
 
 import "@css/layout/TopBar.scss";
-import { SearchEngine } from "@app/backend/types";
+
+// -------------------------------------------------
 
 interface IProps {}
 
@@ -24,6 +28,7 @@ class SearchInput extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
         this.state = {
             searchType: getFromPath("search.engine", "") as SearchEngine
         };
@@ -84,16 +89,15 @@ class SearchInput extends React.Component<IProps, IState> {
                     value={this.state.searchType}
                 >
                     <option value={"All"}>
-                        <BsFileMusicFill />
-                        All
+                        <BsFileMusicFill /> All
                     </option>
+
                     <option value={"YouTube"}>
-                        <FaYoutube />
-                        YouTube
+                        <FaYoutube /> YouTube
                     </option>
+
                     <option value={"Spotify"}>
-                        <FaSpotify />
-                        Spotify
+                        <FaSpotify /> Spotify
                     </option>
                 </select>
             </div>
