@@ -51,7 +51,7 @@ class CurrentUser extends React.Component<IProps, never> {
                         />
                         <span className={"CurrentUser_Text"}>
                             <p>{user.username}</p>
-                            <p>#{user.discriminator}</p>
+                            {user.discriminator != "0" && <p>#{user.discriminator}</p>}
                         </span>
                     </div>
 
