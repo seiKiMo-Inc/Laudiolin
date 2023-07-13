@@ -140,6 +140,12 @@ class Track extends React.Component<IProps, IState> {
                 return;
             }
 
+            // Check if the track is already in the playlist.
+            if (playlist.tracks.find(t => t.id === this.props.track.id)) {
+                Alert.showAlert("Track is already in this playlist.");
+                return;
+            }
+
             playlist.tracks.push(this.props.track);
             await addTrackToPlaylist(this.state.selectedId, this.props.track);
             Alert.showAlert("Added track to playlist.");
