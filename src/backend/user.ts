@@ -313,11 +313,17 @@ export async function getPlaylistAuthor(
     if (owner == "") return { name: "Unknown", icon: "" }; // If no owner is provided, return "Unknown".
 
     // If the owner is the current user, return the user's username & icon.
-    if (owner == getUserId())
+    if (owner == getUserId()) {
+        let discriminator = userData?.discriminator ?? null;
+        if (discriminator && discriminator == "0") {
+            discriminator = null;
+        }
+
         return {
-            name: `${userData?.username}#${userData?.discriminator}`,
+            name: `${userData?.username}${discriminator ? "#" : ""}${discriminator ?? ""}`,
             icon: userData?.avatar ?? ""
         };
+    }
 
     // Otherwise, load the owner's data.
     const user = await getUserById(owner);
