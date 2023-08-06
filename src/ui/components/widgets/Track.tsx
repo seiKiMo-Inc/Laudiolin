@@ -129,7 +129,7 @@ class Track extends React.PureComponent<IProps, IState> {
         // Open the playlist modal.
         if (this.state.selectedId == null) {
             this.setState({ selectedId: "" });
-            BasicModal.showModal("add_playlist");
+            BasicModal.showModal(`Track_${this.props.track.id}_Playlist`);
         } else {
             // Add the track to the playlist.
             const playlist = await fetchPlaylist(this.state.selectedId);
@@ -260,7 +260,7 @@ class Track extends React.PureComponent<IProps, IState> {
                 </BasicDropdown>
 
                 <BasicModal
-                    id={"add_playlist"}
+                    id={`Track_${track.id}_Playlist`}
                     buttonText={"Add to Playlist"}
                     onSubmit={() => this.addToPlaylist()}
                     style={{ alignItems: "center" }}
