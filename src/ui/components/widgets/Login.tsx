@@ -15,10 +15,7 @@ import "@css/components/Login.scss";
 
 interface IState {
     save: boolean;
-    waiting: boolean;
     loginCode: string;
-    window: Window;
-    interval: number;
 }
 
 class Login extends React.PureComponent<{}, IState> {
@@ -38,42 +35,11 @@ class Login extends React.PureComponent<{}, IState> {
         // Update the state.
         this.setState({
             save: true,
-            waiting: false,
-            loginCode: "",
-            window: null,
-            interval: 0
+            loginCode: ""
         });
 
         // Navigate home.
         router.navigate(contentRoutes.HOME);
-    };
-
-    /**
-     * Listens for a successful login.
-     */
-    listenForLogin = () => {
-        // Check if the localstorage has been updated.
-        if (localStorage.getItem("authenticated") == null)
-            return;
-
-        // Validate the code.
-        const code = localStorage.getItem("user_token");
-        if (code == null || code == "")
-            return;
-
-        // Perform a login.
-        login().then(() => {
-            settings.setToken(code);
-            settings.save("authenticated", "discord");
-        }).catch((err) => console.warn(err));
-
-        // If it has, stop listening.
-        clearInterval(this.state.interval);
-        // Close the window.
-        this.state.window.close();
-
-        // Perform a cleanup.
-        this.cleanup();
     };
 
     constructor(props: {}) {
@@ -81,10 +47,7 @@ class Login extends React.PureComponent<{}, IState> {
 
         this.state = {
             save: true,
-            waiting: false,
-            loginCode: "",
-            window: null,
-            interval: 0
+            loginCode: ""
         };
     }
 
@@ -92,9 +55,6 @@ class Login extends React.PureComponent<{}, IState> {
      * Prompts the user to login via a browser.
      */
     login(): void {
-        // Check if the user is waiting.
-        if (this.state.waiting) return;
-
         if (this.state.loginCode.length > 0) {
             // Request a token using the login code.
             getToken(this.state.loginCode)
@@ -102,11 +62,7 @@ class Login extends React.PureComponent<{}, IState> {
                 .catch((err) => console.warn(err));
         } else {
             // Open the login URL in a new tab.
-            this.setState({
-                waiting: true,
-                window: window.open(`${Gateway.getUrl()}/discord`, "_blank"),
-                interval: setInterval(this.listenForLogin, 3e3) as unknown as number
-            });
+            const newWindow = window.open(`${Gateway.getUrl()}/login`)
         }
     }
 
@@ -148,7 +104,7 @@ class Login extends React.PureComponent<{}, IState> {
         const loginText =
             this.state.loginCode.length > 0
                 ? "Submit Code"
-                : "Log In with Discord";
+                : "Log In with seiKiMo";
 
         return (
             <BasicModal id={"login"} className={"Login"}>
