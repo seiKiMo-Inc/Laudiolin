@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FiHeadphones } from "react-icons/all";
+import { FiHeadphones } from "react-icons/fi";
 
 import BasicButton from "@components/common/BasicButton";
 
