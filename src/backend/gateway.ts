@@ -100,13 +100,13 @@ function onOpen(): void {
     console.info("Connected to the gateway.");
 
     // Wait for the gateway to be ready.
-    let wait = setInterval(async () => {
+    let wait = setInterval(() => {
         // Check the state of the gateway.
         if (gateway?.readyState != WebSocket.OPEN) return;
         clearInterval(wait);
 
         // Send the initialization message.
-        await sendInitMessage();
+        sendInitMessage();
         // Log gateway handshake.
         console.info("Gateway handshake complete.");
 
@@ -180,7 +180,7 @@ async function onMessage(event: MessageEvent): Promise<void> {
             emitter.emit("recent"); // Emit the recents event.
             return;
         default:
-            console.warn(message);
+            console.warn(message.message ?? "No message provided.");
             return;
     }
 }
@@ -263,6 +263,7 @@ export function listenAlongWith(userId: string | null): void {
 type BaseGatewayMessage = {
     type: string;
     timestamp: number;
+    message?: string;
 };
 
 // To server.
