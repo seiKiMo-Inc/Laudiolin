@@ -17,7 +17,6 @@ import "@css/components/Login.scss";
 
 interface IState {
     save: boolean;
-    waiting: boolean;
     loginCode: string;
 }
 
@@ -38,7 +37,6 @@ class Login extends React.PureComponent<{}, IState> {
         // Update the state.
         this.setState({
             save: true,
-            waiting: false,
             loginCode: ""
         });
 
@@ -51,7 +49,6 @@ class Login extends React.PureComponent<{}, IState> {
 
         this.state = {
             save: true,
-            waiting: false,
             loginCode: ""
         };
     }
@@ -60,9 +57,6 @@ class Login extends React.PureComponent<{}, IState> {
      * Prompts the user to login via a browser.
      */
     login(): void {
-        // Check if the user is waiting.
-        if (this.state.waiting) return;
-
         if (this.state.loginCode.length > 0) {
             // Request a token using the login code.
             getToken(this.state.loginCode)
@@ -70,9 +64,8 @@ class Login extends React.PureComponent<{}, IState> {
                 .catch((err) => console.warn(err));
         } else {
             // Open the login URL in a browser.
-            invoke("open", { url: `${Gateway.getUrl()}/discord` })
-                .then(() => this.setState({ waiting: true }))
-                .catch((err) => console.warn(err));
+            invoke("open", { url: `${Gateway.getUrl()}/login` })
+                .catch(console.warn);
         }
     }
 
@@ -114,7 +107,7 @@ class Login extends React.PureComponent<{}, IState> {
         const loginText =
             this.state.loginCode.length > 0
                 ? "Submit Code"
-                : "Log In with Discord";
+                : "Log In with seiKiMo";
 
         return (
             <BasicModal id={"login"} className={"Login"}>
