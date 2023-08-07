@@ -1,23 +1,36 @@
 import React, { ChangeEvent } from "react";
 
 import { BiSearch } from "react-icons/bi";
+import { BsFileMusicFill } from "react-icons/bs";
+import { FaSpotify, FaYoutube } from "react-icons/fa";
 
 import { doSearch } from "@backend/search";
 import emitter from "@backend/events";
-import { router } from "@app/main";
+import { getFromPath, saveFromPath } from "@backend/settings";
+
 import { contentRoutes } from "@app/constants";
+import { router } from "@app/main";
+
+import { SearchEngine } from "@app/backend/types";
 
 import "@css/layout/TopBar.scss";
 
+
 interface IProps {}
 
-interface IState {}
+interface IState {
+    searchType: SearchEngine;
+}
 
 class SearchInput extends React.Component<IProps, IState> {
     searchTimeout: NodeJS.Timeout | number = null;
 
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            searchType: getFromPath("search.engine", "") as SearchEngine
+        };
     }
 
     onChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -53,6 +66,11 @@ class SearchInput extends React.Component<IProps, IState> {
         this.searchTimeout = null;
     }
 
+    onSearchTypeChange(type: SearchEngine): void {
+        this.setState({ searchType: type });
+        saveFromPath("search.engine", type);
+    }
+
     render() {
         return (
             <div className={"SearchInput"}>
@@ -64,6 +82,25 @@ class SearchInput extends React.Component<IProps, IState> {
                     onChange={(event) => this.onChange(event)}
                     onKeyUp={(event) => this.onKeyChange(event)}
                 />
+
+                <select
+                    className={"SearchInput_SearchType"}
+                    onChange={(event) => this.onSearchTypeChange(
+                        event.target.value as SearchEngine)}
+                    value={this.state.searchType}
+                >
+                    <option value={"All"}>
+                        All
+                    </option>
+
+                    <option value={"YouTube"}>
+                        YouTube
+                    </option>
+
+                    <option value={"Spotify"}>
+                        Spotify
+                    </option>
+                </select>
             </div>
         );
     }
