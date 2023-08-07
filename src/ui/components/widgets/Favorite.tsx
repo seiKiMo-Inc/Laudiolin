@@ -2,6 +2,7 @@ import React from "react";
 
 import { TrackData } from "@backend/types";
 import { playTrack } from "@backend/audio";
+import { getIconUrl } from "@app/utils";
 
 interface IProps {
     track: TrackData;
@@ -25,7 +26,7 @@ class Favorite extends React.Component<IProps> {
 
         return (
             <div className={"Home_FavoritesTrack"} onClick={this.play}>
-                <img src={track.icon} alt={track.title} />
+                <img src={getIconUrl(track)} alt={track.title} />
                 <p>{track.title}</p>
             </div>
         );

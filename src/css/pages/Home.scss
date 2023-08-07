@@ -18,8 +18,14 @@
     &:hover {
         .Home_PlaylistScroll {
             visibility: visible;
+            opacity: 1;
         }
     }
+}
+
+.Home_PlaylistScroll {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
 }
 
 @keyframes fade-out {
