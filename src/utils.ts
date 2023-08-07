@@ -16,7 +16,10 @@ import { contentRoutes } from "@app/constants";
  * @param track The track to get the icon URL for.
  */
 export function getIconUrl(track: TrackData): string {
-    const icon = track.icon;
+    let icon = track.icon;
+    // Replace the legacy icon URL.
+    if (icon.includes("app.magix.lol"))
+        icon = icon.replace("app.magix.lol", "app.seikimo.moe");
     // Check if the icon is already a proxy.
     if (icon.includes("/proxy/")) return icon;
 
