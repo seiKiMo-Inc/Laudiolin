@@ -75,6 +75,10 @@
     text-align: right;
     outline: none;
     border: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .TopBar_ActivityButton {
