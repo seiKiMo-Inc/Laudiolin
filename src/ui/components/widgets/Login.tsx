@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 
 import BasicModal from "@components/common/BasicModal";
 import BasicButton from "@components/common/BasicButton";
@@ -6,7 +6,6 @@ import BasicToggle from "@components/common/BasicToggle";
 
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
-import { getToken, login } from "@backend/user";
 import * as settings from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
@@ -15,7 +14,6 @@ import "@css/components/Login.scss";
 
 interface IState {
     save: boolean;
-    loginCode: string;
 }
 
 class Login extends React.PureComponent<{}, IState> {
@@ -34,8 +32,7 @@ class Login extends React.PureComponent<{}, IState> {
 
         // Update the state.
         this.setState({
-            save: true,
-            loginCode: ""
+            save: true
         });
 
         // Navigate home.
@@ -46,8 +43,7 @@ class Login extends React.PureComponent<{}, IState> {
         super(props);
 
         this.state = {
-            save: true,
-            loginCode: ""
+            save: true
         };
     }
 
@@ -55,15 +51,8 @@ class Login extends React.PureComponent<{}, IState> {
      * Prompts the user to login via a browser.
      */
     login(): void {
-        if (this.state.loginCode.length > 0) {
-            // Request a token using the login code.
-            getToken(this.state.loginCode)
-                .then(() => login())
-                .catch((err) => console.warn(err));
-        } else {
-            // Open the login URL in a new tab.
-            const newWindow = window.open(`${Gateway.getUrl()}/login`)
-        }
+        // Open the login URL in a new tab.
+        const newWindow = window.open(`${Gateway.getUrl()}/login`);
     }
 
     /**
@@ -83,47 +72,15 @@ class Login extends React.PureComponent<{}, IState> {
         emitter.off("login", this.cleanup);
     }
 
-    /**
-     * Handles the login code input.
-     * @param event The change event.
-     */
-    changeLoginCode(event: ChangeEvent): void {
-        const target = event.target as HTMLInputElement;
-        const value = target.value;
-
-        // Check if the value is a number.
-        if (isNaN(Number(value))) {
-            target.value = this.state.loginCode;
-            return;
-        }
-
-        this.setState({ loginCode: value });
-    }
-
     render() {
-        const loginText =
-            this.state.loginCode.length > 0
-                ? "Submit Code"
-                : "Log In with seiKiMo";
-
         return (
             <BasicModal id={"login"} className={"Login"}>
                 <a className={"Login_Title"}>Log In to Continue</a>
 
-                <div>
-                    <input
-                        className={"Login_Code"}
-                        type={"text"}
-                        maxLength={6}
-                        placeholder={"6-Digit Code"}
-                        onChange={(e) => this.changeLoginCode(e)}
-                    />
-                </div>
-
                 <div style={{ paddingTop: 12 }}>
                     <BasicButton
                         className={"Login_Button"}
-                        text={loginText}
+                        text={"Log In with seiKiMo"}
                         onClick={() => this.login()}
                     />
                 </div>

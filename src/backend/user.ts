@@ -7,8 +7,6 @@ import { Gateway } from "@app/constants";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 
-import { setToken } from "@backend/settings";
-
 export const updateTargetRoute = () => (targetRoute = Gateway.getUrl());
 export let targetRoute = Gateway.getUrl(); // The base address for the backend.
 export let userData: User | null = null; // The loaded user data.
@@ -54,67 +52,6 @@ export function token(): string {
  */
 export function userId(): string {
     return userData?.userId ?? "";
-}
-
-/*
- * Loading data from a token.
- */
-
-/**
- * Attempts to generate a code for the user to authenticate with.
- * @returns The generated code.
- */
-export async function getCode(): Promise<string | null> {
-    const code = token(); // Get the token.
-    if (code == "") return null; // Check if the user is authenticated.
-
-    const route = `${targetRoute}/user/auth`;
-    const response = await fetch(route, {
-        method: "GET",
-        headers: { Authorization: code }
-    });
-
-    // Check the response code.
-    if (response.status != 200) {
-        console.error(
-            `Failed to get code from the backend. Status code: ${response.status}`
-        );
-        return null;
-    }
-
-    return (await response.json()).authCode;
-}
-
-/**
- * Attempts to get a token from an authentication code.
- * @param code The authentication code.
- * @returns Whether the token was successfully retrieved.
- */
-export async function getToken(code: string): Promise<boolean> {
-    // Validate the authentication code.
-    if (code == "" || code.length != 6 || isNaN(Number(code))) return false;
-
-    const route = `${targetRoute}/user/auth`;
-    const response = await fetch(route, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code })
-    });
-
-    // Check the response code.
-    if (response.status != 200) {
-        console.error(
-            `Failed to get token from the backend. Status code: ${response.status}`
-        );
-        return false;
-    }
-
-    // Fetch the token from the response.
-    const { token } = await response.json();
-    // Save the token.
-    await setToken(token);
-
-    return true;
 }
 
 /**
