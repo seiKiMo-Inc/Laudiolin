@@ -80,29 +80,33 @@ export function savePlayerState(): void {
     // Check if the track is valid.
     if (track)
         // Save the current track.
-        settings.save("player.currentTrack", track.id);
-    // Remove the current track.
-    else settings.remove("player.currentTrack");
+        settings.save("player.currentTrack", JSON.stringify(track));
+    else
+        // Remove the current track.
+        settings.remove("player.currentTrack");
 }
 
 /**
  * Loads the player state from the local storage.
  */
 export async function loadPlayerState(): Promise<void> {
-    // Check if a track is saved.
-    const track = settings.get("player.currentTrack");
-    // Check if the track is valid.
-    if (!track) return;
+    try {
+        // Check if a track is saved.
+        const track = settings.get("player.currentTrack");
+        // Check if the track is valid.
+        if (!track) return;
 
-    // Get the track as a serialized data object.
-    const data = await fetchTrackById(track);
-    // Check if the track is valid.
-    if (!data) return;
+        // Get the track as a serialized data object.
+        const data = JSON.parse(track) as TrackData;
+        // Check if the track is valid.
+        if (!data) return;
 
-    // Add the track to the queue.
-    await playTrack(data, false, false);
-    // Pause the player.
-    TrackPlayer.pause();
+        // Add the track to the queue.
+        await playTrack(data, false, false);
+    } catch {
+        console.warn("Invalid track saved to local storage!");
+    }
+
     // Remove the track from the local storage.
     settings.remove("player.currentTrack");
 }
@@ -170,4 +174,90 @@ export function fadeOut(element: HTMLElement, duration: number): void {
             element.style.display = 'none';
         }
     })();
+}
+
+/**
+ * Base64-encodes a buffer.
+ *
+ * @param buffer The buffer to encode.
+ */
+export function base64Encode(buffer: ArrayBuffer): string {
+    let base64 = "";
+    const encodings = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+    const bytes = new Uint8Array(buffer);
+    const byteLength = bytes.byteLength;
+    const byteRemainder = byteLength % 3;
+    const mainLength = byteLength - byteRemainder;
+
+    let a, b, c, d;
+    let chunk;
+
+    // Main loop deals with bytes in chunks of 3
+    for (let i = 0; i < mainLength; i = i + 3) {
+        // Combine the three bytes into a single integer
+        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+        // Use bitmasks to extract 6-bit segments from the triplet
+        a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+        b = (chunk & 258048)   >> 12 // 258048   = (2^6 - 1) << 12
+        c = (chunk & 4032)     >>  6 // 4032     = (2^6 - 1) << 6
+        d = chunk & 63               // 63       = 2^6 - 1
+
+        // Convert the raw binary segments to the appropriate ASCII encoding
+        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+    }
+
+    // Deal with the remaining bytes and padding
+    if (byteRemainder == 1) {
+        chunk = bytes[mainLength];
+
+        a = (chunk & 252) >> 2; // 252 = (2^6 - 1) << 2
+
+        // Set the 4 least significant bits to zero
+        b = (chunk & 3)   << 4; // 3   = 2^2 - 1
+
+        base64 += encodings[a] + encodings[b] + '==';
+    } else if (byteRemainder == 2) {
+        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1];
+
+        a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+        b = (chunk & 1008)  >>  4 // 1008  = (2^6 - 1) << 4
+
+        // Set the 2 least significant bits to zero
+        c = (chunk & 15)    <<  2 // 15    = 2^4 - 1
+
+        base64 += encodings[a] + encodings[b] + encodings[c] + '=';
+    }
+
+    return base64;
+}
+
+/**
+ * Base64-decodes a string.
+ *
+ * @param string The string to decode.
+ */
+export function base64Decode(string: string): ArrayBuffer {
+    const encodings = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    let bytes = new Uint8Array(string.length * 0.75);
+    let byteLength = 0;
+
+    for (let i = 0; i < string.length; i += 4) {
+        let enc1 = encodings.indexOf(string[i]);
+        let enc2 = encodings.indexOf(string[i + 1]);
+        let enc3 = encodings.indexOf(string[i + 2]);
+        let enc4 = encodings.indexOf(string[i + 3]);
+
+        let chr1 = (enc1 << 2) | (enc2 >> 4);
+        let chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+        let chr3 = ((enc3 & 3) << 6) | enc4;
+
+        bytes[byteLength++] = chr1;
+
+        if (enc3 != 64) bytes[byteLength++] = chr2;
+        if (enc4 != 64) bytes[byteLength++] = chr3;
+    }
+
+    return bytes.buffer;
 }
