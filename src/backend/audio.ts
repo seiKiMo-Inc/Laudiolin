@@ -4,7 +4,7 @@ import * as settings from "@backend/settings";
 import { isListeningWith, listeningWith, listenWith } from "@backend/social";
 import { setCurrentPlaylist } from "@backend/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
-import { getIconUrl, savePlayerState } from "@app/utils";
+import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
 
@@ -59,6 +59,8 @@ export async function downloadTrack(
     // Save the track's data.
     track.icon = fs.toAsset(fs.getIconPath(track));
     track.url = fs.toAsset(fs.getTrackPath(track));
+    track.title = base64Encode(new TextEncoder().encode(track.title));
+    track.serialized = true;
     await fs.saveData(track, fs.getDataPath(track));
 
     if (emit) {

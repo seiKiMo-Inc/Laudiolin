@@ -6,6 +6,7 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 import { Base64 } from "js-base64";
+import { base64Decode } from "@app/utils";
 
 export let DocumentDirectoryPath: string | null = null;
 export const AppData = () => DocumentDirectoryPath;
@@ -105,11 +106,19 @@ export async function getDownloadedTracks(): Promise<string[]> {
  * @param trackId The ID of the track to load.
  */
 export async function loadLocalTrackData(trackId: string): Promise<TrackData> {
-    return JSON.parse(
+    const trackData = JSON.parse(
         await fs.readTextFile(
             `${DocumentDirectoryPath}/tracks/${trackId}/data.json`
         )
-    );
+    ) as TrackData;
+
+    // Check if the track is serialized.
+    if (trackData.serialized) {
+        trackData.title = new TextDecoder()
+            .decode(base64Decode(trackData.title));
+    }
+
+    return trackData;
 }
 
 /**

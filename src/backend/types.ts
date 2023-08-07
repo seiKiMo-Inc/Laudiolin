@@ -19,6 +19,7 @@ export type TrackData = {
     url: string;
     id: string;
     duration: number;
+    serialized?: boolean;
 };
 export type SearchResults = {
     top: SearchResult;
