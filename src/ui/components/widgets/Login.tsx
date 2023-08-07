@@ -6,9 +6,10 @@ import BasicToggle from "@components/common/BasicToggle";
 
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
-import * as settings from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import * as settings from "@backend/settings";
+import { login } from "@backend/user";
 
 import "@css/components/Login.scss";
 
@@ -53,6 +54,17 @@ class Login extends React.PureComponent<{}, IState> {
     login(): void {
         // Open the login URL in a new tab.
         const newWindow = window.open(`${Gateway.getUrl()}/login`);
+        window.addEventListener("message", async (event) => {
+            const data = event.data;
+            if ("token" in data && await login(data.token)) {
+                // Save the token.
+                settings.setToken(data.token);
+                settings.save("authenticated", "discord");
+
+                // Close the window.
+                newWindow.close();
+            }
+        });
     }
 
     /**
