@@ -25,15 +25,24 @@ export async function openFromUrl(): Promise<void> {
             // TODO: Display track preview page.
             const track = await fetchTrackById(value);
             track &&
-                playTrack(track, true, true)
+                playTrack(track, false, true)
                     .catch((err) => console.warn(err));
+
+            // Try to open the URL in the desktop app.
+            window.location.replace(`laudiolin://play?id=${value}`);
             break;
         case "playlist":
             const playlist = await getPlaylistById(value);
             playlist && await router.navigate(`${contentRoutes.PLAYLIST.substring(0, contentRoutes.PLAYLIST.length - 3)}${playlist.id}`);
+
+            // Try to open the URL in the desktop app.
+            window.location.replace(`laudiolin://playlist?id=${value}`);
             return;
         case "listen":
             listenWith(value).catch((err) => console.warn(err));
+
+            // Try to open the URL in the desktop app.
+            window.location.replace(`laudiolin://listen?id=${value}`);
             break;
     }
 
