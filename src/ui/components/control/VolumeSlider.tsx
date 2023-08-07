@@ -30,7 +30,8 @@ class VolumeSlider extends React.Component<IProps, IState> {
                 className={"ControlPanel_Volume"}
                 onMouseEnter={() => this.setState({ activeThumb: true })}
                 onMouseLeave={() => this.setState({ activeThumb: false })}
-                data-tooltip-content={this.props.volume + "%"}
+                data-tooltip-content={Math.trunc(Math.round(
+                    this.props.volume)) + "%"}
                 data-tooltip-float={true}
                 data-tooltip-id={"volume_tooltip"}
             >
