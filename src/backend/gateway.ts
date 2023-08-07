@@ -180,7 +180,7 @@ async function onMessage(event: MessageEvent): Promise<void> {
             emitter.emit("recent"); // Emit the recents event.
             return;
         default:
-            console.warn(message.message ?? "No message provided.");
+            console.warn(message.message ?? "No message provided.", message);
             return;
     }
 }
