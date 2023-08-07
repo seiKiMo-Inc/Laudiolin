@@ -268,9 +268,15 @@ export async function getPlaylistAuthor(
     const user = await getUserById(owner);
     if (!user) return { name: "Unknown", icon: "" }; // If the user data could not be loaded, return "Unknown".
 
+    // Resolve the discriminator.
+    let discriminator = userData?.discriminator ?? null;
+    if (discriminator && discriminator == "0") {
+        discriminator = null;
+    }
+
     return {
         // Return the user's username & icon.
-        name: `${user.username}#${user.discriminator}`,
+        name: `${user.username}#${discriminator ? "#" : ""}${discriminator ?? ""}`,
         icon: user.avatar ?? ""
     };
 }
