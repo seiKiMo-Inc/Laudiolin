@@ -11,7 +11,6 @@ import BasicButton from "@components/common/BasicButton";
 import type { SettingType } from "@backend/types";
 import { offlineSupport } from "@backend/offline";
 import { connect } from "@backend/gateway";
-import { getCode } from "@backend/user";
 import * as settings from "@backend/settings";
 
 import "@css/pages/Settings.scss";
@@ -157,17 +156,6 @@ class Settings extends React.Component<{}, IState> {
         };
     }
 
-    /**
-     * Shows the user a 6-digit code to login on other devices.
-     */
-    async revealLoginCode(): Promise<void> {
-        const code = await getCode();
-        if (code == null) return;
-
-        this.setState({ code });
-        BasicModal.showModal("login_code");
-    }
-
     render() {
         return (
             <AnimatedView>
@@ -226,19 +214,6 @@ class Settings extends React.Component<{}, IState> {
                     />
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
-
-                    <DisplayField
-                        text={"Get Login Code"}
-                        description={
-                            "Generates a 6-digit code to login on other devices simultaneously."
-                        }
-                    >
-                        <BasicButton
-                            text={"Reveal"}
-                            className={"Setting_Box Setting_Button"}
-                            onClick={() => this.revealLoginCode()}
-                        />
-                    </DisplayField>
 
                     <Setting
                         setting={"system.offline"}
