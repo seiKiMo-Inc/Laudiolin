@@ -8,13 +8,14 @@ import BasicDropdown, {
 } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
 
+import BasicModal from "@components/common/BasicModal";
+import AnimatedView from "@components/common/AnimatedView";
+
 import type { SettingType } from "@backend/types";
 import { connect } from "@backend/gateway";
 import * as settings from "@backend/settings";
 
 import "@css/pages/Settings.scss";
-import BasicModal from "@components/common/BasicModal";
-import AnimatedView from "@components/common/AnimatedView";
 
 interface ISetting {
     setting: string;

@@ -66,6 +66,17 @@
     }
 }
 
+.SearchInput_SearchType {
+    margin-right: 5px;
+
+    background-color: var(--background-primary-color);
+    color: var(--text-primary-color);
+
+    text-align: right;
+    outline: none;
+    border: none;
+}
+
 .TopBar_ActivityButton {
     transition: all 0.2s ease-in-out;
     color: var(--icon-secondary-color) !important;
