@@ -28,14 +28,14 @@ export function fetchAllPlaylists(): Playlist[] {
  * @param id The ID of the playlist.
  * @param playlists The playlists to search through.
  */
-export function fetchPlaylist(
+export async function fetchPlaylist(
     id: string,
     playlists: Playlist[] | null = null
-): Playlist | null {
+): Promise<Playlist | null> {
     return (
         (playlists ?? fetchAllPlaylists()).find(
             (playlist) => playlist.id == id
-        ) ?? null
+        ) ?? await getPlaylistById(id)
     );
 }
 
