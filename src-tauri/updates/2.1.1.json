@@ -1,0 +1,11 @@
+{
+  "version": "2.1.1",
+  "notes": "Share playlists & various bug fixes!",
+  "pub_date": "2023-04-02T18:36:02Z",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFhuNVRPUFkxZzV5ZkxYemtjTktKN2lLdlFvN2U1OThIYXE2SGhVZXlLUDVYUkRyejlEL3ZHU0l0dVZUcFlnOVhuTkcva0U4NXdtdUdFM3ZmNENHZ0FnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjgwNDYxMzg3CWZpbGU6TGF1ZGlvbGluXzIuMS4xX3g2NF9lbi1VUy5tc2kuemlwCnhMc0R3NzU5cDY3NHVEemdVNlNGa2ZxY3hDYWZUYUx4UzU4ditBWnNVcHpXMWJWMVZsanNMUTZXWTF1bkxYbjFaL2JjUXB0eWZ0WjdIeW5IenNMRURRPT0K",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.1.1/Laudiolin_2.1.1x64_en-US.msi.zip"
+    }
+  }
+}
