@@ -1,6 +1,10 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 
 import ProgressBar from "@components/control/ProgressBar";
+
+import { appWindow } from "@tauri-apps/api/window";
+
+import Slider from "rc-slider/es";
 
 import { FiVolume1 } from "react-icons/fi";
 import { ImStack } from "react-icons/im";
@@ -18,7 +22,6 @@ import { setVolume, toggleRepeatState } from "@backend/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";
-import Slider from "rc-slider/es";
 
 interface IState {
     queue: boolean;
@@ -28,6 +31,8 @@ interface IState {
     volume: number;
     lastVolume: number;
     activeThumb: boolean;
+
+    onTop: boolean;
 }
 
 class MiniPlayer extends React.Component<any, IState> {
@@ -57,8 +62,20 @@ class MiniPlayer extends React.Component<any, IState> {
     /**
      * Maximizes the window.
      */
-    maximizeWindow = async () => {
-        toMini(false);
+    maximizeWindow = async (e: MouseEvent<SVGElement>) => {
+        // Check if the user is holding a modifier key.
+        if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
+            const newState = !this.state.onTop;
+            await appWindow.setAlwaysOnTop(newState);
+            this.setState({ onTop: newState });
+        } else {
+            toMini(false);
+
+            if (this.state.onTop) {
+                await appWindow.setAlwaysOnTop(false);
+                this.setState({ onTop: false });
+            }
+        }
     };
 
     constructor(props: any) {
@@ -71,7 +88,8 @@ class MiniPlayer extends React.Component<any, IState> {
             progress: 0,
             volume: 100,
             lastVolume: 100,
-            activeThumb: false
+            activeThumb: false,
+            onTop: false
         };
     }
 
