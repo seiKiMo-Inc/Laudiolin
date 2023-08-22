@@ -62,6 +62,13 @@ export type User = BasicUser & {
     recentlyPlayed?: TrackData[];
 };
 
+export type Guild = {
+    id: string;
+    name: string;
+    icon: string;
+    bots: string[];
+};
+
 export type UserSettings = {
     search: SearchSettings;
     audio: AudioSettings;

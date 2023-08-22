@@ -1,7 +1,7 @@
 /* Web-browser environment. */
 export const isWeb = false;
 /* Is the app in development? */
-export const isDevelopment = false;
+export const isDevelopment = true;
 
 export const Gateway = {
     url: isDevelopment ? "http://localhost:3001" : "https://app.seikimo.moe",
@@ -17,6 +17,7 @@ export const contentRoutes = {
     DOWNLOADS: "/downloads",
     PLAYLIST: "/playlist/:id",
     QUEUE: "/queue",
+    ELIXIR: "/elixir",
     SETTINGS: "/settings",
     RECENTS: "/recents",
     SEARCH: "/search",

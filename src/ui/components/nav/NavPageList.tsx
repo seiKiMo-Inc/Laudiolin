@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { RxTimer } from "react-icons/rx";
+import { FaRobot } from "react-icons/fa";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
 
 import { contentRoutes } from "@app/constants";
@@ -78,6 +79,33 @@ class NavPageList extends React.Component<{}, never> {
                                 />
                                 <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Favorites
+                                </p>
+                            </>
+                        );
+                    }}
+                </NavLink>
+
+                <NavLink
+                    to={contentRoutes.ELIXIR}
+                    className={"NavPanel_PageItem"}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
+                >
+                    {({ isActive }) => {
+                        return (
+                            <>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <FaRobot
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
+                                    Elixir
                                 </p>
                             </>
                         );

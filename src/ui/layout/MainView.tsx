@@ -12,6 +12,7 @@ import Downloads from "@pages/Downloads";
 import Queue from "@pages/Queue";
 import Recents from "@pages/Recents";
 import Login from "@widget/Login";
+import Elixir from "@pages/Elixir";
 
 class MainView extends React.Component<any> {
     constructor(props: any) {
@@ -31,6 +32,7 @@ class MainView extends React.Component<any> {
                     <Route path={contentRoutes.QUEUE} element={<Queue />} />
                     <Route path={contentRoutes.RECENTS} element={<Recents />} />
                     <Route path={contentRoutes.LOGIN} element={<Login />} />
+                    <Route path={contentRoutes.ELIXIR} element={<Elixir />} />
                 </Routes>
             </div>
         );

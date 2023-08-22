@@ -1,0 +1,64 @@
+.Elixir {
+    @apply flex flex-col p-5 w-full h-full;
+}
+
+.Elixir_ServerList {
+    @apply flex flex-row mt-[35px] pb-4;
+
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.Elixir_Server {
+    @apply flex flex-col p-2 items-center;
+
+    background-color: var(--background-primary-color);
+    border-radius: 10px;
+
+    width: 128px;
+    max-height: 150px;
+    justify-content: center;
+
+    gap: 5px;
+
+    img {
+        @apply flex h-[100px] w-[100px];
+
+        border-radius: 100px;
+        text-align: center;
+        line-height: 100px;
+
+        color: var(--text-primary-color);
+    }
+
+    p {
+        @apply text-center;
+        overflow-wrap: anywhere;
+        margin: 0;
+    }
+
+    &:hover {
+        @apply cursor-pointer;
+    }
+}
+
+.Elixir_BlankServer {
+    @apply flex;
+
+    width: 100px;
+    height: 100px;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 100px;
+    background-color: #313338;
+
+    p {
+        @apply text-3xl;
+        height: auto;
+    }
+
+    filter: alpha(opacity=50);
+}
