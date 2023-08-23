@@ -48,7 +48,7 @@ class ControlPanel extends React.Component<any, IState> {
                 ? favorites.find((t) => t.id == track.id) != null
                 : false,
             progress: TrackPlayer.getProgress(),
-            volume: Howler.volume() * 100
+            volume: TrackPlayer.volume() * 100
         });
     };
 
@@ -138,9 +138,9 @@ class ControlPanel extends React.Component<any, IState> {
      * Toggles mute
      */
     toggleMute = (): void => {
-        if (Howler.volume() > 0) {
+        if (TrackPlayer.volume() > 0) {
             this.setState({
-                lastVolume: Howler.volume() * 100
+                lastVolume: TrackPlayer.volume() * 100
             });
             setVolume(0);
         } else {
@@ -236,6 +236,7 @@ class ControlPanel extends React.Component<any, IState> {
 
                     <ProgressBar
                         progress={this.state.progress}
+                        forceUpdate={TrackPlayer.forceUpdatePlayer}
                         duration={TrackPlayer.getDuration()}
                         onSeek={(progress) => {
                             this.setState({ progress });
@@ -247,7 +248,7 @@ class ControlPanel extends React.Component<any, IState> {
                 <div className={"ControlPanel_Right"}>
                     <VolumeSlider
                         volume={this.state.volume}
-                        muted={Howler.volume() == 0}
+                        muted={TrackPlayer.volume() == 0}
                         setVolume={(volume) => {
                             this.setState({ volume });
                             setVolume(volume / 100);

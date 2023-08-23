@@ -46,7 +46,7 @@ class MiniPlayer extends React.Component<any, IState> {
             queue: TrackPlayer.getQueue().length > 0,
             playing: !TrackPlayer.paused,
             progress: TrackPlayer.getProgress(),
-            volume: Howler.volume() * 100
+            volume: TrackPlayer.volume() * 100
         });
     };
 

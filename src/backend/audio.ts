@@ -230,6 +230,6 @@ export async function playPlaylist(
  * @param volume The volume to set.
  */
 export function setVolume(volume: number): void {
-    Howler.volume(volume); // Set the volume of the Howler player.
+    TrackPlayer.volume(volume); // Set the volume of the Howler player.
     settings.save("volume", volume.toString()); // Set the volume in the settings.
 }

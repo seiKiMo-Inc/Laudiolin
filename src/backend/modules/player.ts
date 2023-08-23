@@ -1,30 +1,39 @@
-import type { TrackData } from "@backend/types";
+import type { Synchronize, TrackData } from "@backend/types";
 import * as mod from "@backend/modules";
 
 import { Howl } from "howler";
 import { EventEmitter } from "events";
+import { sendGatewayMessage } from "@backend/gateway";
 
 export type Loop = "none" | "track" | "queue";
 export type PlayerState = {
+    track: TrackData,
     paused: boolean;
     loop: Loop;
+    volume: number;
     progress: number;
     progressTicks: number;
 };
 
 export class Player extends EventEmitter implements mod.TrackPlayer {
     private readonly updateTask: NodeJS.Timer | number;
-    public alternate: (track: TrackData) => Promise<TrackData | undefined>;
+    alternate: (track: TrackData) => Promise<TrackData | undefined>;
 
-    /* Queue */
-    private current: Track | null = null;
+    current: Track | null = null;
     queue: TrackData[] = [];
-    private history: TrackData[] = [];
+    history: TrackData[] = [];
+
+    posFromState: boolean = false;
+    useTickCheck: boolean = true;
+    forceUpdatePlayer: boolean = false;
+    syncWithBackend: boolean = false;
 
     /* State */
     public state: PlayerState = {
+        track: null,
         paused: false,
         loop: "none",
+        volume: 1,
         progress: 0,
         progressTicks: 0
     };
@@ -51,7 +60,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         });
 
         // Check if the track is in the same position as it was before.
-        if (!this.state.paused) {
+        if (this.useTickCheck && !this.state.paused) {
             if (this.state.progress == this.getProgress())
                 this.state.progressTicks += 1;
             else {
@@ -87,14 +96,17 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * Returns the current progress into the track.
      */
     public getProgress(): number {
-        return this.current ? this.current.progress() : 0;
+        return this.posFromState ? this.state.progress :
+            this.current ? this.current.progress() : 0;
     }
 
     /**
      * Returns the duration of the track.
      */
     public getDuration(): number {
-        return this.current ? this.current.duration() : 0;
+        return this.posFromState ?
+            (this.state.track?.duration ?? 0) :
+            this.current ? this.current.duration() : 0;
     }
 
     /**
@@ -134,6 +146,22 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public setRepeatMode(mode: Loop): void {
         this.state.loop = mode;
+
+        if (this.syncWithBackend) {
+            let loopMode: number;
+            switch (mode) {
+                default: throw new Error("Invalid loop mode.");
+                case "none": loopMode = 0; break;
+                case "queue": loopMode = 1; break;
+                case "track": loopMode = 2; break;
+            }
+
+            sendGatewayMessage({
+                type: "synchronize",
+                timestamp: Date.now(),
+                loopMode
+            } as Synchronize);
+        }
     }
 
     /**
@@ -142,6 +170,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     public shuffle(): void {
         this.queue = this.queue.sort(() => Math.random() - 0.5);
         this.emit("shuffle");
+
+        if (this.syncWithBackend) {
+            sendGatewayMessage({
+                type: "synchronize",
+                timestamp: Date.now(),
+                shuffle: true
+            } as Synchronize);
+        }
     }
 
     /**
@@ -173,6 +209,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             }
         } else {
             this.stop(true, true); // Stop the player.
+        }
+
+        if (this.syncWithBackend) {
+            sendGatewayMessage({
+                type: "synchronize",
+                timestamp: Date.now(),
+                queue: this.queue
+            } as Synchronize);
         }
     }
 
@@ -220,6 +264,13 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         if (this.current && !force) {
             // Add the track to the queue.
             this.queue.push(track);
+            if (this.syncWithBackend) {
+                sendGatewayMessage({
+                    type: "synchronize",
+                    timestamp: Date.now(),
+                    queue: this.queue
+                } as Synchronize);
+            }
             // Emit the queue event.
             this.emit("queue", track);
             return;
@@ -239,7 +290,15 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Create a new track.
         this.current = new Track(track, await this.alternate?.(track));
         // Play the track.
-        play && this.current.play();
+        if (this.syncWithBackend) {
+            sendGatewayMessage({
+                type: "synchronize",
+                timestamp: Date.now(),
+                playingTrack: track
+            } as Synchronize);
+        } else {
+            play && this.current.play();
+        }
 
         // Emit the play event.
         this.emit("play", this.current);
@@ -314,11 +373,19 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public pause(): void {
         if (this.state.paused) {
-            this.current?.play();
+            !this.syncWithBackend && this.current?.play();
             this.state.paused = false;
         } else {
-            this.current?.pause();
+            !this.syncWithBackend && this.current?.pause();
             this.state.paused = true;
+        }
+
+        if (this.syncWithBackend) {
+            sendGatewayMessage({
+                type: "synchronize",
+                timestamp: Date.now(),
+                paused: this.state.paused
+            } as Synchronize);
         }
 
         this.state.progressTicks = 0;
@@ -334,18 +401,39 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         this.current?.seek(progress);
         this.emit("seek", progress);
     }
+
+    /**
+     * Adjusts the volume of the player.
+     * @param set The volume to set.
+     */
+    public volume(set: number | null = null): number {
+        if (set) {
+            Howler.volume(set);
+            this.state.volume = set;
+
+            if (this.syncWithBackend) {
+                sendGatewayMessage({
+                    type: "synchronize",
+                    timestamp: Date.now(),
+                    volume: this.state.volume * 100
+                } as Synchronize);
+            }
+        }
+
+        return this.state.volume;
+    }
 }
 
 export class Track extends Howl implements mod.Track {
     constructor(
         public readonly data: TrackData, // This is the original track data.
-        public readonly playData?: TrackData // This is the track data that should be used for playback.
+        private readonly playData: TrackData = null // This is the track data that should be used for playback.
     ) {
         super({
             format: "mp3",
             html5: !playData || playData.url.includes("stream"),
             src: [playData ? playData.url : data.url],
-            volume: 0.3,
+            volume: 0.2,
             autoplay: false
         });
 

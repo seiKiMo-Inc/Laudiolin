@@ -276,7 +276,7 @@ export async function getPlaylistAuthor(
 
     return {
         // Return the user's username & icon.
-        name: `${user.username}#${discriminator ? "#" : ""}${discriminator ?? ""}`,
+        name: `${user.username}${discriminator ? "#" : ""}${discriminator ?? ""}`,
         icon: user.avatar ?? ""
     };
 }

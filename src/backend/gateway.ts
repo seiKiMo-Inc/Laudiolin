@@ -1,9 +1,10 @@
-import type { TrackData } from "@backend/types";
+import type { Synchronize, TrackData } from "@backend/types";
 
 import { loadRecents, token } from "@backend/user";
 import { audio, system } from "@backend/settings";
 import { syncToTrack } from "@backend/audio";
 import { listenWith } from "@backend/social";
+import { syncState } from "@backend/elixir";
 
 import { Gateway } from "@app/constants";
 import emitter from "@backend/events";
@@ -48,7 +49,7 @@ async function update(): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    connected &&
+    connected && currentTrack &&
         sendGatewayMessage(<SeekMessage>{
             type: "seek",
             timestamp: Date.now(),
@@ -179,6 +180,9 @@ async function onMessage(event: MessageEvent): Promise<void> {
             await loadRecents(recents); // Load the recents.
             emitter.emit("recent"); // Emit the recents event.
             return;
+        case "synchronize":
+            await syncState(message as Synchronize);
+            return;
         default:
             console.warn(message.message ?? "No message provided.", message);
             return;
@@ -260,7 +264,7 @@ export function listenAlongWith(userId: string | null): void {
     });
 }
 
-type BaseGatewayMessage = {
+export type BaseGatewayMessage = {
     type: string;
     timestamp: number;
     message?: string;

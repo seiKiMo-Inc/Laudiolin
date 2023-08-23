@@ -9,6 +9,7 @@ interface IProps {
     progress: number;
     duration: number;
 
+    forceUpdate?: boolean;
     onSeek: (progress: number) => void;
 }
 
@@ -47,10 +48,13 @@ class ProgressBar extends React.Component<IProps, IState> {
                 <p className={"ControlPanel_ProgressBar_Time"}>
                     {formatDuration(this.props.progress)}
                 </p>
+
                 <Slider
                     min={0}
                     max={this.props.duration}
-                    value={this.state.progress}
+                    value={this.props.forceUpdate ?
+                        this.props.progress :
+                        this.state.progress}
                     onChange={(progress: number) => this.setProgress(progress)}
                     onAfterChange={(progress: number) =>
                         this.props.onSeek(progress)
@@ -66,6 +70,7 @@ class ProgressBar extends React.Component<IProps, IState> {
                     }}
                     draggableTrack={true}
                 />
+
                 <p className={"ControlPanel_ProgressBar_Time"}>
                     {formatDuration(this.props.duration)}
                 </p>

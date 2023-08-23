@@ -3,7 +3,7 @@ import React from "react";
 import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
-import { getGuilds } from "@backend/elixir";
+import { setGuild, getGuilds } from "@backend/elixir";
 import type { Guild } from "@backend/types";
 
 import "@css/pages/Elixir.scss";
@@ -34,7 +34,7 @@ function Icon(props: { guild: Guild }) {
 
     const [loaded, setLoaded] = React.useState(true);
 
-    return loaded ? (
+    return loaded && guild.icon != null ? (
         <img
             alt={shortenName(guild.name)}
             style={{
@@ -73,6 +73,7 @@ class Elixir extends React.Component<{}, IState> {
         }
 
         Alert.showAlert(`Selected ${guild.name}`);
+        setGuild(guild.id);
     }
 
     componentDidMount() {
