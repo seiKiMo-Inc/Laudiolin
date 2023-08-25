@@ -251,6 +251,7 @@ class MiniPlayer extends React.Component<any, IState> {
                     <ProgressBar
                         className={"MiniPlayer_ProgressBar"}
                         progress={this.state.progress}
+                        forceUpdate={TrackPlayer.forceUpdatePlayer}
                         duration={TrackPlayer.getDuration()}
                         onSeek={(progress) => {
                             this.setState({ progress });
