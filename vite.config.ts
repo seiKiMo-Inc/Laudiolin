@@ -13,7 +13,7 @@ export default defineConfig({
     include: ["@tauri-apps/api/tauri", "@tauri-apps/api/path"],
   },
 
-  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
+  // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
   clearScreen: false,
   // tauri expects a fixed port, fail if that port is not available
