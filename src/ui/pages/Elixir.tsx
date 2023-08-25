@@ -3,7 +3,7 @@ import React from "react";
 import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
-import { setGuild, getGuilds } from "@backend/elixir";
+import { setGuild, getGuilds, selectedGuild } from "@backend/elixir";
 import type { Guild } from "@backend/types";
 
 import "@css/pages/Elixir.scss";
@@ -72,8 +72,13 @@ class Elixir extends React.Component<{}, IState> {
             return;
         }
 
-        Alert.showAlert(`Selected ${guild.name}`);
-        setGuild(guild.id);
+        if (selectedGuild != guild.id) {
+            setGuild(guild.id);
+            Alert.showAlert(`Selected ${guild.name}`);
+        } else {
+            setGuild(null);
+            Alert.showAlert(`De-selected ${guild.name}`);
+        }
     }
 
     componentDidMount() {

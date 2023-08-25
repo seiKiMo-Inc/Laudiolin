@@ -4,6 +4,9 @@ import { targetRoute, token } from "@backend/user";
 import TrackPlayer, { Loop, Track } from "@mod/player";
 import { BaseGatewayMessage, sendGatewayMessage } from "@backend/gateway";
 
+export let selectedGuild: string | null = null;
+export let selectedBot: string | null = null;
+
 type SetElixirMessage = BaseGatewayMessage & {
     type: "setElixir";
     guild: string;
@@ -40,6 +43,9 @@ export async function getGuilds(): Promise<Guild[] | null> {
  * @param bot The bot to set.
  */
 export function setGuild(guild: string, bot: string = ""): void {
+    selectedGuild = guild;
+    selectedBot = bot;
+
     sendGatewayMessage({
         type: "setElixir",
         timestamp: Date.now(),
@@ -59,6 +65,8 @@ export function setGuild(guild: string, bot: string = ""): void {
             timestamp: Date.now(),
             doAll: true
         } as Synchronize);
+    } else {
+        TrackPlayer.reset();
     }
 }
 
