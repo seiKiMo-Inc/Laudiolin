@@ -49,7 +49,7 @@ async function update(): Promise<void> {
     if (url && url.startsWith("file://")) return;
 
     // Send player information to the gateway.
-    connected && currentTrack &&
+    connected && currentTrack && !TrackPlayer.paused &&
         sendGatewayMessage(<SeekMessage>{
             type: "seek",
             timestamp: Date.now(),
