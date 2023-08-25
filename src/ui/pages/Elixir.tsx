@@ -3,8 +3,8 @@ import React from "react";
 import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
-import { setGuild, getGuilds, selectedGuild } from "@backend/elixir";
 import type { Guild } from "@backend/types";
+import { setGuild, getGuilds, selectedGuild } from "@backend/elixir";
 
 import "@css/pages/Elixir.scss";
 
@@ -79,6 +79,8 @@ class Elixir extends React.Component<{}, IState> {
             setGuild(null);
             Alert.showAlert(`De-selected ${guild.name}`);
         }
+
+        this.forceUpdate();
     }
 
     componentDidMount() {
@@ -114,7 +116,10 @@ class Elixir extends React.Component<{}, IState> {
                                 <div className={"Elixir_Server"} key={index}
                                      onClick={() => this.selectServer(guild)}
                                      style={{
-                                         filter: guild.bots.length == 0 ? "brightness(50%)" : "none"
+                                         filter: guild.bots.length == 0 ? "brightness(50%)" : "none",
+                                         backgroundColor: selectedGuild == guild.id ?
+                                             "var(--accent-color)" :
+                                             "var(--background-primary-color)"
                                      }}
                                 >
                                     <Icon guild={guild} />
