@@ -1,5 +1,7 @@
 import React from "react";
 
+import { AiOutlineReload } from "react-icons/ai";
+
 import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
@@ -71,6 +73,10 @@ class Elixir extends React.Component<{}, IState> {
             Alert.showAlert(`No Elixirs found in ${guild.name}`);
             return;
         }
+        if (guild.connected.length == 0) {
+            Alert.showAlert(`Connect an Elixir to a voice channel in ${guild.name}`);
+            return;
+        }
 
         if (selectedGuild != guild.id) {
             setGuild(guild.id);
@@ -83,7 +89,12 @@ class Elixir extends React.Component<{}, IState> {
         this.forceUpdate();
     }
 
-    componentDidMount() {
+    /**
+     * Loads all the user's guilds.
+     */
+    private reloadGuilds(): void {
+        this.setState({ guilds: [] });
+
         getGuilds()
             .then(guilds => {
                 guilds = guilds
@@ -94,10 +105,21 @@ class Elixir extends React.Component<{}, IState> {
             .catch(console.error);
     }
 
+    componentDidMount() {
+        this.reloadGuilds();
+    }
+
     render() {
         return (
             <AnimatedView className={"Elixir"}>
-                <h2>Elixir</h2>
+                <div className={"Elixir_Title"}>
+                    <p>Elixir</p>
+
+                    <button onClick={this.reloadGuilds.bind(this)}>
+                        <AiOutlineReload />
+                        Reload
+                    </button>
+                </div>
 
                 {
                     this.state.guilds == null ? (

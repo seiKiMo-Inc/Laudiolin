@@ -73,6 +73,7 @@ export type Guild = {
     name: string;
     icon: string;
     bots: string[];
+    connected: string[];
 };
 /**
  * If something is undefined, it should be ignored.

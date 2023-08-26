@@ -2,6 +2,38 @@
     @apply flex flex-col p-5 w-full h-full;
 }
 
+.Elixir_Title {
+    @apply flex flex-row w-full gap-4 items-center;
+
+    p {
+        color: var(--text-primary-color);
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        margin: 0;
+        width: 50px;
+    }
+
+    button {
+        @apply flex flex-row gap-2 items-center justify-center;
+
+        height: 28px;
+        font-size: 16px;
+
+        margin: 0;
+        padding: 5px;
+        border-radius: 5px;
+
+        border: transparent;
+        color: var(--text-primary-color);
+        background-color: var(--accent-color);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
 .Elixir_ServerList {
     @apply flex flex-row mt-[35px] pb-4 pr-5;
 
