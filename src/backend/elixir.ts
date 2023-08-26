@@ -79,7 +79,9 @@ export async function syncState(data: Synchronize): Promise<void> {
     if (!("state" in TrackPlayer)) return;
     const state = TrackPlayer.state;
 
-    if (data.doAll !== null && !data.doAll) {
+    if (data.doAll !== undefined &&
+        data.doAll !== null &&
+        !data.doAll) {
         setGuild(null); // Reset the connected state.
         return;
     }
