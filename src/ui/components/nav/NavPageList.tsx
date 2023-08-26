@@ -105,6 +105,33 @@ class NavPageList extends React.Component<{}, IState> {
                     }}
                 </NavLink>
 
+                <NavLink
+                    to={contentRoutes.DOWNLOADS}
+                    className={"NavPanel_PageItem"}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
+                >
+                    {({ isActive }) => {
+                        return (
+                            <>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <BiDownload
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
+                                    Downloads
+                                </p>
+                            </>
+                        );
+                    }}
+                </NavLink>
+
                 {
                     userData?.connections?.discord && (
                         <NavLink
@@ -135,33 +162,6 @@ class NavPageList extends React.Component<{}, IState> {
                         </NavLink>
                     )
                 }
-
-                <NavLink
-                    to={contentRoutes.DOWNLOADS}
-                    className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({
-                        color: isActive && "var(--text-primary-color)"
-                    })}
-                >
-                    {({ isActive }) => {
-                        return (
-                            <>
-                                {isActive && (
-                                    <div
-                                        className={"NavPanel_PageItem_Active"}
-                                    />
-                                )}
-                                <BiDownload
-                                    style={{ color: isActive && "var(--text-primary-color)" }}
-                                    className={"NavPanel_PageItem_Icon"}
-                                />
-                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
-                                    Downloads
-                                </p>
-                            </>
-                        );
-                    }}
-                </NavLink>
 
                 <NavLink
                     to={contentRoutes.SETTINGS}
