@@ -1,11 +1,11 @@
 {
-  "version": "2.2.1",
-  "notes": "Minor UI bug fixes & Mini player always on top.",
-  "pub_date": "2023-08-08T23:12:41Z",
+  "version": "2.2.2",
+  "notes": "Control Elixir using Laudiolin!",
+  "pub_date": "2023-08-25T15:50:43Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFRrb21sRFhSckJ2UzM2M2pNTzJvWHY0QTlrRkUzcUxFNlZEaktETWNldkNDdmlaOU9oc2NsT2RkeTY4YnRGS3NzQjNjR3Z0U1k1UXJOUnpTazcydVF3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjkxNTM2NzQ0CWZpbGU6TGF1ZGlvbGluXzIuMi4xX3g2NF9lbi1VUy5tc2kuemlwCmFFUkNycGMwNlFNWUVjeGh6bk5ONVNQRzBtRUJJcUdRM1pXNnZzdmdLaG9CT1MyMlJ3eUdVWWNqTXV3TGRXWC8vVytoZUdMMDRyOFpoVWZPVU5MK0FRPT0K",
-      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.2.1/Laudiolin_2.2.1_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbGZhTVgwTGw2MGk3c3ZmaUtUdXVTOFBrRG83d0F3cnc0aHBOMHg5NGp2WXZoSWdJYVdXekdOdHBNTGc2eWZERzVLZzVPM0NKUDlvYXFURk04UTljc0FFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjkzMDI1MzY3CWZpbGU6TGF1ZGlvbGluXzIuMi4yX3g2NF9lbi1VUy5tc2kuemlwCnVTdTJkd3ZDdFFkRllMVE00a05tUlYxaE13YmFVOUcwU2FRNzVYYkNDYThzUjR4R1BrN2x4dDZDRm9zdHowSGxIMWowZGFSWllnelU5cnFxd3N2MENBPT0K",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.2.2/Laudiolin_2.2.2_x64_en-US.msi.zip"
     }
   }
 }
