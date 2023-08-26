@@ -7,8 +7,6 @@ import { Gateway } from "@app/constants";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 
-import { setToken } from "@backend/settings";
-
 export const updateTargetRoute = () => (targetRoute = Gateway.getUrl());
 export let targetRoute = Gateway.getUrl(); // The base address for the backend.
 export let userData: User | null = null; // The loaded user data.

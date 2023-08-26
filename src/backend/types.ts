@@ -49,6 +49,10 @@ export type BasicUser = {
     discriminator?: string;
     userId?: string;
     avatar?: string;
+    connections?: {
+        google: boolean;
+        discord: boolean;
+    };
 };
 export type OnlineUser = BasicUser & {
     listeningTo?: TrackData;

@@ -5,13 +5,23 @@ import { RxTimer } from "react-icons/rx";
 import { FaRobot } from "react-icons/fa";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
 
+import { userData } from "@backend/user";
 import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
+import emitter from "@backend/events";
 
-class NavPageList extends React.Component<{}, never> {
+interface IState {
+    elixir: boolean;
+}
+
+class NavPageList extends React.Component<{}, IState> {
     constructor(props: {}) {
         super(props);
+
+        this.state = {
+            elixir: false
+        };
     }
 
     /**
@@ -26,6 +36,16 @@ class NavPageList extends React.Component<{}, never> {
                     ? "var(--text-primary-color)"
                     : "var(--text-secondary-color)"
         };
+    }
+
+    private update = () => this.forceUpdate();
+
+    componentDidMount() {
+        emitter.on("login", this.update);
+    }
+
+    componentWillUnmount() {
+        emitter.off("login", this.update);
     }
 
     render() {
@@ -85,32 +105,36 @@ class NavPageList extends React.Component<{}, never> {
                     }}
                 </NavLink>
 
-                <NavLink
-                    to={contentRoutes.ELIXIR}
-                    className={"NavPanel_PageItem"}
-                    style={({ isActive }) => ({
-                        color: isActive && "var(--text-primary-color)"
-                    })}
-                >
-                    {({ isActive }) => {
-                        return (
-                            <>
-                                {isActive && (
-                                    <div
-                                        className={"NavPanel_PageItem_Active"}
-                                    />
-                                )}
-                                <FaRobot
-                                    style={{ color: isActive && "var(--text-primary-color)" }}
-                                    className={"NavPanel_PageItem_Icon"}
-                                />
-                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
-                                    Elixir
-                                </p>
-                            </>
-                        );
-                    }}
-                </NavLink>
+                {
+                    userData?.connections?.discord && (
+                        <NavLink
+                            to={contentRoutes.ELIXIR}
+                            className={"NavPanel_PageItem"}
+                            style={({ isActive }) => ({
+                                color: isActive && "var(--text-primary-color)"
+                            })}
+                        >
+                            {({ isActive }) => {
+                                return (
+                                    <>
+                                        {isActive && (
+                                            <div
+                                                className={"NavPanel_PageItem_Active"}
+                                            />
+                                        )}
+                                        <FaRobot
+                                            style={{ color: isActive && "var(--text-primary-color)" }}
+                                            className={"NavPanel_PageItem_Icon"}
+                                        />
+                                        <p style={{ color: isActive && "var(--text-primary-color)" }}>
+                                            Elixir
+                                        </p>
+                                    </>
+                                );
+                            }}
+                        </NavLink>
+                    )
+                }
 
                 <NavLink
                     to={contentRoutes.DOWNLOADS}
