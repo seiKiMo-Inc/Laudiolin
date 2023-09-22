@@ -3,18 +3,17 @@ import React from "react";
 import Switch from "react-switch";
 import { BiChevronDown } from "react-icons/bi";
 
-import BasicDropdown, {
-    toggleDropdown
-} from "@components/common/BasicDropdown";
+import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
 
 import BasicModal from "@components/common/BasicModal";
 import AnimatedView from "@components/common/AnimatedView";
 
-import type { SettingType } from "@backend/types";
-import { offlineSupport } from "@backend/offline";
-import { connect } from "@backend/gateway";
 import * as settings from "@backend/settings";
+import { connect } from "@backend/gateway";
+import { invoke } from "@tauri-apps/api";
+import { offlineSupport } from "@backend/offline";
+import type { SettingType } from "@backend/types";
 
 import "@css/pages/Settings.scss";
 
@@ -244,13 +243,21 @@ class Settings extends React.Component<{}, IState> {
                         options={["Exit", "Tray"]}
                     />
 
-                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Gateway</h2>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Debugging Actions</h2>
 
                     <DisplayField text={"Reconnect to Gateway"}>
                         <BasicButton
                             text={"Reconnect"}
                             className={"Setting_Box Setting_Button"}
                             onClick={() => connect()}
+                        />
+                    </DisplayField>
+
+                    <DisplayField text={"Open DevTools"}>
+                        <BasicButton
+                            text={"Open"}
+                            className={"Setting_Box Setting_Button"}
+                            onClick={async () => invoke("open_dev_tools")}
                         />
                     </DisplayField>
 

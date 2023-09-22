@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle};
+use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle, Window};
 use tauri::{SystemTray, SystemTrayMenu, SystemTrayEvent};
 use window_shadows::set_shadow;
 use tokio::fs::File;
@@ -28,7 +28,7 @@ fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            open, online, exists, save_file, get_file, create_dir, delete
+            open, online, exists, save_file, get_file, create_dir, delete, open_dev_tools
         ])
         .setup(|app| {
             // Initialize deep linking.
@@ -128,6 +128,12 @@ async fn delete(path: String) {
     } else {
         wrap(tokio::fs::remove_dir_all(path).await, "delete");
     }
+}
+
+/// Opens the frontend's developer tools.
+#[tauri::command]
+fn open_dev_tools(window: Window) {
+    window.open_devtools();
 }
 
 /// Registers the deep link handler.
