@@ -6,7 +6,6 @@ import { BiChevronDown } from "react-icons/bi";
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
 
-import BasicModal from "@components/common/BasicModal";
 import AnimatedView from "@components/common/AnimatedView";
 
 import * as settings from "@backend/settings";
@@ -301,16 +300,6 @@ class Settings extends React.Component<{}, IState> {
                         <span className={"Key"}>Ctrl</span>
                         <span className={"Key"}>M</span>
                     </DisplayField>
-
-                    <BasicModal
-                        id={"login_code"}
-                        buttonText={"Close"}
-                        onSubmit={() => null}
-                        style={{ alignItems: "center" }}
-                    >
-                        <h1>Authorization Code</h1>
-                        <p>Code: {this.state.code}</p>
-                    </BasicModal>
                 </div>
             </AnimatedView>
         );
