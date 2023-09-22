@@ -261,7 +261,7 @@ class Settings extends React.Component<{}, IState> {
                         />
                     </DisplayField>
 
-                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Keybinds</h2>
+                    <h2 style={{ marginTop: 30, marginBottom: 20 }}>Key Binds</h2>
 
                     <DisplayField text={"Toggle Track State"} description={"Toggles between play and pause when pressed"}>
                         <span className={"Key"}>SpaceBar</span>
