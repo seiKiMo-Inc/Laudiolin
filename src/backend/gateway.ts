@@ -60,7 +60,7 @@ async function update(): Promise<void> {
 /**
  * Updates the player details on the backend.
  */
-async function playerUpdate(seek?: number): Promise<void> {
+export async function playerUpdate(seek?: number): Promise<void> {
     // Check if the track is playing.
     const currentTrack = TrackPlayer.getCurrentTrack();
     // Check if the track is a local track.

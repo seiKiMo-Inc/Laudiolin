@@ -3,7 +3,7 @@ import * as mod from "@backend/modules";
 
 import { Howl } from "howler";
 import { EventEmitter } from "events";
-import { sendGatewayMessage } from "@backend/gateway";
+import { playerUpdate, sendGatewayMessage } from "@backend/gateway";
 
 export type Loop = "none" | "track" | "queue";
 export type PlayerState = {
@@ -76,12 +76,18 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         if ("mediaSession" in navigator) {
+            const mediaSession = navigator.mediaSession;
+
             // Update the playback state.
             let state = this.paused ? "paused" : "playing";
-            if (this.getCurrentTrack() == null)
-                state = "none";
+            if (this.getCurrentTrack() == null) state = "none";
+            mediaSession.playbackState = state as MediaSessionPlaybackState;
 
-            navigator.mediaSession.playbackState = state as MediaSessionPlaybackState;
+            // Update the position state.
+            mediaSession.setPositionState({
+                duration: this.getDuration(),
+                position: this.getProgress()
+            });
         }
     }
 
@@ -391,6 +397,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         this.state.progressTicks = 0;
 
         this.update();
+        this.emit("pause");
     }
 
     /**
@@ -442,6 +449,8 @@ export class Track extends Howl implements mod.Track {
             if (TrackPlayer.getCurrentTrack()?.id != this.id) {
                 this.stop(); // Stop the track.
                 this.unload(); // Unload the track.
+            } else {
+                playerUpdate(); // Update the gateway.
             }
         });
 
@@ -495,4 +504,16 @@ export class Track extends Howl implements mod.Track {
 
 const TrackPlayer = new Player();
 window["player"] = TrackPlayer;
+
+// Set the media session function handlers.
+if ("mediaSession" in navigator) {
+    const mediaSession = navigator.mediaSession;
+    mediaSession.setActionHandler("nexttrack", () => TrackPlayer.next());
+    mediaSession.setActionHandler("pause", () => TrackPlayer.pause());
+    mediaSession.setActionHandler("play", () => TrackPlayer.pause());
+    mediaSession.setActionHandler("previoustrack", () => TrackPlayer.back());
+    mediaSession.setActionHandler("seekto", details => TrackPlayer.seek(details.seekTime));
+    mediaSession.setActionHandler("stop", () => TrackPlayer.stop());
+}
+
 export default TrackPlayer;
