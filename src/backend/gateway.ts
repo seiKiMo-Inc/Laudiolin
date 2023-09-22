@@ -14,25 +14,29 @@ export let connected: boolean = false;
 export let gateway: WebSocket | null = null;
 const messageQueue: BaseGatewayMessage[] = [];
 
+interface SyncData {
+    seek?: number; // Included track progress.
+    update?: boolean; // Discord rich presence update.
+}
+
 /**
  * Sets up the gateway.
  * (for listeners)
  */
 export async function setup(): Promise<void> {
-    const playerSync = (time?: number) => {
+    const playerSync = (data?: SyncData) => {
         update() // Update the player progress.
             .catch((err) => console.warn(err));
-        playerUpdate(time) // Update the player status.
+        playerUpdate(data) // Update the player status.
             .catch((err) => console.warn(err));
     };
 
     // Add playback event listeners.
-    TrackPlayer.on("play", () => playerSync());
-    TrackPlayer.on("pause", () => playerSync());
+    TrackPlayer.on("play", () => playerSync({ update: true }));
+    TrackPlayer.on("pause", () => playerSync({ update: true }));
     TrackPlayer.on("stop", () => playerSync());
     TrackPlayer.on("seek", playerSync);
     TrackPlayer.on("end", () => playerSync());
-    TrackPlayer.on("track", () => playerSync());
 
     // Add the update listener.
     TrackPlayer.on("update", update);
@@ -60,7 +64,11 @@ async function update(): Promise<void> {
 /**
  * Updates the player details on the backend.
  */
-export async function playerUpdate(seek?: number): Promise<void> {
+export async function playerUpdate(data?: SyncData): Promise<void> {
+    // Pull data properties.
+    const { seek, update } =
+    data ?? { seek: null, update: null };
+
     // Check if the track is playing.
     const currentTrack = TrackPlayer.getCurrentTrack();
     // Check if the track is a local track.
@@ -73,7 +81,8 @@ export async function playerUpdate(seek?: number): Promise<void> {
             type: "player",
             seek: seek ?? TrackPlayer.getProgress(),
             track: currentTrack ? currentTrack.data : null,
-            paused: TrackPlayer.paused
+            paused: TrackPlayer.paused,
+            update: update ?? false
         });
 }
 
@@ -300,6 +309,7 @@ export type PlayerMessage = BaseGatewayMessage & {
     track: TrackData | null;
     seek: number; // Track progress.
     paused: boolean; // Is the player paused.
+    update: boolean; // Should the presence be updated?
 };
 
 // To client.

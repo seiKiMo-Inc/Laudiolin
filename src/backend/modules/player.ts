@@ -283,7 +283,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         // Check if a track is already playing.
-        let current;
+        let current: Track;
         if (play && (current = this.current)) {
             // Check if the track is the same.
             if (history && current.id != track.id)
