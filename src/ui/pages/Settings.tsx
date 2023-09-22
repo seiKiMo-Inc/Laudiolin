@@ -233,7 +233,7 @@ class Settings extends React.Component<{}, IState> {
                         setting={"system.presence"}
                         type={"select"}
                         description={"What should your Discord presence look like?"}
-                        options={["Generic", "Simple", "None"]}
+                        options={["Generic", "Simple", "Detailed", "None"]}
                     />
                     <Setting
                         setting={"system.close"}

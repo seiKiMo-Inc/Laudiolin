@@ -112,7 +112,7 @@ export type UISettings = {
 export type SystemSettings = {
     offline: boolean;
     broadcast_listening: "Nobody" | "Friends" | "Everyone";
-    presence: "Generic" | "Simple" | "None";
+    presence: "Generic" | "Simple" | "Detailed" | "None";
     close: "Exit" | "Tray";
 };
 export type SettingType = "boolean" | "input" | "select" | "color";
