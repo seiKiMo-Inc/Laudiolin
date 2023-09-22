@@ -1,6 +1,6 @@
 [package]
 name = "laudiolin"
-version = "2.2.3"
+version = "2.2.4"
 description = "A music player."
 authors = ["KingRainbow44", "Arikatsu"]
 license = "MIT"
