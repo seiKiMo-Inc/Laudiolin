@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TrackData } from "@backend/types";
+import { TrackData } from "@app/types";
 import { playTrack } from "@backend/audio";
 import { getIconUrl } from "@app/utils";
 

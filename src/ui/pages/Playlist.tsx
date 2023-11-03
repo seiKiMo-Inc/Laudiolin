@@ -17,10 +17,10 @@ import Router from "@components/common/Router";
 
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
-import * as types from "@backend/types";
+import * as types from "@app/types";
 import { playPlaylist } from "@backend/audio";
 import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/user";
-import { savePlaylist } from "@backend/offline";
+import { savePlaylist } from "@backend/desktop/offline";
 import { editPlaylist, fetchPlaylist } from "@backend/playlist";
 import { loadPlaylists } from "@backend/user";
 import { notify } from "@backend/notifications";

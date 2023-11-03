@@ -1,4 +1,4 @@
-import type { Synchronize, TrackData } from "@backend/types";
+import type { Synchronize, TrackData } from "@app/types";
 
 import { loadRecents, token } from "@backend/user";
 import { audio, system } from "@backend/settings";

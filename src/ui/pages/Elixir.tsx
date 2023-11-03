@@ -5,7 +5,7 @@ import { AiOutlineReload } from "react-icons/ai";
 import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
-import type { Guild } from "@backend/types";
+import type { Guild } from "@app/types";
 import { setGuild, getGuilds, selectedGuild } from "@backend/elixir";
 
 import "@css/pages/Elixir.scss";

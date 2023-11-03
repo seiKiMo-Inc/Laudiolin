@@ -13,7 +13,7 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import { parseArtist } from "@backend/search";

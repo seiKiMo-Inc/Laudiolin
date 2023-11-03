@@ -1,4 +1,4 @@
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 import { EventEmitter } from "events";
 
 import { Player as DefaultPlayer } from "@mod/player";

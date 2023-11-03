@@ -2,7 +2,7 @@ import React from "react";
 
 import User from "@widget/User";
 
-import type { OfflineUser, OnlineUser } from "@backend/types";
+import type { OfflineUser, OnlineUser } from "@app/types";
 
 import "@css/layout/ActivityPanel.scss";
 import { getAvailableUsers, getRecentUsers } from "@backend/social";

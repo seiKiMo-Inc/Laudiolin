@@ -11,7 +11,7 @@ import { Tooltip } from "react-tooltip";
 import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 import { handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";

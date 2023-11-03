@@ -4,7 +4,7 @@ import CurrentUser from "@components/nav/CurrentUser";
 import NavPageList from "@components/nav/NavPageList";
 import Playlists from "@components/nav/Playlists";
 
-import type { User } from "@backend/types";
+import type { User } from "@app/types";
 
 import "@css/layout/NavPanel.scss";
 

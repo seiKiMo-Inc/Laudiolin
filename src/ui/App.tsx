@@ -14,8 +14,8 @@ import { invoke } from "@tauri-apps/api";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 import emitter from "@backend/events";
-import { loadState } from "@backend/offline";
-import { openFromUrl } from "@backend/link";
+import { loadState } from "@backend/desktop/offline";
+import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
 import { login, userData, loaders, playlists } from "@backend/user";
 import { get } from "@backend/settings";

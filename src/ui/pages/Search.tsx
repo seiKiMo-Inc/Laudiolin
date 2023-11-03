@@ -3,7 +3,7 @@ import React from "react";
 import Track from "@widget/Track";
 import AnimatedView from "@components/common/AnimatedView";
 
-import * as types from "@backend/types";
+import * as types from "@app/types";
 import emitter from "@backend/events";
 import { save, get } from "@backend/settings";
 

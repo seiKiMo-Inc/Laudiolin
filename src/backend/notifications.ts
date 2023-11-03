@@ -1,6 +1,6 @@
 import * as notifs from "@tauri-apps/api/notification";
 
-import type { InAppNotificationData } from "@backend/types";
+import type { InAppNotificationData } from "@app/types";
 import * as settings from "@backend/settings";
 
 /**

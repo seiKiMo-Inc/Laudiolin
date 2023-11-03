@@ -1,4 +1,4 @@
-import type { Playlist, TrackData } from "@backend/types";
+import type { Playlist, TrackData } from "@app/types";
 
 import * as settings from "@backend/settings";
 import { isListeningWith, listeningWith, listenWith } from "@backend/social";
@@ -8,7 +8,7 @@ import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
 
-import * as fs from "@mod/fs";
+import * as fs from "@backend/desktop/fs";
 import TrackPlayer from "@mod/player";
 
 /**

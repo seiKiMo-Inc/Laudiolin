@@ -1,4 +1,4 @@
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 
 import { favorites } from "@backend/user";
 import { Gateway } from "@app/constants";
@@ -6,7 +6,7 @@ import { playTrack, toggleRepeatState } from "@backend/audio";
 import { fetchTrackById } from "@backend/search";
 import * as settings from "@backend/settings";
 
-import * as fs from "@mod/fs";
+import * as fs from "@backend/desktop/fs";
 import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
 import { router } from "@app/main";

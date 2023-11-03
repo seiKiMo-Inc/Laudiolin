@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Playlist } from "@backend/types";
+import { Playlist } from "@app/types";
 
 import "@css/components/Playlist.scss";
 

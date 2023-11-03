@@ -11,7 +11,7 @@ import { getFromPath, saveFromPath } from "@backend/settings";
 import { contentRoutes } from "@app/constants";
 import { router } from "@app/main";
 
-import { SearchEngine } from "@app/backend/types";
+import { SearchEngine } from "@app/types";
 
 import "@css/layout/TopBar.scss";
 

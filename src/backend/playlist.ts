@@ -1,4 +1,4 @@
-import type { TrackData, Playlist } from "@backend/types";
+import type { TrackData, Playlist } from "@app/types";
 
 import { targetRoute, playlists, token } from "@backend/user";
 

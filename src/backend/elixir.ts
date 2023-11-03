@@ -1,4 +1,4 @@
-import type { Guild, Synchronize } from "@backend/types";
+import type { Guild, Synchronize } from "@app/types";
 import { targetRoute, token } from "@backend/user";
 
 import TrackPlayer, { Loop, Track } from "@mod/player";

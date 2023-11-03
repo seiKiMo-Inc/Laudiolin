@@ -8,15 +8,15 @@ import type {
     Playlist,
     TrackData,
     User
-} from "@backend/types";
+} from "@app/types";
 
-import * as fs from "@mod/fs";
+import * as fs from "@backend/desktop/fs";
 import {
     AppData,
     deleteTrackFolder,
     getDownloadedTracks,
     loadLocalTrackData
-} from "@mod/fs";
+} from "@backend/desktop/fs";
 import { readDir, removeFile, createDir, removeDir } from "@tauri-apps/api/fs";
 import emitter from "@backend/events";
 

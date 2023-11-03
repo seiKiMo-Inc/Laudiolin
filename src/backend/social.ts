@@ -1,4 +1,4 @@
-import type { OfflineUser, OnlineUser, User } from "@backend/types";
+import type { OfflineUser, OnlineUser, User } from "@app/types";
 
 import { userData, getUserById, token } from "@backend/user";
 import { gateway, connect, listenAlongWith } from "@backend/gateway";

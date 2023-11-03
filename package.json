@@ -47,6 +47,7 @@
     "vite": "^4.0.0",
     "vite-tsconfig-paths": "^3.5.0",
     "@vitejs/plugin-react": "^3.0.0",
+    "vite-plugin-conditional-compiler": "^0.2.1",
 
     "sass": "^1.58.3",
     "cssnano": "^5.1.15",

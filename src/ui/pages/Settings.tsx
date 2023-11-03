@@ -11,8 +11,8 @@ import AnimatedView from "@components/common/AnimatedView";
 import * as settings from "@backend/settings";
 import { connect } from "@backend/gateway";
 import { invoke } from "@tauri-apps/api";
-import { offlineSupport } from "@backend/offline";
-import type { SettingType } from "@backend/types";
+import { offlineSupport } from "@backend/desktop/offline";
+import type { SettingType } from "@app/types";
 
 import "@css/pages/Settings.scss";
 

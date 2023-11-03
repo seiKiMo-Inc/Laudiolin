@@ -9,7 +9,7 @@ import BasicToggle from "@components/common/BasicToggle";
 import BasicButton from "@components/common/BasicButton";
 import Alert from "@components/Alert";
 
-import { Playlist } from "@backend/types";
+import { Playlist } from "@app/types";
 import emitter from "@backend/events";
 import { createPlaylist, loadPlaylists, login } from "@backend/user";
 import { importPlaylist } from "@backend/playlist";

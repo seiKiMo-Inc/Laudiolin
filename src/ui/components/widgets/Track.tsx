@@ -12,11 +12,11 @@ import BasicDropdown, {
 } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
 
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
 import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
-import { isDownloaded } from "@backend/offline";
+import { isDownloaded } from "@backend/desktop/offline";
 import { favoriteTrack } from "@backend/user";
 import { parseArtist } from "@backend/search";
 import emitter from "@backend/events";

@@ -2,12 +2,12 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import * as fs from "@mod/fs";
+import * as fs from "@backend/desktop/fs";
 
-import * as link from "@backend/link";
+import * as link from "@backend/desktop/link";
 import * as audio from "@backend/audio";
 import * as gateway from "@backend/gateway";
-import * as offline from "@backend/offline";
+import * as offline from "@backend/desktop/offline";
 import * as settings from "@backend/settings";
 
 import App from "./ui/App";

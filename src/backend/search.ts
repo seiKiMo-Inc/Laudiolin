@@ -1,4 +1,4 @@
-import type { SearchResult, SearchResults, TrackData } from "@backend/types";
+import type { SearchResult, SearchResults, TrackData } from "@app/types";
 
 import { Gateway } from "@app/constants";
 import * as settings from "@backend/settings";

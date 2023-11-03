@@ -4,7 +4,7 @@ import type {
     AudioSettings,
     UISettings,
     SystemSettings
-} from "@backend/types";
+} from "@app/types";
 import { connect } from "@backend/gateway";
 
 let settings: UserSettings | null = null;

@@ -1,4 +1,4 @@
-import type { Synchronize, TrackData } from "@backend/types";
+import type { Synchronize, TrackData } from "@app/types";
 import * as mod from "@backend/modules";
 
 import { Howl } from "howler";

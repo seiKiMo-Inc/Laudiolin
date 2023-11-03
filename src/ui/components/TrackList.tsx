@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 
 import Track from "@widget/Track";
 
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 import emitter from "@backend/events";
 
 interface IProps {

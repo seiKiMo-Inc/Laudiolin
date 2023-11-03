@@ -4,7 +4,7 @@ import { FiHeadphones } from "react-icons/fi";
 
 import BasicButton from "@components/common/BasicButton";
 
-import type { OnlineUser, OfflineUser } from "@backend/types";
+import type { OnlineUser, OfflineUser } from "@app/types";
 import { listeningWith, listenWith } from "@backend/social";
 import { userData } from "@backend/user";
 import { parseArtist } from "@backend/search";

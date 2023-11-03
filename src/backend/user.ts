@@ -1,4 +1,4 @@
-import type { User, Playlist, TrackData, PlaylistAuthor } from "@backend/types";
+import type { User, Playlist, TrackData, PlaylistAuthor } from "@app/types";
 
 import emitter from "@backend/events";
 import * as settings from "@backend/settings";

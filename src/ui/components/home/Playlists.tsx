@@ -7,7 +7,7 @@ import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import PlaylistItem from "@widget/Playlist";
 import BasicButton from "@components/common/BasicButton";
 
-import { Playlist } from "@backend/types";
+import { Playlist } from "@app/types";
 import emitter from "@backend/events";
 import { playlists } from "@backend/user";
 import { contentRoutes } from "@app/constants";

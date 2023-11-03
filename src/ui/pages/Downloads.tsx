@@ -3,7 +3,7 @@ import React from "react";
 import AnimatedView from "@components/common/AnimatedView";
 import TrackList from "@components/TrackList";
 
-import { downloads } from "@backend/offline";
+import { downloads } from "@backend/desktop/offline";
 
 class Downloads extends React.Component {
     render() {

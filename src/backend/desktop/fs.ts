@@ -1,4 +1,4 @@
-import type { TrackData } from "@backend/types";
+import type { TrackData } from "@app/types";
 
 import * as nfs from "@tauri-apps/api/fs";
 import { invoke } from "@tauri-apps/api";
