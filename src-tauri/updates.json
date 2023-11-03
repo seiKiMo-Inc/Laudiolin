@@ -1,11 +1,11 @@
 {
-  "version": "2.2.4",
-  "notes": "Improvements to Discord rich presence updating.",
-  "pub_date": "2023-09-22T15:31:50Z",
+  "version": "3.0.0",
+  "notes": "New features! Theming, stability improvements, offline support, merged codebases, etc.",
+  "pub_date": "",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFovVHJxM3lxRGR5alV3QXRGcHFvZTFicDVWQXNLcTNLNHVVMERFOUlmR3ZEUldoMzNZWW9EV1hXK1ZhaTM2b1kxQmJSb3NuZG1jSi8xS05HaDcvL2dzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjk1Mzk3NTUxCWZpbGU6TGF1ZGlvbGluXzIuMi40X3g2NF9lbi1VUy5tc2kuemlwClhCUTR4QkZ6bDk0d3BCR254Vk1vM253YTF3eWZtd29HekNGbGxiVFQ4Vkd5NEJSNW5xNTBkR0lBMUZJdG1SdFB3SHp1UE5kd1JUTEFUMVZ6MmtPbkRnPT0K",
-      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v2.2.4/Laudiolin_2.2.4_x64_en-US.msi.zip"
+      "signature": "",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v3.0.0/Laudiolin_3.0.0_x64_en-US.msi.zip"
     }
   }
 }

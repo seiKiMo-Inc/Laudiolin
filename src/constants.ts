@@ -1,7 +1,7 @@
 /* Web-browser environment. */
 export const isWeb = false;
 /* Is the app in development? */
-export const isDevelopment = false;
+export const isDevelopment = import.meta.env.DEV;
 
 export const Gateway = {
     url: isDevelopment ? "http://localhost:3001" : "https://app.seikimo.moe",
