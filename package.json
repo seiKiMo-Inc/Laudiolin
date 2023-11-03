@@ -31,6 +31,7 @@
 
     "events": "^3.3.0",
     "howler": "^2.2.3",
+    "zustand": "^4.4.6",
     "js-base64": "^3.7.5",
 
     "@tauri-apps/api": "^1.2.0"
