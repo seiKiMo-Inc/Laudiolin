@@ -1,6 +1,7 @@
 # Laudiolin
 
-A "high quality" music player written in TypeScript using Tauri and React.
+A "high quality" music player written in TypeScript using Tauri and React.\
+Now a single repository containing the **web** and **desktop** apps!
 
 ## Contents
 
