@@ -15,9 +15,9 @@ import type { TrackData } from "@app/types";
 import { handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { favorites, favoriteTrack } from "@backend/user";
-import { setVolume, toggleRepeatState } from "@backend/audio";
-import { parseArtist } from "@backend/search";
+import { favorites, favoriteTrack } from "@backend/social/user";
+import { setVolume, toggleRepeatState } from "@backend/core/audio";
+import { parseArtist } from "@backend/core/search";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";

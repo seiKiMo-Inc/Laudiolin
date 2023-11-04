@@ -17,7 +17,7 @@ import emitter from "@backend/events";
 import { loadState } from "@backend/desktop/offline";
 import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
-import { login, userData, loaders, playlists } from "@backend/user";
+import { login, userData, loaders, playlists } from "@backend/social/user";
 import { get } from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";

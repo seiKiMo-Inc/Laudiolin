@@ -9,7 +9,7 @@ import BasicButton from "@components/common/BasicButton";
 
 import { Playlist } from "@app/types";
 import emitter from "@backend/events";
-import { playlists } from "@backend/user";
+import { playlists } from "@backend/social/user";
 import { contentRoutes } from "@app/constants";
 
 interface IState {

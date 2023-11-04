@@ -1,10 +1,10 @@
 import type { OfflineUser, OnlineUser, User } from "@app/types";
 
-import { userData, getUserById, token } from "@backend/user";
-import { gateway, connect, listenAlongWith } from "@backend/gateway";
+import { userData, getUserById, token } from "@backend/social/user";
+import { gateway, connect, listenAlongWith } from "@backend/social/gateway";
 
 import emitter from "@backend/events";
-import { targetRoute } from "@backend/user";
+import { targetRoute } from "@backend/social/user";
 
 import TrackPlayer from "@mod/player";
 

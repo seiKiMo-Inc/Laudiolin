@@ -5,7 +5,7 @@ import Playlists from "@components/home/Playlists";
 import Recents from "@components/home/Recents";
 import Favorites from "@components/home/Favorites";
 
-import { playlists, recents, favorites } from "@backend/user";
+import { playlists, recents, favorites } from "@backend/social/user";
 import emitter from "@backend/events";
 
 import "@css/pages/Home.scss";

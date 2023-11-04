@@ -5,9 +5,9 @@ import { FiHeadphones } from "react-icons/fi";
 import BasicButton from "@components/common/BasicButton";
 
 import type { OnlineUser, OfflineUser } from "@app/types";
-import { listeningWith, listenWith } from "@backend/social";
-import { userData } from "@backend/user";
-import { parseArtist } from "@backend/search";
+import { listeningWith, listenWith } from "@backend/features/social";
+import { userData } from "@backend/social/user";
+import { parseArtist } from "@backend/core/search";
 
 import "@css/components/User.scss";
 

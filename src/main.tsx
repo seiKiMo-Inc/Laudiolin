@@ -5,8 +5,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as fs from "@backend/desktop/fs";
 
 import * as link from "@backend/desktop/link";
-import * as audio from "@backend/audio";
-import * as gateway from "@backend/gateway";
+import * as audio from "@backend/core/audio";
+import * as gateway from "@backend/social/gateway";
 import * as offline from "@backend/desktop/offline";
 import * as settings from "@backend/settings";
 

@@ -18,12 +18,12 @@ import Router from "@components/common/Router";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import * as types from "@app/types";
-import { playPlaylist } from "@backend/audio";
-import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/user";
+import { playPlaylist } from "@backend/core/audio";
+import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/social/user";
 import { savePlaylist } from "@backend/desktop/offline";
-import { editPlaylist, fetchPlaylist } from "@backend/playlist";
-import { loadPlaylists } from "@backend/user";
-import { notify } from "@backend/notifications";
+import { editPlaylist, fetchPlaylist } from "@backend/core/playlist";
+import { loadPlaylists } from "@backend/social/user";
+import { notify } from "@backend/features/notifications";
 import emitter from "@backend/events";
 import { reorder } from "@app/utils";
 import { router } from "@app/main";

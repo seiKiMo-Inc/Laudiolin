@@ -1,6 +1,6 @@
 import type { TrackData, Playlist } from "@app/types";
 
-import { targetRoute, playlists, token } from "@backend/user";
+import { targetRoute, playlists, token } from "@backend/social/user";
 
 export let currentPlaylist: Playlist | null = null;
 

@@ -1,11 +1,11 @@
 import type { Playlist, TrackData } from "@app/types";
 
 import * as settings from "@backend/settings";
-import { isListeningWith, listeningWith, listenWith } from "@backend/social";
-import { setCurrentPlaylist } from "@backend/playlist";
-import { getDownloadUrl, getStreamingUrl } from "@backend/gateway";
+import { isListeningWith, listeningWith, listenWith } from "@backend/features/social";
+import { setCurrentPlaylist } from "@backend/core/playlist";
+import { getDownloadUrl, getStreamingUrl } from "@backend/social/gateway";
 import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
-import { notify } from "@backend/notifications";
+import { notify } from "@backend/features/notifications";
 import emitter from "@backend/events";
 
 // #v-ifdef VITE_BUILD_ENV=desktop

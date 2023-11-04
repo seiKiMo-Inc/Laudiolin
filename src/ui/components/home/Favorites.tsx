@@ -2,7 +2,7 @@ import React from "react";
 
 import Favorite from "@widget/Favorite";
 
-import { favorites } from "@backend/user";
+import { favorites } from "@backend/social/user";
 import emitter from "@backend/events";
 
 class Favorites extends React.Component<{}, never> {

@@ -1,9 +1,9 @@
 import type { TrackData } from "@app/types";
 
-import { favorites } from "@backend/user";
+import { favorites } from "@backend/social/user";
 import { Gateway } from "@app/constants";
-import { playTrack, toggleRepeatState } from "@backend/audio";
-import { fetchTrackById } from "@backend/search";
+import { playTrack, toggleRepeatState } from "@backend/core/audio";
+import { fetchTrackById } from "@backend/core/search";
 import * as settings from "@backend/settings";
 
 import * as fs from "@backend/desktop/fs";

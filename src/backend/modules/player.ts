@@ -3,7 +3,7 @@ import * as mod from "@backend/modules";
 
 import { Howl } from "howler";
 import { EventEmitter } from "events";
-import { playerUpdate, sendGatewayMessage } from "@backend/gateway";
+import { playerUpdate, sendGatewayMessage } from "@backend/social/gateway";
 
 export type Loop = "none" | "track" | "queue";
 export type PlayerState = {

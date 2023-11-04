@@ -9,7 +9,7 @@ import BasicButton from "@components/common/BasicButton";
 import AnimatedView from "@components/common/AnimatedView";
 
 import * as settings from "@backend/settings";
-import { connect } from "@backend/gateway";
+import { connect } from "@backend/social/gateway";
 // #v-ifdef VITE_BUILD_ENV=desktop
 import { invoke } from "@tauri-apps/api";
 import { offlineSupport } from "@backend/desktop/offline";

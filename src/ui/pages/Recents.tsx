@@ -3,7 +3,7 @@ import React from "react";
 import AnimatedView from "@components/common/AnimatedView";
 import TrackList from "@components/TrackList";
 
-import { recents } from "@backend/user";
+import { recents } from "@backend/social/user";
 
 class Recents extends React.Component {
     render() {

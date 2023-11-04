@@ -1,8 +1,8 @@
-import * as audio from "@backend/audio";
+import * as audio from "@backend/core/audio";
 import { system } from "@backend/settings";
 
-import { notify } from "@backend/notifications";
-import { userData, playlists, favorites } from "@backend/user";
+import { notify } from "@backend/features/notifications";
+import { userData, playlists, favorites } from "@backend/social/user";
 import type {
     OfflineUserData,
     Playlist,

@@ -4,7 +4,7 @@ import { BiSearch } from "react-icons/bi";
 import { BsFileMusicFill } from "react-icons/bs";
 import { FaSpotify, FaYoutube } from "react-icons/fa";
 
-import { doSearch } from "@backend/search";
+import { doSearch } from "@backend/core/search";
 import emitter from "@backend/events";
 import { getFromPath, saveFromPath } from "@backend/settings";
 

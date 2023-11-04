@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TrackData } from "@app/types";
-import { playTrack } from "@backend/audio";
+import { playTrack } from "@backend/core/audio";
 import { getIconUrl } from "@app/utils";
 
 interface IProps {

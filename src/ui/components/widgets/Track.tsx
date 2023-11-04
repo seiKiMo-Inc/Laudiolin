@@ -18,14 +18,14 @@ import {
 // #v-ifdef VITE_BUILD_ENV=desktop
     deleteTrack, downloadTrack
 // #v-endif
-} from "@backend/audio";
-import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
+} from "@backend/core/audio";
+import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
 // #v-ifdef VITE_BUILD_ENV=desktop
 import { isDownloaded } from "@backend/desktop/offline";
 // #v-endif
-import { favoriteTrack } from "@backend/user";
-import { parseArtist } from "@backend/search";
+import { favoriteTrack } from "@backend/social/user";
+import { parseArtist } from "@backend/core/search";
 import emitter from "@backend/events";
 
 import "@css/components/Track.scss";

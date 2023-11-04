@@ -1,8 +1,8 @@
 import type { Guild, Synchronize } from "@app/types";
-import { targetRoute, token } from "@backend/user";
+import { targetRoute, token } from "@backend/social/user";
 
 import TrackPlayer, { Loop, Track } from "@mod/player";
-import { BaseGatewayMessage, sendGatewayMessage } from "@backend/gateway";
+import { BaseGatewayMessage, sendGatewayMessage } from "@backend/social/gateway";
 
 export let selectedGuild: string | null = null;
 export let selectedBot: string | null = null;

@@ -7,7 +7,7 @@ import BasicDropdown from "@components/common/BasicDropdown";
 import { toggleDropdown } from "@components/common/BasicDropdown";
 
 import type { User } from "@app/types";
-import { logout } from "@backend/user";
+import { logout } from "@backend/social/user";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 

@@ -5,7 +5,7 @@ import User from "@widget/User";
 import type { OfflineUser, OnlineUser } from "@app/types";
 
 import "@css/layout/ActivityPanel.scss";
-import { getAvailableUsers, getRecentUsers } from "@backend/social";
+import { getAvailableUsers, getRecentUsers } from "@backend/features/social";
 import emitter from "@backend/events";
 
 interface IState {

@@ -7,7 +7,7 @@ import BasicToggle from "@components/common/BasicToggle";
 // #v-ifdef VITE_BUILD_ENV=desktop
 import { invoke } from "@tauri-apps/api";
 // #v-else
-import { login } from "@app/backend/user";
+import { login } from "@backend/social/user";
 // #v-endif
 
 import emitter from "@backend/events";

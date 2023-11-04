@@ -1,10 +1,10 @@
 import type { Synchronize, TrackData } from "@app/types";
 
-import { loadRecents, token } from "@backend/user";
+import { loadRecents, token } from "@backend/social/user";
 import { audio, system } from "@backend/settings";
-import { syncToTrack } from "@backend/audio";
-import { listenWith } from "@backend/social";
-import { syncState } from "@backend/elixir";
+import { syncToTrack } from "@backend/core/audio";
+import { listenWith } from "@backend/features/social";
+import { syncState } from "@backend/features/elixir";
 
 import { Gateway } from "@app/constants";
 import emitter from "@backend/events";

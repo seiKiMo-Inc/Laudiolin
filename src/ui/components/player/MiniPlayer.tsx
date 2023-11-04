@@ -16,9 +16,9 @@ import { VscClose } from "react-icons/vsc";
 import type { TrackData } from "@app/types";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { parseArtist } from "@backend/search";
+import { parseArtist } from "@backend/core/search";
 import { toMini, handleHotKeys } from "@app/utils";
-import { setVolume, toggleRepeatState } from "@backend/audio";
+import { setVolume, toggleRepeatState } from "@backend/core/audio";
 import TrackPlayer from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";

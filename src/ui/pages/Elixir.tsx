@@ -6,7 +6,7 @@ import Alert from "@components/Alert";
 import AnimatedView from "@components/common/AnimatedView";
 
 import type { Guild } from "@app/types";
-import { setGuild, getGuilds, selectedGuild } from "@backend/elixir";
+import { setGuild, getGuilds, selectedGuild } from "@backend/features/elixir";
 
 import "@css/pages/Elixir.scss";
 

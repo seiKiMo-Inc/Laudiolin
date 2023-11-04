@@ -5,7 +5,7 @@ import { RxTimer } from "react-icons/rx";
 import { FaRobot } from "react-icons/fa";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
 
-import { userData } from "@backend/user";
+import { userData } from "@backend/social/user";
 import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";

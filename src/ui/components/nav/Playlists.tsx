@@ -11,8 +11,8 @@ import Alert from "@components/Alert";
 
 import { Playlist } from "@app/types";
 import emitter from "@backend/events";
-import { createPlaylist, loadPlaylists, login } from "@backend/user";
-import { importPlaylist } from "@backend/playlist";
+import { createPlaylist, loadPlaylists, login } from "@backend/social/user";
+import { importPlaylist } from "@backend/core/playlist";
 import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";

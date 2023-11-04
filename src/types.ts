@@ -1,4 +1,4 @@
-import type { BaseGatewayMessage } from "@backend/gateway";
+import type { BaseGatewayMessage } from "@backend/social/gateway";
 
 export type Page =
     | "Home"

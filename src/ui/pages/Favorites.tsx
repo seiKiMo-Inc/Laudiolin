@@ -3,7 +3,7 @@ import React from "react";
 import AnimatedView from "@components/common/AnimatedView";
 import TrackList from "@components/TrackList";
 
-import { favorites } from "@backend/user";
+import { favorites } from "@backend/social/user";
 
 class Favorites extends React.Component {
     render() {

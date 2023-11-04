@@ -2,7 +2,7 @@ import React from "react";
 
 import TrackList from "@components/TrackList";
 
-import { recents } from "@backend/user";
+import { recents } from "@backend/social/user";
 
 class Recents extends React.Component {
     render() {
