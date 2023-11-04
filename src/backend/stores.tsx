@@ -114,11 +114,13 @@ export interface GlobalState {
     playlist: Playlist | null; // The playlist currently selected.
     searchResults?: SearchResults; // The search results.
     searchQuery?: string; // The search query.
+    track?: TrackData; // The target track for use cases.
     volume: number;
 
     setListening: (listening: User | null) => void;
     setPlaylist: (playlist: Playlist | null) => void;
     setSearchResults: (searchResults: SearchResults, query?: string) => void;
+    setTrack: (track: TrackData) => void;
 }
 export const useGlobal = create<GlobalState>()(
     persist(
@@ -131,7 +133,8 @@ export const useGlobal = create<GlobalState>()(
 
             setListening: (listening: User | null) => set({ listening }),
             setPlaylist: (playlist: Playlist | null) => set({ playlist }),
-            setSearchResults: (searchResults: SearchResults, searchQuery?: string) => set({ searchResults, searchQuery })
+            setSearchResults: (searchResults: SearchResults, searchQuery?: string) => set({ searchResults, searchQuery }),
+            setTrack: (track: TrackData) => set({ track })
         }),
         {
             name: "global-state",

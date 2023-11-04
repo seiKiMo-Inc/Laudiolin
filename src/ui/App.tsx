@@ -9,6 +9,7 @@ import TopBar from "@layout/TopBar";
 
 import Alert from "@components/Alert";
 import MiniPlayer from "@components/player/MiniPlayer";
+import AddToPlaylist from "@components/modals/AddToPlaylist";
 
 import { invoke } from "@tauri-apps/api";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
@@ -192,7 +193,10 @@ class App extends React.Component<IProps, IState> {
                     <MainView />
                     <ActivityPanel />
                     <ControlPanel />
+
+                    <AddToPlaylist />
                 </div>
+
                 <Alert />
             </main>
         ) : <MiniPlayer />;

@@ -20,7 +20,7 @@ import {
     deleteTrack, downloadTrack
 // #v-endif
 } from "@backend/core/audio";
-import { addTrackToPlaylist, fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
+import { fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
 import { formatDuration, getIconUrl, getTrackSource, isFavorite } from "@app/utils";
 // #v-ifdef VITE_BUILD_ENV='desktop'
 import { isDownloaded } from "@backend/desktop/offline";
@@ -28,12 +28,12 @@ import { isDownloaded } from "@backend/desktop/offline";
 import { favoriteTrack } from "@backend/social/user";
 import { parseArtist } from "@backend/core/search";
 
-import WithStore, { usePlaylists } from "@backend/stores";
+import WithStore, { GlobalState, useGlobal } from "@backend/stores";
 
 import "@css/components/Track.scss";
 
 interface IProps {
-    pStore: Playlist[];
+    pStore: GlobalState;
 
     track: TrackData;
     playlist?: string;
@@ -41,8 +41,6 @@ interface IProps {
 }
 
 interface IState {
-    selectedId: string | null;
-    selectedName: string | null;
     inPlaylist: string | null;
 }
 
@@ -51,8 +49,6 @@ class Track extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            selectedId: null,
-            selectedName: null,
             inPlaylist: props.playlist
         };
     }
@@ -144,33 +140,11 @@ class Track extends React.Component<IProps, IState> {
      * Adds this track to a playlist.
      */
     async addToPlaylist(): Promise<void> {
-        // Open the playlist modal.
-        if (this.state.selectedId == null) {
-            this.setState({ selectedId: "" });
-            BasicModal.showModal(`Track_${this.props.track.id}_Playlist`);
-        } else {
-            // Add the track to the playlist.
-            const playlist = await fetchPlaylist(this.state.selectedId);
-            if (!playlist) {
-                this.setState({ selectedId: null, selectedName: null });
-                return;
-            }
-
-            // Check if the track is already in the playlist.
-            if (playlist.tracks.find(t => t.id === this.props.track.id)) {
-                Alert.showAlert("Track is already in this playlist.");
-                return;
-            }
-
-            playlist.tracks.push(this.props.track);
-            await addTrackToPlaylist(this.state.selectedId, this.props.track);
-            Alert.showAlert("Added track to playlist.");
-
-            this.setState({
-                selectedId: null, selectedName: null,
-                inPlaylist: this.state.selectedId
-            });
-        }
+        this.props.pStore.setTrack(this.props.track);
+        setTimeout(() => {
+            BasicModal.showModal(`Track_${this.props.track.id}_Playlist`,
+                inPlaylist => this.setState({ inPlaylist }));
+        }, 100);
     }
 
     /**
@@ -195,11 +169,10 @@ class Track extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { track, pStore: playlistsObj } = this.props;
+        const { track } = this.props;
         if (track == undefined) return null;
 
         const favorite = isFavorite(track);
-        const playlists = Object.values(playlistsObj);
 
         return (
             <>
@@ -287,46 +260,9 @@ class Track extends React.Component<IProps, IState> {
                         Copy Track URL
                     </a>
                 </BasicDropdown>
-
-                <BasicModal
-                    id={`Track_${track.id}_Playlist`}
-                    buttonText={"Add to Playlist"}
-                    onSubmit={() => this.addToPlaylist()}
-                    style={{ alignItems: "center" }}
-                >
-                    <h1>Select a Playlist</h1>
-                    <BasicButton
-                        id={`AddTrack_${track.id}_Button dropbtn`}
-                        className={`Track_Button`}
-                        text={this.state.selectedName ?? "Select a Playlist"}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            toggleDropdown(`AddTrack_${track.id}`);
-                        }}
-                    />
-
-                    <BasicDropdown
-                        id={`AddTrack_${track.id}`}
-                        className={`Track_${track.id}`}
-                    >
-                        {
-                            playlists.map((playlist, index) => {
-                                return (
-                                    <a
-                                        key={index}
-                                        onClick={() => this.setState({
-                                            selectedId: playlist.id,
-                                            selectedName: playlist.name
-                                        })}
-                                    >{playlist.name}</a>
-                                );
-                            })
-                        }
-                    </BasicDropdown>
-                </BasicModal>
             </>
         );
     }
 }
 
-export default WithStore(Track, usePlaylists);
+export default WithStore(Track, useGlobal);
