@@ -10,8 +10,10 @@ import AnimatedView from "@components/common/AnimatedView";
 
 import * as settings from "@backend/settings";
 import { connect } from "@backend/gateway";
+// #v-ifdef VITE_BUILD_ENV=desktop
 import { invoke } from "@tauri-apps/api";
 import { offlineSupport } from "@backend/desktop/offline";
+// #v-endif
 import type { SettingType } from "@app/types";
 
 import "@css/pages/Settings.scss";
@@ -214,6 +216,7 @@ class Settings extends React.Component<{}, IState> {
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 
+// #v-ifdef VITE_BUILD_ENV=desktop
                     <Setting
                         setting={"system.offline"}
                         type={"boolean"}
@@ -223,6 +226,7 @@ class Settings extends React.Component<{}, IState> {
                         update={(state) => offlineSupport(state == "true")}
                         color={this.state.color}
                     />
+// #v-endif
                     <Setting
                         setting={"system.broadcast_listening"}
                         type={"select"}
@@ -235,12 +239,14 @@ class Settings extends React.Component<{}, IState> {
                         description={"What should your Discord presence look like?"}
                         options={["Generic", "Simple", "Detailed", "None"]}
                     />
+// #v-ifdef VITE_BUILD_ENV=desktop
                     <Setting
                         setting={"system.close"}
                         type={"select"}
                         description={"Changes the behavior of the close button."}
                         options={["Exit", "Tray"]}
                     />
+// #v-endif
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Debugging Actions</h2>
 
@@ -252,6 +258,7 @@ class Settings extends React.Component<{}, IState> {
                         />
                     </DisplayField>
 
+// #v-ifdef VITE_BUILD_ENV=desktop
                     <DisplayField text={"Open DevTools"}>
                         <BasicButton
                             text={"Open"}
@@ -259,6 +266,7 @@ class Settings extends React.Component<{}, IState> {
                             onClick={async () => invoke("open_dev_tools")}
                         />
                     </DisplayField>
+// #v-endif
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Key Binds</h2>
 

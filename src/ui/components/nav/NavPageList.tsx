@@ -105,6 +105,7 @@ class NavPageList extends React.Component<{}, IState> {
                     }}
                 </NavLink>
 
+// #v-ifdef VITE_BUILD_ENV=desktop
                 <NavLink
                     to={contentRoutes.DOWNLOADS}
                     className={"NavPanel_PageItem"}
@@ -131,6 +132,7 @@ class NavPageList extends React.Component<{}, IState> {
                         );
                     }}
                 </NavLink>
+// #v-endif
 
                 {
                     userData?.connections?.discord && (

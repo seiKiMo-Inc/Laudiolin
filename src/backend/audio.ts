@@ -8,7 +8,9 @@ import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/notifications";
 import emitter from "@backend/events";
 
+// #v-ifdef VITE_BUILD_ENV=desktop
 import * as fs from "@backend/desktop/fs";
+// #v-endif
 import TrackPlayer from "@mod/player";
 
 /**
@@ -18,9 +20,11 @@ export async function setup(): Promise<void> {
     // Add an alternate track loader.
     // Used for loading cached tracks.
     TrackPlayer.alternate = async (track: TrackData) => {
+        // #v-ifdef VITE_BUILD_ENV=desktop
         if (await fs.trackExists(track))
             // Use the local URLs.
             return await fs.loadLocalTrackData(track.id);
+        // #v-endif
 
         // Set the remote URLs.
         if (listeningWith != null && settings.audio().stream_sync)
@@ -47,6 +51,7 @@ export async function downloadTrack(
     track: TrackData,
     emit = true
 ): Promise<void> {
+    // #v-ifdef VITE_BUILD_ENV=desktop
     if (await fs.trackExists(track)) {
         return;
     }
@@ -71,6 +76,7 @@ export async function downloadTrack(
             message: `Finished downloading ${track.title}`
         });
     }
+    // #v-endif
 }
 
 /**
@@ -78,11 +84,13 @@ export async function downloadTrack(
  * @param track The local track to delete.
  */
 export async function deleteTrack(track: TrackData): Promise<void> {
+    // #v-ifdef VITE_BUILD_ENV=desktop
     // Delete the track's folder.
     await fs.deleteTrackFolder(track);
 
     // Emit the track deleted event.
     emitter.emit("delete");
+    // #v-endif
 }
 
 /**

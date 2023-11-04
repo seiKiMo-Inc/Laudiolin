@@ -80,6 +80,7 @@ class App extends React.Component<{}, IState> {
      * Checks if the user is online.
      */
     checkIfOnline(): void {
+        // #v-ifdef VITE_BUILD_ENV=desktop
         const loadOffline = () =>
             loadState(
                 loaders.userData,
@@ -101,6 +102,11 @@ class App extends React.Component<{}, IState> {
                 }
             })
             .catch((err) => console.warn(err));
+        // #v-else
+        login()
+            .then(() => openFromUrl())
+            .catch(() => console.error("Failed to login."));
+        // #v-endif
     }
 
     /**

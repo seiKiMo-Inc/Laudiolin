@@ -1,3 +1,4 @@
+// #v-ifdef VITE_BUILD_ENV=desktop
 import React from "react";
 
 import AnimatedView from "@components/common/AnimatedView";
@@ -25,3 +26,4 @@ class Downloads extends React.Component {
 }
 
 export default Downloads;
+// #v-endif

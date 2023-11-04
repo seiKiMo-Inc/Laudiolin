@@ -1,11 +1,13 @@
-/* Web-browser environment. */
-export const isWeb = false;
 /* Is the app in development? */
 export const isDevelopment = import.meta.env.DEV;
 
 export const Gateway = {
-    url: isDevelopment ? "http://localhost:3001" : "https://app.seikimo.moe",
-    socket: isDevelopment ? "ws://localhost:3001" : "wss://app.seikimo.moe",
+    url: isDevelopment ?
+        `http://${import.meta.env.VITE_DEV_GATEWAY_URL}` :
+        `https://${import.meta.env.VITE_GATEWAY_URL}`,
+    socket: isDevelopment ?
+        `ws://${import.meta.env.VITE_DEV_GATEWAY_URL}` :
+        `wss://${import.meta.env.VITE_GATEWAY_URL}`,
 
     getUrl: () => Gateway.url
 };
@@ -14,7 +16,9 @@ export const Gateway = {
 export const contentRoutes = {
     HOME: "/",
     FAVORITES: "/favorites",
+// #v-ifdef VITE_BUILD_ENV=desktop
     DOWNLOADS: "/downloads",
+// #v-endif
     PLAYLIST: "/playlist/:id",
     QUEUE: "/queue",
     ELIXIR: "/elixir",

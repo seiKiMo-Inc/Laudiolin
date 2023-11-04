@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
     settings.reloadSettings();
 
     // Run initial setup.
+    // #v-ifdef VITE_BUILD_ENV=desktop
     fs.setup()
         .then(() => {
             fs.createFolders();
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
         })
         .catch((err) => console.error(err));
     link.setup().catch((err) => console.error(err));
+    // #v-endif
     audio.setup().catch((err) => console.error(err));
     gateway
         .setup()

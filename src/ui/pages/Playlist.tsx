@@ -312,7 +312,9 @@ class Playlist extends React.Component<IProps, IState> {
                                     </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
+// #v-ifdef VITE_BUILD_ENV=desktop
                                     <a onClick={() => this.download()}>Download Playlist</a>
+// #v-endif
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
                                     <a onClick={() => this.share()}>Copy Playlist URL</a>
                                 </BasicDropdown>

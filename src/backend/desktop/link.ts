@@ -1,3 +1,4 @@
+// #v-ifdef VITE_BUILD_ENV=desktop
 import { listen, Event } from "@tauri-apps/api/event";
 
 import * as settings from "@backend/settings";
@@ -77,6 +78,7 @@ async function onLinked(event: Event<string>) {
             break;
     }
 }
+// #v-endif
 
 /**
  * Opens a specified location from a URL.

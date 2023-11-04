@@ -13,10 +13,17 @@ import BasicDropdown, {
 import BasicButton from "@components/common/BasicButton";
 
 import type { TrackData } from "@app/types";
-import { deleteTrack, deQueue, downloadTrack, playTrack } from "@backend/audio";
+import {
+    deQueue, playTrack,
+// #v-ifdef VITE_BUILD_ENV=desktop
+    deleteTrack, downloadTrack
+// #v-endif
+} from "@backend/audio";
 import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/playlist";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
+// #v-ifdef VITE_BUILD_ENV=desktop
 import { isDownloaded } from "@backend/desktop/offline";
+// #v-endif
 import { favoriteTrack } from "@backend/user";
 import { parseArtist } from "@backend/search";
 import emitter from "@backend/events";
@@ -254,6 +261,7 @@ class Track extends React.Component<IProps, IState> {
                             Remove from Queue
                         </a>
                     )}
+// #v-ifdef VITE_BUILD_ENV=desktop
                     {isDownloaded(track) ? (
                         <a onClick={() => deleteTrack(track)}>Delete Track</a>
                     ) : (
@@ -261,6 +269,7 @@ class Track extends React.Component<IProps, IState> {
                             Download Track
                         </a>
                     )}
+// #v-endif
 
                     {(this.props.playlist || this.state.inPlaylist) ? (
                         <a onClick={() => this.removeFromPlaylist()}>Remove Track from Playlist</a>
