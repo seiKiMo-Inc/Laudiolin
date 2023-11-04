@@ -193,7 +193,10 @@ class App extends React.Component<{}, IState> {
     render() {
         return !this.state.miniPlayer ? (
             <main onContextMenu={(e) => e.preventDefault()}>
+// #v-ifdef VITE_BUILD_ENV=desktop
                 <TopButtons />
+// #v-endif
+
                 <div className={"AppContainer"}>
                     <NavPanel user={userData} />
                     <TopBar />

@@ -4,7 +4,11 @@ import BasicModal from "@components/common/BasicModal";
 import BasicButton from "@components/common/BasicButton";
 import BasicToggle from "@components/common/BasicToggle";
 
+// #v-ifdef VITE_BUILD_ENV=desktop
 import { invoke } from "@tauri-apps/api";
+// #v-else
+import { login } from "@app/backend/user";
+// #v-endif
 
 import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
@@ -54,8 +58,24 @@ class Login extends React.PureComponent<{}, IState> {
      */
     login(): void {
         // Open the login URL in a browser.
+
+        // #v-ifdef VITE_BUILD_ENV=desktop
         invoke("open", { url: `${Gateway.getUrl()}/login` })
             .catch(console.warn);
+        // #v-else
+        const newWindow = window.open(`${Gateway.getUrl()}/login`);
+        window.addEventListener("message", async (event) => {
+            const data = event.data;
+            if ("token" in data && await login(data.token)) {
+                // Save the token.
+                settings.setToken(data.token);
+                settings.save("authenticated", "discord");
+
+                // Close the window.
+                newWindow.close();
+            }
+        });
+        // #v-endif
     }
 
     /**

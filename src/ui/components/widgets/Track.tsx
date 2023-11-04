@@ -117,7 +117,11 @@ class Track extends React.Component<IProps, IState> {
         const track = this.props.track;
         if (!track) return;
 
+        // #v-ifdef VITE_BUILD_ENV=desktop
         await open(track.url);
+        // #v-else
+        window.open(track.url, "_blank");
+        // #v-endif
     }
 
     /**
