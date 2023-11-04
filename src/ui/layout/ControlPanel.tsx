@@ -269,13 +269,13 @@ class ControlPanel extends React.Component<any, IState> {
                             window.open(getTrackSource(track), "_blank");
 // #v-endif
                         }}
-                        data-tooltip-content={() => {
+                        data-tooltip-content={(() => {
                             let content = "Open in browser";
 // #v-ifdef VITE_BUILD_ENV='desktop'
                             content = "Popout Player";
 // #v-endif
-                            return content;
-                        }}
+                            return content ?? "";
+                        })()}
                     />
                 </div>
 
