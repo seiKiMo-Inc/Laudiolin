@@ -94,9 +94,7 @@ export type UserSettings = {
     search: SearchSettings;
     audio: AudioSettings;
     ui: UISettings;
-    // #v-ifdef VITE_BUILD_ENV=desktop
     system: SystemSettings;
-    // #v-endif
     token: string;
 };
 export type SearchSettings = {
@@ -111,14 +109,14 @@ export type AudioSettings = {
 export type UISettings = {
     color_theme: "Light" | "Dark";
 };
-// #v-ifdef VITE_BUILD_ENV=desktop
 export type SystemSettings = {
-    offline: boolean;
     broadcast_listening: "Nobody" | "Friends" | "Everyone";
     presence: "Generic" | "Simple" | "Detailed" | "None";
+    // #v-ifdef VITE_BUILD_ENV=desktop
+    offline: boolean;
     close: "Exit" | "Tray";
+    // #v-endif
 };
-// #v-endif
 export type SettingType = "boolean" | "input" | "select" | "color";
 
 export type NotificationType = "info" | "progress";

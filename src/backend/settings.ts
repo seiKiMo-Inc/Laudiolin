@@ -5,6 +5,7 @@ import type {
     UISettings,
     SystemSettings
 } from "@app/types";
+
 import { connect } from "@backend/social/gateway";
 
 let settings: UserSettings | null = null;

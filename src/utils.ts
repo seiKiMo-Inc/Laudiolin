@@ -264,3 +264,33 @@ export function base64Decode(string: string): ArrayBuffer {
 
     return bytes.buffer;
 }
+
+/**
+ * Limits an array to a certain amount of items.
+ *
+ * @param array The array to limit.
+ * @param limit The limit to apply.
+ */
+export function limitTo<T>(array: T[], limit: number): T[] {
+    return array.slice(0, limit);
+}
+
+/**
+ * Prepends an item to an array.
+ *
+ * @param array The array of items.
+ * @param item The item to prepend.
+ */
+export function prepend<T>(array: T[], item: T): T[] {
+    return [item, ...array];
+}
+
+/**
+ * Appends an item to an array.
+ *
+ * @param array The array of items.
+ * @param item The item to append.
+ */
+export function append<T>(array: T[], item: T): T[] {
+    return [...array, item];
+}
