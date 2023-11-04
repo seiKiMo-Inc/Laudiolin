@@ -1,3 +1,4 @@
+import { useGlobal } from "@backend/stores";
 import type { Guild, Synchronize } from "@app/types";
 import { targetRoute, token } from "@backend/social/user";
 
@@ -93,8 +94,7 @@ export async function syncState(data: Synchronize): Promise<void> {
         state.paused = data.paused;
     }
     if (data.volume !== undefined) {
-        state.volume = data.volume / 100;
-        TrackPlayer.emit("volume", state.volume);
+        useGlobal.setState({ volume: data.volume / 100 });
     }
     if (data.queue !== undefined) {
         TrackPlayer.queue = data.queue;

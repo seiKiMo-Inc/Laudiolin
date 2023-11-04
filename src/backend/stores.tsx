@@ -1,7 +1,7 @@
 import { create, StoreApi, UseBoundStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { Guild, Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
+import { Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
 
 /**
  * Append an item to a store.
@@ -53,12 +53,7 @@ export type Settings = UserSettings & {
     setFromPath: (path: string, value: any) => void;
     getFromPath: (path: string, fallback: string | null) => any;
 };
-export const useSettings = create<
-    Settings,
-    [
-        ['zustand/persist', Settings]
-    ]
->(
+export const useSettings = create<Settings>()(
     persist(
         (set, get): Settings => ({
             search: {
@@ -119,28 +114,39 @@ export interface GlobalState {
     playlist: Playlist | null; // The playlist currently selected.
     searchResults?: SearchResults; // The search results.
     searchQuery?: string; // The search query.
+    volume: number;
 
     setListening: (listening: User | null) => void;
     setPlaylist: (playlist: Playlist | null) => void;
     setSearchResults: (searchResults: SearchResults, query?: string) => void;
 }
-export const useGlobal = create<GlobalState>((set) => ({
-    listening: null,
-    playlist: null,
-    searchResults: undefined,
-    searchQuery: undefined,
+export const useGlobal = create<GlobalState>()(
+    persist(
+        (set): GlobalState => ({
+            listening: null,
+            playlist: null,
+            searchResults: undefined,
+            searchQuery: undefined,
+            volume: 1,
 
-    setListening: (listening: User | null) => set({ listening }),
-    setPlaylist: (playlist: Playlist | null) => set({ playlist }),
-    setSearchResults: (searchResults: SearchResults, searchQuery?: string) => set({ searchResults, searchQuery })
-}));
+            setListening: (listening: User | null) => set({ listening }),
+            setPlaylist: (playlist: Playlist | null) => set({ playlist }),
+            setSearchResults: (searchResults: SearchResults, searchQuery?: string) => set({ searchResults, searchQuery })
+        }),
+        {
+            name: "global-state",
+            storage: createJSONStorage(() => localStorage),
+            partialize: (state) => Object.fromEntries(Object.entries(state)
+                .filter(([key]) => ["volume"].includes(key)))
+        }
+    )
+);
 
 export const useUser = create<User>(() => undefined);
 
 export const usePlaylists = create<Playlist[]>(() => ([]));
 export const useFavorites = create<TrackData[]>(() => ([]));
 export const useRecents = create<TrackData[]>(() => ([]));
-export const useGuilds = create<Guild[]>(() => ([]));
 
 // #v-ifdef VITE_BUILD_ENV='desktop'
 export const useDownloads: UseBoundStore<StoreApi<TrackData[]>> = create<TrackData[]>(() => ([]));

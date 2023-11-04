@@ -12,7 +12,7 @@ import * as fs from "@backend/desktop/fs";
 // #v-endif
 import TrackPlayer from "@mod/player";
 
-import { append, useDownloads } from "@backend/stores";
+import { append, useDownloads, useGlobal } from "@backend/stores";
 
 /**
  * Sets up the audio player.
@@ -39,8 +39,8 @@ export async function setup(): Promise<void> {
         return track;
     };
 
-    // Load the volume from the local storage.
-    Howler.volume(parseFloat(settings.get("volume", "1")));
+    // Subscribe to the global state; check for volume updates.
+    useGlobal.subscribe((state) => Howler.volume(state.volume));
 }
 
 /**
@@ -240,5 +240,4 @@ export async function playPlaylist(
  */
 export function setVolume(volume: number): void {
     TrackPlayer.volume(volume); // Set the volume of the Howler player.
-    settings.save("volume", volume.toString()); // Set the volume in the settings.
 }

@@ -2,6 +2,7 @@ import type { Synchronize, TrackData } from "@app/types";
 import * as mod from "@backend/modules";
 
 import { Howl } from "howler";
+import { useGlobal } from "@backend/stores";
 import { EventEmitter } from "events";
 import { playerUpdate, sendGatewayMessage } from "@backend/social/gateway";
 
@@ -10,7 +11,6 @@ export type PlayerState = {
     track: TrackData,
     paused: boolean;
     loop: Loop;
-    volume: number;
     progress: number;
     progressTicks: number;
 };
@@ -33,7 +33,6 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         track: null,
         paused: false,
         loop: "none",
-        volume: 1,
         progress: 0,
         progressTicks: 0
     };
@@ -414,20 +413,21 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * @param set The volume to set.
      */
     public volume(set: number | null = null): number {
-        if (set) {
-            Howler.volume(set);
-            this.state.volume = set;
+        if (set > 1 || set < 0) throw new Error("Invalid volume");
+
+        if (set || set === 0) {
+            useGlobal.setState({ volume: set });
 
             if (this.syncWithBackend) {
                 sendGatewayMessage({
                     type: "synchronize",
                     timestamp: Date.now(),
-                    volume: this.state.volume * 100
+                    volume: useGlobal.getState().volume * 100
                 } as Synchronize);
             }
         }
 
-        return this.state.volume;
+        return useGlobal.getState().volume;
     }
 }
 
