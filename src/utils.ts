@@ -48,6 +48,45 @@ export function getIconUrl(track: TrackData): string {
 }
 
 /**
+ * Matches the track's URL to the correct source URL.
+ *
+ * @param track The track to get the source URL for.
+ */
+export function getTrackSource(track: TrackData): string {
+    let url = track.url;
+
+    // Replace the legacy track URL.
+    if (url.includes("app.magix.lol"))
+        url = url.replace("app.magix.lol", "app.seikimo.moe");
+    // Check if the URL is the backend.
+    if (url.includes("app.seikimo.moe") ||
+        url.includes("download") ||
+        url.includes("stream")) {
+        // Determine the search engine.
+        url = sourceUrl(track.id);
+    }
+
+    return url;
+}
+
+/**
+ * Determines the URL to use for sourcing.
+ *
+ * @param id The ID of the track.
+ */
+export function sourceUrl(id: string): string {
+    switch (id.length) {
+        case 11:
+            return `https://youtube.com/watch?v=${id}`;
+        case 12:
+        case 22:
+            return `https://open.spotify.com/track/${id}`;
+    }
+
+    return id;
+}
+
+/**
  * Formats the duration into hh:mm:ss.
  * @param seconds The duration in seconds.
  */

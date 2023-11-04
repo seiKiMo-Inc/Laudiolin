@@ -12,7 +12,8 @@ import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
 import type { TrackData } from "@app/types";
-import { handleHotKeys, toMini } from "@app/utils";
+import { asArray, useFavorites, useGlobal } from "@backend/stores";
+import { getTrackSource, handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import { favoriteTrack } from "@backend/social/user";
@@ -22,7 +23,6 @@ import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
 import "rc-slider/assets/index.css";
-import { asArray, useFavorites } from "@backend/stores";
 
 interface IState {
     queue: boolean;
@@ -78,6 +78,8 @@ class ControlPanel extends React.Component<any, IState> {
 
     componentDidMount() {
         TrackPlayer.on("update", this.update);
+        useGlobal.subscribe((state) =>
+            this.setState({ volume: state.volume * 100 }));
 
         // Listen for hotkeys.
         document.addEventListener("keydown", this.hotKeys);
@@ -260,8 +262,20 @@ class ControlPanel extends React.Component<any, IState> {
                     <FiExternalLink
                         className={"ControlPanel_Popout"}
                         style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1 }}
-                        onClick={() => toMini(true)}
-                        data-tooltip-content={"Popout Player"}
+                        onClick={() => {
+// #v-ifdef VITE_BUILD_ENV='desktop'
+                            toMini(true);
+// #v-else
+                            window.open(getTrackSource(track), "_blank");
+// #v-endif
+                        }}
+                        data-tooltip-content={() => {
+                            let content = "Open in browser";
+// #v-ifdef VITE_BUILD_ENV='desktop'
+                            content = "Popout Player";
+// #v-endif
+                            return content;
+                        }}
                     />
                 </div>
 

@@ -21,7 +21,7 @@ import {
 // #v-endif
 } from "@backend/core/audio";
 import { addTrackToPlaylist, fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
-import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
+import { formatDuration, getIconUrl, getTrackSource, isFavorite } from "@app/utils";
 // #v-ifdef VITE_BUILD_ENV='desktop'
 import { isDownloaded } from "@backend/desktop/offline";
 // #v-endif
@@ -120,10 +120,12 @@ class Track extends React.Component<IProps, IState> {
         const track = this.props.track;
         if (!track) return;
 
+        const trackUrl = getTrackSource(track);
+
         // #v-ifdef VITE_BUILD_ENV='desktop'
-        await open(track.url);
+        await open(trackUrl);
         // #v-else
-        window.open(track.url, "_blank");
+        window.open(trackUrl, "_blank");
         // #v-endif
     }
 
@@ -134,7 +136,7 @@ class Track extends React.Component<IProps, IState> {
         const track = this.props.track;
         if (!track) return;
 
-        await navigator.clipboard.writeText(track.url);
+        await navigator.clipboard.writeText(getTrackSource(track));
         Alert.showAlert("Copied URL to clipboard.", <BiCopy />);
     }
 
