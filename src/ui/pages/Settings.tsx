@@ -10,15 +10,20 @@ import AnimatedView from "@components/common/AnimatedView";
 
 import * as settings from "@backend/settings";
 import { connect } from "@backend/social/gateway";
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import { invoke } from "@tauri-apps/api";
 import { offlineSupport } from "@backend/desktop/offline";
 // #v-endif
+
 import type { SettingType } from "@app/types";
+import WithStore, { Settings as SettingsStore, useSettings } from "@backend/stores";
 
 import "@css/pages/Settings.scss";
 
 interface ISetting {
+    store: SettingsStore;
+    exact?: any | undefined;
+
     setting: string;
     description?: string;
 
@@ -30,11 +35,15 @@ interface ISetting {
 }
 
 function Setting(props: ISetting) {
+    const [placeholder, setPlaceholder] = React.useState(
+        props.exact ?? props.store.getFromPath(props.setting, "")
+    );
+
     const properties = {
         ...props,
-        placeholder: settings.getFromPath(props.setting, ""),
+        placeholder,
         set: (value: any) => {
-            settings.saveFromPath(props.setting, value);
+            props.store.setFromPath(props.setting, value);
             props.update?.(value);
         }
     };
@@ -50,40 +59,39 @@ function Setting(props: ISetting) {
             </div>
 
             <div>
-                {props.type == "input" && <InputField props={properties} />}
-                {props.type == "select" && <SelectField props={properties} />}
-                {props.type == "boolean" && <ToggleField props={properties} />}
+                {props.type == "input" && <InputField props={properties} placeholder={placeholder} />}
+                {props.type == "select" && <SelectField props={properties}
+                                                        placeholder={placeholder} setValue={setPlaceholder} />}
+                {props.type == "boolean" && <ToggleField props={properties} placeholder={placeholder} />}
             </div>
         </div>
     );
 }
 
-function InputField({ props }) {
+function InputField({ props, placeholder }) {
     return (
         <input
             className={"Setting_Box Setting_Input"}
             type={"text"}
-            placeholder={props.placeholder}
+            placeholder={placeholder}
             onChange={(event) => props.set(event.target.value)}
         />
     );
 }
 
-function SelectField({ props }) {
+function SelectField({ props, placeholder, setValue }) {
     const update = (index: number) => {
         toggleDropdown(props.setting);
         setValue(props.options[index]);
         props.set(props.options[index]);
     };
 
-    const [value, setValue] = React.useState<string>(props.placeholder);
-
     return (
         <>
             <BasicButton
                 className={"Setting_Box dropbtn"}
                 id={props.setting + "_button"}
-                text={value}
+                text={placeholder}
                 icon={<BiChevronDown />}
                 onClick={() => toggleDropdown(props.setting)}
             />
@@ -99,11 +107,11 @@ function SelectField({ props }) {
     );
 }
 
-function ToggleField({ props }) {
+function ToggleField({ props, placeholder }) {
     const [enabled, setEnabled] = React.useState<boolean>(
-        typeof props.placeholder == "string"
-            ? props.placeholder == "true"
-            : props.placeholder
+        typeof placeholder == "string"
+            ? placeholder == "true"
+            : placeholder
     );
 
     return (
@@ -142,28 +150,34 @@ function DisplayField(props: IDisplayProps) {
     );
 }
 
-interface IState {
-    color: string;
-    code: string;
+interface IProps {
+    pStore: SettingsStore;
 }
 
-class Settings extends React.Component<{}, IState> {
-    constructor(props: {}) {
+interface IState {
+    color: string;
+}
+
+class Settings extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
-            color: settings.ui().color_theme == "Light" ? "#ED7D64" : "#3484FC",
-            code: ""
+            color: settings.ui().color_theme == "Light" ? "#ED7D64" : "#3484FC"
         };
     }
 
     render() {
+        const store = this.props.pStore;
+
         return (
             <AnimatedView>
                 <div className={"Settings"}>
                     <h2 style={{ marginBottom: 20 }}>Settings</h2>
 
                     <Setting
+                        store={store}
+                        exact={store.search.engine}
                         setting={"search.engine"}
                         type={"select"}
                         description={"The engine to query track searching."}
@@ -173,6 +187,7 @@ class Settings extends React.Component<{}, IState> {
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Audio</h2>
 
                     <Setting
+                        store={store}
                         setting={"audio.playback_mode"}
                         type={"select"}
                         description={
@@ -184,6 +199,7 @@ class Settings extends React.Component<{}, IState> {
                     />
                     {settings.audio().playback_mode == "Stream" && (
                         <Setting
+                            store={store}
                             setting={"audio.audio_quality"}
                             type={"select"}
                             description={"The quality of the streamed audio."}
@@ -191,6 +207,7 @@ class Settings extends React.Component<{}, IState> {
                         />
                     )}
                     <Setting
+                        store={store}
                         setting={"audio.stream_sync"}
                         type={"boolean"}
                         description={
@@ -202,6 +219,7 @@ class Settings extends React.Component<{}, IState> {
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
 
                     <Setting
+                        store={store}
                         setting={"ui.color_theme"}
                         type={"select"}
                         description={"The color palette to use."}
@@ -216,8 +234,9 @@ class Settings extends React.Component<{}, IState> {
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                     <Setting
+                        store={store}
                         setting={"system.offline"}
                         type={"boolean"}
                         description={
@@ -228,19 +247,22 @@ class Settings extends React.Component<{}, IState> {
                     />
 // #v-endif
                     <Setting
+                        store={store}
                         setting={"system.broadcast_listening"}
                         type={"select"}
                         description={"Who should see what you're listening to?"}
                         options={["Everyone", "Friends", "Nobody"]}
                     />
                     <Setting
+                        store={store}
                         setting={"system.presence"}
                         type={"select"}
                         description={"What should your Discord presence look like?"}
                         options={["Generic", "Simple", "Detailed", "None"]}
                     />
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                     <Setting
+                        store={store}
                         setting={"system.close"}
                         type={"select"}
                         description={"Changes the behavior of the close button."}
@@ -258,7 +280,7 @@ class Settings extends React.Component<{}, IState> {
                         />
                     </DisplayField>
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                     <DisplayField text={"Open DevTools"}>
                         <BasicButton
                             text={"Open"}
@@ -314,4 +336,4 @@ class Settings extends React.Component<{}, IState> {
     }
 }
 
-export default Settings;
+export default WithStore(Settings, useSettings);

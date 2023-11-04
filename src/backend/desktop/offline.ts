@@ -2,7 +2,6 @@ import * as audio from "@backend/core/audio";
 import { system } from "@backend/settings";
 
 import { notify } from "@backend/features/notifications";
-import { userData, playlists, favorites } from "@backend/social/user";
 import type {
     OfflineUserData,
     Playlist,
@@ -18,14 +17,19 @@ import {
     loadLocalTrackData
 } from "@backend/desktop/fs";
 import { readDir, removeFile, createDir, removeDir } from "@tauri-apps/api/fs";
-import emitter from "@backend/events";
+
+import {
+    asArray, useFavorites, usePlaylists, useUser,
+// #v-ifdef VITE_BUILD_ENV='desktop'
+    useDownloads
+// #v-endif
+} from "@backend/stores";
 
 const userDataPath = () => `${AppData()}/userData.json`;
 const playlistsPath = () => `${AppData()}/playlists`;
 
 let downloadedObjects = 0; // The number of objects downloaded.
 export let isOffline = false; // Whether the app is in offline mode.
-export const downloads: TrackData[] = []; // The loaded downloads.
 
 /**
  * Checks if a track is downloaded.
@@ -35,7 +39,7 @@ export const downloads: TrackData[] = []; // The loaded downloads.
 export function isDownloaded(track: TrackData | string): boolean {
     // Check if the track is downloaded.
     const id = typeof track == "string" ? track : track.id;
-    return downloads.some((track) => track.id == id);
+    return asArray(useDownloads).some((track) => track.id == id);
 }
 
 /**
@@ -43,6 +47,7 @@ export function isDownloaded(track: TrackData | string): boolean {
  */
 export async function loadDownloads(): Promise<void> {
     // Load system downloads.
+    const downloads: TrackData[] = [];
     const tracks = await getDownloadedTracks();
     for (const track of tracks) {
         if (await fs.trackExists({ id: track })) {
@@ -51,12 +56,8 @@ export async function loadDownloads(): Promise<void> {
             deleteTrackFolder({ id: track }).catch((err) => console.warn(err));
         }
     }
-    emitter.emit("downloads");
 
-    emitter.on("download", (track) => {
-        downloads.push(track);
-        emitter.emit("downloads");
-    });
+    useDownloads.setState(downloads);
 }
 
 /**
@@ -140,9 +141,13 @@ function saveTracks(tracks: TrackData[]): void {
  */
 export async function offlineSupport(enabled: boolean): Promise<void> {
     if (enabled) {
+        const user = useUser.getState()!;
+        const playlists = asArray(usePlaylists);
+        const favorites = asArray(useFavorites);
+
         // Save user data to the file system.
         const data: OfflineUserData = {
-            user: userData!,
+            user: user!,
             playlists: [],
             favorites: favorites.map((track) => track.id)
         };

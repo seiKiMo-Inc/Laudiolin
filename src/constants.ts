@@ -16,7 +16,7 @@ export const Gateway = {
 export const contentRoutes = {
     HOME: "/",
     FAVORITES: "/favorites",
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
     DOWNLOADS: "/downloads",
 // #v-endif
     PLAYLIST: "/playlist/:id",

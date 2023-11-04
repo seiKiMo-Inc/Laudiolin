@@ -11,27 +11,30 @@ import BasicDropdown, {
     toggleDropdown
 } from "@components/common/BasicDropdown";
 import BasicButton from "@components/common/BasicButton";
+import BasicModal from "@components/common/BasicModal";
 
-import type { TrackData } from "@app/types";
+import type { Playlist, TrackData } from "@app/types";
 import {
     deQueue, playTrack,
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
     deleteTrack, downloadTrack
 // #v-endif
 } from "@backend/core/audio";
-import { addTrackToPlaylist, fetchAllPlaylists, fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
+import { addTrackToPlaylist, fetchPlaylist, removeTrackFromPlaylist } from "@backend/core/playlist";
 import { formatDuration, getIconUrl, isFavorite } from "@app/utils";
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import { isDownloaded } from "@backend/desktop/offline";
 // #v-endif
 import { favoriteTrack } from "@backend/social/user";
 import { parseArtist } from "@backend/core/search";
-import emitter from "@backend/events";
+
+import WithStore, { usePlaylists } from "@backend/stores";
 
 import "@css/components/Track.scss";
-import BasicModal from "@components/common/BasicModal";
 
 interface IProps {
+    pStore: Playlist[];
+
     track: TrackData;
     playlist?: string;
     queue?: boolean;
@@ -117,7 +120,7 @@ class Track extends React.Component<IProps, IState> {
         const track = this.props.track;
         if (!track) return;
 
-        // #v-ifdef VITE_BUILD_ENV=desktop
+        // #v-ifdef VITE_BUILD_ENV='desktop'
         await open(track.url);
         // #v-else
         window.open(track.url, "_blank");
@@ -165,9 +168,6 @@ class Track extends React.Component<IProps, IState> {
                 selectedId: null, selectedName: null,
                 inPlaylist: this.state.selectedId
             });
-
-            // Reload the playlist.
-            emitter.emit("playlist:reload", playlist);
         }
     }
 
@@ -190,16 +190,14 @@ class Track extends React.Component<IProps, IState> {
         playlist.tracks.splice(index, 1);
         await removeTrackFromPlaylist(playlistId, index);
         Alert.showAlert("Removed track from playlist.");
-
-        // Reload the playlist.
-        emitter.emit("playlist:reload", playlist);
     }
 
     render() {
-        const { track } = this.props;
+        const { track, pStore: playlistsObj } = this.props;
         if (track == undefined) return null;
 
         const favorite = isFavorite(track);
+        const playlists = Object.values(playlistsObj);
 
         return (
             <>
@@ -265,7 +263,7 @@ class Track extends React.Component<IProps, IState> {
                             Remove from Queue
                         </a>
                     )}
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                     {isDownloaded(track) ? (
                         <a onClick={() => deleteTrack(track)}>Delete Track</a>
                     ) : (
@@ -310,7 +308,7 @@ class Track extends React.Component<IProps, IState> {
                         className={`Track_${track.id}`}
                     >
                         {
-                            fetchAllPlaylists().map((playlist, index) => {
+                            playlists.map((playlist, index) => {
                                 return (
                                     <a
                                         key={index}
@@ -329,4 +327,4 @@ class Track extends React.Component<IProps, IState> {
     }
 }
 
-export default Track;
+export default WithStore(Track, usePlaylists);

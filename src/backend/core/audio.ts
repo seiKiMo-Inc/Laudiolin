@@ -6,12 +6,13 @@ import { setCurrentPlaylist } from "@backend/core/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/social/gateway";
 import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/features/notifications";
-import emitter from "@backend/events";
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import * as fs from "@backend/desktop/fs";
 // #v-endif
 import TrackPlayer from "@mod/player";
+
+import { append, useDownloads } from "@backend/stores";
 
 /**
  * Sets up the audio player.
@@ -20,7 +21,7 @@ export async function setup(): Promise<void> {
     // Add an alternate track loader.
     // Used for loading cached tracks.
     TrackPlayer.alternate = async (track: TrackData) => {
-        // #v-ifdef VITE_BUILD_ENV=desktop
+        // #v-ifdef VITE_BUILD_ENV='desktop'
         if (await fs.trackExists(track))
             // Use the local URLs.
             return await fs.loadLocalTrackData(track.id);
@@ -51,7 +52,7 @@ export async function downloadTrack(
     track: TrackData,
     emit = true
 ): Promise<void> {
-    // #v-ifdef VITE_BUILD_ENV=desktop
+    // #v-ifdef VITE_BUILD_ENV='desktop'
     if (await fs.trackExists(track)) {
         return;
     }
@@ -70,7 +71,7 @@ export async function downloadTrack(
 
     if (emit) {
         // Emit the track downloaded event.
-        emitter.emit("download", track);
+        append(useDownloads, track);
         await notify({
             type: "info",
             message: `Finished downloading ${track.title}`
@@ -84,12 +85,12 @@ export async function downloadTrack(
  * @param track The local track to delete.
  */
 export async function deleteTrack(track: TrackData): Promise<void> {
-    // #v-ifdef VITE_BUILD_ENV=desktop
+    // #v-ifdef VITE_BUILD_ENV='desktop'
     // Delete the track's folder.
     await fs.deleteTrackFolder(track);
 
     // Emit the track deleted event.
-    emitter.emit("delete");
+
     // #v-endif
 }
 

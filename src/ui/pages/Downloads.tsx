@@ -1,13 +1,23 @@
-// #v-ifdef VITE_BUILD_ENV=desktop
 import React from "react";
 
 import AnimatedView from "@components/common/AnimatedView";
 import TrackList from "@components/TrackList";
 
-import { downloads } from "@backend/desktop/offline";
+import WithStore, { useDownloads } from "@backend/stores";
+import { TrackData } from "@app/types";
 
-class Downloads extends React.Component {
+interface IProps {
+    pStore: { [key: number]: TrackData };
+}
+
+class Downloads extends React.Component<IProps, never> {
+    constructor(props: IProps) {
+        super(props);
+    }
+
     render() {
+        const downloads = Object.values(this.props.pStore);
+
         return downloads.length > 0 ? (
             <AnimatedView>
                 <TrackList
@@ -25,5 +35,4 @@ class Downloads extends React.Component {
     }
 }
 
-export default Downloads;
-// #v-endif
+export default WithStore(Downloads, useDownloads);

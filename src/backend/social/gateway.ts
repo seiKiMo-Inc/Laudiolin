@@ -90,7 +90,7 @@ export async function playerUpdate(data?: SyncData): Promise<void> {
  * Sets up the gateway.
  */
 export function connect(): void {
-    if (connected) return;
+    if (connected || token() == "") return;
 
     console.info("Connecting to gateway...");
 

@@ -19,24 +19,25 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautif
 
 import * as types from "@app/types";
 import { playPlaylist } from "@backend/core/audio";
-import { deletePlaylist, getPlaylistAuthor, playlists } from "@backend/social/user";
+import { deletePlaylist, getPlaylistAuthor } from "@backend/social/user";
 import { savePlaylist } from "@backend/desktop/offline";
 import { editPlaylist, fetchPlaylist } from "@backend/core/playlist";
 import { loadPlaylists } from "@backend/social/user";
 import { notify } from "@backend/features/notifications";
-import emitter from "@backend/events";
 import { reorder } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 
+import WithStore, { GlobalState, useGlobal, usePlaylists } from "@backend/stores";
+
 import "@css/pages/Playlist.scss";
 
 interface IProps {
+    pStore: GlobalState;
     match: any;
 }
 
 interface IState {
-    playlist: types.Playlist;
     isPrivate: boolean;
     reloadKey: number;
 }
@@ -65,48 +66,20 @@ function PlaylistAuthor(props: { playlist: types.Playlist }) {
 }
 
 class Playlist extends React.Component<IProps, IState> {
-    /**
-     * Invoked when the playlist should reload.
-     *
-     * @param playlist The playlist to reload.
-     */
-    reload = (playlist: types.Playlist) => {
-        if (playlist.id == this.state.playlist.id) {
-            this.setState({ playlist });
-        }
-    };
-
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            playlist: null,
             isPrivate: false,
             reloadKey: 0
         };
     }
 
     /**
-     * Returns the tracks in the playlist.
-     */
-    async getPlaylistTracks(): Promise<types.TrackData[]> {
-        const playlist = await this.getPlaylist();
-        if (!playlist) return [];
-
-        return (
-            playlist.tracks
-                // Remove duplicate tracks.
-                .filter((track, index, self) => {
-                    return self.findIndex((t) => t.id == track.id) == index;
-                })
-        );
-    }
-
-    /**
      * Fetches the playlist from the page arguments.
      */
     async getPlaylist(): Promise<types.Playlist> {
-        const args = this.state.playlist ??
+        const args = this.props.pStore.playlist ??
             (await fetchPlaylist(this.props.match.params.id));
         if (!args) return undefined;
         return args as types.Playlist;
@@ -149,8 +122,9 @@ class Playlist extends React.Component<IProps, IState> {
         // Navigate to the home page.
         await router.navigate(contentRoutes.HOME);
         // Remove the playlist from the list.
-        const newPlaylists = playlists.filter((p) => p.id != playlist.id);
-        emitter.emit("playlist", newPlaylists);
+        const newPlaylists = usePlaylists.getState()
+            .filter((p) => p.id != playlist.id);
+        usePlaylists.setState(newPlaylists);
     }
 
     /**
@@ -158,7 +132,7 @@ class Playlist extends React.Component<IProps, IState> {
      */
     async share(): Promise<void> {
         await navigator.clipboard.writeText(
-            `https://laudiolin.seikimo.moe/playlist/${this.state.playlist.id}`);
+            `https://laudiolin.seikimo.moe/playlist/${this.props.pStore.playlist.id}`);
         Alert.showAlert("Playlist URL copied to clipboard!", <BiCopy />);
     }
 
@@ -182,7 +156,7 @@ class Playlist extends React.Component<IProps, IState> {
             result.source.index,
             result.destination.index
         );
-        this.setState({ playlist });
+        this.props.pStore.setPlaylist(playlist);
         editPlaylist(playlist)
             .catch(err => console.warn(err));
     }
@@ -205,7 +179,7 @@ class Playlist extends React.Component<IProps, IState> {
         playlist.icon = icon;
         playlist.isPrivate = this.state.isPrivate;
 
-        this.setState({ playlist });
+        this.props.pStore.setPlaylist(playlist);
         await editPlaylist(playlist);
 
         if (oldName != name) await loadPlaylists();
@@ -218,23 +192,21 @@ class Playlist extends React.Component<IProps, IState> {
             return;
         }
 
-        emitter.on("playlist:reload", this.reload);
-        this.setState({ playlist, isPrivate: playlist.isPrivate });
+        this.setState({ isPrivate: playlist.isPrivate });
     }
 
     async componentDidUpdate(prevProps: IProps) {
-        if (prevProps.match.params.id != this.props.match.params.id) {
+        if (prevProps.match.params.id != this.props.match.params.id ||
+            this.props.pStore.playlist?.id != this.props.match.params.id) {
             const playlist = await fetchPlaylist(this.props.match.params.id);
-            this.setState({ playlist, isPrivate: playlist.isPrivate, reloadKey: this.state.reloadKey + 1 });
+            this.props.pStore.setPlaylist(playlist);
+
+            this.setState({ isPrivate: playlist.isPrivate, reloadKey: this.state.reloadKey + 1 });
         }
     }
 
-    componentWillUnmount() {
-        emitter.off("playlist:reload", this.reload);
-    }
-
     render() {
-        const { playlist } = this.state
+        const playlist = this.props.pStore.playlist;
         if (!playlist) return undefined;
 
         return (
@@ -312,7 +284,7 @@ class Playlist extends React.Component<IProps, IState> {
                                     </div>
 
                                 <BasicDropdown id={"Playlist_Actions"}>
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                                     <a onClick={() => this.download()}>Download Playlist</a>
 // #v-endif
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
@@ -371,4 +343,4 @@ class Playlist extends React.Component<IProps, IState> {
     }
 }
 
-export default Router(Playlist);
+export default WithStore(Router(Playlist), useGlobal);

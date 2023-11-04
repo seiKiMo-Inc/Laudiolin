@@ -1,4 +1,4 @@
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import * as notifs from "@tauri-apps/api/notification";
 // #v-endif
 
@@ -12,7 +12,7 @@ import * as settings from "@backend/settings";
  * @param notification The notification.
  */
 export async function notify(notification: InAppNotificationData) {
-    // #v-ifdef VITE_BUILD_ENV=desktop
+    // #v-ifdef VITE_BUILD_ENV='desktop'
     await sendDesktopNotification(notification);
     // #v-else
     throw new Error("This should not be called in a browser environment.");

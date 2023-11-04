@@ -2,18 +2,15 @@ import React from "react";
 
 import Favorite from "@widget/Favorite";
 
-import { favorites } from "@backend/social/user";
-import emitter from "@backend/events";
+import { TrackData } from "@app/types";
 
-class Favorites extends React.Component<{}, never> {
-    update = () => this.forceUpdate();
+interface IProps {
+    favorites: TrackData[];
+}
 
-    componentDidMount() {
-        emitter.on("favorites", this.update);
-    }
-
-    componentWillUnmount() {
-        emitter.off("favorites",  this.update);
+class Favorites extends React.Component<IProps, never> {
+    constructor(props: IProps) {
+        super(props);
     }
 
     render() {
@@ -21,7 +18,7 @@ class Favorites extends React.Component<{}, never> {
             <div>
                 <h2 style={{ marginTop: 40 }}>Favorite Tracks</h2>
                 <div className={"Home_Favorites"}>
-                    {favorites.slice(0, 10).map((favorite, index) => (
+                    {this.props.favorites.slice(0, 10).map((favorite, index) => (
                         <Favorite track={favorite} key={index} />
                     ))}
                 </div>

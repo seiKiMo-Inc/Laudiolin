@@ -1,36 +1,27 @@
 import React, { ChangeEvent } from "react";
 
 import { BiSearch } from "react-icons/bi";
-import { BsFileMusicFill } from "react-icons/bs";
-import { FaSpotify, FaYoutube } from "react-icons/fa";
 
 import { doSearch } from "@backend/core/search";
-import emitter from "@backend/events";
-import { getFromPath, saveFromPath } from "@backend/settings";
 
 import { contentRoutes } from "@app/constants";
 import { router } from "@app/main";
 
 import { SearchEngine } from "@app/types";
+import WithStore, { Settings, GlobalState, useGlobal, useSettings } from "@backend/stores";
 
 import "@css/layout/TopBar.scss";
 
-
-interface IProps {}
-
-interface IState {
-    searchType: SearchEngine;
+interface IProps {
+    pStore: GlobalState;
+    sStore: Settings;
 }
 
-class SearchInput extends React.Component<IProps, IState> {
+class SearchInput extends React.Component<IProps, never> {
     searchTimeout: NodeJS.Timeout | number = null;
 
     constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            searchType: getFromPath("search.engine", "") as SearchEngine
-        };
     }
 
     onChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -43,10 +34,12 @@ class SearchInput extends React.Component<IProps, IState> {
         }
 
         this.searchTimeout = setTimeout(() => {
+            this.props.pStore.setSearchResults({ waiting: true }, text);
+
             doSearch(text)
                 .then(async (results) => {
                     await router.navigate(contentRoutes.SEARCH);
-                    emitter.emit("search", results);
+                    this.props.pStore.setSearchResults(results);
                 })
                 .catch((err) => console.error(err));
             this.searchTimeout = null;
@@ -56,19 +49,19 @@ class SearchInput extends React.Component<IProps, IState> {
     onKeyChange(event: React.KeyboardEvent<HTMLInputElement>): void {
         if (event.key != "Enter") return;
 
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = null;
+        }
+
         const text = event.currentTarget.value;
+        this.props.pStore.setSearchResults({ waiting: true }, text);
         doSearch(text)
             .then(async (results) => {
                 await router.navigate(contentRoutes.SEARCH);
-                emitter.emit("search", results);
+                this.props.pStore.setSearchResults(results);
             })
             .catch((err) => console.error(err));
-        this.searchTimeout = null;
-    }
-
-    onSearchTypeChange(type: SearchEngine): void {
-        this.setState({ searchType: type });
-        saveFromPath("search.engine", type);
     }
 
     render() {
@@ -85,9 +78,8 @@ class SearchInput extends React.Component<IProps, IState> {
 
                 <select
                     className={"SearchInput_SearchType"}
-                    onChange={(event) => this.onSearchTypeChange(
-                        event.target.value as SearchEngine)}
-                    value={this.state.searchType}
+                    onChange={(event) => this.props.sStore.setSearchEngine(event.target.value as SearchEngine)}
+                    value={this.props.sStore.search.engine}
                 >
                     <option value={"All"}>
                         All
@@ -106,4 +98,4 @@ class SearchInput extends React.Component<IProps, IState> {
     }
 }
 
-export default SearchInput;
+export default WithStore(SearchInput, useGlobal, useSettings);

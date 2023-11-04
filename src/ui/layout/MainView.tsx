@@ -8,7 +8,7 @@ import Favorites from "@pages/Favorites";
 import Search from "@pages/Search";
 import Settings from "@pages/Settings";
 import Playlist from "@pages/Playlist";
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import Downloads from "@pages/Downloads";
 // #v-endif
 import Queue from "@pages/Queue";
@@ -30,7 +30,7 @@ class MainView extends React.Component<any> {
                     <Route path={contentRoutes.SEARCH} element={<Search />} />
                     <Route path={contentRoutes.SETTINGS} element={<Settings />} />
                     <Route path={contentRoutes.PLAYLIST} element={<Playlist />} />
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                     <Route path={contentRoutes.DOWNLOADS} element={<Downloads />} />
 // #v-endif
                     <Route path={contentRoutes.QUEUE} element={<Queue />} />

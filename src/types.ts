@@ -24,8 +24,9 @@ export type TrackData = {
     serialized?: boolean;
 };
 export type SearchResults = {
-    top: SearchResult;
-    results: SearchResult[];
+    waiting?: boolean;
+    top?: SearchResult;
+    results?: SearchResult[];
 };
 
 export type SearchResult = TrackData;
@@ -112,7 +113,7 @@ export type UISettings = {
 export type SystemSettings = {
     broadcast_listening: "Nobody" | "Friends" | "Everyone";
     presence: "Generic" | "Simple" | "Detailed" | "None";
-    // #v-ifdef VITE_BUILD_ENV=desktop
+    // #v-ifdef VITE_BUILD_ENV='desktop'
     offline: boolean;
     close: "Exit" | "Tray";
     // #v-endif
@@ -135,7 +136,7 @@ export type InAppNotificationData = {
     update?: (data: InAppNotificationData) => void;
 };
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 export type OfflineUserData = {
     user: User;
     playlists: string[];

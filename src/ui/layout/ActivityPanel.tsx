@@ -81,7 +81,7 @@ class ActivityPanel extends React.Component<{}, IState> {
                                         <div className={"ActivityPanel_Content"}>
                                             {this.state.onlineUsers.map((user, index) => (
                                                 <User
-                                                    user={user as OnlineUser & OfflineUser}
+                                                    pStore={user as OnlineUser & OfflineUser}
                                                     key={index}
                                                 />
                                             ))}
@@ -97,7 +97,7 @@ class ActivityPanel extends React.Component<{}, IState> {
                                         <div className={"ActivityPanel_Content"}>
                                             {this.state.offlineUsers.map((user, index) => (
                                                 <User
-                                                    user={user as OnlineUser & OfflineUser}
+                                                    pStore={user as OnlineUser & OfflineUser}
                                                     isOffline={true}
                                                     key={index}
                                                 />
@@ -108,7 +108,7 @@ class ActivityPanel extends React.Component<{}, IState> {
                             }
                         </>
                     ) : (
-                        <h2 className={"ActivityPanel_Empty"}>Hmmmm...<br />&emsp;&emsp;So empty.</h2>
+                        <h2 className={"ActivityPanel_Empty"}>Hmmmm...<br />So empty.</h2>
                     )
                 }
             </div>

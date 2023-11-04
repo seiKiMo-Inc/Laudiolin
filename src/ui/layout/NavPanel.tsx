@@ -5,6 +5,7 @@ import NavPageList from "@components/nav/NavPageList";
 import Playlists from "@components/nav/Playlists";
 
 import type { User } from "@app/types";
+import { usePlaylists } from "@backend/stores";
 
 import "@css/layout/NavPanel.scss";
 
@@ -12,20 +13,16 @@ interface IProps {
     user?: User;
 }
 
-class NavPanel extends React.Component<IProps, never> {
-    constructor(props: IProps) {
-        super(props);
-    }
+function NavPanel(props: IProps) {
+    const playlists = usePlaylists();
 
-    render() {
-        return (
-            <div className={"NavPanel"}>
-                <CurrentUser user={this.props.user} />
-                <NavPageList />
-                <Playlists />
-            </div>
-        );
-    }
+    return (
+        <div className={"NavPanel"}>
+            <CurrentUser user={props.user} />
+            <NavPageList user={props.user} />
+            <Playlists playlists={Object.values(playlists)} />
+        </div>
+    );
 }
 
 export default NavPanel;

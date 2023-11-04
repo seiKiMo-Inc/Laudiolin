@@ -5,34 +5,37 @@ import Playlists from "@components/home/Playlists";
 import Recents from "@components/home/Recents";
 import Favorites from "@components/home/Favorites";
 
-import { playlists, recents, favorites } from "@backend/social/user";
-import emitter from "@backend/events";
+import { Playlist, TrackData } from "@app/types";
+
+import WithStore, { usePlaylists, useRecents, useFavorites } from "@backend/stores";
 
 import "@css/pages/Home.scss";
 
-class Home extends React.Component {
-    update = () => this.forceUpdate();
+interface IProps {
+    pStore: Playlist[];
+    sStore: TrackData[];
+    tStore: TrackData[];
+}
 
-    componentDidMount() {
-        emitter.on("playlist", this.update);
-        emitter.on("recent", this.update);
-        emitter.on("favorites", this.update);
-    }
-
-    componentWillUnmount() {
-        emitter.off("playlist", this.update);
-        emitter.off("recent", this.update);
-        emitter.off("favorites", this.update);
+class Home extends React.Component<IProps, never> {
+    constructor(props: IProps) {
+        super(props);
     }
 
     render() {
+        const { pStore: playlistsObj, sStore: recentsObj, tStore: favoritesObj } = this.props;
+
+        const playlists = Object.values(playlistsObj);
+        const recents = Object.values(recentsObj);
+        const favorites = Object.values(favoritesObj);
+
         if (playlists.length > 0 || recents.length > 0 || favorites.length > 0) {
             return (
                 <AnimatedView className={"Home"}>
-                    { playlists.length > 0 && <Playlists /> }
+                    { playlists.length > 0 && <Playlists playlists={playlists} /> }
                     <div className={"Home_Column2"}>
-                        { recents.length > 0 && <Recents /> }
-                        { favorites.length > 0 && <Favorites /> }
+                        { recents.length > 0 && <Recents recents={recents} /> }
+                        { favorites.length > 0 && <Favorites favorites={favorites} /> }
                     </div>
                 </AnimatedView>
             );
@@ -47,4 +50,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default WithStore(Home, usePlaylists, useRecents, useFavorites);

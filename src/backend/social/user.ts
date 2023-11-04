@@ -1,44 +1,36 @@
 import type { User, Playlist, TrackData, PlaylistAuthor } from "@app/types";
 
-import emitter from "@backend/events";
 import * as settings from "@backend/settings";
 
 import { Gateway } from "@app/constants";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import { asArray, useFavorites, usePlaylists, useRecents, useUser } from "@backend/stores";
 
-export const updateTargetRoute = () => (targetRoute = Gateway.getUrl());
 export let targetRoute = Gateway.getUrl(); // The base address for the backend.
-export let userData: User | null = null; // The loaded user data.
-export let playlists: Playlist[] = []; // The loaded playlist data.
-export let favorites: TrackData[] = []; // The loaded favorite tracks.
-export let recents: TrackData[] = []; // The loaded recent tracks.
 
 /**
  * Data loaders for offline support.
  */
 export const loaders = {
     userData: (data: User) => {
-        userData = data; // Update the user data.
-        emitter.emit("login", data); // Emit the login event.
+        // Update the user data.
+        useUser.setState(data);
     },
     playlists: (data: Playlist[]) => {
-        playlists = data; // Update the playlist data.
-        emitter.emit("playlist", data); // Emit the playlist event.
+        // Update the playlist data.
+        usePlaylists.setState(data);
     },
-    favorites: (data: TrackData[]) => (favorites = data)
+    favorites: (data: TrackData[]) => {
+        // Update the favorites data.
+        useUser.setState({ likedSongs: data });
+        useFavorites.setState(data);
+    }
 };
 
 /*
  * HTTP request utilities.
  */
-
-/**
- * Returns the URL for logging in.
- */
-export function getLoginUrl(): string {
-    return `${targetRoute}/discord`;
-}
 
 /**
  * Gets the authorization token from the local storage.
@@ -51,7 +43,7 @@ export function token(): string {
  * Gets the user ID from the local storage.
  */
 export function userId(): string {
-    return userData?.userId ?? "";
+    return useUser.getState()?.userId ?? "";
 }
 
 /**
@@ -85,11 +77,8 @@ export async function login(
         return false;
     }
 
-    userData = await response.json(); // Load the data into the user data variable.
+    useUser.setState(await response.json()); // Load the data into the user data variable.
     console.info("User data has been loaded."); // Log the success.
-
-    // Emit the login event.
-    emitter.emit("login", userData);
 
     if (loadData) {
         loadRecents() // Load recent tracks.
@@ -107,9 +96,9 @@ export async function login(
  * Clears the user data.
  */
 export function logout() {
-    userData = null; // Clear the user data.
-    playlists = []; // Clear the playlist data.
-    favorites = []; // Clear the favorite tracks.
+    useUser.setState({}); // Clear the user data.
+    usePlaylists.setState([]); // Clear the playlist data.
+    useFavorites.setState([]); // Clear the favorite tracks.
 
     // Remove the authorization code.
     const newSettings = settings.getSettings() ?? settings.defaultSettings;
@@ -120,9 +109,6 @@ export function logout() {
     settings.remove("user_token");
     settings.remove("authenticated");
 
-    // Emit the logout event.
-    emitter.emit("logout");
-
     // Send the user to the login page.
     router.navigate(contentRoutes.LOGIN);
 }
@@ -131,13 +117,14 @@ export function logout() {
  * Loads playlists from the backend.
  */
 export async function loadPlaylists() {
-    if (!userData) return; // Check if the user data has been loaded.
-    if (!userData.playlists) return; // Check if the user has any playlists.
-    playlists = []; // Reset the playlist array.
+    if (!useUser.getState()) return; // Check if the user data has been loaded.
+    if (!useUser.getState().playlists) return; // Check if the user has any playlists.
+    usePlaylists.setState([]); // Reset the playlist array.
 
     const route = `${targetRoute}/playlist`;
     // Loop through the user's playlists.
-    for (const playlistId of userData.playlists) {
+    let playlists: Playlist[] = [];
+    for (const playlistId of useUser.getState().playlists) {
         const response = await fetch(`${route}/${playlistId}`, {
             method: "GET",
             headers: { Authorization: token() },
@@ -161,7 +148,7 @@ export async function loadPlaylists() {
             self.findIndex((p) => p.id == playlist.id) == index
     );
 
-    emitter.emit("playlist", playlists); // Emit the 'playlist' event.
+    usePlaylists.setState(playlists);
     console.info(`Loaded ${playlists.length} playlists.`); // Log the success.
 }
 
@@ -169,11 +156,11 @@ export async function loadPlaylists() {
  * Loads favorite tracks from the backend.
  */
 export async function loadFavorites() {
-    if (!userData) return; // Check if the user data has been loaded.
-    if (!userData.likedSongs) return; // Check if the user has any favorites.
-    favorites = userData.likedSongs; // Load the favorites.
+    if (!useUser.getState()) return; // Check if the user data has been loaded.
+    if (!useUser.getState().likedSongs) return; // Check if the user has any favorites.
+    useFavorites.setState(useUser.getState().likedSongs); // Load the favorites.
 
-    console.info(`Loaded ${favorites.length} favorite tracks.`); // Log the success.
+    console.info(`Loaded ${asArray(useFavorites).length} favorite tracks.`); // Log the success.
 }
 
 /**
@@ -182,15 +169,15 @@ export async function loadFavorites() {
  */
 export async function loadRecents(tracks: TrackData[] | null = null) {
     if (tracks) {
-        recents = tracks; // Load the recents from the gateway.
+        useRecents.setState(tracks); // Load the recents from the gateway.
         return;
     }
 
-    if (!userData) return; // Check if the user data has been loaded.
-    if (!userData.recentlyPlayed) return; // Check if the user has any recents.
-    recents = userData.recentlyPlayed; // Load the recents.
+    if (!useUser.getState()) return; // Check if the user data has been loaded.
+    if (!useUser.getState().recentlyPlayed) return; // Check if the user has any recents.
+    useRecents.setState(useUser.getState().recentlyPlayed); // Load the recents.
 
-    console.info(`Loaded ${recents.length} recent tracks.`); // Log the success.
+    console.info(`Loaded ${asArray(useRecents).length} recent tracks.`); // Log the success.
 }
 
 /*
@@ -202,7 +189,7 @@ export async function loadRecents(tracks: TrackData[] | null = null) {
  * Returns an empty string if the user data has not been loaded.
  */
 export function getUserId(): string {
-    return userData ? userData?.userId ?? "" : "";
+    return useUser.getState() ? useUser.getState()?.userId ?? "" : "";
 }
 
 /**
@@ -210,7 +197,7 @@ export function getUserId(): string {
  * Returns an empty string if the user data has not been loaded.
  */
 export function getAvatar(): string {
-    return userData ? userData.avatar ?? "" : "";
+    return useUser.getState() ? useUser.getState().avatar ?? "" : "";
 }
 
 /**
@@ -251,14 +238,14 @@ export async function getPlaylistAuthor(
 
     // If the owner is the current user, return the user's username & icon.
     if (owner == getUserId()) {
-        let discriminator = userData?.discriminator ?? null;
+        let discriminator = useUser.getState()?.discriminator ?? null;
         if (discriminator && discriminator == "0") {
             discriminator = null;
         }
 
         return {
-            name: `${userData?.username}${discriminator ? "#" : ""}${discriminator ?? ""}`,
-            icon: userData?.avatar ?? ""
+            name: `${useUser.getState()?.username}${discriminator ? "#" : ""}${discriminator ?? ""}`,
+            icon: useUser.getState()?.avatar ?? ""
         };
     }
 
@@ -267,7 +254,7 @@ export async function getPlaylistAuthor(
     if (!user) return { name: "Unknown", icon: "" }; // If the user data could not be loaded, return "Unknown".
 
     // Resolve the discriminator.
-    let discriminator = userData?.discriminator ?? null;
+    let discriminator = useUser.getState()?.discriminator ?? null;
     if (discriminator && discriminator == "0") {
         discriminator = null;
     }
@@ -368,8 +355,7 @@ export async function favoriteTrack(
     }
 
     // Update the favorites array.
-    favorites = await response.json();
-    emitter.emit("favorites");
+    useFavorites.setState(await response.json());
 
     return true;
 }
@@ -407,19 +393,15 @@ export async function createPlaylist(
  * @param playlistId The playlist's ID.
  */
 export async function deletePlaylist(playlistId: string): Promise<boolean> {
-    playlists = playlists.filter((playlist) => playlist.id != playlistId); // Remove the playlist from the array.
+    // Remove the playlist from the array.
+    usePlaylists.setState((playlists) => playlists.filter(
+        (playlist) => playlist.id != playlistId));
+
     const route = `${targetRoute}/playlist/${playlistId}`;
     const response = await fetch(route, {
         method: "DELETE",
         headers: { Authorization: token() }
     });
 
-    if (response.status != 200) {
-        return false;
-    }
-
-    // Reload playlists.
-    await loadPlaylists();
-
-    return true;
+    return response.status == 200;
 }

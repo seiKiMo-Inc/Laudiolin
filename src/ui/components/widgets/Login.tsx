@@ -4,17 +4,18 @@ import BasicModal from "@components/common/BasicModal";
 import BasicButton from "@components/common/BasicButton";
 import BasicToggle from "@components/common/BasicToggle";
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import { invoke } from "@tauri-apps/api";
 // #v-else
 import { login } from "@backend/social/user";
 // #v-endif
 
-import emitter from "@backend/events";
 import { Gateway } from "@app/constants";
-import * as settings from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import * as settings from "@backend/settings";
+
+import { useUser } from "@backend/stores";
 
 import "@css/components/Login.scss";
 
@@ -59,7 +60,7 @@ class Login extends React.PureComponent<{}, IState> {
     login(): void {
         // Open the login URL in a browser.
 
-        // #v-ifdef VITE_BUILD_ENV=desktop
+        // #v-ifdef VITE_BUILD_ENV='desktop'
         invoke("open", { url: `${Gateway.getUrl()}/login` })
             .catch(console.warn);
         // #v-else
@@ -87,12 +88,12 @@ class Login extends React.PureComponent<{}, IState> {
     }
 
     componentDidMount() {
-        emitter.on("login", this.cleanup);
+        useUser.subscribe(this.cleanup.bind(this));
         BasicModal.showModal("login");
     }
 
     componentWillUnmount() {
-        emitter.off("login", this.cleanup);
+        useUser.subscribe(this.cleanup.bind(this));
     }
 
     render() {
@@ -126,7 +127,7 @@ class Login extends React.PureComponent<{}, IState> {
 
                 <div style={{ paddingTop: 12 }}>
                     <p className={"Login_Reason"}>
-                        Logging in with Discord lets you create playlists, like
+                        Logging in with an account lets you create playlists, like
                         songs, connect with your friends and more!
                     </p>
                 </div>

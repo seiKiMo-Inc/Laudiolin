@@ -1,9 +1,7 @@
 import type { TrackData } from "@app/types";
 
-import { favorites } from "@backend/social/user";
 import { Gateway } from "@app/constants";
 import { playTrack, toggleRepeatState } from "@backend/core/audio";
-import { fetchTrackById } from "@backend/core/search";
 import * as settings from "@backend/settings";
 
 import * as fs from "@backend/desktop/fs";
@@ -11,6 +9,7 @@ import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import { asArray, useFavorites } from "@backend/stores";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -70,7 +69,7 @@ export function formatDuration(seconds: number): string {
  * @param track The track to check.
  */
 export function isFavorite(track: TrackData | null): boolean {
-    return track ? favorites.find((t) => t.id == track?.id) != null : false;
+    return track ? asArray(useFavorites).find((t) => t.id == track?.id) != null : false;
 }
 
 /**
@@ -273,24 +272,4 @@ export function base64Decode(string: string): ArrayBuffer {
  */
 export function limitTo<T>(array: T[], limit: number): T[] {
     return array.slice(0, limit);
-}
-
-/**
- * Prepends an item to an array.
- *
- * @param array The array of items.
- * @param item The item to prepend.
- */
-export function prepend<T>(array: T[], item: T): T[] {
-    return [item, ...array];
-}
-
-/**
- * Appends an item to an array.
- *
- * @param array The array of items.
- * @param item The item to append.
- */
-export function append<T>(array: T[], item: T): T[] {
-    return [...array, item];
 }

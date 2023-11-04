@@ -6,13 +6,12 @@ import BasicButton from "@components/common/BasicButton";
 
 import type { OnlineUser, OfflineUser } from "@app/types";
 import { listeningWith, listenWith } from "@backend/features/social";
-import { userData } from "@backend/social/user";
 import { parseArtist } from "@backend/core/search";
 
 import "@css/components/User.scss";
 
 interface IProps {
-    user: OnlineUser & OfflineUser;
+    pStore: OnlineUser & OfflineUser;
     isOffline?: boolean;
 }
 
@@ -55,9 +54,8 @@ class User extends React.PureComponent<IProps, never> {
     }
 
     render() {
-        const { user } = this.props;
-        if (user.userId == userData?.userId) return undefined;
-        const listening = user.listeningTo ?? user.lastListeningTo;
+        const { pStore } = this.props;
+        const listening = pStore.listeningTo ?? pStore.lastListeningTo;
         if (listening == null) return undefined;
 
         return (
@@ -81,16 +79,16 @@ class User extends React.PureComponent<IProps, never> {
                 >
                     <img
                         className={"User_Image"}
-                        src={user.avatar}
-                        alt={user.username}
+                        src={pStore.avatar}
+                        alt={pStore.username}
                     />
 
                     <div className={"User_Info"}>
                         <div className={"User_Name"}>
-                            <span>{user.username}</span>
-                            {user.discriminator &&
-                                user.discriminator != "0" &&
-                                <span>#{user.discriminator}</span>}
+                            <span>{pStore.username}</span>
+                            {pStore.discriminator &&
+                                pStore.discriminator != "0" &&
+                                <span>#{pStore.discriminator}</span>}
                         </div>
                         <div className={"User_Listening"}>
                             <span>{listening.title}</span>
@@ -104,8 +102,8 @@ class User extends React.PureComponent<IProps, never> {
                         className={"User_Listen"}
                         icon={<FiHeadphones />}
                         onClick={() => {
-                            if (listeningWith?.userId != user.userId) {
-                                listenWith(user.userId);
+                            if (listeningWith?.userId != pStore.userId) {
+                                listenWith(pStore.userId);
                             } else {
                                 listenWith(null);
                             }
@@ -114,14 +112,14 @@ class User extends React.PureComponent<IProps, never> {
                         }}
                         style={{
                             backgroundColor:
-                                listeningWith?.userId == user.userId
+                                listeningWith?.userId == pStore.userId
                                     ? "var(--accent-color)"
                                     : "var(--background-secondary-color)"
                         }}
                     />
                 ) : (
                     <p className={"User_RecentTime"}>
-                        {this.formatTime(user.lastSeen)}
+                        {this.formatTime(pStore.lastSeen)}
                     </p>
                 )}
             </div>

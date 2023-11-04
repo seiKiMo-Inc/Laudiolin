@@ -1,14 +1,16 @@
-// #v-ifdef VITE_BUILD_ENV=desktop
 import { listen, Event } from "@tauri-apps/api/event";
 
-import * as settings from "@backend/settings";
-import { login } from "@backend/social/user";
 import { listenWith } from "@backend/features/social";
 import { fetchTrackById } from "@backend/core/search";
 import { playTrack } from "@backend/core/audio";
 import { getPlaylistById } from "@backend/core/playlist";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+
+// #v-ifdef VITE_BUILD_ENV='desktop'
+
+import * as settings from "@backend/settings";
+import { login } from "@backend/social/user";
 
 /*
  * Deep links:

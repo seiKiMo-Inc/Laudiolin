@@ -1,12 +1,14 @@
 import type { OfflineUser, OnlineUser, User } from "@app/types";
 
-import { userData, getUserById, token } from "@backend/social/user";
+import { getUserById, token } from "@backend/social/user";
 import { gateway, connect, listenAlongWith } from "@backend/social/gateway";
 
-import emitter from "@backend/events";
 import { targetRoute } from "@backend/social/user";
 
 import TrackPlayer from "@mod/player";
+
+import emitter from "@backend/events";
+import { useUser } from "@backend/stores";
 
 export let listeningWith: User | null = null; // The ID of the user you are currently listening with.
 
@@ -47,7 +49,7 @@ export async function getAvailableUsers(
         const route = `${targetRoute}/social/available?active=${active}`;
         const response = await fetch(route, {
             headers: {
-                Authorization: userData ? token() : ""
+                Authorization: useUser.getState() ? token() : ""
             }
         });
 
@@ -74,7 +76,7 @@ export async function getRecentUsers(): Promise<OfflineUser[]> {
         const route = `${targetRoute}/social/recent`;
         const response = await fetch(route, {
             headers: {
-                Authorization: userData ? token() : ""
+                Authorization: useUser() ? token() : ""
             }
         });
 

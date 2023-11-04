@@ -4,22 +4,17 @@ import Track from "@widget/Track";
 import AnimatedView from "@components/common/AnimatedView";
 
 import * as types from "@app/types";
-import emitter from "@backend/events";
-import { save, get } from "@backend/settings";
+import WithStore, { GlobalState, useGlobal } from "@backend/stores";
 
 import "@css/pages/SearchResults.scss";
 
-interface IState {
-    results: types.TrackData[];
+interface IProps {
+    pStore: GlobalState;
 }
 
-class Search extends React.Component<any, IState> {
-    constructor(props: any) {
+class Search extends React.Component<IProps, never> {
+    constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            results: JSON.parse(get("searchResults")) || null
-        }
     }
 
     /**
@@ -42,22 +37,18 @@ class Search extends React.Component<any, IState> {
 
         return sorted;
     }
-
-    componentDidMount() {
-        emitter.on("search", (results: types.SearchResults) => {
-            if (results.results.length < 1) return this.setState({ results: null });
-            const sorted = this.getResults(results);
-            this.setState({ results: sorted });
-        });
-    }
-
-    componentWillUnmount() {
-        save("searchResults", JSON.stringify(this.state.results));
-        emitter.off("search", () => this.setState({ results: null }) );
-    }
-
     render() {
-        const { results } = this.state;
+        const search = this.props.pStore.searchResults;
+        const results = this.getResults(search);
+
+        if (search?.waiting) {
+            return (
+                <AnimatedView className={"empty"}>
+                    <h1>Searching...</h1>
+                    <p>for '{this.props.pStore.searchQuery}'...</p>
+                </AnimatedView>
+            );
+        }
 
         return results != null ? (
             <AnimatedView>
@@ -76,4 +67,4 @@ class Search extends React.Component<any, IState> {
     }
 }
 
-export default Search;
+export default WithStore(Search, useGlobal);

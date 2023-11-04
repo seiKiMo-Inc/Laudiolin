@@ -17,28 +17,27 @@ import emitter from "@backend/events";
 import { loadState } from "@backend/desktop/offline";
 import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
-import { login, userData, loaders, playlists } from "@backend/social/user";
+import { login, loaders } from "@backend/social/user";
 import { get } from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import type { User } from "@app/types";
+
+import WithStore, { useUser } from "@backend/stores";
 
 import "@css/App.scss";
 import "@css/Text.scss";
 import "react-tooltip/dist/react-tooltip.css";
 
+interface IProps {
+    pStore: User;
+}
+
 interface IState {
     miniPlayer: boolean;
 }
 
-class App extends React.Component<{}, IState> {
-    /**
-     * Login/Logout callback method.
-     */
-    reloadUser = () => {
-        this.forceUpdate();
-        this.fadeLaunchScreen();
-    };
-
+class App extends React.Component<IProps, IState> {
     /**
      * Sets the mini player state.
      * @param enter Should the mini player enter or exit?
@@ -49,16 +48,9 @@ class App extends React.Component<{}, IState> {
             new LogicalSize(427, 240) :
             new LogicalSize(1200, 600));
         appWindow.setResizable(!enter);
-
-        // If exiting, reload user data.
-        if (!enter) {
-            setTimeout(() => {
-                emitter.emit("playlist", playlists);
-            }, 1e3);
-        }
     };
 
-    constructor(props: {}) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -80,7 +72,7 @@ class App extends React.Component<{}, IState> {
      * Checks if the user is online.
      */
     checkIfOnline(): void {
-        // #v-ifdef VITE_BUILD_ENV=desktop
+        // #v-ifdef VITE_BUILD_ENV='desktop'
         const loadOffline = () =>
             loadState(
                 loaders.userData,
@@ -105,7 +97,7 @@ class App extends React.Component<{}, IState> {
         // #v-else
         login()
             .then(() => openFromUrl())
-            .catch(() => console.error("Failed to login."));
+            .catch(error => console.error("Failed to login.", error));
         // #v-endif
     }
 
@@ -166,8 +158,7 @@ class App extends React.Component<{}, IState> {
             router.navigate(contentRoutes.LOGIN);
 
         // Register event listeners.
-        emitter.on("login", this.reloadUser);
-        emitter.on("logout", this.reloadUser);
+        useUser.subscribe(() => this.fadeLaunchScreen());
         emitter.on("miniPlayer", this.miniPlayer);
         // Register document event listeners.
         document.onclick = this.closeDropdowns;
@@ -183,9 +174,7 @@ class App extends React.Component<{}, IState> {
     }
 
     componentWillUnmount() {
-        // Unregister event listeners.
-        emitter.off("login", this.reloadUser);
-        emitter.off("logout", this.reloadUser);
+        // Unregister event listeners.;
         emitter.off("miniPlayer", this.miniPlayer);
         document.onclick = null;
     }
@@ -193,12 +182,12 @@ class App extends React.Component<{}, IState> {
     render() {
         return !this.state.miniPlayer ? (
             <main onContextMenu={(e) => e.preventDefault()}>
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                 <TopButtons />
 // #v-endif
 
                 <div className={"AppContainer"}>
-                    <NavPanel user={userData} />
+                    <NavPanel user={this.props.pStore} />
                     <TopBar />
                     <MainView />
                     <ActivityPanel />
@@ -209,4 +198,4 @@ class App extends React.Component<{}, IState> {
         ) : <MiniPlayer />;
     }
 }
-export default App;
+export default WithStore(App, useUser);

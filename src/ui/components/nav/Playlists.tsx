@@ -10,35 +10,25 @@ import BasicButton from "@components/common/BasicButton";
 import Alert from "@components/Alert";
 
 import { Playlist } from "@app/types";
-import emitter from "@backend/events";
-import { createPlaylist, loadPlaylists, login } from "@backend/social/user";
+import { createPlaylist, login } from "@backend/social/user";
 import { importPlaylist } from "@backend/core/playlist";
 import { contentRoutes } from "@app/constants";
 
 import "@css/layout/NavPanel.scss";
 
-interface IState {
+interface IProps {
     playlists: Playlist[];
+}
+
+interface IState {
     createPrivatePlaylist: boolean;
 }
 
-class Playlists extends React.Component<any, IState> {
-    /**
-     * Playlist update callback.
-     * @param playlists The new playlists.
-     */
-    update = (playlists: Playlist[]) => this.setState({ playlists });
-
-    /**
-     * Clears all playlists.
-     */
-    clear = () => this.setState({ playlists: [] });
-
-    constructor(props: {}) {
+class Playlists extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
-            playlists: [],
             createPrivatePlaylist: false
         };
     }
@@ -69,7 +59,6 @@ class Playlists extends React.Component<any, IState> {
 
         await createPlaylist(playlist);
         await login();
-        await loadPlaylists();
     }
 
     /**
@@ -82,21 +71,10 @@ class Playlists extends React.Component<any, IState> {
 
         await importPlaylist(url);
         await login();
-        await loadPlaylists();
-    }
-
-    componentDidMount() {
-        emitter.on("playlist", this.update);
-        emitter.on("logout", this.clear);
-    }
-
-    componentWillUnmount() {
-        emitter.off("playlist", this.update);
-        emitter.off("logout", this.clear);
     }
 
     render() {
-        const { playlists } = this.state;
+        const playlists = this.props.playlists;
 
         return (
             <>

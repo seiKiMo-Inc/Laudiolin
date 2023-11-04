@@ -5,47 +5,27 @@ import { RxTimer } from "react-icons/rx";
 import { FaRobot } from "react-icons/fa";
 import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
 
-import { userData } from "@backend/social/user";
 import { contentRoutes } from "@app/constants";
 
+import { User } from "@app/types";
+
 import "@css/layout/NavPanel.scss";
-import emitter from "@backend/events";
+
+interface IProps {
+    user: User;
+}
 
 interface IState {
     elixir: boolean;
 }
 
-class NavPageList extends React.Component<{}, IState> {
-    constructor(props: {}) {
+class NavPageList extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             elixir: false
         };
-    }
-
-    /**
-     * Gets the text color for the page item.
-     * @param isActive
-     * @param hover
-     */
-    getTextColor(isActive: boolean, hover: boolean): React.CSSProperties {
-        return {
-            color:
-                isActive || hover
-                    ? "var(--text-primary-color)"
-                    : "var(--text-secondary-color)"
-        };
-    }
-
-    private update = () => this.forceUpdate();
-
-    componentDidMount() {
-        emitter.on("login", this.update);
-    }
-
-    componentWillUnmount() {
-        emitter.off("login", this.update);
     }
 
     render() {
@@ -105,7 +85,7 @@ class NavPageList extends React.Component<{}, IState> {
                     }}
                 </NavLink>
 
-// #v-ifdef VITE_BUILD_ENV=desktop
+// #v-ifdef VITE_BUILD_ENV='desktop'
                 <NavLink
                     to={contentRoutes.DOWNLOADS}
                     className={"NavPanel_PageItem"}
@@ -135,7 +115,7 @@ class NavPageList extends React.Component<{}, IState> {
 // #v-endif
 
                 {
-                    userData?.connections?.discord && (
+                    this.props.user?.connections?.discord && (
                         <NavLink
                             to={contentRoutes.ELIXIR}
                             className={"NavPanel_PageItem"}

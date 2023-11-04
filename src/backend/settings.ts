@@ -7,8 +7,7 @@ import type {
 } from "@app/types";
 
 import { connect } from "@backend/social/gateway";
-
-let settings: UserSettings | null = null;
+import { useSettings } from "@backend/stores";
 export const defaultSettings: UserSettings = {
     search: {
         accuracy: true,
@@ -52,17 +51,16 @@ export function reloadSettings(from?: UserSettings | null): void {
         // Check if settings exists in the storage.
         const data = exists("settings");
         // Load the settings as JSON.
-        settings =
-            data == undefined
-                ? defaultSettings
-                : JSON.parse(get("settings") as string);
-    } else settings = from;
+        useSettings.setState(data == undefined
+            ? defaultSettings
+            : JSON.parse(get("settings") as string));
+    } else useSettings.setState(from);
 
     // Check if the settings are undefined.
-    if (settings == undefined) settings = defaultSettings;
+    if (useSettings.getState() == undefined) useSettings.setState(defaultSettings);
 
     // Save the user's authentication token.
-    save("user_token", settings?.token ?? "");
+    save("user_token", useSettings.getState()?.token ?? "");
     // Set the user's theme.
     setTheme();
 }
@@ -72,7 +70,7 @@ export function reloadSettings(from?: UserSettings | null): void {
  * @param theme The theme to set.
  */
 export function setTheme(theme: "Light" | "Dark" = null): void {
-    if (theme == null) theme = settings?.ui?.color_theme ?? "Light";
+    if (theme == null) theme = useSettings.getState()?.ui?.color_theme ?? "Light";
 
     // Set the theme.
     document
@@ -89,7 +87,7 @@ export function setTheme(theme: "Light" | "Dark" = null): void {
  * Use {@link #reloadSettings} to update the settings.
  */
 export function getSettings(): UserSettings | null {
-    return settings;
+    return useSettings.getState();
 }
 
 /**
@@ -128,28 +126,28 @@ export function saveSettings(newSettings: UserSettings): void {
  * Returns the cached user settings.
  */
 export function search(): SearchSettings {
-    return settings?.search || defaultSettings.search;
+    return useSettings.getState()?.search || defaultSettings.search;
 }
 
 /**
  * Returns the cached user settings.
  */
 export function audio(): AudioSettings {
-    return settings?.audio || defaultSettings.audio;
+    return useSettings.getState()?.audio || defaultSettings.audio;
 }
 
 /**
  * Returns the cached user settings.
  */
 export function ui(): UISettings {
-    return settings?.ui || defaultSettings.ui;
+    return useSettings.getState()?.ui || defaultSettings.ui;
 }
 
 /**
  * Returns the cached system settings.
  */
 export function system(): SystemSettings {
-    return settings?.system || defaultSettings.system;
+    return useSettings.getState()?.system || defaultSettings.system;
 }
 
 /*
@@ -168,7 +166,7 @@ export function getFromPath(
     // Get the correct object.
     const parts = path.split(".");
     const key = parts.pop() as string;
-    const obj = parts.reduce((a: any, b) => a[b], settings);
+    const obj = parts.reduce((a: any, b) => a[b], useSettings.getState());
 
     // Get the value.
     if (obj) return obj[key] ?? fallback;
@@ -184,12 +182,12 @@ export function saveFromPath(path: string, value: any = ""): void {
     // Get the correct object.
     const parts = path.split(".");
     const key = parts.pop() as string;
-    const obj = parts.reduce((a: any, b) => a[b], settings);
+    const obj = parts.reduce((a: any, b) => a[b], useSettings.getState());
 
     // Set the value.
     if (obj) {
         obj[key] = value;
-        saveSettings(settings as UserSettings);
+        saveSettings(useSettings.getState() as UserSettings);
     }
 }
 

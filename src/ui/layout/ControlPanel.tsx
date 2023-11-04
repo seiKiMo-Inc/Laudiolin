@@ -15,13 +15,14 @@ import type { TrackData } from "@app/types";
 import { handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { favorites, favoriteTrack } from "@backend/social/user";
+import { favoriteTrack } from "@backend/social/user";
 import { setVolume, toggleRepeatState } from "@backend/core/audio";
 import { parseArtist } from "@backend/core/search";
 import TrackPlayer from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
 import "rc-slider/assets/index.css";
+import { asArray, useFavorites } from "@backend/stores";
 
 interface IState {
     queue: boolean;
@@ -45,7 +46,7 @@ class ControlPanel extends React.Component<any, IState> {
             queue: TrackPlayer.getQueue().length > 0,
             playing: !TrackPlayer.paused,
             favorite: track
-                ? favorites.find((t) => t.id == track.id) != null
+                ? asArray(useFavorites).find((t) => t.id == track.id) != null
                 : false,
             progress: TrackPlayer.getProgress(),
             volume: TrackPlayer.volume() * 100

@@ -1,6 +1,7 @@
 import type { TrackData, Playlist } from "@app/types";
 
-import { targetRoute, playlists, token } from "@backend/social/user";
+import { targetRoute, token } from "@backend/social/user";
+import { asArray, usePlaylists } from "@backend/stores";
 
 export let currentPlaylist: Playlist | null = null;
 
@@ -17,13 +18,6 @@ export function setCurrentPlaylist(playlist: Playlist | null): void {
 }
 
 /**
- * Fetches all loaded playlists.
- */
-export function fetchAllPlaylists(): Playlist[] {
-    return playlists;
-}
-
-/**
  * Fetches a playlist by its ID.
  * @param id The ID of the playlist.
  * @param playlists The playlists to search through.
@@ -33,7 +27,7 @@ export async function fetchPlaylist(
     playlists: Playlist[] | null = null
 ): Promise<Playlist | null> {
     return (
-        (playlists ?? fetchAllPlaylists()).find(
+        (playlists ?? asArray(usePlaylists)).find(
             (playlist) => playlist.id == id
         ) ?? await getPlaylistById(id)
     );
