@@ -13,7 +13,7 @@ import BasicDropdown, {
 import BasicButton from "@components/common/BasicButton";
 import BasicModal from "@components/common/BasicModal";
 
-import type { Playlist, TrackData } from "@app/types";
+import type { TrackData } from "@app/types";
 import {
     deQueue, playTrack,
 // #v-ifdef VITE_BUILD_ENV='desktop'
