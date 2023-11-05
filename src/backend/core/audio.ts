@@ -40,6 +40,7 @@ export async function setup(): Promise<void> {
     };
 
     // Subscribe to the global state; check for volume updates.
+    Howler.volume(useGlobal.getState().volume);
     useGlobal.subscribe((state) => Howler.volume(state.volume));
 }
 

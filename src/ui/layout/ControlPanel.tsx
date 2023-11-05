@@ -61,9 +61,9 @@ class ControlPanel extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            volume: 100,
+            volume: TrackPlayer.volume() * 100,
             favorite: false,
-            lastVolume: 100
+            lastVolume: TrackPlayer.volume() * 100
         };
     }
 
