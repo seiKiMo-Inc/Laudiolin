@@ -25,7 +25,9 @@ pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
 fn main() {
     // Check for an existing deep link instance.
     // TODO: Open main app instance.
-    tauri_plugin_deep_link::prepare("laudiolin");
+    if cfg!(target_os = "windows") {
+        tauri_plugin_deep_link::prepare("laudiolin");
+    }
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
