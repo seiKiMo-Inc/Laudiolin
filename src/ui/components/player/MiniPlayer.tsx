@@ -14,20 +14,21 @@ import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
 import type { TrackData } from "@app/types";
+import WithStore from "@backend/stores";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import { parseArtist } from "@backend/core/search";
 import { toMini, handleHotKeys } from "@app/utils";
 import { setVolume, toggleRepeatState } from "@backend/core/audio";
-import TrackPlayer from "@mod/player";
+import TrackPlayer, { PlayerState, usePlayer } from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";
 
+interface IProps {
+    pStore: PlayerState;
+}
+
 interface IState {
-    queue: boolean;
-    playing: boolean;
-    track: TrackData | null;
-    progress: number;
     volume: number;
     lastVolume: number;
     activeThumb: boolean;
@@ -35,17 +36,12 @@ interface IState {
     onTop: boolean;
 }
 
-class MiniPlayer extends React.Component<any, IState> {
+class MiniPlayer extends React.Component<IProps, IState> {
     /**
      * Player update callback.
      */
     update = () => {
-        const track = TrackPlayer.getCurrentTrack()?.data;
         this.setState({
-            track,
-            queue: TrackPlayer.getQueue().length > 0,
-            playing: !TrackPlayer.paused,
-            progress: TrackPlayer.getProgress(),
             volume: TrackPlayer.volume() * 100
         });
     };
@@ -55,7 +51,7 @@ class MiniPlayer extends React.Component<any, IState> {
      * @param e The keyboard event.
      */
     hotKeys = (e: KeyboardEvent) => {
-        if (!this.state.track) return;
+        if (!this.props.pStore.track) return;
         handleHotKeys(e);
     };
 
@@ -78,16 +74,12 @@ class MiniPlayer extends React.Component<any, IState> {
         }
     };
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
-            queue: false,
-            playing: false,
-            track: null,
-            progress: 0,
-            volume: 100,
-            lastVolume: 100,
+            volume: TrackPlayer.volume() * 100,
+            lastVolume: TrackPlayer.volume() * 100,
             activeThumb: false,
             onTop: false
         };
@@ -141,7 +133,7 @@ class MiniPlayer extends React.Component<any, IState> {
     }
 
     render() {
-        const { playing, track } = this.state;
+        const { paused, track, progress } = this.props.pStore;
 
         return (
             <div
@@ -218,7 +210,7 @@ class MiniPlayer extends React.Component<any, IState> {
                             onClick={() => TrackPlayer.back()}
                         />
 
-                        {playing ? (
+                        {!paused ? (
                             <IoMdPause
                                 className={"MiniPlayer_Control"}
                                 onClick={() => TrackPlayer.pause()}
@@ -250,11 +242,10 @@ class MiniPlayer extends React.Component<any, IState> {
                 <div className={"MiniPlayer_Progress"}>
                     <ProgressBar
                         className={"MiniPlayer_ProgressBar"}
-                        progress={this.state.progress}
+                        progress={progress}
                         forceUpdate={TrackPlayer.forceUpdatePlayer}
                         duration={TrackPlayer.getDuration()}
                         onSeek={(progress) => {
-                            this.setState({ progress });
                             TrackPlayer.seek(progress);
                         }}
                     />
@@ -264,4 +255,4 @@ class MiniPlayer extends React.Component<any, IState> {
     }
 }
 
-export default MiniPlayer;
+export default WithStore(MiniPlayer, usePlayer);
