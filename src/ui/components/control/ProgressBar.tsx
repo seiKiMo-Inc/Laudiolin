@@ -51,7 +51,8 @@ class ProgressBar extends React.Component<IProps, IState> {
 
                 <Slider
                     min={0}
-                    max={this.props.duration}
+                    max={this.props.duration == 0 ?
+                        1 : this.props.duration}
                     value={this.props.forceUpdate ?
                         this.props.progress :
                         this.state.progress}

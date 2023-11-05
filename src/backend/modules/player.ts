@@ -442,7 +442,9 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             usePlayer.setState({
                 queue: [],
                 current: null,
+                track: null,
                 paused: true,
+                progress: 0,
                 progressTicks: 0
             });
         }
