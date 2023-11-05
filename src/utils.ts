@@ -92,8 +92,8 @@ export function sourceUrl(id: string): string {
  */
 export function formatDuration(seconds: number): string {
     const date = new Date(seconds * 1000);
-    const hh = date.getUTCHours();
-    const mm = date.getUTCMinutes();
+    let hh = date.getUTCHours();
+    let mm = date.getUTCMinutes();
     const ss = date.getSeconds().toString().padStart(2, "0");
 
     if (hh) {

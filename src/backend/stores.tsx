@@ -2,6 +2,7 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 import { Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
+import { PlayerState } from "@mod/player";
 
 /**
  * Append an item to a store.

@@ -2,7 +2,7 @@ import { useGlobal } from "@backend/stores";
 import type { Guild, Synchronize } from "@app/types";
 import { targetRoute, token } from "@backend/social/user";
 
-import TrackPlayer, { Loop, Track } from "@mod/player";
+import TrackPlayer, { Loop, Track, usePlayer } from "@mod/player";
 import { BaseGatewayMessage, sendGatewayMessage } from "@backend/social/gateway";
 
 export let selectedGuild: string | null = null;
@@ -77,9 +77,6 @@ export function setGuild(guild: string, bot: string = ""): void {
  * @param data The data to synchronize.
  */
 export async function syncState(data: Synchronize): Promise<void> {
-    if (!("state" in TrackPlayer)) return;
-    const state = TrackPlayer.state;
-
     if (data.doAll !== undefined &&
         data.doAll !== null &&
         !data.doAll) {
@@ -87,11 +84,11 @@ export async function syncState(data: Synchronize): Promise<void> {
         return;
     }
     if (data.playingTrack !== undefined) {
-        state.track = data.playingTrack;
+        usePlayer.setState({ track: data.playingTrack });
         TrackPlayer.current = new Track(data.playingTrack);
     }
     if (data.paused !== undefined) {
-        state.paused = data.paused;
+        usePlayer.setState({ paused: data.paused });
     }
     if (data.volume !== undefined) {
         useGlobal.setState({ volume: data.volume / 100 });
@@ -109,10 +106,10 @@ export async function syncState(data: Synchronize): Promise<void> {
             case 2: loopMode = "track"; break;
         }
 
-        state.loop = loopMode;
+        usePlayer.setState({ loop: loopMode });
     }
     if (data.position !== undefined) {
-        state.progress = data.position;
+        usePlayer.setState({ progress: data.position });
     }
     if (data.shuffle !== undefined) {
         TrackPlayer.queue = TrackPlayer.queue.sort(

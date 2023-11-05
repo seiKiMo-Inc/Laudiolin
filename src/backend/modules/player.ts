@@ -5,72 +5,139 @@ import { Howl } from "howler";
 import { useGlobal } from "@backend/stores";
 import { EventEmitter } from "events";
 import { playerUpdate, sendGatewayMessage } from "@backend/social/gateway";
+import { create } from "zustand";
 
 export type Loop = "none" | "track" | "queue";
 export type PlayerState = {
-    track: TrackData,
+    track: TrackData;
     paused: boolean;
     loop: Loop;
     progress: number;
     progressTicks: number;
 };
 
-export class Player extends EventEmitter implements mod.TrackPlayer {
-    private readonly updateTask: NodeJS.Timer | number;
-    alternate: (track: TrackData) => Promise<TrackData | undefined>;
+export type PlayerData = {
+    queue: TrackData[];
+    history: TrackData[];
+    current: Track | null;
 
-    current: Track | null = null;
-    queue: TrackData[] = [];
-    history: TrackData[] = [];
+    addToQueue(track: TrackData, prepend?: boolean): void;
+    addToHistory(track: TrackData, prepend?: boolean): void;
+    popLastTrack(): TrackData | null;
+    getNextTrack(): TrackData | null;
+};
+
+export const usePlayer = create<PlayerState & PlayerData>((set, get) => ({
+    track: null,
+    paused: true,
+    loop: "none",
+    progress: 0,
+    progressTicks: 0,
+    current: null,
+    queue: [],
+    history: [],
+
+    addToQueue(track: TrackData, prepend = false) {
+        const { queue } = get();
+        if (prepend) {
+            queue.unshift(track);
+        } else {
+            queue.push(track);
+        }
+
+        set({ queue });
+    },
+    addToHistory(track: TrackData, prepend = false) {
+        const { history } = get();
+        if (prepend) {
+            history.unshift(track);
+        } else {
+            history.push(track);
+        }
+
+        set({ history });
+    },
+    popLastTrack(): TrackData | null {
+        const { history } = get();
+        const track = history.pop();
+        set({ history });
+        return track;
+    },
+    getNextTrack(): TrackData | null {
+        const { queue } = get();
+        const track = queue.shift();
+        set({ queue });
+        return track;
+    }
+}));
+
+export class Player extends EventEmitter implements mod.TrackPlayer {
+    alternate: (track: TrackData) => Promise<TrackData | undefined>;
 
     posFromState: boolean = false;
     useTickCheck: boolean = true;
     forceUpdatePlayer: boolean = false;
     syncWithBackend: boolean = false;
 
-    /* State */
-    public state: PlayerState = {
-        track: null,
-        paused: false,
-        loop: "none",
-        progress: 0,
-        progressTicks: 0
-    };
-
     constructor() {
         super();
 
-        this.updateTask = setInterval(() => {
-            this.update(); // Update listeners.
+        setInterval(() => {
+            this.update(); // Check player.
         }, 500);
     }
 
+    get current(): Track | null {
+        return usePlayer.getState().current;
+    }
+
+    get queue(): TrackData[] {
+        return usePlayer.getState().queue;
+    }
+
+    get history(): TrackData[] {
+        return usePlayer.getState().history;
+    }
+
+    set current(track: Track | null) {
+        usePlayer.setState({
+            current: track,
+            track: track?.data
+        });
+    }
+
+    set queue(queue: TrackData[]) {
+        usePlayer.setState({ queue });
+    }
+
+    set history(history: TrackData[]) {
+        usePlayer.setState({ history });
+    }
+
     get paused(): boolean {
-        return this.state.paused;
+        return usePlayer.getState().paused;
     }
 
     /**
      * Emits the update event.
      */
     public update(): void {
-        this.emit("update", {
-            ...this.state,
-            progress: this.getProgress()
-        });
+        // Update the player progress.
+        const state = usePlayer.getState();
 
         // Check if the track is in the same position as it was before.
-        if (this.useTickCheck && !this.state.paused) {
-            if (this.state.progress == this.getProgress())
-                this.state.progressTicks += 1;
+        if (this.useTickCheck && !state.paused) {
+            if (state.progress == this.getProgress())
+                state.progressTicks += 1;
             else {
-                this.state.progress = this.getProgress();
-                this.state.progressTicks = 0;
+                state.progress = this.getProgress();
+                state.progressTicks = 0;
             }
 
             // Check if the track has been stuck for 10 seconds.
-            if (this.state.progressTicks >= 20) {
+            if (state.progressTicks >= 20) {
                 this.next();
-                this.state.progressTicks = 0;
+                state.progressTicks = 0;
             }
         }
 
@@ -88,6 +155,10 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 position: this.getProgress()
             });
         }
+
+        usePlayer.setState({
+            progress: this.current?.progress() ?? 0
+        });
     }
 
     /**
@@ -101,7 +172,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * Returns the current progress into the track.
      */
     public getProgress(): number {
-        return this.posFromState ? this.state.progress :
+        return this.posFromState ? usePlayer.getState().progress :
             this.current ? this.current.progress() : 0;
     }
 
@@ -110,7 +181,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public getDuration(): number {
         return this.posFromState ?
-            (this.state.track?.duration ?? 0) :
+            (usePlayer.getState().track?.duration ?? 0) :
             this.current ? this.current.duration() : 0;
     }
 
@@ -125,24 +196,26 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * Resets the track player.
      */
     public reset(): void {
-        // Reset the state.
-        this.state.progress = 0;
-        this.state.progressTicks = 0;
-        this.state.paused = true;
-        this.state.loop = "none";
-        // Reset the queues.
-        this.queue = [];
-        this.history = [];
         // Reset the current track.
         this.current && this.stop();
-        this.current = null;
+
+        // Reset the state.
+        usePlayer.setState({
+            progress: 0,
+            progressTicks: 0,
+            paused: true,
+            loop: "none",
+            queue: [],
+            history: [],
+            current: null
+        });
     }
 
     /**
      * Gets the repeat mode.
      */
     public getRepeatMode(): Loop {
-        return this.state.loop;
+        return usePlayer.getState().loop;
     }
 
     /**
@@ -150,7 +223,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * @param mode The repeat mode.
      */
     public setRepeatMode(mode: Loop): void {
-        this.state.loop = mode;
+        usePlayer.setState({ loop: mode });
 
         if (this.syncWithBackend) {
             let loopMode: number;
@@ -190,7 +263,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * @param track The track to add.
      */
     public add(track: TrackData): void {
-        this.queue.push(track);
+        usePlayer.getState().addToQueue(track);
     }
 
     /**
@@ -203,12 +276,14 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         current && this.stop();
 
         // Check if there is a next track.
-        const { loop } = this.state;
+        const { loop } = usePlayer.getState();
         if (this.queue.length > 0 || loop == "track") {
             // Play the next track.
             if (loop != "track") {
-                this.play(this.queue.shift()!);
-                if (current && loop == "queue") this.queue.push(current.data);
+                this.play(usePlayer.getState().getNextTrack());
+                if (current && loop == "queue") {
+                    usePlayer.getState().addToQueue(current.data);
+                }
             } else {
                 this.play(current.data);
             }
@@ -233,11 +308,13 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         if (this.history.length > 0) {
             // Add the current track to the queue.
             if (this.current) {
-                this.queue.unshift(this.current.data);
+                usePlayer.getState()
+                    .addToHistory(this.current.data, true);
                 this.emit("queue", this.current.data);
             }
             // Play the previous track.
-            this.play(this.history.pop()!, true, false);
+            this.play(usePlayer.getState().popLastTrack(),
+                true, false);
         } else {
             this.stop(); // Stop the player.
         }
@@ -262,13 +339,13 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             if (this.queue.length < 1) return;
 
             // Play the next track.
-            return this.play(this.queue.shift()!, force, history);
+            return this.play(usePlayer.getState().getNextTrack(), force, history);
         }
 
         // Check if something is playing.
         if (this.current && !force) {
             // Add the track to the queue.
-            this.queue.push(track);
+            usePlayer.getState().addToQueue(track);
             if (this.syncWithBackend) {
                 sendGatewayMessage({
                     type: "synchronize",
@@ -287,7 +364,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             // Check if the track is the same.
             if (history && current.id != track.id)
                 // Add the current track to the history.
-                this.history.push(current.data);
+                usePlayer.getState().addToHistory(current.data);
             // Stop the current track.
             this.stop(false);
         }
@@ -309,8 +386,9 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         this.emit("play", this.current);
 
         // Set the player state.
-        this.state.paused = !play;
-        this.state.progressTicks = 0;
+        usePlayer.setState({
+            paused: !play, progressTicks: 0
+        });
 
         // Update the navigator metadata.
         if ("mediaSession" in navigator) {
@@ -361,10 +439,12 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      */
     public stop(emit = true, clear = false): void {
         if (clear) {
-            this.queue = [];
-            this.current = null;
-            this.state.paused = true;
-            this.state.progressTicks = 0;
+            usePlayer.setState({
+                queue: [],
+                current: null,
+                paused: true,
+                progressTicks: 0
+            });
         }
 
         // Emit the stop event.
@@ -377,23 +457,24 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
      * Toggles the pause state of the player.
      */
     public pause(): void {
-        if (this.state.paused) {
+        const state = usePlayer.getState();
+        if (state.paused) {
             !this.syncWithBackend && this.current?.play();
-            this.state.paused = false;
+            usePlayer.setState({ paused: false });
         } else {
             !this.syncWithBackend && this.current?.pause();
-            this.state.paused = true;
+            usePlayer.setState({ paused: true });
         }
 
         if (this.syncWithBackend) {
             sendGatewayMessage({
                 type: "synchronize",
                 timestamp: Date.now(),
-                paused: this.state.paused
+                paused: state.paused
             } as Synchronize);
         }
 
-        this.state.progressTicks = 0;
+        usePlayer.setState({ progressTicks: 0 });
 
         this.update();
         this.emit("pause");

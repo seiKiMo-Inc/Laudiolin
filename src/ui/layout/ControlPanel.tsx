@@ -11,44 +11,39 @@ import { Tooltip } from "react-tooltip";
 import ProgressBar from "@components/control/ProgressBar";
 import VolumeSlider from "@components/control/VolumeSlider";
 
-import type { TrackData } from "@app/types";
-import { asArray, useFavorites, useGlobal } from "@backend/stores";
+import WithStore, { asArray, useFavorites, useGlobal } from "@backend/stores";
 import { getTrackSource, handleHotKeys, toMini } from "@app/utils";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import { favoriteTrack } from "@backend/social/user";
 import { setVolume, toggleRepeatState } from "@backend/core/audio";
 import { parseArtist } from "@backend/core/search";
-import TrackPlayer from "@mod/player";
+import TrackPlayer, { PlayerState, usePlayer } from "@mod/player";
 
 import "@css/layout/ControlPanel.scss";
 import "rc-slider/assets/index.css";
 
+interface IProps {
+    pStore: PlayerState;
+}
+
 interface IState {
-    queue: boolean;
-    playing: boolean;
-    track: TrackData | null;
-    progress: number;
     volume: number;
     favorite: boolean;
 
     lastVolume: number;
 }
 
-class ControlPanel extends React.Component<any, IState> {
+class ControlPanel extends React.Component<IProps, IState> {
     /**
      * Player update callback.
      */
     update = () => {
-        const track = TrackPlayer.getCurrentTrack()?.data;
+        const track = this.props.pStore.track;
         this.setState({
-            track,
-            queue: TrackPlayer.getQueue().length > 0,
-            playing: !TrackPlayer.paused,
             favorite: track
                 ? asArray(useFavorites).find((t) => t.id == track.id) != null
                 : false,
-            progress: TrackPlayer.getProgress(),
             volume: TrackPlayer.volume() * 100
         });
     };
@@ -58,18 +53,14 @@ class ControlPanel extends React.Component<any, IState> {
      * @param e The keyboard event.
      */
     hotKeys = (e: KeyboardEvent) => {
-        if (!this.state.track) return;
+        if (!this.props.pStore.track) return;
         handleHotKeys(e);
     }
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
-            queue: false,
-            playing: false,
-            track: null,
-            progress: 0,
             volume: 100,
             favorite: false,
             lastVolume: 100
@@ -77,7 +68,6 @@ class ControlPanel extends React.Component<any, IState> {
     }
 
     componentDidMount() {
-        TrackPlayer.on("update", this.update);
         useGlobal.subscribe((state) =>
             this.setState({ volume: state.volume * 100 }));
 
@@ -96,7 +86,7 @@ class ControlPanel extends React.Component<any, IState> {
      * Adds the current track to the favorites.
      */
     async favorite(): Promise<void> {
-        const { track } = this.state;
+        const { track } = this.props.pStore;
         if (!track) return;
 
         // Toggle the favorite state.
@@ -152,7 +142,8 @@ class ControlPanel extends React.Component<any, IState> {
     }
 
     render() {
-        const { playing, track, favorite } = this.state;
+        const { favorite } = this.state;
+        const { paused, track, progress } = this.props.pStore;
 
         return (
             <div className={"ControlPanel"}>
@@ -208,7 +199,7 @@ class ControlPanel extends React.Component<any, IState> {
                             data-tooltip-content={"Previous"}
                         />
 
-                        {playing ? (
+                        {!paused ? (
                             <IoMdPause
                                 className={"ControlPanel_Control"}
                                 onClick={() => TrackPlayer.pause()}
@@ -238,11 +229,10 @@ class ControlPanel extends React.Component<any, IState> {
                     </div>
 
                     <ProgressBar
-                        progress={this.state.progress}
+                        progress={progress}
                         forceUpdate={TrackPlayer.forceUpdatePlayer}
                         duration={TrackPlayer.getDuration()}
                         onSeek={(progress) => {
-                            this.setState({ progress });
                             TrackPlayer.seek(progress);
                         }}
                     />
@@ -286,4 +276,4 @@ class ControlPanel extends React.Component<any, IState> {
     }
 }
 
-export default ControlPanel;
+export default WithStore(ControlPanel, usePlayer);
