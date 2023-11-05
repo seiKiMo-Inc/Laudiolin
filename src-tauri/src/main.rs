@@ -140,10 +140,22 @@ fn open_dev_tools(window: Window) {
 }
 
 /// Registers the deep link handler.
+#[cfg(target_os = "windows")]
 fn register_deep_link(app: &mut App<Wry>) {
     let handle = app.handle();
     tauri_plugin_deep_link::register(
         "laudiolin", move |request| {
+            wrap(handle.get_window("main").unwrap().set_focus(), "focus");
+            handle.emit_all("deeplink", request).unwrap();
+        },
+    ).unwrap();
+}
+
+#[cfg(target_os = "macos")]
+fn register_deep_link(app: &mut App<Wry>) {
+    let handle = app.handle();
+    tauri_plugin_deep_link::register(
+        "moe.seikimo.laudiolin", "laudiolin", move |request| {
             wrap(handle.get_window("main").unwrap().set_focus(), "focus");
             handle.emit_all("deeplink", request).unwrap();
         },
