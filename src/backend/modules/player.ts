@@ -152,7 +152,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
             // Update the position state.
             mediaSession.setPositionState({
                 duration: this.getDuration(),
-                position: this.getProgress()
+                position: Math.min(this.getDuration(), this.getProgress())
             });
         }
 
