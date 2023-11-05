@@ -45,7 +45,7 @@ class ActivityPanel extends React.Component<{}, IState> {
      */
     reload = () => this.forceUpdate();
 
-    interval: NodeJS.Timer | number;
+    interval: any;
 
     constructor(props: {}) {
         super(props);
