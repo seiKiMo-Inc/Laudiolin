@@ -16,7 +16,6 @@ function AddToPlaylist() {
     const [selectedName, setSelectedName] = React.useState<string | null>();
 
     if (!track) return undefined;
-    console.log("track is", track);
 
     return (
         <BasicModal

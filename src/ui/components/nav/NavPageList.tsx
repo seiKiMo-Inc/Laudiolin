@@ -32,8 +32,6 @@ class NavPageList extends React.Component<IProps, IState> {
     render() {
         const { ui } = this.props.pStore;
 
-        console.log(ui)
-
         return (
             <div className={"NavPanel_PageList"}>
                 {ui.show_home && <NavLink
