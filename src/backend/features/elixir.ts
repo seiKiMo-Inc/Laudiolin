@@ -1,4 +1,4 @@
-import { useGlobal } from "@backend/stores";
+import { asArray, useGlobal, useGuilds } from "@backend/stores";
 import type { Guild, Synchronize } from "@app/types";
 import { targetRoute, token } from "@backend/social/user";
 
@@ -17,9 +17,13 @@ type SetElixirMessage = BaseGatewayMessage & {
 /**
  * Fetches the user's guilds.
  *
+ * @param force Should the request be forced?
  * @return null if the user did not give permission to access guilds.
  */
-export async function getGuilds(): Promise<Guild[] | null> {
+export async function getGuilds(force: boolean = false): Promise<Guild[] | null> {
+    let guilds = asArray(useGuilds);
+    if (!force && guilds.length != 0) return guilds;
+
     try {
         const response = await fetch(`${targetRoute}/elixir/guilds`, {
             headers: { Authorization: token() }
@@ -30,7 +34,10 @@ export async function getGuilds(): Promise<Guild[] | null> {
         } else {
             // Extract the guilds from the response.
             const data = await response.json();
-            return data["guilds"] as Guild[];
+            guilds = data["guilds"] as Guild[];
+            useGuilds.setState(guilds);
+
+            return guilds;
         }
     } catch {
         return null;

@@ -1,7 +1,7 @@
 import { create, StoreApi, UseBoundStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
+import { Guild, Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
 
 /**
  * Append an item to a store.
@@ -154,6 +154,7 @@ export const useUser = create<User>(() => undefined);
 export const usePlaylists = create<Playlist[]>(() => ([]));
 export const useFavorites = create<TrackData[]>(() => ([]));
 export const useRecents = create<TrackData[]>(() => ([]));
+export const useGuilds = create<Guild[]>(() => ([]));
 
 // #v-ifdef VITE_BUILD_ENV='desktop'
 export const useDownloads: UseBoundStore<StoreApi<TrackData[]>> = create<TrackData[]>(() => ([]));

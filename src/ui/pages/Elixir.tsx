@@ -91,11 +91,13 @@ class Elixir extends React.Component<{}, IState> {
 
     /**
      * Loads all the user's guilds.
+     *
+     * @param force Whether to force a reload.
      */
-    private reloadGuilds(): void {
+    private reloadGuilds(force: boolean = false): void {
         this.setState({ guilds: [] });
 
-        getGuilds()
+        getGuilds(force)
             .then(guilds => {
                 guilds = guilds
                     .sort((a, b) => a.name.localeCompare(b.name))
@@ -115,7 +117,7 @@ class Elixir extends React.Component<{}, IState> {
                 <div className={"Elixir_Title"}>
                     <p>Elixir</p>
 
-                    <button onClick={this.reloadGuilds.bind(this)}>
+                    <button onClick={() => this.reloadGuilds(true)}>
                         <AiOutlineReload />
                         Reload
                     </button>
