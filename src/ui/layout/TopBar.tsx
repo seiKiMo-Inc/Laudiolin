@@ -11,42 +11,39 @@ import { Tooltip } from "react-tooltip";
 import SearchInput from "@components/search/SearchInput";
 import BasicButton from "@components/common/BasicButton";
 
-import { get, save } from "@backend/settings";
-
+import emitter from "@backend/events";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
+import WithStore, { GlobalState, useGlobal } from "@backend/stores";
 
 import "@css/layout/TopBar.scss";
 
-interface IState {
-    isActivityPanelOpen: boolean;
+interface IProps {
+    pStore: GlobalState;
 }
 
-class TopBar extends React.Component<{}, IState> {
-    constructor(props: {}) {
+class TopBar extends React.Component<IProps, never> {
+    constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            isActivityPanelOpen: get("isActivityPanelOpen", "false") === "true"
-        };
     }
 
     toggleActivityPanel = () => {
-        this.setState({ isActivityPanelOpen: !this.state.isActivityPanelOpen });
+        const currentState = this.props.pStore.activityOpen;
+        this.props.pStore.setActivityOpen(!currentState);
+
         const activityPanel = document.getElementsByClassName(
             "ActivityPanel"
         )[0] as HTMLElement;
-        activityPanel.style.paddingLeft = this.state.isActivityPanelOpen
+        activityPanel.style.paddingLeft = currentState
             ? "0"
             : "24px";
-        activityPanel.style.width = this.state.isActivityPanelOpen
+        activityPanel.style.width = currentState
             ? "0"
             : "320px";
-        save("isActivityPanelOpen", `${!this.state.isActivityPanelOpen}`);
     };
 
     componentDidMount() {
-        if (this.state.isActivityPanelOpen) {
+        if (this.props.pStore.activityOpen) {
             const activityPanel = document.getElementsByClassName(
                 "ActivityPanel"
             )[0] as HTMLElement;
@@ -94,11 +91,12 @@ class TopBar extends React.Component<{}, IState> {
                             size={22}
                             style={{
                                 color:
-                                    this.state.isActivityPanelOpen &&
+                                    this.props.pStore.activityOpen &&
                                     "var(--accent-color)"
                             }}
                         />
                     }
+                    onHover={() => emitter.emit("activity:update")}
                     onClick={this.toggleActivityPanel}
                     tooltipId={"activity_tooltip"}
                 />
@@ -110,4 +108,4 @@ class TopBar extends React.Component<{}, IState> {
     }
 }
 
-export default TopBar;
+export default WithStore(TopBar, useGlobal);

@@ -116,11 +116,13 @@ export interface GlobalState {
     searchQuery?: string; // The search query.
     track?: TrackData; // The target track for use cases.
     volume: number;
+    activityOpen: boolean;
 
     setListening: (listening: User | null) => void;
     setPlaylist: (playlist: Playlist | null) => void;
     setSearchResults: (searchResults: SearchResults, query?: string) => void;
     setTrack: (track: TrackData) => void;
+    setActivityOpen: (activityOpen: boolean) => void;
 }
 export const useGlobal = create<GlobalState>()(
     persist(
@@ -130,17 +132,19 @@ export const useGlobal = create<GlobalState>()(
             searchResults: undefined,
             searchQuery: undefined,
             volume: 1,
+            activityOpen: false,
 
             setListening: (listening: User | null) => set({ listening }),
             setPlaylist: (playlist: Playlist | null) => set({ playlist }),
             setSearchResults: (searchResults: SearchResults, searchQuery?: string) => set({ searchResults, searchQuery }),
-            setTrack: (track: TrackData) => set({ track })
+            setTrack: (track: TrackData) => set({ track }),
+            setActivityOpen: (activityOpen: boolean) => set({ activityOpen })
         }),
         {
             name: "global-state",
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => Object.fromEntries(Object.entries(state)
-                .filter(([key]) => ["volume"].includes(key)))
+                .filter(([key]) => ["volume", "activityOpen"].includes(key)))
         }
     )
 );

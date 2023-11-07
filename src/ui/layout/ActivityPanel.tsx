@@ -2,18 +2,23 @@ import React from "react";
 
 import User from "@widget/User";
 
+import emitter from "@backend/events";
 import type { OfflineUser, OnlineUser } from "@app/types";
+import WithStore, { GlobalState, useGlobal } from "@backend/stores";
 
 import "@css/layout/ActivityPanel.scss";
 import { getAvailableUsers, getRecentUsers } from "@backend/features/social";
-import emitter from "@backend/events";
+
+interface IProps {
+    pStore: GlobalState;
+}
 
 interface IState {
     offlineUsers: OfflineUser[];
     onlineUsers: OnlineUser[];
 }
 
-class ActivityPanel extends React.Component<{}, IState> {
+class ActivityPanel extends React.Component<IProps, IState> {
     /**
      * Updates the list of users.
      */
@@ -45,9 +50,10 @@ class ActivityPanel extends React.Component<{}, IState> {
      */
     reload = () => this.forceUpdate();
 
-    interval: any;
+    private interval: any = null;
+    private unsubscribe: any = null;
 
-    constructor(props: {}) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -56,16 +62,33 @@ class ActivityPanel extends React.Component<{}, IState> {
         };
     }
 
+    private checkInterval(): void {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        } else {
+            this.interval = setInterval(this.update, 15e3);
+        }
+    }
+
     componentDidMount() {
         this.update();
 
-        this.interval = setInterval(this.update, 10e3);
+        this.props.pStore.activityOpen && this.checkInterval();
+        this.unsubscribe = useGlobal.subscribe((state, prevState) => {
+            if (state.activityOpen != prevState.activityOpen)
+                this.checkInterval();
+        });
+
         emitter.on("listen", this.reload);
+        emitter.on("activity:update", this.update.bind(this));
     }
 
     componentWillUnmount() {
-        this.interval && clearInterval(this.interval);
+        this.unsubscribe();
+
         emitter.off("listen", this.reload);
+        emitter.off("activity:update", this.update.bind(this));
     }
 
     render() {
@@ -116,4 +139,4 @@ class ActivityPanel extends React.Component<{}, IState> {
     }
 }
 
-export default ActivityPanel;
+export default WithStore(ActivityPanel, useGlobal);

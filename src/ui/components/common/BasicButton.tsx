@@ -3,6 +3,7 @@ import React, { MouseEvent } from "react";
 interface IProps {
     icon?: React.ReactNode;
     onClick?: (event: MouseEvent) => void;
+    onHover?: (event: MouseEvent) => void;
     text?: string;
     style?: React.CSSProperties;
     id?: string;
@@ -28,6 +29,7 @@ class BasicButton extends React.Component<IProps> {
                     ...this.props.style
                 }}
                 onClick={this.props.onClick}
+                onMouseEnter={this.props.onHover}
                 data-tooltip-id={this.props.tooltipId}
                 data-tooltip-content={this.props.tooltipContent}
                 data-tooltip-float={this.props.tooltipFloat}
