@@ -20,6 +20,8 @@ export type PlayerData = {
     queue: TrackData[];
     history: TrackData[];
     current: Track | null;
+    started: number;
+    duration: number;
 
     addToQueue(track: TrackData, prepend?: boolean): void;
     addToHistory(track: TrackData, prepend?: boolean): void;
@@ -36,6 +38,8 @@ export const usePlayer = create<PlayerState & PlayerData>((set, get) => ({
     current: null,
     queue: [],
     history: [],
+    started: Date.now(),
+    duration: 0,
 
     addToQueue(track: TrackData, prepend = false) {
         const { queue } = get();
@@ -372,14 +376,15 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         // Create a new track.
         this.current = new Track(track, await this.alternate?.(track));
         // Play the track.
+        let duration = this.getDuration();
         if (this.syncWithBackend) {
             sendGatewayMessage({
                 type: "synchronize",
                 timestamp: Date.now(),
                 playingTrack: track
             } as Synchronize);
-        } else {
-            play && this.current.play();
+        } else if (play) {
+            duration = await this.current.playAsync();
         }
 
         // Emit the play event.
@@ -387,7 +392,7 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
         // Set the player state.
         usePlayer.setState({
-            paused: !play, progressTicks: 0
+            paused: !play, progressTicks: 0, duration
         });
 
         // Update the navigator metadata.
@@ -445,7 +450,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 track: null,
                 paused: true,
                 progress: 0,
-                progressTicks: 0
+                progressTicks: 0,
+                started: Date.now()
             });
         }
 
@@ -458,10 +464,10 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
     /**
      * Toggles the pause state of the player.
      */
-    public pause(): void {
+    public async pause(): Promise<void> {
         const state = usePlayer.getState();
         if (state.paused) {
-            !this.syncWithBackend && this.current?.play();
+            !this.syncWithBackend && await this.current?.playAsync();
             usePlayer.setState({ paused: false });
         } else {
             !this.syncWithBackend && this.current?.pause();
@@ -535,10 +541,14 @@ export class Track extends Howl implements mod.Track {
             } else {
                 playerUpdate(); // Update the gateway.
             }
+
+            // Update the player's state.
+            usePlayer.setState({ started: Date.now() });
+
+            TrackPlayer.emit("begin", this);
         });
 
         this.on("end", () => {
-            TrackPlayer.pause(); // Pause the player.
             TrackPlayer.emit("end", this); // Emit the end event.
             TrackPlayer.next(); // Play the next track.
         });
@@ -547,6 +557,16 @@ export class Track extends Howl implements mod.Track {
             this.stop(); // Stop the track.
             this.unload(); // Unload the track.
             TrackPlayer.removeAllListeners("destroy"); // Remove the listener.
+        });
+    }
+
+    /**
+     * Asynchronously plays the track.
+     */
+    public async playAsync(): Promise<number> {
+        return new Promise((resolve) => {
+            this.play();
+            this.on("play", () => resolve(this.duration()));
         });
     }
 

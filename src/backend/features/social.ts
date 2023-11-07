@@ -5,12 +5,32 @@ import { gateway, connect, listenAlongWith } from "@backend/social/gateway";
 
 import { targetRoute } from "@backend/social/user";
 
-import TrackPlayer from "@mod/player";
+import TrackPlayer, { usePlayer } from "@mod/player";
 
 import emitter from "@backend/events";
-import { useUser } from "@backend/stores";
+import { useSettings, useUser } from "@backend/stores";
 
 export let listeningWith: User | null = null; // The ID of the user you are currently listening with.
+
+/**
+ * Sets up listeners for the social features.
+ */
+export function setup(): void {
+    // Wait for the player to update.
+    usePlayer.subscribe(async (state, prevState) => {
+        // Check if the tracks are different.
+        if (state.paused != prevState.paused) {
+            // Update the presence.
+            await updatePresence();
+        }
+    });
+
+    // Wait for tracks to player.
+    TrackPlayer.on("begin", async () => {
+        // Update the presence.
+        await updatePresence();
+    });
+}
 
 /**
  * Checks if the user is listening with someone.
@@ -93,4 +113,31 @@ export async function getRecentUsers(): Promise<OfflineUser[]> {
     } catch {
         return [];
     }
+}
+
+/**
+ * Attempts to set the user's Discord rich presence.
+ * Only applies if the user is logged in and has Discord connected and presence enabled.
+ */
+export async function updatePresence(): Promise<void> {
+    const user = useUser.getState();
+    if (user == null || !user.connections?.discord) return;
+
+    const { system } = useSettings.getState();
+    if (system.presence == "None") return;
+
+    const player = usePlayer.getState();
+
+    // Request the gateway to update the presence.
+    const track = player.track;
+    await fetch(`${targetRoute}/social/presence`, {
+        method: "POST", headers: { Authorization: token() },
+        body: JSON.stringify({
+            track,
+            remove: track === null || player.paused,
+            broadcast: system.presence,
+            started: player.started,
+            shouldEnd: Math.round(player.started + (player.duration * 1e3))
+        })
+    });
 }

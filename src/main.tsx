@@ -6,6 +6,7 @@ import * as fs from "@backend/desktop/fs";
 
 import * as link from "@backend/desktop/link";
 import * as audio from "@backend/core/audio";
+import * as social from "@backend/features/social";
 import * as gateway from "@backend/social/gateway";
 import * as offline from "@backend/desktop/offline";
 
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
         .setup()
         .then(() => gateway.connect())
         .catch((err) => console.error(err));
+    social.setup();
 
     render(); // Render the application.
 })();
