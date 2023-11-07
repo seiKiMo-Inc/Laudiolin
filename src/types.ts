@@ -109,6 +109,14 @@ export type AudioSettings = {
 };
 export type UISettings = {
     color_theme: "Light" | "Dark";
+    show_search_engine: boolean;
+    show_elixir: boolean;
+    // #v-ifdef VITE_BUILD_ENV='desktop'
+    show_downloads: boolean;
+    // #v-endif
+    show_favorites: boolean;
+    show_recents: boolean;
+    show_home: boolean;
 };
 export type SystemSettings = {
     broadcast_listening: "Nobody" | "Friends" | "Everyone";

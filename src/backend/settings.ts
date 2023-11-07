@@ -19,7 +19,13 @@ export const defaultSettings: UserSettings = {
         stream_sync: true
     },
     ui: {
-        color_theme: "Dark"
+        color_theme: "Dark",
+        show_search_engine: true,
+        show_elixir: true,
+        show_downloads: true,
+        show_favorites: true,
+        show_recents: true,
+        show_home: false
     },
     system: {
         offline: false,
@@ -37,6 +43,12 @@ export const settingsKeys: { [key: string]: string } = {
     "audio.audio_quality": "Audio Quality",
     "audio.stream_sync": "Force Streaming When Listening Along",
     "ui.color_theme": "Color Theme",
+    "ui.show_search_engine": "Show Search Engine Dropdown",
+    "ui.show_elixir": "Show Elixir Tab",
+    "ui.show_downloads": "Show Downloads Tab",
+    "ui.show_favorites": "Show Favorites Tab",
+    "ui.show_recents": "Show Recents Tab",
+    "ui.show_home": "Show Home Tab",
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
     "system.presence": "Discord Rich Presence Style",
@@ -153,43 +165,6 @@ export function system(): SystemSettings {
 /*
  * Local storage utilities.
  */
-
-/**
- * Returns the value of the specified path in local storage.
- * @param path The path to get the value of. (ex. settings.search.accuracy)
- * @param fallback The fallback value to return if the path does not exist.
- */
-export function getFromPath(
-    path: string,
-    fallback: string | null = null
-): string | null {
-    // Get the correct object.
-    const parts = path.split(".");
-    const key = parts.pop() as string;
-    const obj = parts.reduce((a: any, b) => a[b], useSettings.getState());
-
-    // Get the value.
-    if (obj) return obj[key] ?? fallback;
-    else return fallback;
-}
-
-/**
- * Saves the specified value to the specified path in local storage.
- * @param path The path to save the value to. (ex. settings.search.accuracy)
- * @param value The value to save.
- */
-export function saveFromPath(path: string, value: any = ""): void {
-    // Get the correct object.
-    const parts = path.split(".");
-    const key = parts.pop() as string;
-    const obj = parts.reduce((a: any, b) => a[b], useSettings.getState());
-
-    // Set the value.
-    if (obj) {
-        obj[key] = value;
-        saveSettings(useSettings.getState() as UserSettings);
-    }
-}
 
 /**
  * Returns the value of the specified key in local storage.

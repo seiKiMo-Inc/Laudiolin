@@ -76,23 +76,27 @@ class SearchInput extends React.Component<IProps, never> {
                     onKeyUp={(event) => this.onKeyChange(event)}
                 />
 
-                <select
-                    className={"SearchInput_SearchType"}
-                    onChange={(event) => this.props.sStore.setSearchEngine(event.target.value as SearchEngine)}
-                    value={this.props.sStore.search.engine}
-                >
-                    <option value={"All"}>
-                        All
-                    </option>
+                {
+                    this.props.sStore.ui.show_search_engine && (
+                        <select
+                            className={"SearchInput_SearchType"}
+                            onChange={(event) => this.props.sStore.setSearchEngine(event.target.value as SearchEngine)}
+                            value={this.props.sStore.search.engine}
+                        >
+                            <option value={"All"}>
+                                All
+                            </option>
 
-                    <option value={"YouTube"}>
-                        YouTube
-                    </option>
+                            <option value={"YouTube"}>
+                                YouTube
+                            </option>
 
-                    <option value={"Spotify"}>
-                        Spotify
-                    </option>
-                </select>
+                            <option value={"Spotify"}>
+                                Spotify
+                            </option>
+                        </select>
+                    )
+                }
             </div>
         );
     }

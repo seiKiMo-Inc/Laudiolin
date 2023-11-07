@@ -66,7 +66,15 @@ export const useSettings = create<Settings>()(
                 stream_sync: true
             },
             ui: {
-                color_theme: "Dark"
+                color_theme: "Dark",
+                show_search_engine: true,
+                show_elixir: true,
+                // #v-ifdef VITE_BUILD_ENV='desktop'
+                show_downloads: true,
+                // #v-endif
+                show_favorites: true,
+                show_recents: true,
+                show_home: false
             },
             system: {
                 broadcast_listening: "Everyone",
@@ -102,7 +110,7 @@ export const useSettings = create<Settings>()(
             }
         }),
         {
-            version: 1,
+            version: 2,
             name: "user-settings",
             storage: createJSONStorage(() => localStorage)
         }

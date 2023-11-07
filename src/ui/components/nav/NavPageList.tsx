@@ -3,15 +3,16 @@ import { NavLink } from "react-router-dom";
 
 import { RxTimer } from "react-icons/rx";
 import { FaRobot } from "react-icons/fa";
-import { BiDownload, BiHeart, BiWrench } from "react-icons/bi";
+import { BiDownload, BiHeart, BiHomeAlt, BiWrench } from "react-icons/bi";
 
 import { contentRoutes } from "@app/constants";
-
-import { User } from "@app/types";
+import { User, UserSettings } from "@app/types";
+import WithStore, { useSettings } from "@backend/stores";
 
 import "@css/layout/NavPanel.scss";
 
 interface IProps {
+    pStore: UserSettings;
     user: User;
 }
 
@@ -29,9 +30,40 @@ class NavPageList extends React.Component<IProps, IState> {
     }
 
     render() {
+        const { ui } = this.props.pStore;
+
+        console.log(ui)
+
         return (
             <div className={"NavPanel_PageList"}>
-                <NavLink
+                {ui.show_home && <NavLink
+                    to={contentRoutes.HOME}
+                    className={"NavPanel_PageItem"}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
+                >
+                    {({ isActive }) => {
+                        return (
+                            <>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <BiHomeAlt
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
+                                    Home
+                                </p>
+                            </>
+                        );
+                    }}
+                </NavLink>}
+
+                {ui.show_recents && <NavLink
                     to={contentRoutes.RECENTS}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
@@ -56,9 +88,9 @@ class NavPageList extends React.Component<IProps, IState> {
                             </>
                         );
                     }}
-                </NavLink>
+                </NavLink>}
 
-                <NavLink
+                {ui.show_favorites && <NavLink
                     to={contentRoutes.FAVORITES}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
@@ -83,10 +115,10 @@ class NavPageList extends React.Component<IProps, IState> {
                             </>
                         );
                     }}
-                </NavLink>
+                </NavLink>}
 
 // #v-ifdef VITE_BUILD_ENV='desktop'
-                <NavLink
+                {ui.show_downloads && <NavLink
                     to={contentRoutes.DOWNLOADS}
                     className={"NavPanel_PageItem"}
                     style={({ isActive }) => ({
@@ -111,11 +143,11 @@ class NavPageList extends React.Component<IProps, IState> {
                             </>
                         );
                     }}
-                </NavLink>
+                </NavLink>}
 // #v-endif
 
                 {
-                    this.props.user?.connections?.discord && (
+                    this.props.user?.connections?.discord && ui.show_elixir && (
                         <NavLink
                             to={contentRoutes.ELIXIR}
                             className={"NavPanel_PageItem"}
@@ -176,4 +208,4 @@ class NavPageList extends React.Component<IProps, IState> {
     }
 }
 
-export default NavPageList;
+export default WithStore(NavPageList, useSettings);

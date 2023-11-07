@@ -118,7 +118,7 @@ function ToggleField({ props, placeholder }) {
         <Switch
             onChange={(state) => {
                 setEnabled(state);
-                props.set(state.toString());
+                props.set(state);
             }}
             checked={enabled}
             onColor={props.color}
@@ -230,6 +230,56 @@ class Settings extends React.Component<IProps, IState> {
                                 color: state == "Light" ? "#ED7D64" : "#3484FC"
                             });
                         }}
+                    />
+
+                    <Setting
+                        store={store}
+                        setting={"ui.show_search_engine"}
+                        type={"boolean"}
+                        description={"Controls whether the search engine dropdown in the search bar is shown."}
+                        color={this.state.color}
+                    />
+
+                    <Setting
+                        store={store}
+                        setting={"ui.show_elixir"}
+                        type={"boolean"}
+                        description={"Controls whether the Elixir tab is shown in the navigation sidebar."}
+                        color={this.state.color}
+                    />
+
+// #v-ifdef VITE_BUILD_ENV='desktop'
+                    <Setting
+                        store={store}
+                        setting={"ui.show_downloads"}
+                        type={"boolean"}
+                        description={"Controls whether the Downloads tab is shown in the navigation sidebar."}
+                        color={this.state.color}
+                    />
+// #v-endif
+
+                    <Setting
+                        store={store}
+                        setting={"ui.show_favorites"}
+                        type={"boolean"}
+                        description={"Controls whether the Favorites tab is shown in the navigation sidebar."}
+                        color={this.state.color}
+                    />
+
+                    <Setting
+                        store={store}
+                        setting={"ui.show_recents"}
+                        type={"boolean"}
+                        description={"Controls whether the Recents tab is shown in the navigation sidebar."}
+                        color={this.state.color}
+                    />
+
+                    <Setting
+                        store={store}
+                        setting={"ui.show_home"}
+                        type={"boolean"}
+                        description={"Controls whether the Home tab is shown in the navigation sidebar."}
+                        color={this.state.color}
                     />
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
