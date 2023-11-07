@@ -136,7 +136,7 @@ export async function updatePresence(): Promise<void> {
             track,
             remove: track === null || player.paused,
             broadcast: system.presence,
-            started: player.started,
+            started: Math.round(player.started + (TrackPlayer.getProgress() * 1e3)),
             shouldEnd: Math.round(player.started + (player.duration * 1e3))
         })
     });

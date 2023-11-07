@@ -374,7 +374,11 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
         }
 
         // Create a new track.
-        this.current = new Track(track, await this.alternate?.(track));
+        usePlayer.setState({
+            current: new Track(track, await this.alternate?.(track)),
+            track, progress: 0, duration: track?.duration ?? 0
+        });
+
         // Play the track.
         let duration = this.getDuration();
         if (this.syncWithBackend) {
