@@ -9,6 +9,7 @@ import type {
 import { connect } from "@backend/social/gateway";
 import { useSettings } from "@backend/stores";
 import { applyTheme } from "@app/utils";
+import { darkTheme } from "@app/constants";
 
 export const defaultSettings: UserSettings = {
     search: {
@@ -23,22 +24,8 @@ export const defaultSettings: UserSettings = {
     ui: {
         color_theme: "Dark",
         background_image: null,
-        theme: {
-            background: {
-                primary: "#1A1A1A",
-                secondary: "#262626"
-            },
-            icon: {
-                primary: "#ffffff",
-                secondary: "#999999"
-            },
-            text: {
-                primary: "#ffffff",
-                secondary: "#a6a6a6",
-                tertiary: "#999999"
-            },
-            accent: "#3484fc"
-        },
+        background_opacity: 100,
+        theme: darkTheme(),
         show_search_engine: true,
         show_elixir: true,
         show_downloads: true,
@@ -63,6 +50,7 @@ export const settingsKeys: { [key: string]: string } = {
     "audio.stream_sync": "Force Streaming When Listening Along",
     "ui.color_theme": "Color Theme",
     "ui.background_image": "Background Image",
+    "ui.background_opacity": "Opacity of Interface",
     "ui.theme.background.primary": "Primary Background Color",
     "ui.theme.background.secondary": "Secondary Background Color",
     "ui.theme.icon.primary": "Primary Icon Color",
@@ -84,12 +72,20 @@ export const settingsKeys: { [key: string]: string } = {
 };
 
 /**
+ * Applies the theme.
+ *
+ * @param settings The user settings.
+ */
+export function useTheme(settings: UserSettings): void {
+    applyTheme(settings.ui.theme, settings.ui.background_opacity);
+}
+
+/**
  * Listen for settings changes.
  */
 export function setup(): void {
-    useSettings.subscribe((settings) => {
-        applyTheme(settings.ui.theme, settings.ui.background_image ? 80 : 100);
-    });
+    useSettings.subscribe(useTheme);
+    useSettings.persist.onHydrate(reloadSettings);
 }
 
 /**
@@ -119,7 +115,11 @@ export function reloadSettings(from?: UserSettings | null): void {
  * @param theme The theme to set.
  */
 export function setTheme(theme: "Light" | "Dark" = null): void {
-    if (theme == null) theme = useSettings.getState()?.ui?.color_theme ?? "Light";
+    // Apply the basic dark/light themes.
+    if (theme == null)
+        theme = useSettings.getState()?.ui?.color_theme ?? "Light";
+    // Apply the user's custom theme.
+    useTheme(useSettings.getState());
 
     // Set the theme.
     document

@@ -323,6 +323,22 @@ export function opacityToHex(opacity: number): string {
 }
 
 /**
+ * Determines if the opacity should be used.
+ *
+ * @param hex The hex color.
+ * @param opacity The opacity.
+ */
+function toColor(hex: string, opacity: string): string {
+    if (opacity != "ff") {
+        return hex.length > 7 ?
+            hex.substring(0, 7) + opacity :
+            hex + opacity;
+    } else {
+        return hex.length > 7 ? hex : hex + opacity;
+    }
+}
+
+/**
  * Applies the selected theme.
  *
  * @param theme The theme to apply.
@@ -331,12 +347,12 @@ export function opacityToHex(opacity: number): string {
 export function applyTheme(theme: Theme, opacity: number = 100): void {
     const opacityHex = opacityToHex(opacity);
     const html = document.getElementById("root");
-    html.style.cssText = `--background-primary-color: ${theme.background.primary}${opacityHex};
-    --background-secondary-color: ${theme.background.secondary}${opacityHex};
-    --icon-primary-color: ${theme.icon.primary}${opacityHex};
-    --icon-secondary-color: ${theme.icon.secondary}${opacityHex};
-    --text-primary-color: ${theme.text.primary}${opacityHex};
-    --text-secondary-color: ${theme.text.secondary}${opacityHex};
-    --text-tertiary-color: ${theme.text.tertiary}${opacityHex};
-    --accent-color: ${theme.accent}${opacityHex};`
+    html.style.cssText = `--background-primary-color: ${toColor(theme.background.primary, opacityHex)};
+    --background-secondary-color: ${toColor(theme.background.secondary, opacityHex)};
+    --icon-primary-color: ${toColor(theme.icon.primary, "ff")};
+    --icon-secondary-color: ${toColor(theme.icon.secondary, "ff")};
+    --text-primary-color: ${toColor(theme.text.primary, "ff")};
+    --text-secondary-color: ${toColor(theme.text.secondary, "ff")};
+    --text-tertiary-color: ${toColor(theme.text.tertiary, "ff")};
+    --accent-color: ${toColor(theme.accent, opacityHex)};`
 }

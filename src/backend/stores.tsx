@@ -2,7 +2,7 @@ import { create, StoreApi, UseBoundStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 import { Guild, Playlist, SearchEngine, SearchResults, TrackData, User, UserSettings } from "@app/types";
-import { defaultSettings } from "@backend/settings";
+import { darkTheme, lightTheme } from "@app/constants";
 
 /**
  * Append an item to a store.
@@ -53,7 +53,7 @@ export type Settings = UserSettings & {
     setSearchEngine: (engine: SearchEngine) => void;
     setFromPath: (path: string, value: any) => void;
     getFromPath: (path: string, fallback: string | null) => any;
-    resetTheme: () => void;
+    resetTheme: (theme: string) => void;
 };
 export const useSettings = create<Settings>()(
     persist(
@@ -70,22 +70,8 @@ export const useSettings = create<Settings>()(
             ui: {
                 color_theme: "Dark",
                 background_image: null,
-                theme: {
-                    background: {
-                        primary: "#1A1A1A",
-                        secondary: "#262626"
-                    },
-                    icon: {
-                        primary: "#ffffff",
-                        secondary: "#999999"
-                    },
-                    text: {
-                        primary: "#ffffff",
-                        secondary: "#a6a6a6",
-                        tertiary: "#999999"
-                    },
-                    accent: "#3484fc"
-                },
+                background_opacity: 100,
+                theme: darkTheme(),
                 show_search_engine: true,
                 show_elixir: true,
                 // #v-ifdef VITE_BUILD_ENV='desktop'
@@ -127,10 +113,10 @@ export const useSettings = create<Settings>()(
                 if (obj) return obj[key] ?? fallback;
                 else return fallback;
             },
-            resetTheme: () => set({
+            resetTheme: (theme) => set({
                 ui: {
                     ...(get().ui),
-                    theme: defaultSettings.ui.theme
+                    theme: theme == "Dark" ? darkTheme() : lightTheme()
                 }
             })
         }),

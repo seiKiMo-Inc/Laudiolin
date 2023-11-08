@@ -127,6 +127,7 @@ export type AudioSettings = {
 export type UISettings = {
     color_theme: "Light" | "Dark";
     background_image: string | null;
+    background_opacity: number;
     theme: Theme;
     show_search_engine: boolean;
     show_elixir: boolean;
@@ -145,7 +146,7 @@ export type SystemSettings = {
     close: "Exit" | "Tray";
     // #v-endif
 };
-export type SettingType = "boolean" | "input" | "select" | "color";
+export type SettingType = "boolean" | "input" | "number" | "select" | "color";
 
 export type NotificationType = "info" | "progress";
 export type InAppNotificationData = {

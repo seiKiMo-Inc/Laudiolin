@@ -16,7 +16,7 @@ import { offlineSupport } from "@backend/desktop/offline";
 // #v-endif
 
 import Collapsible from "react-collapsible";
-import { HexColorInput, HexColorPicker } from "react-colorful";
+import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 import type { SettingType } from "@app/types";
 import WithStore, { Settings as SettingsStore, useSettings } from "@backend/stores";
@@ -61,6 +61,7 @@ function Setting(props: ISetting) {
 
             <div className={`Settings_Field_${props.type}`}>
                 {props.type == "input" && <InputField props={properties} placeholder={placeholder} />}
+                {props.type == "number" && <InputField props={properties} placeholder={placeholder} numbers />}
                 {props.type == "select" && <SelectField props={properties} placeholder={placeholder} />}
                 {props.type == "boolean" && <ToggleField props={properties} placeholder={placeholder} />}
                 {props.type == "color" && <ColorField props={properties} placeholder={placeholder} />}
@@ -69,11 +70,11 @@ function Setting(props: ISetting) {
     );
 }
 
-function InputField({ props, placeholder }) {
+function InputField({ props, placeholder, numbers = false }) {
     return (
         <input
             className={"Setting_Box Setting_Input"}
-            type={"text"}
+            type={numbers ? "number" : "text"}
             placeholder={placeholder}
             onChange={(event) => props.set(event.target.value)}
         />
@@ -165,6 +166,7 @@ function ColorField({ props, placeholder }: IColorProps) {
                 className={"Settings_Color_Input"}
                 color={placeholder}
                 onChange={props.set}
+                prefixed alpha
                 onMouseDown={() => setShowPicker(true)}
                 onBlur={() => {
                     if (!inPicker) setShowPicker(false);
@@ -172,7 +174,7 @@ function ColorField({ props, placeholder }: IColorProps) {
             />
 
             {showPicker && (
-                <HexColorPicker
+                <HexAlphaColorPicker
                     className={"Settings_Color_Picker"}
                     color={placeholder}
                     onChange={props.set}
@@ -196,6 +198,8 @@ function Category({ name, children }: ICategoryProps) {
     return (
         <Collapsible
             trigger={name}
+            triggerClassName={"Settings_Category_Trigger"}
+            triggerOpenedClassName={"Settings_Category_Trigger"}
             className={"Settings_Category"}
             openedClassName={"Settings_Category"}
             contentInnerClassName={"Settings_Category_Content"}
@@ -279,15 +283,42 @@ class Settings extends React.Component<IProps, IState> {
                         store={store}
                         setting={"ui.color_theme"}
                         type={"select"}
-                        description={"The color palette to use."}
+                        description={"The color palette to use. This will change your custom palette."}
                         options={["Dark", "Light"]}
                         update={(state) => {
+                            store.resetTheme(state);
                             settings.setTheme(state);
                             this.setState({
                                 color: state == "Light" ? "#ED7D64" : "#3484FC"
                             });
                         }}
                     />
+
+                    <Category name={"Wallpaper"}>
+                        <Setting
+                            store={store}
+                            setting={"ui.background_image"}
+                            type={"input"}
+                            description={"The URL to an image to use as the background."}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.background_opacity"}
+                            type={"number"}
+                            description={"The opacity of the background image."}
+                            update={(state) => {
+                                if (typeof state != "number") {
+                                    state = parseInt(state);
+                                }
+
+                                if (state > 100) state = 100;
+                                if (state < 0) state = 0;
+
+                                store.setFromPath("ui.background_opacity", Math.round(state));
+                            }}
+                        />
+                    </Category>
 
                     <Category name={"Color Palette"}>
                         <DisplayField text={"Reset to Defaults"}
@@ -297,8 +328,8 @@ class Settings extends React.Component<IProps, IState> {
                                 text={"Reset"}
                                 className={"Setting_Box Setting_Button"}
                                 onClick={() => {
-                                    this.props.pStore.resetTheme();
-                                    location.reload();
+                                    this.props.pStore.resetTheme(store.ui.color_theme);
+                                    setTimeout(() => location.reload(), 1e3);
                                 }}
                             />
                         </DisplayField>

@@ -19,12 +19,12 @@ import { loadState } from "@backend/desktop/offline";
 import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
 import { login, loaders } from "@backend/social/user";
-import { get } from "@backend/settings";
+import { get, useTheme } from "@backend/settings";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import type { User } from "@app/types";
+import type { User, UserSettings } from "@app/types";
 
-import WithStore, { useUser } from "@backend/stores";
+import WithStore, { useSettings, useUser } from "@backend/stores";
 
 import "@css/App.scss";
 import "@css/Text.scss";
@@ -32,6 +32,7 @@ import "react-tooltip/dist/react-tooltip.css";
 
 interface IProps {
     pStore: User;
+    sStore: UserSettings;
 }
 
 interface IState {
@@ -170,6 +171,9 @@ class App extends React.Component<IProps, IState> {
         // Load the player's last known state.
         loadPlayerState().catch((err) => console.warn(err));
 
+        // Apply the theme from settings.
+        useTheme(useSettings.getState());
+
         // Fade launch screen.
         if (get("authenticated") !== "discord") this.fadeLaunchScreen();
     }
@@ -182,7 +186,11 @@ class App extends React.Component<IProps, IState> {
 
     render() {
         return !this.state.miniPlayer ? (
-            <main onContextMenu={(e) => e.preventDefault()}>
+            <div
+                className={"App"}
+                onContextMenu={(e) => e.preventDefault()}
+                style={{ backgroundImage: `url(${this.props.sStore.ui.background_image})` }}
+            >
 // #v-ifdef VITE_BUILD_ENV='desktop'
                 <TopButtons />
 // #v-endif
@@ -198,8 +206,8 @@ class App extends React.Component<IProps, IState> {
                 </div>
 
                 <Alert />
-            </main>
+            </div>
         ) : <MiniPlayer />;
     }
 }
-export default WithStore(App, useUser);
+export default WithStore(App, useUser, useSettings);

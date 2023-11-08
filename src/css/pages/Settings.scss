@@ -63,6 +63,12 @@
     background-color: var(--background-primary-color);
 }
 
+.Collapsible .Setting_Input {
+    border: none;
+    color: var(--text-primary-color);
+    background-color: var(--background-secondary-color);
+}
+
 .Setting_Button {
     justify-content: center;
     background-color: var(--accent-color) !important;
@@ -96,12 +102,20 @@
     gap: 20px;
 }
 
+.Settings_Category_Trigger {
+    display: flex;
+    width: 100%;
+}
+
 .Settings_Color_Input {
     padding: 2px 5px 2px 5px;
     color: var(--text-primary-color);
     background-color: var(--background-secondary-color);
 
     border: none;
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
 
     &:active {
         border: none;
