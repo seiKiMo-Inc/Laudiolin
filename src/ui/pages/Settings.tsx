@@ -15,6 +15,9 @@ import { invoke } from "@tauri-apps/api";
 import { offlineSupport } from "@backend/desktop/offline";
 // #v-endif
 
+import Collapsible from "react-collapsible";
+import { HexColorInput, HexColorPicker } from "react-colorful";
+
 import type { SettingType } from "@app/types";
 import WithStore, { Settings as SettingsStore, useSettings } from "@backend/stores";
 
@@ -35,9 +38,7 @@ interface ISetting {
 }
 
 function Setting(props: ISetting) {
-    const [placeholder, setPlaceholder] = React.useState(
-        props.exact ?? props.store.getFromPath(props.setting, "")
-    );
+   const placeholder = props.exact ?? props.store.getFromPath(props.setting, "");
 
     const properties = {
         ...props,
@@ -58,11 +59,11 @@ function Setting(props: ISetting) {
                         .map((desc, index) => <p key={index}>{desc}</p>)}
             </div>
 
-            <div>
+            <div className={`Settings_Field_${props.type}`}>
                 {props.type == "input" && <InputField props={properties} placeholder={placeholder} />}
-                {props.type == "select" && <SelectField props={properties}
-                                                        placeholder={placeholder} setValue={setPlaceholder} />}
+                {props.type == "select" && <SelectField props={properties} placeholder={placeholder} />}
                 {props.type == "boolean" && <ToggleField props={properties} placeholder={placeholder} />}
+                {props.type == "color" && <ColorField props={properties} placeholder={placeholder} />}
             </div>
         </div>
     );
@@ -79,10 +80,9 @@ function InputField({ props, placeholder }) {
     );
 }
 
-function SelectField({ props, placeholder, setValue }) {
+function SelectField({ props, placeholder }) {
     const update = (index: number) => {
         toggleDropdown(props.setting);
-        setValue(props.options[index]);
         props.set(props.options[index]);
     };
 
@@ -150,6 +150,61 @@ function DisplayField(props: IDisplayProps) {
     );
 }
 
+interface IColorProps {
+    props: ISetting & { set: (value: any) => void; };
+    placeholder: string;
+}
+
+function ColorField({ props, placeholder }: IColorProps) {
+    const [inPicker, setInPicker] = React.useState(false);
+    const [showPicker, setShowPicker] = React.useState(false);
+
+    return (
+        <>
+            <HexColorInput
+                className={"Settings_Color_Input"}
+                color={placeholder}
+                onChange={props.set}
+                onMouseDown={() => setShowPicker(true)}
+                onBlur={() => {
+                    if (!inPicker) setShowPicker(false);
+                }}
+            />
+
+            {showPicker && (
+                <HexColorPicker
+                    className={"Settings_Color_Picker"}
+                    color={placeholder}
+                    onChange={props.set}
+                    onMouseEnter={() => setInPicker(true)}
+                    onMouseLeave={() => {
+                        setInPicker(false);
+                        setShowPicker(false);
+                    }}
+                />
+            )}
+        </>
+    );
+}
+
+interface ICategoryProps {
+    name: string;
+    children: React.ReactNode[];
+}
+
+function Category({ name, children }: ICategoryProps) {
+    return (
+        <Collapsible
+            trigger={name}
+            className={"Settings_Category"}
+            openedClassName={"Settings_Category"}
+            contentInnerClassName={"Settings_Category_Content"}
+        >
+            {children}
+        </Collapsible>
+    );
+}
+
 interface IProps {
     pStore: SettingsStore;
 }
@@ -197,6 +252,7 @@ class Settings extends React.Component<IProps, IState> {
                         update={() => this.forceUpdate()}
                         options={["Download", "Stream"]}
                     />
+
                     {settings.audio().playback_mode == "Stream" && (
                         <Setting
                             store={store}
@@ -206,6 +262,7 @@ class Settings extends React.Component<IProps, IState> {
                             options={["Low", "Medium", "High"]}
                         />
                     )}
+
                     <Setting
                         store={store}
                         setting={"audio.stream_sync"}
@@ -232,55 +289,128 @@ class Settings extends React.Component<IProps, IState> {
                         }}
                     />
 
-                    <Setting
-                        store={store}
-                        setting={"ui.show_search_engine"}
-                        type={"boolean"}
-                        description={"Controls whether the search engine dropdown in the search bar is shown."}
-                        color={this.state.color}
-                    />
+                    <Category name={"Color Palette"}>
+                        <DisplayField text={"Reset to Defaults"}
+                                      description={"This will RELOAD the interface."}
+                        >
+                            <BasicButton
+                                text={"Reset"}
+                                className={"Setting_Box Setting_Button"}
+                                onClick={() => {
+                                    this.props.pStore.resetTheme();
+                                    location.reload();
+                                }}
+                            />
+                        </DisplayField>
 
-                    <Setting
-                        store={store}
-                        setting={"ui.show_elixir"}
-                        type={"boolean"}
-                        description={"Controls whether the Elixir tab is shown in the navigation sidebar."}
-                        color={this.state.color}
-                    />
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.background.primary"}
+                            exact={store.ui.theme.background.primary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.background.secondary"}
+                            exact={store.ui.theme.background.secondary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.icon.primary"}
+                            exact={store.ui.theme.icon.primary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.icon.secondary"}
+                            exact={store.ui.theme.icon.secondary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.text.primary"}
+                            exact={store.ui.theme.text.primary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.text.secondary"}
+                            exact={store.ui.theme.text.secondary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.text.tertiary"}
+                            exact={store.ui.theme.text.tertiary}
+                            type={"color"}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.theme.accent"}
+                            exact={store.ui.theme.accent}
+                            type={"color"}
+                        />
+                    </Category>
+
+                    <Category name={"UI Elements"}>
+                        <Setting
+                            store={store}
+                            setting={"ui.show_search_engine"}
+                            type={"boolean"}
+                            description={"Controls whether the search engine dropdown in the search bar is shown."}
+                            color={this.state.color}
+                        />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.show_elixir"}
+                            type={"boolean"}
+                            description={"Controls whether the Elixir tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
 
 // #v-ifdef VITE_BUILD_ENV='desktop'
-                    <Setting
-                        store={store}
-                        setting={"ui.show_downloads"}
-                        type={"boolean"}
-                        description={"Controls whether the Downloads tab is shown in the navigation sidebar."}
-                        color={this.state.color}
-                    />
+                        <Setting
+                            store={store}
+                            setting={"ui.show_downloads"}
+                            type={"boolean"}
+                            description={"Controls whether the Downloads tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
 // #v-endif
 
-                    <Setting
-                        store={store}
-                        setting={"ui.show_favorites"}
-                        type={"boolean"}
-                        description={"Controls whether the Favorites tab is shown in the navigation sidebar."}
-                        color={this.state.color}
-                    />
+                        <Setting
+                            store={store}
+                            setting={"ui.show_favorites"}
+                            type={"boolean"}
+                            description={"Controls whether the Favorites tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
 
-                    <Setting
-                        store={store}
-                        setting={"ui.show_recents"}
-                        type={"boolean"}
-                        description={"Controls whether the Recents tab is shown in the navigation sidebar."}
-                        color={this.state.color}
-                    />
+                        <Setting
+                            store={store}
+                            setting={"ui.show_recents"}
+                            type={"boolean"}
+                            description={"Controls whether the Recents tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
 
-                    <Setting
-                        store={store}
-                        setting={"ui.show_home"}
-                        type={"boolean"}
-                        description={"Controls whether the Home tab is shown in the navigation sidebar."}
-                        color={this.state.color}
-                    />
+                        <Setting
+                            store={store}
+                            setting={"ui.show_home"}
+                            type={"boolean"}
+                            description={"Controls whether the Home tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
+                    </Category>
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>
 

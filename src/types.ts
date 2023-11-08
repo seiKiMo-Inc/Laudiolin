@@ -91,6 +91,23 @@ export type Synchronize = BaseGatewayMessage & {
     shuffle: boolean | null | undefined;
 };
 
+export type Theme = {
+    background: {
+        primary: string;
+        secondary: string;
+    };
+    icon: {
+        primary: string;
+        secondary: string;
+    };
+    text: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+    };
+    accent: string;
+};
+
 export type UserSettings = {
     search: SearchSettings;
     audio: AudioSettings;
@@ -109,6 +126,8 @@ export type AudioSettings = {
 };
 export type UISettings = {
     color_theme: "Light" | "Dark";
+    background_image: string | null;
+    theme: Theme;
     show_search_engine: boolean;
     show_elixir: boolean;
     // #v-ifdef VITE_BUILD_ENV='desktop'

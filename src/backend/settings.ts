@@ -8,6 +8,8 @@ import type {
 
 import { connect } from "@backend/social/gateway";
 import { useSettings } from "@backend/stores";
+import { applyTheme } from "@app/utils";
+
 export const defaultSettings: UserSettings = {
     search: {
         accuracy: true,
@@ -20,6 +22,23 @@ export const defaultSettings: UserSettings = {
     },
     ui: {
         color_theme: "Dark",
+        background_image: null,
+        theme: {
+            background: {
+                primary: "#1A1A1A",
+                secondary: "#262626"
+            },
+            icon: {
+                primary: "#ffffff",
+                secondary: "#999999"
+            },
+            text: {
+                primary: "#ffffff",
+                secondary: "#a6a6a6",
+                tertiary: "#999999"
+            },
+            accent: "#3484fc"
+        },
         show_search_engine: true,
         show_elixir: true,
         show_downloads: true,
@@ -43,6 +62,15 @@ export const settingsKeys: { [key: string]: string } = {
     "audio.audio_quality": "Audio Quality",
     "audio.stream_sync": "Force Streaming When Listening Along",
     "ui.color_theme": "Color Theme",
+    "ui.background_image": "Background Image",
+    "ui.theme.background.primary": "Primary Background Color",
+    "ui.theme.background.secondary": "Secondary Background Color",
+    "ui.theme.icon.primary": "Primary Icon Color",
+    "ui.theme.icon.secondary": "Secondary Icon Color",
+    "ui.theme.text.primary": "Primary Text Color",
+    "ui.theme.text.secondary": "Secondary Text Color",
+    "ui.theme.text.tertiary": "Tertiary Text Color",
+    "ui.theme.accent": "Accent Color",
     "ui.show_search_engine": "Show Search Engine Dropdown",
     "ui.show_elixir": "Show Elixir Tab",
     "ui.show_downloads": "Show Downloads Tab",
@@ -54,6 +82,15 @@ export const settingsKeys: { [key: string]: string } = {
     "system.presence": "Discord Rich Presence Style",
     "system.close": "Close Mode"
 };
+
+/**
+ * Listen for settings changes.
+ */
+export function setup(): void {
+    useSettings.subscribe((settings) => {
+        applyTheme(settings.ui.theme, settings.ui.background_image ? 80 : 100);
+    });
+}
 
 /**
  * Loads settings from the settings file.

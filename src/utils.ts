@@ -1,4 +1,4 @@
-import type { TrackData } from "@app/types";
+import type { Theme, TrackData } from "@app/types";
 
 import { Gateway } from "@app/constants";
 import { playTrack, toggleRepeatState } from "@backend/core/audio";
@@ -9,7 +9,7 @@ import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { asArray, useFavorites } from "@backend/stores";
+import { asArray, useFavorites, useSettings } from "@backend/stores";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -311,4 +311,32 @@ export function base64Decode(string: string): ArrayBuffer {
  */
 export function limitTo<T>(array: T[], limit: number): T[] {
     return array.slice(0, limit);
+}
+
+/**
+ * Converts a percentage 0-100% to a hex number 00-FF.
+ *
+ * @param opacity The opacity to convert.
+ */
+export function opacityToHex(opacity: number): string {
+    return Math.round(opacity / 100 * 255).toString(16).padStart(2, "0");
+}
+
+/**
+ * Applies the selected theme.
+ *
+ * @param theme The theme to apply.
+ * @param opacity The opacity of the theme.
+ */
+export function applyTheme(theme: Theme, opacity: number = 100): void {
+    const opacityHex = opacityToHex(opacity);
+    const html = document.getElementById("root");
+    html.style.cssText = `--background-primary-color: ${theme.background.primary}${opacityHex};
+    --background-secondary-color: ${theme.background.secondary}${opacityHex};
+    --icon-primary-color: ${theme.icon.primary}${opacityHex};
+    --icon-secondary-color: ${theme.icon.secondary}${opacityHex};
+    --text-primary-color: ${theme.text.primary}${opacityHex};
+    --text-secondary-color: ${theme.text.secondary}${opacityHex};
+    --text-tertiary-color: ${theme.text.tertiary}${opacityHex};
+    --accent-color: ${theme.accent}${opacityHex};`
 }

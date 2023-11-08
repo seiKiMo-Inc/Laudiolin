@@ -6,6 +6,7 @@ import * as fs from "@backend/desktop/fs";
 
 import * as link from "@backend/desktop/link";
 import * as audio from "@backend/core/audio";
+import * as settings from "@backend/settings";
 import * as social from "@backend/features/social";
 import * as gateway from "@backend/social/gateway";
 import * as offline from "@backend/desktop/offline";
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
 
 (async () => {
     // Run initial setup.
+    settings.setup();
     // #v-ifdef VITE_BUILD_ENV='desktop'
     fs.setup()
         .then(() => {
