@@ -77,7 +77,8 @@ export const settingsKeys: { [key: string]: string } = {
  * @param settings The user settings.
  */
 export function useTheme(settings: UserSettings): void {
-    applyTheme(settings.ui.theme, settings.ui.background_opacity);
+    applyTheme(settings.ui.theme, settings.ui.background_image ?
+        settings.ui.background_opacity : 100);
 }
 
 /**

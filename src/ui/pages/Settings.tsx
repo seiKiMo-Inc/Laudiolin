@@ -306,7 +306,7 @@ class Settings extends React.Component<IProps, IState> {
                             store={store}
                             setting={"ui.background_opacity"}
                             type={"number"}
-                            description={"The opacity of the background image."}
+                            description={"The opacity of the background colors when an image is applied."}
                             update={(state) => {
                                 if (typeof state != "number") {
                                     state = parseInt(state);
