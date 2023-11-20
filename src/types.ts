@@ -138,6 +138,7 @@ export type UISettings = {
     show_favorites: boolean;
     show_recents: boolean;
     show_home: boolean;
+    show_queue: boolean;
 };
 export type SystemSettings = {
     broadcast_listening: "Nobody" | "Friends" | "Everyone";

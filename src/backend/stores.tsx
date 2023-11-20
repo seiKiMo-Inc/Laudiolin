@@ -80,7 +80,8 @@ export const useSettings = create<Settings>()(
                 // #v-endif
                 show_favorites: true,
                 show_recents: true,
-                show_home: false
+                show_home: false,
+                show_queue: false,
             },
             system: {
                 broadcast_listening: "Everyone",
@@ -122,7 +123,7 @@ export const useSettings = create<Settings>()(
             })
         }),
         {
-            version: 5,
+            version: 6,
             name: "user-settings",
             storage: createJSONStorage(() => localStorage)
         }

@@ -32,7 +32,8 @@ export const defaultSettings: UserSettings = {
         show_downloads: true,
         show_favorites: true,
         show_recents: true,
-        show_home: false
+        show_home: false,
+        show_queue: false,
     },
     system: {
         offline: false,
@@ -67,6 +68,7 @@ export const settingsKeys: { [key: string]: string } = {
     "ui.show_favorites": "Show Favorites Tab",
     "ui.show_recents": "Show Recents Tab",
     "ui.show_home": "Show Home Tab",
+    "ui.show_queue": "Show Queue Tab",
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
     "system.presence": "Discord Rich Presence Style",

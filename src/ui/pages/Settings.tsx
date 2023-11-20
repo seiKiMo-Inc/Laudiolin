@@ -501,6 +501,14 @@ class Settings extends React.Component<IProps, IState> {
                             description={"Controls whether the Home tab is shown in the navigation sidebar."}
                             color={this.state.color}
                         />
+
+                        <Setting
+                            store={store}
+                            setting={"ui.show_queue"}
+                            type={"boolean"}
+                            description={"Controls whether the Queue tab is shown in the navigation sidebar."}
+                            color={this.state.color}
+                        />
                     </Category>
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>System</h2>

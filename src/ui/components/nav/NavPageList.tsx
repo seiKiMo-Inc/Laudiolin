@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { RxTimer } from "react-icons/rx";
 import { FaRobot } from "react-icons/fa";
+import { ImStack } from "react-icons/im";
 import { BiDownload, BiHeart, BiHomeAlt, BiWrench } from "react-icons/bi";
 
 import { contentRoutes } from "@app/constants";
@@ -55,6 +56,33 @@ class NavPageList extends React.Component<IProps, IState> {
                                 />
                                 <p style={{ color: isActive && "var(--text-primary-color)" }}>
                                     Home
+                                </p>
+                            </>
+                        );
+                    }}
+                </NavLink>}
+
+                {ui.show_queue && <NavLink
+                    to={contentRoutes.QUEUE}
+                    className={"NavPanel_PageItem"}
+                    style={({ isActive }) => ({
+                        color: isActive && "var(--text-primary-color)"
+                    })}
+                >
+                    {({ isActive }) => {
+                        return (
+                            <>
+                                {isActive && (
+                                    <div
+                                        className={"NavPanel_PageItem_Active"}
+                                    />
+                                )}
+                                <ImStack
+                                    style={{ color: isActive && "var(--text-primary-color)" }}
+                                    className={"NavPanel_PageItem_Icon"}
+                                />
+                                <p style={{ color: isActive && "var(--text-primary-color)" }}>
+                                    Queue
                                 </p>
                             </>
                         );
