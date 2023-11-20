@@ -122,7 +122,7 @@ export const useSettings = create<Settings>()(
             })
         }),
         {
-            version: 4,
+            version: 5,
             name: "user-settings",
             storage: createJSONStorage(() => localStorage)
         }

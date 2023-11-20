@@ -79,6 +79,26 @@
     margin-top: 10px;
 }
 
+.Settings_Field_slider {
+    display: flex;
+    align-self: center;
+}
+
+.Setting_Slider_Container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    background-color: var(--background-primary-color);
+}
+
+.Setting_Slider {
+    width: 100px;
+}
+
 .Settings_Category {
     background-color: var(--background-primary-color);
     padding: 5px 10px 5px 10px;

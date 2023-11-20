@@ -147,7 +147,7 @@ export type SystemSettings = {
     close: "Exit" | "Tray";
     // #v-endif
 };
-export type SettingType = "boolean" | "input" | "number" | "select" | "color";
+export type SettingType = "boolean" | "input" | "number" | "select" | "color" | "slider";
 
 export type NotificationType = "info" | "progress";
 export type InAppNotificationData = {

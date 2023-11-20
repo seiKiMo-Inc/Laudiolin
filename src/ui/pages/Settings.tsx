@@ -1,6 +1,11 @@
 import React from "react";
 
 import Switch from "react-switch";
+import ReactSlider from "rc-slider/es";
+import { Tooltip } from "react-tooltip";
+import Collapsible from "react-collapsible";
+import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
+
 import { BiChevronDown } from "react-icons/bi";
 
 import BasicDropdown, { toggleDropdown } from "@components/common/BasicDropdown";
@@ -14,14 +19,12 @@ import { connect } from "@backend/social/gateway";
 import { invoke } from "@tauri-apps/api";
 import { offlineSupport } from "@backend/desktop/offline";
 // #v-endif
-
-import Collapsible from "react-collapsible";
-import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
-
 import type { SettingType } from "@app/types";
 import WithStore, { Settings as SettingsStore, useSettings } from "@backend/stores";
 
 import "@css/pages/Settings.scss";
+
+type SettingProperties = ISetting & { set: (value: any) => void; };
 
 interface ISetting {
     store: SettingsStore;
@@ -65,6 +68,7 @@ function Setting(props: ISetting) {
                 {props.type == "select" && <SelectField props={properties} placeholder={placeholder} />}
                 {props.type == "boolean" && <ToggleField props={properties} placeholder={placeholder} />}
                 {props.type == "color" && <ColorField props={properties} placeholder={placeholder} />}
+                {props.type == "slider" && <SliderField props={properties} placeholder={placeholder} />}
             </div>
         </div>
     );
@@ -152,7 +156,7 @@ function DisplayField(props: IDisplayProps) {
 }
 
 interface IColorProps {
-    props: ISetting & { set: (value: any) => void; };
+    props: SettingProperties;
     placeholder: string;
 }
 
@@ -186,6 +190,55 @@ function ColorField({ props, placeholder }: IColorProps) {
                 />
             )}
         </>
+    );
+}
+
+interface ISliderProps {
+    props: SettingProperties;
+    placeholder: string | number;
+}
+
+function SliderField({ props, placeholder }: ISliderProps) {
+    // Parse the placeholder into a number.
+    const value = (typeof placeholder == "string" ?
+        parseInt(placeholder) : placeholder) * 100;
+    const tooltipId = `${props.setting}_tooltip`;
+
+    const [activeThumb, setActiveThumb] = React.useState(false);
+
+    return (
+        <div
+            className={"Setting_Slider_Container"}
+            onMouseEnter={() => setActiveThumb(true)}
+            onMouseLeave={() => setActiveThumb(false)}
+            data-tooltip-content={`${Math.trunc(Math.round(value))}%`}
+            data-tooltip-float={true}
+            data-tooltip-id={tooltipId}
+        >
+            <ReactSlider
+                className={"Setting_Slider"}
+                min={0}
+                max={100}
+                value={value}
+                onChange={(newValue: number) => {
+                    props.set(newValue / 100);
+                }}
+                trackStyle={{
+                    backgroundColor: "var(--accent-color)"
+                }}
+                handleStyle={{
+                    display: activeThumb ? "block" : "none",
+                    borderColor: "var(--accent-color)",
+                    backgroundColor: "white"
+                }}
+                railStyle={{
+                    backgroundColor: "var(--background-secondary-color)"
+                }}
+                draggableTrack={true}
+            />
+
+            <Tooltip id={tooltipId} />
+        </div>
     );
 }
 
@@ -275,6 +328,13 @@ class Settings extends React.Component<IProps, IState> {
                             "If enabled, audio will be always be streamed when listening along."
                         }
                         color={this.state.color}
+                    />
+
+                    <Setting
+                        store={store}
+                        setting={"audio.master_volume"}
+                        type={"slider"}
+                        description={"The base volume of the audio."}
                     />
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Interface</h2>
