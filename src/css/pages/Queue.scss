@@ -1,0 +1,18 @@
+.Queue_Clear {
+    @apply flex flex-row gap-2 items-center justify-center;
+
+    height: 28px;
+    font-size: 16px;
+
+    margin: 0;
+    padding: 5px;
+    border-radius: 5px;
+
+    border: transparent;
+    color: var(--text-primary-color);
+    background-color: var(--accent-color);
+
+    &:hover {
+        cursor: pointer;
+    }
+}

@@ -6,6 +6,8 @@ import Track from "@widget/Track";
 import type { TrackData } from "@app/types";
 import emitter from "@backend/events";
 
+import "@css/components/TrackList.scss";
+
 interface IProps {
     title: string;
     events: string[];
@@ -14,6 +16,8 @@ interface IProps {
     emitter?: EventEmitter;
     queue?: boolean;
     padding?: number;
+
+    children?: React.ReactNode | React.ReactNode[];
 }
 
 class TrackList extends React.Component<IProps, never> {
@@ -43,7 +47,10 @@ class TrackList extends React.Component<IProps, never> {
     render() {
         return (
             <div style={{ padding: this.props.padding ?? 20 }}>
-                <h2>{this.props.title}</h2>
+                <div className={"TrackList_Header"}>
+                    <h2>{this.props.title}</h2>
+                    {this.props.children}
+                </div>
 
                 <div style={{ marginTop: 35 }}>
                     {this.props.collection().map((recent, index) => (

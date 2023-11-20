@@ -5,6 +5,9 @@ import TrackList from "@components/TrackList";
 
 import TrackPlayer from "@mod/player";
 
+import "@css/pages/Queue.scss";
+import { FaRegTrashAlt } from "react-icons/fa";
+
 class Queue extends React.Component {
     constructor(props: any) {
         super(props);
@@ -26,7 +29,18 @@ class Queue extends React.Component {
                     collection={() => TrackPlayer.getQueue()}
                     emitter={TrackPlayer}
                     queue={true}
-                />
+                >
+                    <button
+                        className={"Queue_Clear"}
+                        onClick={() => {
+                            TrackPlayer.getQueue().length = 0;
+                            this.forceUpdate(); // Reload the page.
+                        }}
+                    >
+                        <FaRegTrashAlt />
+                        Clear
+                    </button>
+                </TrackList>
             </AnimatedView>
         ) : (
             <AnimatedView className={"empty"}>
