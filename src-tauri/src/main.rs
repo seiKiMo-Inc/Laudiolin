@@ -3,6 +3,8 @@
     windows_subsystem = "windows"
 )]
 
+mod proxy;
+
 use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle, Window, WindowBuilder, WindowUrl};
 use tauri::{SystemTray, SystemTrayMenu, SystemTrayEvent};
 use window_shadows::set_shadow;
@@ -56,6 +58,9 @@ fn main() {
             // Set the window shadow.
             let window = window_builder.build().unwrap();
             wrap(set_shadow(&window, true), "shadow");
+
+            // Start the image proxy.
+            proxy::start_proxy();
 
             Ok(())
         })

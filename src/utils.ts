@@ -9,7 +9,7 @@ import TrackPlayer from "@mod/player";
 import emitter from "@backend/events";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
-import { asArray, useFavorites, useSettings } from "@backend/stores";
+import { asArray, useFavorites } from "@backend/stores";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -21,7 +21,14 @@ export function getIconUrl(track: TrackData): string {
     if (icon.includes("app.magix.lol"))
         icon = icon.replace("app.magix.lol", "app.seikimo.moe");
     // Check if the icon is already a proxy.
-    if (icon.includes("/proxy/")) return icon;
+    if (icon.includes("/proxy/")) {
+        // #v-ifdef VITE_BUILD_ENV='desktop'
+        icon = icon.replace(
+            "https://app.seikimo.moe/proxy",
+            "http://localhost:8000");
+        // #v-endif
+        return icon;
+    }
     // Check if the icon is a local image.
     if (icon.includes("asset.localhost"))
         return fs.toAsset(fs.getIconPath(track));
@@ -29,6 +36,10 @@ export function getIconUrl(track: TrackData): string {
     if (icon == "") return fs.toAsset(fs.getIconPath(track));
 
     let url = `${Gateway.getUrl()}/proxy/{ico}?from={src}`;
+    // #v-ifdef VITE_BUILD_ENV='desktop'
+    url = `http://localhost:8000/{ico}?from={src}`;
+    // #v-endif
+
     // Match the icon URL to the correct proxy URL.
     const iconUrl = track.icon;
     let split = iconUrl.split("/");
