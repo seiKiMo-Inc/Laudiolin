@@ -23,6 +23,7 @@ import { setVolume, toggleRepeatState } from "@backend/core/audio";
 import TrackPlayer, { PlayerState, usePlayer } from "@mod/player";
 
 import "@css/components/MiniPlayer.scss";
+import { TiPin } from "react-icons/ti";
 
 interface IProps {
     pStore: PlayerState;
@@ -34,6 +35,7 @@ interface IState {
     activeThumb: boolean;
 
     onTop: boolean;
+    holdingAlt: boolean;
 }
 
 class MiniPlayer extends React.Component<IProps, IState> {
@@ -53,6 +55,16 @@ class MiniPlayer extends React.Component<IProps, IState> {
     hotKeys = (e: KeyboardEvent) => {
         if (!this.props.pStore.track) return;
         handleHotKeys(e);
+
+        if (e.key == "Alt" || e.key == "Control" || e.key == "Shift") {
+            this.setState({ holdingAlt: true });
+        }
+    };
+
+    onKeyUp = (e: KeyboardEvent) => {
+        if (e.key == "Alt" || e.key == "Control" || e.key == "Shift") {
+            this.setState({ holdingAlt: false });
+        }
     };
 
     /**
@@ -81,7 +93,8 @@ class MiniPlayer extends React.Component<IProps, IState> {
             volume: TrackPlayer.volume() * 100,
             lastVolume: TrackPlayer.volume() * 100,
             activeThumb: false,
-            onTop: false
+            onTop: false,
+            holdingAlt: false
         };
     }
 
@@ -90,6 +103,7 @@ class MiniPlayer extends React.Component<IProps, IState> {
 
         // Listen for hotkeys.
         document.addEventListener("keydown", this.hotKeys);
+        document.addEventListener("keyup", this.onKeyUp);
     }
 
     componentWillUnmount() {
@@ -97,6 +111,7 @@ class MiniPlayer extends React.Component<IProps, IState> {
 
         // Stop listening for hotkeys.
         document.removeEventListener("keydown", this.hotKeys);
+        document.removeEventListener("keyup", this.onKeyUp);
     }
 
     /**
@@ -146,7 +161,17 @@ class MiniPlayer extends React.Component<IProps, IState> {
                     backgroundPosition: "center"
                 }}
             >
-                <VscClose className={"MiniPlayer_Exit"} onClick={this.maximizeWindow} />
+                {
+                    this.state.holdingAlt || this.state.onTop ?
+                        <TiPin
+                            className={"MiniPlayer_Exit"}
+                            onClick={this.maximizeWindow}
+                            style={{
+                                color: this.state.onTop ? "var(--accent-color)" : "white"
+                            }}
+                        /> :
+                        <VscClose className={"MiniPlayer_Exit"} onClick={this.maximizeWindow} />
+                }
 
                 <div className={"MiniPlayer_Track"}>
                     {track && (
