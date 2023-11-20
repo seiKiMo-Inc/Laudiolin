@@ -66,7 +66,7 @@ export const useSettings = create<Settings>()(
                 playback_mode: "Stream",
                 audio_quality: "High",
                 stream_sync: true,
-                master_volume: 1
+                master_volume: 0.2
             },
             ui: {
                 color_theme: "Dark",
