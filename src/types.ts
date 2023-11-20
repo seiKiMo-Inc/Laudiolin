@@ -123,6 +123,7 @@ export type AudioSettings = {
     playback_mode: "Download" | "Stream";
     audio_quality: "Low" | "Medium" | "High";
     stream_sync: boolean;
+    master_volume: number;
 };
 export type UISettings = {
     color_theme: "Light" | "Dark";

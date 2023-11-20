@@ -2,7 +2,7 @@ import type { Synchronize, TrackData } from "@app/types";
 import * as mod from "@backend/modules";
 
 import { Howl } from "howler";
-import { useGlobal } from "@backend/stores";
+import { useGlobal, useSettings } from "@backend/stores";
 import { EventEmitter } from "events";
 import { playerUpdate, sendGatewayMessage } from "@backend/social/gateway";
 import { create } from "zustand";
@@ -533,8 +533,12 @@ export class Track extends Howl implements mod.Track {
             format: "mp3",
             html5: !playData || playData.url.includes("stream"),
             src: [playData ? playData.url : data.url],
-            volume: 0.2,
+            volume: useSettings.getState().audio.master_volume,
             autoplay: false
+        });
+
+        const unsubscribe = useSettings.subscribe((state) => {
+            this.volume(state.audio.master_volume);
         });
 
         this.on("play", () => {
@@ -555,11 +559,13 @@ export class Track extends Howl implements mod.Track {
         this.on("end", () => {
             TrackPlayer.emit("end", this); // Emit the end event.
             TrackPlayer.next(); // Play the next track.
+            unsubscribe(); // Unsubscribe from the settings.
         });
 
         TrackPlayer.on("destroy", () => {
             this.stop(); // Stop the track.
             this.unload(); // Unload the track.
+            unsubscribe(); // Unsubscribe from the settings.
             TrackPlayer.removeAllListeners("destroy"); // Remove the listener.
         });
     }

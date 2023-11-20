@@ -19,7 +19,8 @@ export const defaultSettings: UserSettings = {
     audio: {
         playback_mode: "Stream",
         audio_quality: "High",
-        stream_sync: true
+        stream_sync: true,
+        master_volume: 1
     },
     ui: {
         color_theme: "Dark",
@@ -48,6 +49,7 @@ export const settingsKeys: { [key: string]: string } = {
     "audio.playback_mode": "Audio Playback Mode",
     "audio.audio_quality": "Audio Quality",
     "audio.stream_sync": "Force Streaming When Listening Along",
+    "audio.master_volume": "Master Volume",
     "ui.color_theme": "Color Theme",
     "ui.background_image": "Background Image",
     "ui.background_opacity": "Opacity of Interface",
