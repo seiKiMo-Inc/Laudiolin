@@ -79,19 +79,7 @@
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk1OTQ0Q0Y0Q0NDQzAyRTQKUldUa0Fzek05RXlVbFZJV3l3VW5vRml0ekJHQW9ETkY4ekN6RTNGSUhXbVVjdkNuRm10dCtockMK"
     },
-    "windows": [
-      {
-        "title": "Laudiolin",
-        "maximized": false,
-        "center": true,
-        "width": 1224,
-        "height": 768,
-        "minWidth": 1200,
-        "minHeight": 600,
-        "resizable": true,
-        "decorations": false
-      }
-    ],
+    "windows": [],
     "systemTray": {
       "iconPath": "icons/icon.png",
       "iconAsTemplate": true

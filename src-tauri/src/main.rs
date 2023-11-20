@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle, Window};
+use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle, Window, WindowBuilder, WindowUrl};
 use tauri::{SystemTray, SystemTrayMenu, SystemTrayEvent};
 use window_shadows::set_shadow;
 use tokio::fs::File;
@@ -37,8 +37,24 @@ fn main() {
             // Initialize deep linking.
             register_deep_link(app);
 
+            // Create the window.
+            let mut window_builder = WindowBuilder::new(
+                app, "main", WindowUrl::App("index.html".into()))
+                .maximized(false)
+                .resizable(true)
+                .decorations(false)
+                .center()
+                .inner_size(1224f64, 768f64)
+                .min_inner_size(1200f64, 600f64);
+
+            if cfg!(target_os = "windows") && cfg!(debug_assertions) {
+                window_builder = window_builder.additional_browser_args(
+                    "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --remote-debugging-port=9229"
+                );
+            }
+
             // Set the window shadow.
-            let window = app.get_window("main").unwrap();
+            let window = window_builder.build().unwrap();
             wrap(set_shadow(&window, true), "shadow");
 
             Ok(())
