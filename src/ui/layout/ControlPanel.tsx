@@ -260,7 +260,7 @@ class ControlPanel extends React.Component<IProps, IState> {
 // #v-endif
                         }}
                         data-tooltip-content={(() => {
-                            let content = "Open in browser";
+                            let content = "Open in Browser";
 // #v-ifdef VITE_BUILD_ENV='desktop'
                             content = "Popout Player";
 // #v-endif
