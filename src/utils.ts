@@ -21,7 +21,7 @@ export function getIconUrl(track: TrackData): string {
     if (icon.includes("app.magix.lol"))
         icon = icon.replace("app.magix.lol", "app.seikimo.moe");
     // Check if the icon is already a proxy.
-    if (icon.includes("/proxy/")) {
+    if (icon.includes("/proxy/") || icon.includes(":8000")) {
         // #v-ifdef VITE_BUILD_ENV='desktop'
         icon = icon.replace(
             "https://app.seikimo.moe/proxy",
@@ -55,7 +55,7 @@ export function getIconUrl(track: TrackData): string {
     }
 
     console.warn(`Encountered a weird icon URL! ${icon}`);
-    return url;
+    return icon; // Return the original icon URL. (the url is blank)
 }
 
 /**
