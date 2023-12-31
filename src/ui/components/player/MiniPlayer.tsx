@@ -74,12 +74,14 @@ class MiniPlayer extends React.Component<IProps, IState> {
         if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
             const newState = !this.state.onTop;
             await appWindow.setAlwaysOnTop(newState);
+            await appWindow.setSkipTaskbar(newState);
             this.setState({ onTop: newState });
         } else {
             toMini(false);
 
             if (this.state.onTop) {
                 await appWindow.setAlwaysOnTop(false);
+                await appWindow.setSkipTaskbar(false);
                 this.setState({ onTop: false });
             }
         }
