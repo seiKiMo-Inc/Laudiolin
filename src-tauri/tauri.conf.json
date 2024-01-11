@@ -75,7 +75,7 @@
       "active": true,
       "dialog": true,
       "endpoints": [
-        "https://raw.githubusercontent.com/seiKiMo-Inc/Laudiolin/tauri-react-v2/src-tauri/updates.json"
+        "https://raw.githubusercontent.com/seiKiMo-Inc/Laudiolin/react-v3/src-tauri/updates.json"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk1OTQ0Q0Y0Q0NDQzAyRTQKUldUa0Fzek05RXlVbFZJV3l3VW5vRml0ekJHQW9ETkY4ekN6RTNGSUhXbVVjdkNuRm10dCtockMK"
     },

@@ -1,10 +1,10 @@
 {
   "version": "3.0.0",
-  "notes": "New features! Theming, stability improvements, offline support, merged codebases, etc.",
-  "pub_date": "",
+  "notes": "New features! Theming, stability improvements, merged codebases, etc.",
+  "pub_date": "2024-01-11T04:24:13Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFFlVUZZUlV4ekNEUzNhalVveDBwc2ZFRGJGU3J2cCtYd0JYVUZtM2hMc3lnM0NaaXNZZmZYTE5BSTlaQWg0Vm5Ea2ZqeXpESUs4RE1WL296amxIbFFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA0OTQ3MDA3CWZpbGU6TGF1ZGlvbGluXzMuMC4wX3g2NF9lbi1VUy5tc2kuemlwCllDc2U1dmVjWWdoZHZtWFhkaXlDcS85ZE1KcXAzS0F6UnpmYkczNjQ4V2hqUWVMSTJxeHhudUlZYzQ5dTAzUEFxVnpkOXZqVi9ZeFdCaXVNdTExSkFnPT0K",
       "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v3.0.0/Laudiolin_3.0.0_x64_en-US.msi.zip"
     }
   }
