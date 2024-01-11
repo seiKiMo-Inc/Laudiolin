@@ -4,7 +4,7 @@ use std::thread;
 /// Starts the HTTP server for proxying image requests.
 pub fn start_proxy() {
     thread::spawn(|| {
-        let _guard = rouille::start_server("127.0.0.1:8000", move |request| {
+        let _guard = rouille::start_server("127.0.0.1:5823", move |request| {
             let url = request.url();
             // Parse the URL to get the data between '/' and '?'.
             let path = url.split('/').collect::<Vec<&str>>();

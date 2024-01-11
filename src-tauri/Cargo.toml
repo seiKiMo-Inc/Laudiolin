@@ -13,8 +13,11 @@ edition = "2021"
 tauri-build = { version = "1.4.0", features = [] }
 
 [dependencies]
+
 # Tauri
 tauri = { version = "1.4.1", features = ["api-all", "system-tray", "updater", "devtools"] }
+tauri-plugin-localhost = "0.1.0"
+tauri-plugin-deep-link = "0.1.2"
 window-shadows = "0.2.1"
 
 # Serialization
@@ -27,19 +30,15 @@ open = "5.0.0"
 online = "4.0.0"
 reqwest = { version = "0.11.22", features = ["blocking"] }
 tokio = { version = "1.25.0", features = ["fs"] }
+portpicker = "0.1"
 
 # HTTP serving
 rouille = "3.6.2"
-
-# Deep Linking
-[dependencies.tauri-plugin-deep-link]
-git = "https://github.com/FabianLars/tauri-plugin-deep-link"
-branch = "main"
 
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
 default = ["custom-protocol"]
-# this feature is used used for production builds where `devPath` points to the filesystem
+# this feature is used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
 custom-protocol = ["tauri/custom-protocol"]

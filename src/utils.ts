@@ -21,11 +21,11 @@ export function getIconUrl(track: TrackData): string {
     if (icon.includes("app.magix.lol"))
         icon = icon.replace("app.magix.lol", "app.seikimo.moe");
     // Check if the icon is already a proxy.
-    if (icon.includes("/proxy/") || icon.includes(":8000")) {
+    if (icon.includes("/proxy/") || icon.includes(":8000") || icon.includes(":5823")) {
         // #v-ifdef VITE_BUILD_ENV='desktop'
-        icon = icon.replace(
-            "https://app.seikimo.moe/proxy",
-            "http://localhost:8000");
+        icon = icon
+            .replace("https://app.seikimo.moe/proxy", "http://localhost:5823")
+            .replace("http://localhost:8000", "http://localhost:5823");
         // #v-endif
         return icon;
     }
@@ -37,7 +37,7 @@ export function getIconUrl(track: TrackData): string {
 
     let url = `${Gateway.getUrl()}/proxy/{ico}?from={src}`;
     // #v-ifdef VITE_BUILD_ENV='desktop'
-    url = `http://localhost:8000/{ico}?from={src}`;
+    url = `http://localhost:5823/{ico}?from={src}`;
     // #v-endif
 
     // Match the icon URL to the correct proxy URL.

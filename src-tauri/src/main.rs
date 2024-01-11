@@ -11,6 +11,8 @@ use window_shadows::set_shadow;
 use tokio::fs::File;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use base64::{Engine as _, engine::general_purpose};
+use portpicker::{is_free, pick_unused_port};
+use tauri::utils::config::AppUrl;
 
 /// Wraps Result instances into an output.
 /// Any errors are passed to the frontend.
@@ -31,7 +33,26 @@ fn main() {
         tauri_plugin_deep_link::prepare("laudiolin");
     }
 
-    tauri::Builder::default()
+    let mut context = tauri::generate_context!();
+    let mut builder = tauri::Builder::default();
+    let mut window_url = WindowUrl::App("index.html".into());
+
+    #[cfg(not(dev))]
+    {
+        let mut port = 5824;
+        if !is_free(port) {
+            port = pick_unused_port().expect("Unable to find an unused port.");
+        }
+
+        let url = format!("http://localhost:{}/", port).parse().unwrap();
+        window_url = WindowUrl::External(url);
+        context.config_mut().build.dist_dir = AppUrl::Url(window_url.clone());
+        context.config_mut().build.dev_path = AppUrl::Url(window_url.clone());
+
+        builder = builder.plugin(tauri_plugin_localhost::Builder::new(port).build())
+    }
+
+    builder
         .invoke_handler(tauri::generate_handler![
             open, online, exists, save_file, get_file, create_dir, delete, open_dev_tools
         ])
@@ -41,7 +62,7 @@ fn main() {
 
             // Create the window.
             let mut window_builder = WindowBuilder::new(
-                app, "main", WindowUrl::App("index.html".into()))
+                app, "main", window_url)
                 .maximized(false)
                 .resizable(true)
                 .decorations(false)
@@ -66,7 +87,7 @@ fn main() {
         })
         .system_tray(configure_system_tray())
         .on_system_tray_event(tray_handler)
-        .run(tauri::generate_context!())
+        .run(context)
         .expect("error while running tauri application");
 }
 
