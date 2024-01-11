@@ -9,6 +9,7 @@ import TrackPlayer, { usePlayer } from "@mod/player";
 
 import emitter from "@backend/events";
 import { useSettings, useUser } from "@backend/stores";
+import { parseArtist } from "@backend/core/search";
 
 export let listeningWith: User | null = null; // The ID of the user you are currently listening with.
 
@@ -130,6 +131,8 @@ export async function updatePresence(): Promise<void> {
 
     // Request the gateway to update the presence.
     const track = player.track;
+    if (track != null) track.artist = parseArtist(track.artist);
+
     await fetch(`${targetRoute}/social/presence`, {
         method: "POST", headers: { Authorization: token() },
         body: JSON.stringify({

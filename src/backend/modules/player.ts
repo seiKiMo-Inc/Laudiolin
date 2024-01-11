@@ -401,38 +401,39 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 
         // Update the navigator metadata.
         if ("mediaSession" in navigator) {
+            const icon = track.refIcon ?? track.icon;
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
                 artist: track.artist,
                 album: "Laudiolin",
                 artwork: [
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "96x96",
                         type: "image/png",
                     },
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "128x128",
                         type: "image/png",
                     },
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "192x192",
                         type: "image/png",
                     },
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "256x256",
                         type: "image/png",
                     },
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "384x384",
                         type: "image/png",
                     },
                     {
-                        src: track.icon,
+                        src: icon,
                         sizes: "512x512",
                         type: "image/png",
                     }
@@ -531,8 +532,8 @@ export class Track extends Howl implements mod.Track {
     ) {
         super({
             format: "mp3",
-            html5: !playData || playData.url.includes("stream"),
-            src: [playData ? playData.url : data.url],
+            html5: !playData || (playData.refUrl ?? playData.url).includes("stream"),
+            src: [playData ? (playData.refUrl ?? playData.url) : (data.refUrl ?? data.url)],
             volume: useSettings.getState().audio.master_volume,
             autoplay: false
         });

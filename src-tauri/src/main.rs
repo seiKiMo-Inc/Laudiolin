@@ -220,9 +220,10 @@ fn tray_handler(app: &AppHandle<Wry>, event: SystemTrayEvent) {
     match event {
         SystemTrayEvent::MenuItemClick { id, .. } => { menu_item_handler(id) }
         SystemTrayEvent::DoubleClick { .. } => {
-            app.get_window("main").unwrap().show()
+            let main_window = app.get_window("main").unwrap();
+            main_window.show()
                 .expect("Unable to show main window.");
-            app.get_window("main").unwrap().set_focus()
+            main_window.set_focus()
                 .expect("Unable to focus main window.");
         }
         _ => {}

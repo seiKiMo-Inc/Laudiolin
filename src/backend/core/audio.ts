@@ -29,13 +29,13 @@ export async function setup(): Promise<void> {
 
         // Set the remote URLs.
         if (listeningWith != null && settings.audio().stream_sync)
-            track.url = getStreamingUrl(track);
+            track.refUrl = getStreamingUrl(track);
         else
-            track.url =
+            track.refUrl =
                 settings.audio().playback_mode == "Download"
                     ? getDownloadUrl(track)
                     : getStreamingUrl(track);
-        track.icon = getIconUrl(track);
+        track.refIcon = getIconUrl(track);
         return track;
     };
 
@@ -64,8 +64,8 @@ export async function downloadTrack(
     await fs.downloadUrl(getDownloadUrl(track), fs.getTrackPath(track));
     await fs.downloadUrl(getIconUrl(track), fs.getIconPath(track));
     // Save the track's data.
-    track.icon = fs.toAsset(fs.getIconPath(track));
-    track.url = fs.toAsset(fs.getTrackPath(track));
+    track.refIcon = fs.toAsset(fs.getIconPath(track));
+    track.refUrl = fs.toAsset(fs.getTrackPath(track));
     track.title = base64Encode(new TextEncoder().encode(track.title));
     track.serialized = true;
     await fs.saveData(track, fs.getDataPath(track));

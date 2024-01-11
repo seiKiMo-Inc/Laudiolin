@@ -13,7 +13,6 @@ import { MdShuffle, MdRepeat, MdRepeatOne } from "react-icons/md";
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
-import type { TrackData } from "@app/types";
 import WithStore from "@backend/stores";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
@@ -104,6 +103,8 @@ class MiniPlayer extends React.Component<IProps, IState> {
         // Listen for hotkeys.
         document.addEventListener("keydown", this.hotKeys);
         document.addEventListener("keyup", this.onKeyUp);
+
+        appWindow.setTitle("Laudiolin");
     }
 
     componentWillUnmount() {
@@ -112,6 +113,8 @@ class MiniPlayer extends React.Component<IProps, IState> {
         // Stop listening for hotkeys.
         document.removeEventListener("keydown", this.hotKeys);
         document.removeEventListener("keyup", this.onKeyUp);
+
+        appWindow.setTitle("Laudiolin");
     }
 
     /**
@@ -180,7 +183,7 @@ class MiniPlayer extends React.Component<IProps, IState> {
                                 className={"MiniPlayer_Icon"}
                                 alt={track.title ?? "No track"}
                                 src={
-                                    track.icon ??
+                                    track.refIcon ?? track.icon ??
                                     "https://i.imgur.com/0Q9QZ9A.png"
                                 }
                             />

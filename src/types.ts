@@ -21,7 +21,10 @@ export type TrackData = {
     url: string;
     id: string;
     duration: number;
+
     serialized?: boolean;
+    refUrl?: string;
+    refIcon?: string;
 };
 export type SearchResults = {
     waiting?: boolean;

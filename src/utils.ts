@@ -16,7 +16,7 @@ import { asArray, useFavorites } from "@backend/stores";
  * @param track The track to get the icon URL for.
  */
 export function getIconUrl(track: TrackData): string {
-    let icon = track.icon;
+    let icon = track.refIcon ?? track.icon;
     // Replace the legacy icon URL.
     if (icon.includes("app.magix.lol"))
         icon = icon.replace("app.magix.lol", "app.seikimo.moe");
@@ -41,7 +41,7 @@ export function getIconUrl(track: TrackData): string {
     // #v-endif
 
     // Match the icon URL to the correct proxy URL.
-    const iconUrl = track.icon;
+    const iconUrl = track.refIcon ?? track.icon;
     let split = iconUrl.split("/");
 
     if (iconUrl.includes("i.ytimg.com")) {

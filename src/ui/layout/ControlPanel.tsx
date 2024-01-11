@@ -154,7 +154,7 @@ class ControlPanel extends React.Component<IProps, IState> {
                                 className={"ControlPanel_Icon"}
                                 alt={track.title ?? "No track"}
                                 src={
-                                    track.icon ??
+                                    track.refIcon ?? track.icon ??
                                     "https://i.imgur.com/0Q9QZ9A.png"
                                 }
                             />
