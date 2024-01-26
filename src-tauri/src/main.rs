@@ -3,6 +3,8 @@
     windows_subsystem = "windows"
 )]
 
+#[allow(unused_imports)]
+
 mod proxy;
 
 use tauri::{Manager, App, Wry, CustomMenuItem, AppHandle, Window, WindowBuilder, WindowUrl};
@@ -29,8 +31,10 @@ pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
 fn main() {
     // Check for an existing deep link instance.
     // TODO: Open main app instance.
-    if cfg!(target_os = "windows") {
-        tauri_plugin_deep_link::prepare("laudiolin");
+    if cfg!(debug_assertions) {
+        tauri_plugin_deep_link::prepare("moe.seikimo.laudiolin-dev");
+    } else {
+        tauri_plugin_deep_link::prepare("moe.seikimo.laudiolin");
     }
 
     let mut context = tauri::generate_context!();
