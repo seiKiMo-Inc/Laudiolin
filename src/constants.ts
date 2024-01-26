@@ -1,7 +1,7 @@
 import { Theme } from "@app/types";
 
 /* Is the app in development? */
-export const isDevelopment = import.meta.env.DEV;
+export const isDevelopment = (import.meta.env.VITE_USE_ENCRYPTION == "true") || import.meta.env.DEV;
 
 export const Gateway = {
     url: isDevelopment ?
