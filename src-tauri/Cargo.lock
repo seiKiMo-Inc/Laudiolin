@@ -1756,7 +1756,7 @@ dependencies = [
 
 [[package]]
 name = "laudiolin"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "base64 0.21.0",
  "online",
