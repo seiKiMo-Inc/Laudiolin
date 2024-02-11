@@ -39,7 +39,8 @@ export const defaultSettings: UserSettings = {
         offline: false,
         broadcast_listening: "Everyone",
         presence: "Generic",
-        close: "Exit"
+        close: "Exit",
+        invert_scroll: true
     },
     token: ""
 };
@@ -72,7 +73,8 @@ export const settingsKeys: { [key: string]: string } = {
     "system.offline": "Full Offline Support",
     "system.broadcast_listening": "Show What I'm Listening To",
     "system.presence": "Discord Rich Presence Style",
-    "system.close": "Close Mode"
+    "system.close": "Close Mode",
+    "system.invert_scroll": "Invert Scroll Direction"
 };
 
 /**

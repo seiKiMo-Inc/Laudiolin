@@ -547,6 +547,14 @@ class Settings extends React.Component<IProps, IState> {
                         description={"Changes the behavior of the close button."}
                         options={["Exit", "Tray"]}
                     />
+
+                    <Setting
+                        store={store}
+                        setting={"system.invert_scroll"}
+                        type={"boolean"}
+                        description={"Should scroll actions be inverted?"}
+                        color={this.state.color}
+                    />
 // #v-endif
 
                     <h2 style={{ marginTop: 30, marginBottom: 20 }}>Debugging Actions</h2>

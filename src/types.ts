@@ -149,6 +149,7 @@ export type SystemSettings = {
     // #v-ifdef VITE_BUILD_ENV='desktop'
     offline: boolean;
     close: "Exit" | "Tray";
+    invert_scroll: boolean;
     // #v-endif
 };
 export type SettingType = "boolean" | "input" | "number" | "select" | "color" | "slider";
