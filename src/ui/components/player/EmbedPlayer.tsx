@@ -73,8 +73,11 @@ function EmbedPlayer() {
                 }
 
                 <div className={"EmbedPlayer_TrackInfo"}>
-                    <span style={{ fontWeight: "bold" }}>{track?.title ?? "Not Playing"}</span>
-                    <span style={{ fontSize: "14px" }}>{track?.artist ?? "---"}</span>
+                    <div>
+                        <p className={"EmbedPlayer_Label"}
+                           style={{ fontWeight: "bold" }}>{track?.title ?? "Not Playing"}</p>
+                        <p className={"EmbedPlayer_Label"} style={{ fontSize: "14px" }}>{track?.artist ?? "---"}</p>
+                    </div>
 
                     <ProgressBar
                         className={"EmbedPlayer_ProgressBar"}
