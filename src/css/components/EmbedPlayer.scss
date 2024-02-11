@@ -39,9 +39,11 @@
 }
 
 .EmbedPlayer_TrackIcon {
+    height: 84px;
+    width: 84px;
+
+    object-fit: cover;
     border-radius: 8px;
-    width: fit-content;
-    height: 100%;
     background-color: #A6A6A6;
 }
 
