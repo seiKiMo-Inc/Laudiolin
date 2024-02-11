@@ -9,12 +9,12 @@ import TopBar from "@layout/TopBar";
 
 import Alert from "@components/Alert";
 import MiniPlayer from "@components/player/MiniPlayer";
+import EmbedPlayer from "@components/player/EmbedPlayer";
 import AddToPlaylist from "@components/modals/AddToPlaylist";
 
 import { invoke } from "@tauri-apps/api";
-import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
-import emitter from "@backend/events";
+import { checkState } from "@backend/desktop/altplayer";
 import { loadState } from "@backend/desktop/offline";
 import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
@@ -24,7 +24,7 @@ import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import type { User, UserSettings } from "@app/types";
 
-import WithStore, { useSettings, useUser } from "@backend/stores";
+import WithStore, { useSettings, useUser, useWindow, WindowState } from "@backend/stores";
 
 import "@css/App.scss";
 import "@css/Text.scss";
@@ -33,41 +33,12 @@ import "react-tooltip/dist/react-tooltip.css";
 interface IProps {
     pStore: User;
     sStore: UserSettings;
+    tStore: WindowState;
 }
 
-interface IState {
-    miniPlayer: boolean;
-}
-
-class App extends React.Component<IProps, IState> {
-    /**
-     * Sets the mini player state.
-     * @param enter Should the mini player enter or exit?
-     */
-    miniPlayer = (enter: boolean) => {
-        this.setState({ miniPlayer: enter });
-        appWindow.setSize(enter ?
-            new LogicalSize(427, 240) :
-            new LogicalSize(1200, 600));
-        appWindow.setResizable(!enter);
-    };
-
+class App extends React.Component<IProps, never> {
     constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            miniPlayer: false
-        };
-    }
-
-    /**
-     * Checks if the window is in mini player mode.
-     * Resizes the window if it is.
-     */
-    async checkMiniPlayerState(): Promise<void> {
-        const size = await appWindow.innerSize();
-        if (size.width == 427 && size.height == 240)
-            this.miniPlayer(false);
     }
 
     /**
@@ -153,7 +124,7 @@ class App extends React.Component<IProps, IState> {
 
     componentDidMount() {
         // Check if the window is in mini player mode.
-        this.checkMiniPlayerState();
+        checkState();
 
         // Check if user is logged in.
         if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
@@ -161,7 +132,6 @@ class App extends React.Component<IProps, IState> {
 
         // Register event listeners.
         useUser.subscribe(() => this.fadeLaunchScreen());
-        emitter.on("miniPlayer", this.miniPlayer);
         // Register document event listeners.
         document.onclick = this.closeDropdowns;
         document.oncontextmenu = this.closeDropdowns;
@@ -179,13 +149,19 @@ class App extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        // Unregister event listeners.;
-        emitter.off("miniPlayer", this.miniPlayer);
+        // Unregister event listeners.
         document.onclick = null;
     }
 
     render() {
-        return !this.state.miniPlayer ? (
+        switch (this.props.tStore.type) {
+            case "mini":
+                return <MiniPlayer />;
+            case "embed":
+                return <EmbedPlayer />;
+        }
+
+        return (
             <div
                 className={"App"}
                 onContextMenu={(e) => e.preventDefault()}
@@ -207,7 +183,8 @@ class App extends React.Component<IProps, IState> {
 
                 <Alert />
             </div>
-        ) : <MiniPlayer />;
+        );
     }
 }
-export default WithStore(App, useUser, useSettings);
+
+export default WithStore(App, useUser, useSettings, useWindow);

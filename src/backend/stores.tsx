@@ -88,7 +88,8 @@ export const useSettings = create<Settings>()(
                 presence: "Generic",
                 // #v-ifdef VITE_BUILD_ENV='desktop'
                 offline: false,
-                close: "Exit"
+                close: "Exit",
+                invert_scroll: true
                 // #v-endif
             },
             token: "",
@@ -169,6 +170,18 @@ export const useGlobal = create<GlobalState>()(
         }
     )
 );
+
+export type WindowType = "full" | "mini" | "embed";
+export interface WindowState {
+    type: WindowType;
+
+    setType: (type: WindowType) => void;
+}
+
+export const useWindow = create<WindowState>((set) => ({
+    type: "full",
+    setType: (type: WindowType) => set({ type })
+}));
 
 export const useUser = create<User>(() => undefined);
 

@@ -6,10 +6,10 @@ import * as settings from "@backend/settings";
 
 import * as fs from "@backend/desktop/fs";
 import TrackPlayer from "@mod/player";
-import emitter from "@backend/events";
 import { router } from "@app/main";
 import { contentRoutes } from "@app/constants";
 import { asArray, useFavorites } from "@backend/stores";
+import { changeState } from "@backend/desktop/altplayer";
 
 /**
  * Matches the icon URL to the correct proxy URL.
@@ -186,7 +186,7 @@ export function reorder<T>(
  * @param enter Whether to enter or exit mini mode.
  */
 export function toMini(enter: boolean): void {
-    emitter.emit("miniPlayer", enter);
+    changeState(enter ? "mini" : "full");
 }
 
 /**
@@ -347,6 +347,16 @@ function toColor(hex: string, opacity: string): string {
     } else {
         return hex.length > 7 ? hex : hex + opacity;
     }
+}
+
+/**
+ * Takes an input string 'rgb(num,num,num)'.
+ *
+ * @param rgb The input string.
+ * @return The output string 'num, num, num'.
+ */
+export function getRgb(rgb: string): string {
+    return rgb.substring(4, rgb.length - 1);
 }
 
 /**

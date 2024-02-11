@@ -19,6 +19,7 @@ import { favoriteTrack } from "@backend/social/user";
 import { setVolume, toggleRepeatState } from "@backend/core/audio";
 import { parseArtist } from "@backend/core/search";
 import TrackPlayer, { PlayerState, usePlayer } from "@mod/player";
+import { changeState } from "@backend/desktop/altplayer";
 
 import "@css/layout/ControlPanel.scss";
 import "rc-slider/assets/index.css";
@@ -254,11 +255,14 @@ class ControlPanel extends React.Component<IProps, IState> {
                         style={{ pointerEvents: !track ? "none" : "all", opacity: !track ? 0.7 : 1 }}
                         onClick={() => {
 // #v-ifdef VITE_BUILD_ENV='desktop'
-                            toMini(true);
+                            changeState("mini");
 // #v-else
                             window.open(getTrackSource(track), "_blank");
 // #v-endif
                         }}
+// #v-ifdef VITE_BUILD_ENV='desktop'
+                        onContextMenu={() => changeState("embed")}
+// #v-endif
                         data-tooltip-content={(() => {
                             let content = "Open in Browser";
 // #v-ifdef VITE_BUILD_ENV='desktop'
