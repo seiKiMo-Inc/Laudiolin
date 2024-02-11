@@ -118,9 +118,4 @@ export async function syncState(data: Synchronize): Promise<void> {
     if (data.position !== undefined) {
         usePlayer.setState({ progress: data.position });
     }
-    if (data.shuffle !== undefined) {
-        TrackPlayer.queue = TrackPlayer.queue.sort(
-            () => Math.random() - 0.5);
-        TrackPlayer.emit("shuffle");
-    }
 }

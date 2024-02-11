@@ -143,6 +143,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
                 this.next();
                 state.progressTicks = 0;
             }
+
+            usePlayer.setState(state);
         }
 
         if ("mediaSession" in navigator) {
@@ -526,6 +528,8 @@ export class Player extends EventEmitter implements mod.TrackPlayer {
 }
 
 export class Track extends Howl implements mod.Track {
+    howlId: number | null = null;
+
     constructor(
         public readonly data: TrackData, // This is the original track data.
         private readonly playData: TrackData = null // This is the track data that should be used for playback.
@@ -573,11 +577,16 @@ export class Track extends Howl implements mod.Track {
 
     /**
      * Asynchronously plays the track.
+     * Prevents a track from double playing.
      */
     public async playAsync(): Promise<number> {
         return new Promise((resolve) => {
-            this.play();
-            this.on("play", () => resolve(this.duration()));
+            if (this.playing(this.howlId) && this.state() == "loaded") {
+                resolve(this.duration());
+            } else {
+                this.howlId = this.play();
+                this.on("play", () => resolve(this.duration()));
+            }
         });
     }
 
