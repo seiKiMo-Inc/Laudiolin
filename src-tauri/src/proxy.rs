@@ -37,6 +37,7 @@ pub fn start_proxy() {
                         "image/jpeg",
                         response.bytes().unwrap())
                         .with_additional_header("Cache-Control", "public, max-age=604800, immutable")
+                        .with_additional_header("Access-Control-Allow-Origin", "*")
                 },
                 "spot" => {
                     // Make a request to the URL.
@@ -49,6 +50,7 @@ pub fn start_proxy() {
                         "image/jpeg",
                         response.bytes().unwrap())
                         .with_additional_header("Cache-Control", "public, max-age=604800, immutable")
+                        .with_additional_header("Access-Control-Allow-Origin", "*")
                 },
                 "yt" => {
                     // Make a request to the URL.
@@ -61,6 +63,7 @@ pub fn start_proxy() {
                         "image/jpeg",
                         response.bytes().unwrap())
                         .with_additional_header("Cache-Control", "public, max-age=604800, immutable")
+                        .with_additional_header("Access-Control-Allow-Origin", "*")
                 },
                 _ => Response::empty_404()
             }
