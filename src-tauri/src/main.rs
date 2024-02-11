@@ -16,6 +16,11 @@ use base64::{Engine as _, engine::general_purpose};
 use portpicker::{is_free, pick_unused_port};
 use tauri::utils::config::AppUrl;
 
+#[cfg(target_os = "windows")]
+use windows::Win32::Foundation::HWND;
+#[cfg(target_os = "windows")]
+use windows::Win32::UI::WindowsAndMessaging::*;
+
 /// Wraps Result instances into an output.
 /// Any errors are passed to the frontend.
 /// obj: The object to wrap.
@@ -31,11 +36,7 @@ pub fn wrap<O, E>(obj: Result<O, E>, code: &str) -> O {
 fn main() {
     // Check for an existing deep link instance.
     // TODO: Open main app instance.
-    if cfg!(debug_assertions) {
-        tauri_plugin_deep_link::prepare("moe.seikimo.laudiolin-dev");
-    } else {
-        tauri_plugin_deep_link::prepare("moe.seikimo.laudiolin");
-    }
+    tauri_plugin_deep_link::prepare("moe.seikimo.laudiolin");
 
     let mut context = tauri::generate_context!();
     let mut builder = tauri::Builder::default();
@@ -58,7 +59,7 @@ fn main() {
 
     builder
         .invoke_handler(tauri::generate_handler![
-            open, online, exists, save_file, get_file, create_dir, delete, open_dev_tools
+            open, online, exists, save_file, get_file, create_dir, delete, open_dev_tools, move_to_bottom
         ])
         .setup(|app| {
             // Initialize deep linking.
@@ -70,6 +71,7 @@ fn main() {
                 .maximized(false)
                 .resizable(true)
                 .decorations(false)
+                .transparent(true)
                 .center()
                 .inner_size(1224f64, 768f64)
                 .min_inner_size(1200f64, 600f64);
@@ -81,7 +83,8 @@ fn main() {
             }
 
             // Set the window shadow.
-            let window = window_builder.build().unwrap();
+            let window = window_builder.build()
+                .expect("Unable to build window.");
             wrap(set_shadow(&window, true), "shadow");
 
             // Start the image proxy.
@@ -183,6 +186,34 @@ async fn delete(path: String) {
 #[tauri::command]
 fn open_dev_tools(window: Window) {
     window.open_devtools();
+}
+
+/// Moves the window object to the "bottom".
+/// window: The window to relocate.
+#[tauri::command]
+fn move_to_bottom(window: Window) {
+    move_bottom(window);
+}
+
+#[cfg(target_os = "windows")]
+fn move_bottom(window: Window) {
+    let raw_handle = window.hwnd()
+        .expect("Unable to get the Win32 handle.");
+    let window_handle = HWND(raw_handle.0);
+
+    unsafe {
+        SetWindowPos(
+            window_handle,
+            HWND_BOTTOM,
+            0, 0, 0, 0,
+            SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE,
+        ).expect("Unable to set window position.");
+    }
+}
+
+#[cfg(target_os = "macos")]
+fn move_bottom(window: Window) {
+    todo!("This feature is not supported on macOS.");
 }
 
 /// Registers the deep link handler.
