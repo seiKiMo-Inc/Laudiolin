@@ -1,0 +1,17 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "LX2U7VU2K4.moe.seikimo.laudiolin",
+                "paths": ["/*"]
+            }
+        ]
+    },
+    "activitycontinuation": {
+        "apps": ["LX2U7VU2K4.moe.seikimo.laudiolin"]
+    },
+    "webcredentials": {
+        "apps": ["LX2U7VU2K4.moe.seikimo.laudiolin"]
+    }
+}
