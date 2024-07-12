@@ -2,7 +2,6 @@ import type { Playlist, TrackData } from "@app/types";
 
 import * as settings from "@backend/settings";
 import { isListeningWith, listeningWith, listenWith } from "@backend/features/social";
-import { setCurrentPlaylist } from "@backend/core/playlist";
 import { getDownloadUrl, getStreamingUrl } from "@backend/social/gateway";
 import { base64Encode, getIconUrl, savePlayerState } from "@app/utils";
 import { notify } from "@backend/features/notifications";
@@ -130,8 +129,6 @@ export async function playTrack(
     // Play the track if specified.
     await TrackPlayer.play(track, force, true, play);
 
-    // Reset the current playlist.
-    !fromPlaylist && setCurrentPlaylist(null);
     // Save the player state.
     savePlayerState();
 }
@@ -231,8 +228,6 @@ export async function playPlaylist(
 
     // Play the player.
     await TrackPlayer.play();
-    // Set the current playlist.
-    setCurrentPlaylist(playlist);
 }
 
 /**

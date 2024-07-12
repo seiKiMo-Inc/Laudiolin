@@ -3,20 +3,6 @@ import type { TrackData, Playlist } from "@app/types";
 import { targetRoute, token } from "@backend/social/user";
 import { asArray, usePlaylists } from "@backend/stores";
 
-export let currentPlaylist: Playlist | null = null;
-
-/*
- * Current playlist management.
- */
-
-/**
- * Sets the current playlist.
- * @param playlist The playlist to set.
- */
-export function setCurrentPlaylist(playlist: Playlist | null): void {
-    currentPlaylist = playlist;
-}
-
 /**
  * Fetches a playlist by its ID.
  * @param id The ID of the playlist.
