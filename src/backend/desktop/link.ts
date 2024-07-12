@@ -1,4 +1,6 @@
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import { listen, Event } from "@tauri-apps/api/event";
+// #v-endif
 
 import { listenWith } from "@backend/features/social";
 import { fetchTrackById } from "@backend/core/search";
