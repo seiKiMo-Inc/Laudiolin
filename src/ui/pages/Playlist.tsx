@@ -114,7 +114,7 @@ class Playlist extends React.Component<IProps, IState> {
         }
 
         // Check if the player is already playing.
-        if (TrackPlayer.getCurrentTrack() != null) {
+        if (TrackPlayer.getCurrentTrack() == null) {
             await TrackPlayer.play();
         } else if (TrackPlayer.paused) {
             await TrackPlayer.pause();
