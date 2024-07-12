@@ -1,11 +1,11 @@
 {
-  "version": "3.0.1",
-  "notes": "Added smaller, embed player for desktop clients.",
-  "pub_date": "2024-02-11T09:03:19Z",
+  "version": "3.0.2",
+  "notes": "Allow entire playlists to be added to the queue",
+  "pub_date": "2024-07-12T21:53:58Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbGVpNGMwL2pGQjkySlFJTGJ3TzB3b2lFWkJUVHhmNk5KMWhRQzU2VCs2ZDNBb0xMZy9lZU1UVVRiU0ViNWdIajZtNTdUMjVwT3hpaFV2Uml4TEJlQ3dRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA3Njg5MDYyCWZpbGU6TGF1ZGlvbGluXzMuMC4xX3g2NF9lbi1VUy5tc2kuemlwCnhMNFlVOXlyU0VnSXN4dlpqenQ5bGxoakQ4TURra3JOQStaT1pSd3NPRU5HWHlZQk0veTd5WUxhZjBYZlFDU0xCZVRMektBbFN4STZMbjlES2hUWkFRPT0K",
-      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v3.0.1/Laudiolin_3.0.1_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUa0Fzek05RXlVbFZ3TjBxNi9Ma29lK3hVZTl2NUs1OW96M3hyZEplSjRJRllRSVYyVWNUQXdZd1RIQmx4Y3IyVWdBQ0tmU1ZmL1JYNkFvOUlRRUpvVUpNcHhhZnZ6MEFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwODIyMDM1CWZpbGU6TGF1ZGlvbGluXzMuMC4yX3g2NF9lbi1VUy5tc2kuemlwCjlOb1JsOFBIT2NZTUo2OGNoVGRUL0xUb0xvVHhkRzBWTVZtc1Bod3ZkYWpUK2dwbGVUZ3lWNlU2T2UvNEdlWGROMjE1azYvZlRueW0wTDJJMFlkYURnPT0K",
+      "url": "https://github.com/seiKiMo-Inc/Laudiolin/releases/download/v3.0.2/Laudiolin_3.0.2_x64_en-US.msi.zip"
     }
   }
 }
