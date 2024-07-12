@@ -18,7 +18,8 @@ import Router from "@components/common/Router";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import * as types from "@app/types";
-import { playPlaylist } from "@backend/core/audio";
+import TrackPlayer from "@mod/player";
+import { playPlaylist, playTrack } from "@backend/core/audio";
 import { deletePlaylist, getPlaylistAuthor } from "@backend/social/user";
 import { savePlaylist } from "@backend/desktop/offline";
 import { editPlaylist, fetchPlaylist } from "@backend/core/playlist";
@@ -91,6 +92,33 @@ class Playlist extends React.Component<IProps, IState> {
      */
     async play(shuffle = false): Promise<void> {
         await playPlaylist(await this.getPlaylist(), shuffle);
+    }
+
+    /**
+     * Queues all tracks in the playlist.
+     */
+    async queue(): Promise<void> {
+        const playlist = await this.getPlaylist();
+        if (!playlist) return;
+
+        // Fetch the tracks.
+        const tracks = playlist.tracks
+            // Remove duplicate tracks.
+            .filter((track, index, self) => {
+                return self.findIndex((t) => t.id == track.id) == index;
+            });
+
+        // Add all tracks to the queue.
+        for (const track of tracks) {
+            await playTrack(track, false, false, false, true);
+        }
+
+        // Check if the player is already playing.
+        if (TrackPlayer.getCurrentTrack() != null) {
+            await TrackPlayer.play();
+        } else if (TrackPlayer.paused) {
+            await TrackPlayer.pause();
+        }
     }
 
     /**
@@ -289,6 +317,7 @@ class Playlist extends React.Component<IProps, IState> {
 // #v-endif
                                     <a onClick={() => this.delete()}>Delete Playlist</a>
                                     <a onClick={() => this.share()}>Copy Playlist URL</a>
+                                    <a onClick={() => this.queue()}>Add Playlist to Queue</a>
                                 </BasicDropdown>
 
                                     <div className={"Playlist_Tracks"}>
