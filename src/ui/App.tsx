@@ -14,7 +14,10 @@ import AddToPlaylist from "@components/modals/AddToPlaylist";
 
 import { invoke } from "@tauri-apps/api";
 
+// #v-ifdef VITE_BUILD_ENV='desktop'
 import { checkState } from "@backend/desktop/altplayer";
+// #v-endif
+
 import { loadState } from "@backend/desktop/offline";
 import { openFromUrl } from "@backend/desktop/link";
 import { loadPlayerState, fadeOut } from "@app/utils";
@@ -128,7 +131,9 @@ class App extends React.Component<IProps, never> {
 
     componentDidMount() {
         // Check if the window is in mini player mode.
+        // #v-ifdef VITE_BUILD_ENV='desktop'
         checkState();
+        // #v-endif
 
         // Check if user is logged in.
         if (!get("authenticated") || get("authenticated") !== ("discord" || "guest"))
