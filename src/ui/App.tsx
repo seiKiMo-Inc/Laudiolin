@@ -46,6 +46,7 @@ class App extends React.Component<IProps, never> {
      */
     checkIfOnline(): void {
         // #v-ifdef VITE_BUILD_ENV='desktop'
+
         const loadOffline = () =>
             loadState(
                 loaders.userData,
@@ -67,10 +68,13 @@ class App extends React.Component<IProps, never> {
                 }
             })
             .catch((err) => console.warn(err));
+
         // #v-else
+
         login()
             .then(() => openFromUrl())
             .catch(error => console.error("Failed to login.", error));
+
         // #v-endif
     }
 
