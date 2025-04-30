@@ -9,7 +9,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "postinstall": "rustup override set nightly",
     "start:desktop": "tauri dev",
     "start:web": "vite",
     "lint": "npx prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
