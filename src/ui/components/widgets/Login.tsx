@@ -61,9 +61,12 @@ class Login extends React.PureComponent<{}, IState> {
         // Open the login URL in a browser.
 
         // #v-ifdef VITE_BUILD_ENV='desktop'
+
         invoke("open", { url: `${Gateway.getUrl()}/login` })
             .catch(console.warn);
+
         // #v-else
+
         const newWindow = window.open(`${Gateway.getUrl()}/login`);
         window.addEventListener("message", async (event) => {
             const data = event.data;
@@ -76,6 +79,7 @@ class Login extends React.PureComponent<{}, IState> {
                 newWindow.close();
             }
         });
+
         // #v-endif
     }
 
